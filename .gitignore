@@ -42,6 +42,7 @@ Mitsuba.app
 /textures
 mitsuba.*.log
 *.exr
+scenes/
 
 # Eclipse CDT project files
 .externalToolBuilders

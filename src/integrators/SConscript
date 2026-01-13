@@ -19,6 +19,7 @@ plugins += env.SharedLibrary('irrcache', ['misc/irrcache.cpp', 'misc/irrcache_pr
 plugins += env.SharedLibrary('multichannel', ['misc/multichannel.cpp'])
 plugins += env.SharedLibrary('field', ['misc/field.cpp'])
 plugins += env.SharedLibrary('motion', ['misc/motion.cpp'])
+plugins += env.SharedLibrary('additionalvertex', ['additionalvertex/additionalvertex.cpp'])
 
 # Bidirectional techniques
 bidirEnv = env.Clone()

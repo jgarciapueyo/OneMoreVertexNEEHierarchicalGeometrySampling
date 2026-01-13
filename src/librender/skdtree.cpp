@@ -17,7 +17,11 @@
 */
 
 #include <mitsuba/render/skdtree.h>
+#include <mitsuba/render/trimesh.h>
+#include <mitsuba/render/bsdf.h>
 #include <mitsuba/core/statistics.h>
+#include <mitsuba/core/timer.h>
+#include <stack>
 
 #if defined(MTS_SSE)
 #include <mitsuba/core/sse.h>
@@ -27,7 +31,7 @@
 
 MTS_NAMESPACE_BEGIN
 
-ShapeKDTree::ShapeKDTree() {
+ShapeKDTree::ShapeKDTree() : m_totalSurfaceArea(0.0f) {
 #if !defined(MTS_KD_CONSERVE_MEMORY)
     m_triAccel = NULL;
 #endif
@@ -382,6 +386,393 @@ void ShapeKDTree::rayIntersectPacketIncoherent(const RayPacket4 &packet,
 }
 
 #endif
+
+// =============================================================================
+// Geometric aggregates for geometry-aware sampling
+// =============================================================================
+
+void ShapeKDTree::dumpNodeStats() const {
+    if (!isBuilt()) {
+        Log(EWarn, "dumpNodeStats(): kd-tree not built");
+        return;
+    }
+
+    const KDNode *root = getRoot();
+    AABB rootAABB = m_tightAABB;
+
+    // Stack entry: node, AABB, and whether children have been processed
+    struct StackEntry {
+        const KDNode *node;
+        AABB aabb;
+        bool childrenProcessed;
+        
+        StackEntry(const KDNode *n, const AABB &a)
+            : node(n), aabb(a), childrenProcessed(false) {}
+        StackEntry(const KDNode *n, const AABB &a, bool processed)
+            : node(n), aabb(a), childrenProcessed(processed) {}
+    };
+
+    std::stack<StackEntry> stack;
+    stack.push(StackEntry(root, rootAABB));
+
+    while (!stack.empty()) {
+        StackEntry entry = stack.top();
+        stack.pop();
+
+        if (!entry.childrenProcessed) {
+            // First visit: push back with childrenProcessed=true, then push children
+            stack.push(StackEntry(entry.node, entry.aabb, true));
+
+            if (!entry.node->isLeaf()) {
+                // Internal node: compute and push children
+                int axis = entry.node->getAxis();
+                float split = entry.node->getSplit();
+
+                AABB leftAABB = entry.aabb;
+                leftAABB.max[axis] = split;
+                AABB rightAABB = entry.aabb;
+                rightAABB.min[axis] = split;
+
+                // Get left child (handle indirections)
+                const KDNode *leftChild;
+                if (!entry.node->isIndirection())
+                    leftChild = entry.node->getLeft();
+                else
+                    leftChild = m_indirections[entry.node->getIndirectionIndex()];
+
+                const KDNode *rightChild = leftChild + 1;
+
+                // Push in reverse order (right first, then left) so left is popped first
+                stack.push(StackEntry(rightChild, rightAABB));
+                stack.push(StackEntry(leftChild, leftAABB));
+            }
+        } else {
+            // Second visit: children have been processed, now process this node
+            size_t nodeIdx = getNodeIndex(entry.node);
+
+            if (entry.node->isLeaf()) {
+                IndexType start = entry.node->getPrimStart();
+                IndexType end = entry.node->getPrimEnd();
+                SizeType primCount = (SizeType)(end - start);
+
+                // Compute approximate total area by summing primitive AABBs
+                Float approxArea = 0.0f;
+                for (IndexType i = start; i < end; ++i) {
+                    IndexType prim = m_indices[i];
+                    AABB paabb = getAABB(prim);
+                    approxArea += paabb.getSurfaceArea();
+                }
+
+                Log(EInfo, "KDNode[%u] LEAF: prims=%u, idxRange=[%u,%u), approxArea=%f",
+                    (unsigned)nodeIdx, (unsigned)primCount,
+                    (unsigned)start, (unsigned)end, approxArea);
+            } else {
+                int axis = entry.node->getAxis();
+                float split = entry.node->getSplit();
+
+                Log(EInfo, "KDNode[%u] INTERNAL: axis=%d, split=%f",
+                    (unsigned)nodeIdx, axis, split);
+            }
+
+            // If geometric aggregates are present, print the KDNodeInfo for this node
+            if (hasGeometricAggregates()) {
+                if (nodeIdx < m_nodeInfo.size()) {
+                    const KDNodeInfo &info = m_nodeInfo[nodeIdx];
+                    if (info.valid) {
+                        const Normal &mn = info.normalDistribution.meanNormal;
+                        Log(EInfo, "  NodeInfo[%u]: valid=1, surfaceArea=%f, diffuseAlbedo=%f, meanNormal=(%f,%f,%f), variance=%f",
+                            (unsigned)nodeIdx,
+                            info.surfaceArea,
+                            info.diffuseAlbedo,
+                            mn.x, mn.y, mn.z,
+                            info.normalDistribution.variance);
+                    } else {
+                        Log(EInfo, "  NodeInfo[%u]: valid=0", (unsigned)nodeIdx);
+                    }
+                } else {
+                    Log(EInfo, "  NodeInfo[%u]: MISSING", (unsigned)nodeIdx);
+                }
+            }
+        }
+    }
+
+    Log(EInfo, "Node traversal complete.");
+}
+
+void ShapeKDTree::buildGeometricAggregates() {
+    if (!isBuilt()) {
+        Log(EError, "ShapeKDTree::buildGeometricAggregates(): "
+            "KD-tree must be built before computing geometric aggregates!");
+        return;
+    }
+
+    if (hasGeometricAggregates()) {
+        Log(EWarn, "ShapeKDTree::buildGeometricAggregates(): "
+            "Geometric aggregates already built, skipping.");
+        return;
+    }
+
+    ref<Timer> timer = new Timer();
+    Log(EInfo, "Building geometric aggregates for KD-tree nodes...");
+
+    // Allocate the node info array
+    m_nodeInfo.resize(m_nodeCount);
+    m_totalSurfaceArea = 0.0f;
+
+    // Recursively compute aggregates starting from root
+    const KDNode *root = getRoot();
+    if (root != NULL) {
+        KDNodeInfo rootInfo = buildGeometricAggregatesRecursive(root, m_aabb);
+        m_totalSurfaceArea = rootInfo.surfaceArea;
+
+        Log(EInfo, "Geometric aggregates built in %i ms:", timer->getMilliseconds());
+        Log(EInfo, "  Total surface area: %f", m_totalSurfaceArea);
+        Log(EInfo, "  Root diffuse albedo: %f", rootInfo.diffuseAlbedo);
+        Log(EInfo, "  Memory: %s", memString(m_nodeInfo.size() * sizeof(KDNodeInfo)).c_str());
+    }
+}
+
+KDNodeInfo ShapeKDTree::buildGeometricAggregatesRecursive(
+        const KDNode *node, const AABB &nodeAABB) {
+
+    size_t nodeIdx = getNodeIndex(node);
+    KDNodeInfo &info = m_nodeInfo[nodeIdx];
+
+    if (node->isLeaf()) {
+        // Leaf node: aggregate all primitives in this leaf
+        info = KDNodeInfo();  // Reset to defaults
+
+        IndexType primStart = node->getPrimStart();
+        IndexType primEnd = node->getPrimEnd();
+
+        if (primStart >= primEnd) {
+            // Empty leaf
+            info.valid = false;
+            return info;
+        }
+
+        // Accumulators for averaging
+        Float totalArea = 0.0f;
+        Float weightedAlbedo = 0.0f;
+        // Vector weightedNormal(0.0f);
+        // std::vector<std::pair<Float, Normal>> primitiveNormals;
+
+        for (IndexType i = primStart; i < primEnd; ++i) {
+            IndexType idx = m_indices[i];
+            IndexType shapeIdx = findShape(idx);
+            const Shape *shape = m_shapes[shapeIdx];
+
+            KDNodeInfo primInfo;
+
+            if (m_triangleFlag[shapeIdx]) {
+                // Triangle primitive
+                const TriMesh *mesh = static_cast<const TriMesh *>(shape);
+                primInfo = computeTriangleAggregate(mesh, idx);
+            } else {
+                // Generic shape
+                primInfo = computeShapeAggregate(shape);
+            }
+
+            if (primInfo.valid && primInfo.surfaceArea > 0) {
+                totalArea += primInfo.surfaceArea;
+                weightedAlbedo += primInfo.diffuseAlbedo * primInfo.surfaceArea;
+                // weightedNormal += Vector(primInfo.normalDistribution.meanNormal) * primInfo.surfaceArea;
+                // primitiveNormals.push_back(std::make_pair(
+                //     primInfo.surfaceArea,
+                //     primInfo.normalDistribution.meanNormal
+                // ));
+            }
+        }
+
+        if (totalArea > 0) {
+            info.surfaceArea = totalArea;
+            info.diffuseAlbedo = weightedAlbedo / totalArea;
+
+            // Normalize the weighted normal
+            // Float normalLength = weightedNormal.length();
+            // if (normalLength > 0) {
+            //     info.normalDistribution.meanNormal = Normal(weightedNormal / normalLength);
+            // }
+
+            // Compute variance of normals
+            // Float variance = 0.0f;
+            // for (size_t j = 0; j < primitiveNormals.size(); ++j) {
+            //     Float w = primitiveNormals[j].first / totalArea;
+            //     Float dotP = dot(primitiveNormals[j].second, info.normalDistribution.meanNormal);
+            //     variance += w * (1.0f - dotP * dotP);  // sin^2(angle)
+            // }
+            // info.normalDistribution.variance = variance;
+            info.valid = true;
+        }
+
+        return info;
+
+    } else {
+        // Internal node: combine children recursively
+        // Handle potential indirection nodes: left child may be stored in m_indirections.
+        const KDNode *leftChild;
+        if (!node->isIndirection())
+            leftChild = node->getLeft();
+        else
+            leftChild = m_indirections[node->getIndirectionIndex()];
+
+        const KDNode *rightChild = leftChild + 1;
+
+        // Compute child AABBs by splitting the current AABB
+        int axis = node->getAxis();
+        Float splitPos = node->getSplit();
+
+        AABB leftAABB = nodeAABB;
+        AABB rightAABB = nodeAABB;
+        leftAABB.max[axis] = splitPos;
+        rightAABB.min[axis] = splitPos;
+
+        // Recurse on children (post-order)
+        KDNodeInfo leftInfo = buildGeometricAggregatesRecursive(leftChild, leftAABB);
+        KDNodeInfo rightInfo = buildGeometricAggregatesRecursive(rightChild, rightAABB);
+
+        // Combine children using the static helper
+        info = KDNodeInfo::combine(leftInfo, rightInfo);
+
+        return info;
+    }
+}
+
+KDNodeInfo ShapeKDTree::computeShapeAggregate(const Shape *shape) const {
+    KDNodeInfo info;
+
+    // Get surface area
+    try {
+        info.surfaceArea = shape->getSurfaceArea();
+    } catch (...) {
+        // Some shapes don't support getSurfaceArea()
+        // Approximate from AABB
+        AABB aabb = shape->getAABB();
+        Vector extents = aabb.getExtents();
+        // Rough approximation: 2 * (xy + yz + xz)
+        info.surfaceArea = 2.0f * (extents.x * extents.y +
+                                   extents.y * extents.z +
+                                   extents.z * extents.x);
+    }
+
+    // Get diffuse albedo from BSDF
+    info.diffuseAlbedo = 0.5f;  // Default fallback
+    const BSDF *bsdf = shape->getBSDF();
+    if (bsdf != NULL) {
+        // Create a dummy intersection to query diffuse reflectance
+        // Sample at center of shape's bounding box
+        Intersection its;
+        its.p = shape->getAABB().getCenter();
+        its.shFrame = Frame(Normal(0, 1, 0));
+        its.geoFrame = its.shFrame;
+        its.uv = Point2(0.5f, 0.5f);
+        its.shape = shape;
+        its.hasUVPartials = false;
+
+        try {
+            Spectrum diffuse = bsdf->getDiffuseReflectance(its);
+            // Convert spectrum to luminance (average)
+            info.diffuseAlbedo = diffuse.getLuminance();
+        } catch (...) {
+            // Keep default
+        }
+    }
+
+    // For generic shapes, sample normals if possible
+    // For now, use a default normal based on AABB orientation
+    info.normalDistribution.meanNormal = Normal(0, 1, 0);
+    info.normalDistribution.variance = 1.0f;  // High variance for unknown shapes
+
+    info.valid = (info.surfaceArea > 0);
+
+    return info;
+}
+
+KDNodeInfo ShapeKDTree::computeTriangleAggregate(const TriMesh *mesh, IndexType triIdx) const {
+    KDNodeInfo info;
+
+    const Triangle &tri = mesh->getTriangles()[triIdx];
+    const Point *positions = mesh->getVertexPositions();
+    const Normal *normals = mesh->getVertexNormals();
+
+    // Get triangle vertices
+    const Point &v0 = positions[tri.idx[0]];
+    const Point &v1 = positions[tri.idx[1]];
+    const Point &v2 = positions[tri.idx[2]];
+
+    // Compute triangle area
+    Vector side1 = v1 - v0;
+    Vector side2 = v2 - v0;
+    Vector crossProduct = cross(side1, side2);
+    Float area = 0.5f * crossProduct.length();
+    info.surfaceArea = area;
+
+    // Compute face normal
+    Normal faceNormal;
+    if (area > 0) {
+        faceNormal = Normal(crossProduct / (2.0f * area));
+    } else {
+        faceNormal = Normal(0, 1, 0);
+    }
+
+    // Use interpolated vertex normals if available, otherwise face normal
+    if (normals != NULL) {
+        // Average vertex normals (could do area-weighted barycentric)
+        Vector avgNormal = Vector(normals[tri.idx[0]]) +
+                          Vector(normals[tri.idx[1]]) +
+                          Vector(normals[tri.idx[2]]);
+        Float len = avgNormal.length();
+        if (len > 0) {
+            info.normalDistribution.meanNormal = Normal(avgNormal / len);
+        } else {
+            info.normalDistribution.meanNormal = faceNormal;
+        }
+
+        // Compute variance from vertex normal variation
+        Float variance = 0.0f;
+        for (int i = 0; i < 3; ++i) {
+            Float dotP = dot(normals[tri.idx[i]], info.normalDistribution.meanNormal);
+            variance += (1.0f - dotP * dotP) / 3.0f;
+        }
+        info.normalDistribution.variance = variance;
+    } else {
+        info.normalDistribution.meanNormal = faceNormal;
+        info.normalDistribution.variance = 0.0f;  // Flat triangle
+    }
+
+    // Get diffuse albedo from BSDF
+    info.diffuseAlbedo = 0.5f;  // Default
+    const BSDF *bsdf = mesh->getBSDF();
+    if (bsdf != NULL) {
+        // Create intersection at triangle center
+        Intersection its;
+        its.p = (v0 + v1 + v2) / 3.0f;
+        its.shFrame = Frame(info.normalDistribution.meanNormal);
+        its.geoFrame = Frame(faceNormal);
+        its.uv = Point2(1.0f/3.0f, 1.0f/3.0f);
+        its.shape = mesh;
+        its.hasUVPartials = false;
+
+        // Check for vertex colors
+        const Color3 *colors = mesh->getVertexColors();
+        if (colors != NULL) {
+            // Average vertex colors
+            Color3 avgColor = (colors[tri.idx[0]] + colors[tri.idx[1]] + colors[tri.idx[2]]) / 3.0f;
+            info.diffuseAlbedo = (avgColor[0] + avgColor[1] + avgColor[2]) / 3.0f;
+        } else {
+            try {
+                Spectrum diffuse = bsdf->getDiffuseReflectance(its);
+                info.diffuseAlbedo = diffuse.getLuminance();
+            } catch (...) {
+                // Keep default
+            }
+        }
+    }
+
+    info.valid = (area > 0);
+
+    return info;
+}
 
 MTS_IMPLEMENT_CLASS(ShapeKDTree, false, KDTreeBase)
 MTS_NAMESPACE_END

@@ -343,6 +343,8 @@ void Scene::initialize() {
 
         /* Build the kd-tree */
         m_kdtree->build();
+        m_kdtree->buildGeometricAggregates();
+        m_kdtree->dumpNodeStats();
 
         m_aabb = m_kdtree->getAABB();
     }
