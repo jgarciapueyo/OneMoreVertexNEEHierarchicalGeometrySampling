@@ -20,8 +20,11 @@
 #include <mitsuba/render/renderjob.h>
 #include <mitsuba/core/plugin.h>
 #include <mitsuba/core/statistics.h>
+#include <mitsuba/core/timer.h>
+#include <mitsuba/core/util.h>
 
 #define DEFAULT_BLOCKSIZE 32
+
 
 MTS_NAMESPACE_BEGIN
 
@@ -34,6 +37,7 @@ Scene::Scene()
     m_kdtree = new ShapeKDTree();
     m_sourceFile = new fs::path();
     m_destinationFile = new fs::path();
+    m_geometryBVH = new GeometryBVH();
 }
 
 Scene::Scene(const Properties &props)
@@ -78,6 +82,8 @@ Scene::Scene(const Properties &props)
         m_kdtree->setMaxBadRefines(props.getInteger("kdMaxBadRefines"));
     m_sourceFile = new fs::path();
     m_destinationFile = new fs::path();
+    // create default BVH; a <geometrybvh> child in the scene XML will override it
+    m_geometryBVH = new GeometryBVH();
 }
 
 Scene::Scene(Scene *scene) : NetworkedObject(Properties()) {
@@ -101,6 +107,7 @@ Scene::Scene(Scene *scene) : NetworkedObject(Properties()) {
     m_specialShapes = scene->m_specialShapes;
     m_degenerateSensor = scene->m_degenerateSensor;
     m_degenerateEmitters = scene->m_degenerateEmitters;
+    m_geometryBVH = scene->m_geometryBVH;
 }
 
 Scene::Scene(Stream *stream, InstanceManager *manager)
@@ -160,6 +167,8 @@ Scene::Scene(Stream *stream, InstanceManager *manager)
     m_netObjects.reserve(count);
     for (size_t i=0; i<count; ++i)
         m_netObjects.push_back(static_cast<NetworkedObject *>(manager->getInstance(stream)));
+
+    m_geometryBVH = new GeometryBVH();
 
     initialize();
 }
@@ -317,6 +326,7 @@ void Scene::configure() {
 
 void Scene::invalidate() {
     m_kdtree = new ShapeKDTree();
+    m_geometryBVH = new GeometryBVH();
 }
 
 void Scene::initialize() {
@@ -343,11 +353,18 @@ void Scene::initialize() {
 
         /* Build the kd-tree */
         m_kdtree->build();
-        m_kdtree->buildGeometricAggregates();
-        m_kdtree->dumpNodeStats();
 
         m_aabb = m_kdtree->getAABB();
     }
+
+    if (!m_geometryBVH->isBuilt()) {
+        Log(EInfo, "Building geometry BVH with max depth %d", m_geometryBVH->getMaxDepth());
+        ref<Timer> bvhTimer = new Timer();
+        m_geometryBVH->buildBVH(this);
+        m_geometryBVH->buildAggregates(this);
+        Log(EInfo, "Geometry BVH build time: %s", timeString(bvhTimer->getSeconds(), true).c_str());
+    }
+
 
     /* Make sure that there are no duplicates */
     m_emitters.ensureUnique();
@@ -373,6 +390,7 @@ void Scene::initialize() {
             addChild(emitter);
             emitter->configure();
         }
+        
 
         /* Calculate a discrete PDF to importance sample emitters */
         for (ref_vector<Emitter>::iterator it = m_emitters.begin();
@@ -382,6 +400,7 @@ void Scene::initialize() {
         m_emitterPDF.normalize();
     }
 
+    
     initializeBidirectional();
 }
 
@@ -521,7 +540,10 @@ void Scene::addChild(const std::string &name, ConfigurableObject *child) {
         if (shape->isSensor()) // determine sensors as early as possible
             addSensor(shape->getSensor());
         m_shapes.push_back(shape);
-    } else if (cClass->derivesFrom(MTS_CLASS(Scene))) {
+    } else if (cClass->derivesFrom(MTS_CLASS(GeometryBVH))) {
+        // Allow a <geometrybvh> element in the scene XML to configure the BVH
+        m_geometryBVH = static_cast<GeometryBVH *>(child);
+     } else if (cClass->derivesFrom(MTS_CLASS(Scene))) {
         ref<Scene> scene = static_cast<Scene *>(child);
         /* A scene from somewhere else has been included.
            Add all of its contents */
@@ -827,6 +849,16 @@ Spectrum Scene::evalTransmittanceAll(const Point &p1, bool p1OnSurface, const Po
 //                Emission and direct illumination sampling
 // ===========================================================================
 
+inline float areaToSolidAnglePdf(const Point &p, const Point &q, const Normal &n, Float areaPdf) {
+    Vector d = q - p;
+    Float dist2 = d.lengthSquared();
+    d /= std::sqrt(dist2);
+    Float cosine = std::abs(dot(n, d));
+    if (cosine == 0)
+        return 0;
+    return areaPdf * dist2 / cosine;
+}
+
 Spectrum Scene::sampleEmitterDirect(DirectSamplingRecord &dRec,
         const Point2 &_sample, bool testVisibility) const {
     Point2 sample(_sample);
@@ -835,44 +867,113 @@ Spectrum Scene::sampleEmitterDirect(DirectSamplingRecord &dRec,
     Float emPdf;
     size_t index = m_emitterPDF.sampleReuse(sample.x, emPdf);
     const Emitter *emitter = m_emitters[index].get();
-    Spectrum value = emitter->sampleDirect(dRec, sample);
 
-    if (dRec.pdf != 0) {
-        if (testVisibility) {
-            Ray ray(dRec.ref, dRec.d, Epsilon,
-                    dRec.dist*(1-ShadowEpsilon), dRec.time);
-            if (m_kdtree->rayIntersect(ray))
+
+    if (emitter->isProjectedAreaEmitter()) {
+        // our projected area emitter needs to intersect the inner shape itself to know the spectrum:
+        Spectrum value = emitter->sampleDirect(dRec, sample); 
+        // ^ In this case, this only fills direction, pdf and returned spectrum. We still need to make sure that this path ends inside its bbox:
+        if (dRec.pdf != 0) {
+            Intersection its;
+            Ray ray(dRec.ref, dRec.d, Epsilon, std::numeric_limits<Float>::infinity(), dRec.time);
+            if (!m_kdtree->rayIntersect(ray, its)) { // escapes the scene, no contribution
                 return Spectrum(0.0f);
+            }
+            // now check whether we hit something inside the emitter's bbox or not: 
+            // if (!emitter->getShape()->getAABB().contains(its.p)) {
+            //     return Spectrum(0.0f); 
+            // }
+            // We have intersected something inside the emitter's bbox, all good // ->>>> Wrong. We can have intersected something else inside the bbox. Need to check that we hit the emitter itself:
+            // ^ the above check ONLY works if there are no overlapping bboxes between different shapes. 
+            if (its.shape != emitter->getShape()) {
+                return Spectrum(0.0f); 
+            }
+
+            dRec.p = its.p; // we can now fill the intersection point correctly.
+            dRec.dist = (dRec.p - dRec.ref).length(); 
+            dRec.measure = ESolidAngle;
+            dRec.n = its.shFrame.n;
+            dRec.uv = its.uv;
+
+            dRec.object = emitter;
+
+            // Check that the normal is not backfacing
+            if (dot(dRec.n, -dRec.d) <= 0)
+                return Spectrum(0.0f);
+
+            dRec.pdf *= emPdf;
+            value /= emPdf;
+            
+            return value;
+        } else {
+            return Spectrum(0.0f);
         }
-        dRec.object = emitter;
-        dRec.pdf *= emPdf;
-        value /= emPdf;
-        return value;
-    } else {
-        return Spectrum(0.0f);
+
     }
+    else { // previous code, first sample emitter then check visibility
+        // doesnt work for projected area emitters since we need to intersect them after picking the direction
+        // (not just check visibility)
+        Spectrum value = emitter->sampleDirect(dRec, sample);
+
+        if (dRec.pdf != 0) {
+            if (testVisibility) {
+                Ray ray(dRec.ref, dRec.d, Epsilon,
+                        dRec.dist*(1-ShadowEpsilon), dRec.time);
+                if (m_kdtree->rayIntersect(ray))
+                    return Spectrum(0.0f);
+            }
+            dRec.object = emitter;
+            dRec.pdf *= emPdf;
+            value /= emPdf;
+            return value;
+        } else {
+            return Spectrum(0.0f);
+        }
+    }
+    
 }
 
 Spectrum Scene::sampleAttenuatedEmitterDirect(DirectSamplingRecord &dRec,
         const Medium *medium, int &interactions, const Point2 &_sample, Sampler *sampler) const {
     Point2 sample(_sample);
 
-    /* Randomly pick an emitter */
     Float emPdf;
     size_t index = m_emitterPDF.sampleReuse(sample.x, emPdf);
     const Emitter *emitter = m_emitters[index].get();
-    Spectrum value = emitter->sampleDirect(dRec, sample);
 
-    if (dRec.pdf != 0) {
-        value *= evalTransmittance(dRec.ref, false,
-            dRec.p, emitter->isOnSurface(), dRec.time, medium,
-            interactions, sampler) / emPdf;
-        dRec.object = emitter;
-        dRec.pdf *= emPdf;
-        return value;
-    } else {
+    Spectrum value = emitter->sampleDirect(dRec, sample);
+    if (dRec.pdf == 0)
         return Spectrum(0.0f);
+
+    if (emitter->isProjectedAreaEmitter()) {
+        Intersection its;
+        Ray ray(dRec.ref, dRec.d, Epsilon,
+                std::numeric_limits<Float>::infinity(), dRec.time);
+
+        if (!m_kdtree->rayIntersect(ray, its))
+            return Spectrum(0.0f);
+
+        if (its.shape != emitter->getShape())
+            return Spectrum(0.0f);
+
+        dRec.p = its.p;
+        dRec.dist = (dRec.p - dRec.ref).length();
+        dRec.measure = ESolidAngle;
+        dRec.n = its.shFrame.n;
+        dRec.uv = its.uv;
+        dRec.object = emitter;
+
+        if (dot(dRec.n, -dRec.d) <= 0)
+            return Spectrum(0.0f);
     }
+
+    value *= evalTransmittance(dRec.ref, /*p1OnSurface=*/false,
+        dRec.p, emitter->isOnSurface(), dRec.time, medium,
+        interactions, sampler) / emPdf;
+
+    dRec.object = emitter;
+    dRec.pdf *= emPdf;
+    return value;
 }
 
 Spectrum Scene::sampleAttenuatedEmitterDirect(DirectSamplingRecord &dRec,
@@ -880,23 +981,47 @@ Spectrum Scene::sampleAttenuatedEmitterDirect(DirectSamplingRecord &dRec,
         const Point2 &_sample, Sampler *sampler) const {
     Point2 sample(_sample);
 
-    /* Randomly pick an emitter */
     Float emPdf;
     size_t index = m_emitterPDF.sampleReuse(sample.x, emPdf);
     const Emitter *emitter = m_emitters[index].get();
-    Spectrum value = emitter->sampleDirect(dRec, sample);
 
-    if (dRec.pdf != 0) {
-        if (its.shape && its.isMediumTransition())
-            medium = its.getTargetMedium(dRec.d);
-        value *= evalTransmittance(its.p, true, dRec.p, emitter->isOnSurface(),
-                dRec.time, medium, interactions, sampler) / emPdf;
-        dRec.object = emitter;
-        dRec.pdf *= emPdf;
-        return value;
-    } else {
+    Spectrum value = emitter->sampleDirect(dRec, sample);
+    if (dRec.pdf == 0)
         return Spectrum(0.0f);
+
+    // If we start on a medium transition, pick the correct starting medium
+    if (its.shape && its.isMediumTransition())
+        medium = its.getTargetMedium(dRec.d);
+
+    if (emitter->isProjectedAreaEmitter()) {
+        Intersection eIts;
+        Ray ray(dRec.ref, dRec.d, Epsilon,
+                std::numeric_limits<Float>::infinity(), dRec.time);
+
+        if (!m_kdtree->rayIntersect(ray, eIts))
+            return Spectrum(0.0f);
+
+        if (eIts.shape != emitter->getShape())
+            return Spectrum(0.0f);
+
+        dRec.p = eIts.p;
+        dRec.dist = (dRec.p - dRec.ref).length();
+        dRec.measure = ESolidAngle;
+        dRec.n = eIts.shFrame.n;
+        dRec.uv = eIts.uv;
+        dRec.object = emitter;
+
+        if (dot(dRec.n, -dRec.d) <= 0)
+            return Spectrum(0.0f);
     }
+
+    value *= evalTransmittance(its.p, /*p1OnSurface=*/true,
+            dRec.p, emitter->isOnSurface(),
+            dRec.time, medium, interactions, sampler) / emPdf;
+
+    dRec.object = emitter;
+    dRec.pdf *= emPdf;
+    return value;
 }
 
 Spectrum Scene::sampleSensorDirect(DirectSamplingRecord &dRec,

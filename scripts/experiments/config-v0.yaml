@@ -1,0 +1,26 @@
+# experiments.yaml
+scene: scenes/cbox.xml
+output_root: results/cbox_2026-03-18
+
+global_defaults:
+  integrator: path
+  enable_lightcuts: false
+  bvh_max_primitives_per_leaf: 8
+
+spp_schedule: [1, 2, 4, 8, 16, 32, 64, 128, 256]
+reference_spp: 8192
+
+sweep:
+  leaf_sample_mode: [spherical, area]
+  enable_lightcuts: [true, false]
+  bvh_max_primitives_per_leaf: [4, 8, 16]
+
+named_configs:
+  - name: baseline_path
+    params:
+      integrator: path
+  - name: bdpt_lc
+    params:
+      integrator: bdpt
+      enable_lightcuts: true
+      

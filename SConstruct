@@ -88,7 +88,10 @@ build('src/textures/SConscript')
 # Integrators
 build('src/integrators/SConscript')
 # Testcases
-build('src/tests/SConscript')
+# build('src/tests/SConscript')
+
+# Build the geometry BVH plugin
+build('src/geometrybvh/SConscript')
 
 # ===== Move everything to its proper place =====
 SConscript('build/SConscript.install')

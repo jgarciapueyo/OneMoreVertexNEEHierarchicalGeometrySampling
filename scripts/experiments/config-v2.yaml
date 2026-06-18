@@ -1,0 +1,54 @@
+# Experiment v2: compare BVH leaf sampling modes (Primitive vs SphericalAABB)
+# Keep this file immutable; create config-v3.yaml for later changes.
+
+
+docker:
+  container: bdpt_twopoints_mitsuba-mitsuba-1
+  workdir: /home/mitsuba
+  setpath_script: /home/mitsuba/setpath.sh
+
+scene: scenes/experiments/1_wildcard_spotlight/wildcard_spotlight_quads.xml
+output_root: scenes/experiments/1_wildcard_spotlight/results/quads_leaf_sampling_compare_2026-03-18
+
+# Reference render controls:
+# - Do not inherit per-config sweep/global params.
+# - Use a stable path reference with only explicit safe params.
+reference:
+  inherit_config_params: false
+  # Fast path: set this to an existing EXR to skip rendering reference per config.
+  # When enabled, `scene`/`spp` below are ignored by the runner.
+  pre_rendered_exr: scenes/experiments/1_wildcard_spotlight/reference.exr
+  scene: scenes/experiments/1_wildcard_spotlight/wildcard_spotlight_quads_pathref.xml
+  spp: 8192
+
+# Main schedule for tested runs.
+spp_schedule: [1, 2, 4, 8, 16, 32, 128, 256, 512, 1024]
+repetitions_per_spp: 3
+reference_spp: 8192
+
+# Defaults for tested (non-reference) configs.
+global_defaults:
+  integrator: doublestep
+  maxDepth: 3
+  rrDepth: 5
+  maxLeafSize: 2
+  leafSamplingMode: Primitive
+  useBVH: true
+  disableNEE: false
+  doAdditionalVertex: true
+
+analysis:
+  baseline_config_name: baseline_path
+
+named_configs:
+  # __scene is a reserved runner key (not passed as -D) to override scene per config.
+  - name: baseline_path
+    params:
+      __scene: scenes/experiments/1_wildcard_spotlight/wildcard_spotlight_quads_pathref.xml
+      integrator: path
+      maxDepth: 3
+      rrDepth: 5
+
+sweep:
+  leafSamplingMode: [Primitive, SphericalAABB]
+  maxLeafSize: [1, 2, 4, 8]

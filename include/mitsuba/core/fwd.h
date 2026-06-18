@@ -48,6 +48,7 @@ class Logger;
 template <int M, int N, typename T> struct Matrix;
 struct Matrix2x2;
 struct Matrix3x3;
+struct Matrix3x3d;
 struct Matrix4x4;
 class MemoryStream;
 class MemoryMappedFile;

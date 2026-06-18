@@ -1,0 +1,123 @@
+# Experiment v9.A6 — Sweep A, Scene 6: pure metallic, smooth (metal=1.0, spec=0, rough=0.05).
+# No diffuse component, very narrow mirror-like specular lobe. Extreme worst case for
+# diffuse_approx; tests the upper limit of what specular_approx can recover.
+
+docker:
+  container: bdpt_twopoints_mitsuba-mitsuba-1
+  workdir: /home/mitsuba
+  setpath_script: /home/mitsuba/setpath.sh
+
+scene: scenes/experiments/3_wildcard_disney/wildcard_disney_quads.xml
+output_root: scenes/experiments/3_wildcard_disney/results/angularsah_v9.A6_metal1.0_rough0.05
+
+reference:
+  inherit_config_params: true
+  pre_rendered_exr: /home/nestor/bdpt_twopoints_mitsuba/scenes/experiments/3_wildcard_disney/results/angularsah_v9.A6_metal1.0_rough0.05/baseline_path/reference.exr
+  scene: scenes/experiments/3_wildcard_disney/wildcard_disney_quads_pathref.xml
+  spp: 100000
+  exclude_params:
+    - integrator
+    - useBVH
+    - disableNEE
+    - doAdditionalVertex
+    - maxLeafSize
+    - leafSamplingMode
+    - outputDebugCSV
+    - enableLightcuts
+    - lightcutThreshold
+    - gaussianSAThreshold
+    - useUniformBVHSampling
+    - enableSpecular
+    - enableFastLUT
+    - defensivePDF
+
+
+
+spp_schedule: [1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024]
+repetitions_per_spp: 3
+
+global_defaults:
+  integrator: doublestep
+  maxDepth: 3
+  rrDepth: 5
+  maxLeafSize: 2
+  leafSamplingMode: Primitive
+  useBVH: true
+  disableNEE: false
+  doAdditionalVertex: true
+  outputDebugCSV: false
+  enableLightcuts: false
+  lightcutThreshold: 0
+  gaussianSAThreshold: 0.031
+  useUniformBVHSampling: 1 # 1 is no
+  enableFastLUT: 1 # 1 to precompute gaussians (>1.5 evals the lut once at the cost of variance)
+  defensivePDF: 0.000001
+  geometry: quads-disney-metal1.0-rough0.05-k40.xml
+  angularSAHWeight: 0.0
+  bvhMaxDepth: 16
+
+
+analysis:
+  baseline_config_name: baseline_path
+  average_bbox: [0.3, 0.6, 0.7, 0.9]
+
+named_configs:
+  - name: baseline_path
+    params:
+      __scene: scenes/experiments/3_wildcard_disney/wildcard_disney_quads_pathref.xml
+      integrator: path
+      maxDepth: 3
+      rrDepth: 5
+
+  - name: uniform
+    params:
+      enableSpecular: 0
+      useUniformBVHSampling: 0
+
+  # - name: diffuse_area
+  #   params:
+  #     enableSpecular: 0
+      
+  - name: specular_area
+    params:
+      enableSpecular: 1
+      
+  # - name: diffuse_spherical
+  #   params:
+  #     enableSpecular: 0
+  #     leafSamplingMode: SphericalAABB
+
+  - name: specular_spherical
+    params:
+      enableSpecular: 1
+      leafSamplingMode: SphericalAABB
+
+  
+  - name: specular_area_angularsah0.5
+    params:
+      enableSpecular: 1
+      angularSAHWeight: 0.5
+      
+      
+  - name: specular_area_angularsah1
+    params:
+      enableSpecular: 1
+      angularSAHWeight: 1
+      
+  - name: specular_area_angularsah10
+    params:
+      enableSpecular: 1
+      angularSAHWeight: 10
+
+  - name: specular_area_angularsah10_kappa100
+    params:
+      enableSpecular: 1
+      angularSAHWeight: 1
+      angularSAHKappaScale: 100
+
+      
+  - name: specular_area_angularsah1_kappa100
+    params:
+      enableSpecular: 1
+      angularSAHWeight: 1
+      angularSAHKappaScale: 100

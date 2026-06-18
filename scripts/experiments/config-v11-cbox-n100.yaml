@@ -1,0 +1,55 @@
+# Experiment v11-cbox-n100: cbox with 100x100 tiles/wall (50000 wall primitives total)
+# Compares baseline path tracer vs our additionalvertex (doublestep) method.
+
+docker:
+  container: bdpt_twopoints_mitsuba-mitsuba-1
+  workdir: /home/mitsuba
+  setpath_script: /home/mitsuba/setpath.sh
+
+scene: scenes/experiments/6_cbox/cbox_geometry.xml
+output_root: scenes/experiments/6_cbox/results/indirect
+
+reference:
+  inherit_config_params: false
+  pre_rendered_exr: /home/spinda/Documents/gilab/projects/bdpt/bdpt_twopoints_mitsuba/scenes/experiments/6_cbox/results_indirect_a/v11_n100/baseline_path/reference.exr
+  scene: scenes/experiments/6_cbox/cbox_geometry.xml
+  spp: 4096
+  geometry: cbox_geometries/cbox_geometries_100_1.0.xml
+
+spp_schedule: [4, 8, 16, 64, 128, 256, 512]
+repetitions_per_spp: 3
+
+global_defaults:
+  integrator: doublestep
+  maxDepth: 3
+  bvhMaxDepth: 16
+  rrDepth: 5
+  leafSamplingMode: Primitive
+  useBVH: true
+  disableNEE: false
+  doAdditionalVertex: true
+  outputDebugCSV: false
+  enableLightcuts: false
+  lightcutThreshold: 1.5
+  gaussianSAThreshold: 0.03141592
+  useUniformBVHSampling: 1
+  enableSpecular: 0
+  enableFastLUT: 1 # Should be 1 to precompute gaussians (>1.5 evals the lut once at the cost of variance)
+  defensivePDF: 0.000001
+
+analysis:
+  baseline_config_name: baseline_path
+  average_bbox: [0.0, 0.0, 1.0, 1.0]
+  figure_format: svg
+
+named_configs:
+  - name: baseline_path
+    params:
+      __scene: scenes/experiments/6_cbox/cbox_geometry.xml
+      integrator: pathindirect
+      maxDepth: 3
+      rrDepth: 3
+  - name: ours
+    params:
+      disableNEE: true
+      hideEmitters: true

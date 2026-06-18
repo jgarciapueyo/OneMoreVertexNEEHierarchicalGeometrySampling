@@ -79,6 +79,18 @@ Float BSDF::getRoughness(const Intersection &its, int component) const {
     NotImplementedError("getRoughness");
 }
 
+Float BSDF::getMetallic(const Intersection &its) const {
+    return 0.0f;
+}
+
+Float BSDF::getSpecularF0(const Intersection &its) const {
+    return 0.0f;
+}
+
+Spectrum BSDF::getRawReflectance(const Intersection &its) const {
+    return getDiffuseReflectance(its);
+}
+
 Spectrum BSDF::getDiffuseReflectance(const Intersection &its) const {
     BSDFSamplingRecord bRec(its, Vector(0, 0, 1), Vector(0, 0, 1));
     bRec.typeMask = EDiffuseReflection;

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene version="0.6.0">
+	<integrator type="volpath"/>
+
+	<!-- Infinite, thin homogeneous fog (referenced as the "exterior" medium everywhere) -->
+	<medium type="homogeneous" id="fog">
+		<!-- thin fog: low extinction -->
+		<rgb name="sigmaS" value="0.0015"/>
+		<rgb name="sigmaA" value="0.0005"/>
+		<float name="g" value="0.0"/>
+	</medium>
+
+	<sensor type="perspective">
+		<!-- Make the camera rays start in the fog -->
+		<ref id="fog" name="medium"/>
+
+		<string name="fovAxis" value="smaller"/>
+		<float name="nearClip" value="0.0001"/>
+		<float name="farClip" value="1000"/>
+		<transform name="toWorld">
+			<lookAt origin="0, -20, 2.0" target="0, 20, 2.0" up="0, 0, 1"/>
+		</transform>
+		<float name="fov" value="45"/>
+		<sampler type="independent">
+			<integer name="sampleCount" value="128"/>
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="1024"/>
+			<integer name="height" value="1024"/>
+		</film>
+	</sensor>
+
+	<shape type="rectangle">
+		<!-- The rectangle is embedded in the infinite fog -->
+		<ref id="fog" name="exterior"/>
+
+		<transform name="toWorld">
+			<scale x="300" y="300" z="1"/>
+			<translate x="0" y="0" z="0"/>
+		</transform>
+		<bsdf type="diffuse">
+			<texture type="checkerboard" name="reflectance">
+				<float name="uscale" value="50"/>
+				<float name="vscale" value="50"/>
+			</texture>
+		</bsdf>
+	</shape>
+
+	<shape type="cube">
+		<!-- The cube is embedded in the infinite fog -->
+		<ref id="fog" name="exterior"/>
+
+		<transform name="toWorld">
+			<scale x="6" y="15" z="2"/>
+			<translate x="0" y="20" z="6"/>
+		</transform>
+		<emitter type="areaprojected">
+			<rgb name="radiance" value="15"/>
+		</emitter>
+	</shape>
+</scene>

@@ -1,0 +1,81 @@
+# Experiment v9.B2 — Sweep B, Scene 2: spatially clustered quads, heterogeneous materials.
+# 3000 quads divided into 6 spatial clusters; each cluster has a distinct material from
+# the predefined set (bright/dark diffuse, rough/smooth specular, rough/smooth metallic).
+# Clusters with bright reflectance contribute much more than dark ones, creating strong
+# scene structure. The BVH should capture this structure and benefit importance sampling.
+
+docker:
+  container: bdpt_twopoints_mitsuba-mitsuba-1
+  workdir: /home/mitsuba
+  setpath_script: /home/mitsuba/setpath.sh
+
+scene: scenes/experiments/3_wildcard_disney/wildcard_disney_quads.xml
+output_root: scenes/experiments/3_wildcard_disney/results/v9.B2_grouped
+
+reference:
+  inherit_config_params: true
+  scene: scenes/experiments/3_wildcard_disney/wildcard_disney_quads_pathref.xml
+  spp: 25000
+  exclude_params:
+    - integrator
+    - useBVH
+    - disableNEE
+    - doAdditionalVertex
+    - maxLeafSize
+    - leafSamplingMode
+    - outputDebugCSV
+    - enableLightcuts
+    - lightcutThreshold
+    - gaussianSAThreshold
+    - useUniformBVHSampling
+    - enableSpecular
+    - enableFastLUT
+    - defensivePDF
+
+spp_schedule: [4, 8, 16, 32, 64, 128, 256, 512, 1024]
+repetitions_per_spp: 3
+
+global_defaults:
+  integrator: doublestep
+  maxDepth: 3
+  rrDepth: 5
+  maxLeafSize: 2
+  leafSamplingMode: SphericalAABB
+  useBVH: true
+  disableNEE: false
+  doAdditionalVertex: true
+  outputDebugCSV: false
+  enableLightcuts: false
+  lightcutThreshold: 0
+  gaussianSAThreshold: 0.031
+  useUniformBVHSampling: 1
+  enableFastLUT: 0
+  defensivePDF: 0.000001
+  geometry: quads-disney-grouped-6clusters-k40.xml
+
+analysis:
+  baseline_config_name: baseline_path
+  average_bbox: [0.3, 0.3, 0.7, 0.7]
+
+named_configs:
+  - name: baseline_path
+    params:
+      __scene: scenes/experiments/3_wildcard_disney/wildcard_disney_quads_pathref.xml
+      integrator: path
+      maxDepth: 3
+      rrDepth: 5
+
+  - name: uniform
+    params:
+      enableSpecular: 0
+      useUniformBVHSampling: 0
+
+  - name: diffuse_approx
+    params:
+      enableSpecular: 0
+      useUniformBVHSampling: 1
+
+  - name: specular_approx
+    params:
+      enableSpecular: 1
+      useUniformBVHSampling: 1

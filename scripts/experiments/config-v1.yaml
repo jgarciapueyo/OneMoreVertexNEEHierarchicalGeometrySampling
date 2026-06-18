@@ -1,0 +1,59 @@
+# Experiment v1: multi-integrator test for a scene template like the provided doublestep XML.
+# Keep this file immutable; create config-v2.yaml for later changes.
+#
+# To sweep multiple integrators from one scene file, template the integrator line in XML as:
+#   <integrator type="$integrator">
+#
+# Expected scene template variables (via -Dkey=value):
+#   $integrator, $maxDepth, $rrDepth,
+#   $doAdditionalVertex, $useBVH, $disableNEE,
+#   $maxLeafSize
+
+
+docker:
+  container: bdpt_twopoints_mitsuba-mitsuba-1
+  workdir: /home/mitsuba
+
+scene: scenes/experiments/1_wildcard_spotlight/wildcard_spotlight_quads.xml
+output_root: scenes/experiments/1_wildcard_spotlight/results/quads_multi_integrator_2026-03-18
+
+global_defaults:
+  integrator: path
+  maxDepth: 3
+  rrDepth: 5
+  doAdditionalVertex: true
+  useBVH: true
+  disableNEE: false
+  maxLeafSize: 2
+
+spp_schedule: [1, 2, 4, 8, 16, 32, 64, 128, 256]
+reference_spp: 8192
+
+# Analyzer baseline selector.
+analysis:
+  baseline_config_name: baseline_path
+
+named_configs:
+  - name: baseline_path
+    params:
+      integrator: path
+
+  - name: doublestep_leaf1
+    params:
+      integrator: doublestep
+      maxLeafSize: 1
+
+  - name: doublestep_leaf1
+    params:
+      integrator: doublestep
+      maxLeafSize: 2
+      
+  - name: doublestep_leaf4
+    params:
+      integrator: doublestep
+      maxLeafSize: 4
+
+  - name: doublestep_leaf8
+    params:
+      integrator: doublestep
+      maxLeafSize: 8

@@ -1,0 +1,1414 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene version="0.6.0">
+	<integrator type="additionalvertex">
+		<integer name="maxDepth" value="3"/>
+		<integer name="rrDepth" value="5"/>
+		<boolean name="doAdditionalVertex" value="true"/>
+		<boolean name="useBVH" value="true"/>
+		<boolean name="disableNEE" value="true"/>
+	</integrator>
+	<geometrybvh type="geometrybvh">
+		<!-- Note: Now the geometrybvh is a separate plugin, so it can have its own props here: -->
+		<integer name="maxLeafSize" value="10"/>
+		<!-- <string name="samplingMode" value="SphericalAABB"/> --> 
+		<!-- ^uncomment for spherical (needs fixing GeometryBVH::sampleLeafSphericalAABB) -->
+		<float name="sggxCrossSectionScale" value="0.0"/>
+		<float name="solidAngleScale" value="1.0"/>
+		<float name="variancePenaltyScale" value="1.0"/>
+		<float name="cosinePenaltyScale" value="0.0"/>
+	</geometrybvh>
+	<sensor type="perspective">
+		<string name="fovAxis" value="smaller"/>
+		<float name="nearClip" value="0.0001"/>
+		<float name="farClip" value="1000"/>
+		<transform name="toWorld">
+			<lookAt origin="-5, 0, 3" target="0, 0, 1" up="0, 0, 1"/>
+		</transform>
+		<float name="fov" value="45"/>
+		<sampler type="independent">
+			<integer name="sampleCount" value="256"/>
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="1024"/>
+			<integer name="height" value="1024"/>
+		</film>
+	</sensor>
+	<shape type="rectangle" name="area_light">
+		<transform name="toWorld">
+			<rotate x="0" y="1" z="0" angle="90"/>
+			<translate x="-5" y="0" z="1"/>
+		</transform>
+		<emitter type="area">
+			<rgb name="radiance" value="10000"/>
+		</emitter>
+	</shape>
+	<shape type="rectangle" name="area_light">
+		<transform name="toWorld">
+			<scale x="1" y="10" z="1"/>
+			<rotate x="0" y="1" z="0" angle="90"/>
+			<translate x="-4" y="0" z="0.9"/>
+		</transform>
+	</shape>
+	<shape type="rectangle">
+		<transform name="toWorld">
+			<scale x="10" y="10" z="1"/>
+			<translate x="0" y="0" z="0"/>
+		</transform>
+		<bsdf type="diffuse">
+			<texture type="checkerboard" name="reflectance">
+				<float name="uscale" value="50"/>
+				<float name="vscale" value="50"/>
+			</texture>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00000">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.2739233746429086, -0.4604265724722594, 0.12292057180858407" target="0.2365012594005585, -0.6125919022046913, -0.8647257706228596" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00001">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.9669447289429418, 0.6265404784005448, 2.738266731833165" target="-0.4669906820925855, -0.11803237313463488, 3.180598304066849" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00002">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.21327155153435973, 0.4589931219679968, 1.6308749743962685" target="-0.19673319604276934, -0.381922784179931, 1.9840839008854276" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00003">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8701448475755365, 0.6317071082430643, 0.008215500510444285" target="0.22531834866016465, 1.3286479424186957, 0.3220184003617985" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00004">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7148085531751387, -0.9328288493890713, 2.1889663392898324" target="-0.10931976192163484, -1.3574639726270534, 2.5637963439164855" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00005">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.648688758794882, 0.7263578446997732, 1.624383660747275" target="-1.5565382320807015, 0.3442017542810877, 1.7969120827842413" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00006">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.40057621892523043, -0.1546255576046831, 0.0849590134363889" target="0.18807651532016556, -0.4025102539616051, -0.6844830804065823" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00007">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.7514334470008721, 0.34124882938726064, 1.9415685347227503" target="-1.467643736952589, 0.9515956339977345, 2.279975979482853" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00008">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.2307702229625077, -0.23264489147623313, 2.991629807367633" target="0.31338737219798624, -0.0933813294412065, 2.0048268549290427" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00009">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9616706775524602, 0.3710839689613894, 1.951377828803449" target="1.514915874712079, -0.1688838023924607, 1.31706358671285" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00010">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.37689346114188016, -0.22215715204179243, 0.40528951506723365" target="1.1560591319145948, -0.8286717441429055, 0.24704632545793023" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00011">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.4429766803881634, 0.050708644951451776, 0.930725626676867" target="1.3686757690928855, 0.34037253065788325, 0.6874643874941764" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00012">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.028329282336421846, 0.7789756686980005, 2.802130547868749" target="0.17861668803298483, 1.3925090219337353, 2.0400608726977842" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00013">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.28440960658185954, 0.14305966145952187, 0.9656081732278264" target="-0.932620685140863, -0.6042566244616387, 0.8195233813076013" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00014">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.1886000603993936, -0.3241775489857335, 1.1748570015844837" target="0.4227533014437679, -1.264415480588306, 1.4220914888311684" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00015">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7805487040095846, -0.5456848129332406, 1.8695614340581272" target="0.020852079837430426, -1.1480137901327496, 1.624488297122995" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00016">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8319693128352303, 0.6652882953067956, 2.36129492246605" target="-0.5058331921418315, 1.5136673925597641, 2.7782938890394684" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00017">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.5212611140140957, 0.7529684616214076, 0.17570410441558304" target="0.10162869690678944, 1.3207682577013955, -0.36245170482786293" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00018">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.32776587890867925, -0.6994410662103219, 1.351018099947861" target="-1.0290966959139438, -0.7257723864810808, 0.638668644489708" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00019">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.5926485405745885, -0.5387155820125051, 0.15606390319322883" target="0.9396425978120331, -1.3335681431182276, 0.6538635921702016" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00020">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.1908963203569436, -0.6029739109814893, 0.2722591368573657" target="0.0025017798362027277, 0.31828633875778956, 0.6097153963814754" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00021">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.16066477197370133, -0.4026077343621548, 2.015984633869078" target="1.0423619082073932, 0.047565747858484886, 1.8747260204586031" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00022">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6009691120635734, 0.8842262210129956, 1.0953305047344857" target="-1.2531296178608293, 0.667582150788395, 0.3688650743699118" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00023">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.789009440859541, 0.25821630307941845, 2.7814636592036024" target="-0.4512228185692483, 1.1406735154805914, 3.1088311378615567" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00024">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.11924569056843204, 0.9091809873814745, 1.499687441062941" target="0.6702699888059673, 1.2652055431880587, 1.9995989409153696" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00025">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.14954275030184894, 0.24042690403075562, 2.9852895157059725" target="-0.04169236357741844, -0.49212352614549426, 2.313174822121624" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00026">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8978873498755306, -0.07990972138180785, 2.273186535924874" target="1.2984138071481737, -0.9143184740956602, 2.6517900097852425" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00027">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.005154609024762058, 0.05862432039354082, 2.3573571021414224" target="-0.7737895048564495, 0.6294463536021857, 2.068631274904994" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00028">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.17068830128865842, 0.4689671435774587, 2.1334286339692494" target="-0.3230917613792066, 1.0051381308946696, 2.9636658637486155" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00029">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8641193732267565, -0.7701347334381896, 2.187045351228928" target="0.7175597355627799, 0.08158788269883399, 2.6901247264457107" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00030">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8548478572491198, 0.9358523798492928, 0.044118914896107864" target="0.28224480279130615, 1.6194717247553516, -0.40841874463709943" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00031">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7272801804911515, 0.9623900801326886, 2.871630538832891" target="0.3002778449008274, 0.7383347775427933, 3.747683178108499" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00032">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.7024719755350042, 0.9452576276459099, 2.669806667161562" target="-1.0113548955353582, 0.8907085834008547, 1.7202721793708309" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00033">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6447476550861408, -0.040024152384335654, 0.6971187589179115" target="0.16759745979322505, 0.5723352875966945, 0.06676678787470813" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00034">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6037611574366157, 0.8470603195669391, 0.7983908168768777" target="0.04720402660298251, 0.19607041572239592, 0.2821967591711476" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00035">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.07786881524437383, -0.114494342050937, 2.7930519479434652" target="-0.3204436375958859, -0.9056343609631938, 3.257212114683234" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00036">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.9189785776231307, 0.46401239131312155, 1.84311974084699" target="-1.8514017962949731, 0.10645417507371485, 1.895455801850233" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00037">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.9432692697729579, 0.43843954565348064, 0.04797518857071592" target="-1.7009073268947896, 1.0872138732511432, -0.02327399564115143" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00038">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.5159020047128562, 0.025517446524156107, 2.7873126623910185" target="-0.07637779013913648, -0.5586517517723938, 2.2323793399353855" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00039">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8678350065518505, 0.6826345592247665, 0.20007002630130422" target="-1.5870788258648068, 0.21403364843257044, 0.7130042470205267" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00040">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.31138004239174966, -0.1394025361043334, 2.8981862423522107" target="-0.6570712558957077, 0.4028774412925348, 2.1323990584553965" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00041">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.12446368445691403, -0.4822708136581355, 0.7250271422830349" target="-0.15864872014941317, 0.3328988194440752, 0.21970958309274669" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00042">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7762366413183597, -0.5482611431653512, 0.3736641175058505" target="0.018362812526814265, -0.7723162211986715, 0.9863847566558027" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00043">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.4233384859848448, 0.1722461296254656, 1.6622715065198035" target="-1.180733600819719, -0.4733289915521349, 1.5643664354519875" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00044">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6194215518255555, 0.12095190401237166, 0.8652636432936315" target="0.11507714056966334, -0.3005576313136261, 1.6188991164928495" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00045">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.1742073146382146, 0.6362419419418208, 1.8795193872592604" target="-0.8997858208161842, 1.2936561728610778, 2.0828475957237726" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00046">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9181552853948844, -0.26119117781663825, 1.6578345315638616" target="0.17152612066270023, -0.5886060217719858, 2.2369238254806256" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00047">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.18784840322633656, 0.69658241655012, 0.43642061455959524" target="0.9652005676802186, 0.6268919773409808, -0.1887728395821625" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00048">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.1869793265037467, 0.8199179233245939, 0.12920066570461253" target="-1.023489984603433, 1.226307282442577, -0.23835559894245395" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00049">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6454125603630039, -0.1692319252575507, 2.489411955834308" target="1.1800985749023785, -0.9775049454714484, 2.2428240594356734" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00050">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.9800908783854161, -0.2699076844834587, 0.23589011149691963" target="-0.10787990869934605, 0.21908457262261183, 0.22428852326098908" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00051">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.3052291526732769, -0.4523018028008856, 2.107956211979359" target="1.0122748938515116, -1.1573224130792215, 2.05289026093442" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00052">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8876028538841816, -0.7463657954775045, 2.594334886202322" target="1.6011500044865414, -1.020067773408317, 3.239267201367266" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00053">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8810716967993231, -0.23845898337822113, 1.28932218353573" target="-0.9374359929854437, 0.5162630531277421, 0.6357032473598152" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00054">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.02230090633307147, 0.9529246438720891, 2.327073564305485" target="0.6868618646689686, 1.0069502997453483, 3.030045393564789" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00055">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.382285274561478, -0.4603264289983997, 2.5893606125679534" target="-1.006858460807254, -0.3933916915602237, 3.3674532008547726" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00056">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7626143454753798, 0.021413011087290545, 1.0328871928869758" target="0.9794382320938704, 0.5033373262112828, 0.18392526400917097" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00057">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9898346963218356, -0.3681129092645996, 0.5481371367796873" target="1.179674220592142, -0.402314039992448, -0.433082123977948" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00058">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7601962426081394, 0.624670796222508, 2.0036682167140536" target="1.488631586551501, 0.07916494969695953, 1.589174162353124" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00059">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9168272635559038, 0.8514291544288375, 2.244745509905262" target="1.8671443912534005, 0.6116564447682993, 2.0462350454283906" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00060">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7214028190953554, -0.505706519355785, 0.4237396707030948" target="0.4523194279648405, -0.7113847908810319, 1.3646384842001091" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00061">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.3401236986298719, 0.42923707330950545, 0.5011587863468165" target="-0.1725538314648798, 0.3802535309989534, -0.35602401954621776" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00062">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.20888545379024803, 0.8205115324321095, 1.684202302650669" target="0.2017037308914439, 0.10295602068283471, 2.2468128331072714" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00063">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.15667182985254535, -0.6117404542184128, 1.5780667458536255" target="-0.4184136808800071, -1.428355984147166, 1.528916653029083" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00064">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.04686945478983984, -0.822128719507456, 2.9458280793801186" target="0.05296227193271091, -0.1498278590857176, 2.205575128926388" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00065">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.14279120091154884, -0.9871822346713797, 2.3179476036761657" target="1.0252889703010737, -1.373782483144565, 2.050108221017483" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00066">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9565314276802914, 0.17974005664190096, 0.959044908847995" target="0.054193642063416814, 0.5389734366427126, 0.7208477230098164" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00067">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6249845685444302, 0.3450532678337386, 0.5853221953704151" target="-0.4983866392554446, -0.504036076048617, 0.07246719597470674" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00068">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.15537578503571847, 0.20447835275925152, 2.887269279373143" target="-0.7561208339821714, 0.19910651506950594, 2.4759967944209027" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00069">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8554694689402464, -5.4352682762992544e-05, 2.2322924378479447" target="-0.45411332433134005, 0.9017556443791613, 2.0721301002530947" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00070">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6455465190506824, -0.22386653643096155, 0.188686495364914" target="-0.754007064441346, 0.14150166303284273, 1.1132092851944226" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00071">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.4517617275515535, -0.8244642264810265, 1.1852751250739026" target="-0.43789269929757435, -1.2736247653195063, 1.1029962630370687" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00072">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7470452622414643, -0.05539932649997703, 2.737865800922657" target="1.0181602041015076, 0.2852039203765033, 3.638135825147292" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00073">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.5318342354777448, 0.8306479202235317, 0.382209027146719" target="0.8746453863185408, 0.8603122357001729, -0.5567268296861699" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00074">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8528741893387359, -0.8593474928615639, 2.606562883041958" target="-1.3075658480027275, -0.6588125465808861, 1.7387834001883968" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00075">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.2681399586948865, -0.00685661240229396, 0.4906302485894408" target="0.2933204770732779, -0.33478140215288804, -0.45373793901602066" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00076">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.34746687545454735, -0.36396522430840395, 2.1326395897978347" target="-0.3634198962008709, -0.9840374023757985, 2.464528866322543" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00077">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.07928934226535045, 0.01493972108905428, 2.368997197379611" target="-0.451593663280693, 0.7554196357846443, 1.8094625796072017" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00078">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8145090489532385, 0.15751700664700508, 0.5917048418876056" target="-1.0164886879392203, -0.8098733225374679, 0.7445452044737026" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00079">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6162735036271363, -0.02230792774148016, 2.9660860001034592" target="-0.18677792230318613, 0.05607441122175606, 3.5568182713143086" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00080">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6341133506485626, 0.9260382802485345, 2.402751109825827" target="0.3076111645814681, 0.9230877571202831, 2.0663789471428347" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00081">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.037479006849462815, 0.627068128359271, 1.808546715723349" target="0.10271669042241324, -0.22241725445052518, 1.2999017011415224" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00082">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.3102421279827605, 0.8273815254147778, 0.19581124923387416" target="0.743363293453626, 0.04688813569624939, 0.6466284235150239" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00083">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6699764079168011, -0.2363704400675224, 0.9766368483021133" target="0.6100845560895589, 0.7606698302392404, 0.928432434901254" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00084">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9880535424199686, 0.5623810041527564, 1.4566054163387632" target="1.398547840609302, 1.144858767346369, 0.7550257084373643" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00085">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.15474320715043755, 0.7550578117435922, 0.26044461664468244" target="0.02219126821648984, 1.2916098288195084, -0.5646651484159402" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00086">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.41683751382773204, 0.578309247410292, 2.3975891391483444" target="-0.38497540759713933, 0.9417681097994828, 2.8719241414271854" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00087">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.35542655052033645, 0.5932783654921092, 0.6759853256269954" target="-1.046525560191951, 0.5404204966417586, 1.396809995384845" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00088">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.2753840990308618, -0.16510377559124034, 1.6242299508904936" target="-0.06227249518776071, 0.4223085460876017, 2.4049541074575194" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00089">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.7747726689188856, -0.18610439872138773, 0.000902070320768722" target="-0.5877703139947985, -1.1682566104303163, 0.021080085290176045" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00090">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.4887614526947981, 0.7037518244685139, 0.41679503736059265" target="0.977013688178394, 0.1734360654614744, -0.2762958299101129" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00091">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.4075715385335956, 0.6422061767892775, 2.9454849686153812" target="0.07070608260355676, 1.4073638356087415, 2.3967997931723373" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00092">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6875811247374535, -0.15178702911197428, 2.9390661255289694" target="-0.3068116106556843, -0.20221492050552342, 2.8461139035708394" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00093">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9479688097047103, 0.007353958401157934, 2.2603396157517155" target="0.3587777333838771, -0.3896843648641617, 2.964054362962943" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00094">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8276753353463258, -0.04770585606249389, 2.591358723291255" target="0.6629676074169519, -0.9871920485428489, 2.891753560961792" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00095">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.4031371321237456, -0.41215148805088475, 2.3029568099504205" target="0.9389720808896743, 0.30125646994222777, 1.851370723857069" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00096">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.14136957171899822, -0.8123096931333875, 1.1741412789139924" target="-0.024217903515520528, 0.030638961932222153, 1.6860185620283512" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00097">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8525179732043882, -0.047666073566008826, 1.2856188244287714" target="-0.9724367521455018, -1.032017434923699, 1.1564991750699918" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00098">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.1525251140591053, 0.17260070718156872, 0.3680719805282203" target="-0.3892948462928948, 0.06445272162381828, 1.3335998709165509" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00099">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8675378199136854, 0.368100896150066, 2.471344075178315" target="1.6680951132119084, -0.21395471667622024, 2.3287983501479252" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00100">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7936024645275197, 0.1666400938469519, 0.1206546627138021" target="0.09450194560931413, 0.40423839685597474, 0.7950473605208945" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00101">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.422973648235516, 0.13805170852671633, 2.4778716665111977" target="0.22360263036345904, 0.27061070107787555, 1.5069549292332365" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00102">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.06432094694868828, 0.6264881907283848, 2.991030879217475" target="-0.24845550719346143, 1.4701046957701083, 3.4274734094038117" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00103">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.29889037726422374, -0.6579571199586518, 1.1750243983617086" target="-0.1845502188581259, 0.31451386771047296, 0.9719812839315327" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00104">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.5060999797313528, -0.12154213628338706, 1.7651403282876443" target="-0.07778189205965469, -0.9333783475422798, 1.763158944267314" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00105">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.7452830561566579, 0.4522470218679606, 0.8402472055994984" target="-0.8188354484955193, 1.2470843961021454, 0.23789880633065585" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00106">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6187648791919635, 0.7258999971663891, 1.6932384633617823" target="-0.2868378162948641, 0.3361515356937268, 2.55226149081576" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00107">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.0310021153074993, 0.797647530496969, 0.25803730818300785" target="-0.13443240064830236, 1.5903957276738354, -0.34267266505461713" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00108">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.3923089006817855, -0.34403542047079494, 0.5262292499552432" target="-0.0673138879431322, -1.2235666613606777, 0.6494026581055301" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00109">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.3495972999345578, -0.27435609827412777, 0.9896874974818075" target="-0.5426225531088381, -0.6818349960308023, 1.1843787446354137" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00110">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8873555304583756, -0.6014033186410277, 1.536520973513205" target="0.405197391786712, -1.1049872411562287, 2.2534078281122283" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00111">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.9519735986573015, -0.6732638177260877, 2.650256200900686" target="-0.16197772424127266, -1.2827406754487827, 2.583589280271906" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00112">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.5784950965053526, 0.11367098010798049, 0.6673601879740808" target="0.9405598393601744, 0.7721511183334421, 1.3271427502959785" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00113">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.11549516524261283, -0.9757069477727749, 2.138980892813762" target="0.7035448810910522, -0.1682954364830439, 2.1867740212675715" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00114">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.4335013611274563, 0.2920900471327097, 1.8340160528256035" target="0.7280649129214358, 0.5754044103285869, 2.746685371670841" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00115">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8525671347509249, -0.5071880618980489, 1.7231341442937957" target="-0.05324401277896462, -0.09076672221400456, 2.156349811758333" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00116">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.21162646794220485, 0.98404645716289, 2.771236072125544" target="-0.7648624405643821, 0.8631871419489593, 3.5954465940935743" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00117">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6959841949549259, 0.17992118529906143, 2.0886453183103697" target="-0.46055502280452654, 0.5822167765289344, 2.9733663829276784" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00118">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.7269131713982278, -0.37480870579765746, 2.147753540776483" target="-0.44688663981154464, -1.1205795724660805, 2.7522458534126004" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00119">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8022161868456732, -0.3165146995877295, 0.7168311350738418" target="1.4510328566233652, -0.22371464807158892, -0.03843377173514462" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00120">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6435840054604292, 0.16996536045135668, 1.4297652651173114" target="0.17794885616672984, 0.6379059511734816, 0.67862246158601" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00121">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.4876999571442153, -0.854683302703358, 0.05367426269092579" target="-1.4465478851259446, -0.6917045526877298, 0.2861577632850282" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00122">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.15994036112818955, -0.6177794530798504, 2.9265989352804613" target="0.34556422764852057, 0.25179415054833443, 2.469012300804393" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00123">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.7850455432277055, -0.09582242334578317, 1.18397939121288" target="-1.3859341537297278, 0.6697968836511341, 0.9542840396654249" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00124">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.535377049428938, 0.4975114500078701, 1.931114286240931" target="-0.40643539184243055, 1.2443861486556242, 1.2787706394881857" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00125">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.45151537010373977, -0.8343828482070106, 1.0582302470892153" target="0.28236216865800257, 0.00015371228225879996, 1.5825735732099906" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00126">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.03966614866846352, -0.14655771253951788, 0.1218526856182357" target="0.6717359836597018, -0.45930878949095577, 0.8308480929093299" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00127">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6119450901984136, 0.890049296609253, 0.48770917425995464" target="-1.200821532982309, 1.2275322850880794, -0.24668157161146897" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00128">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7041046649255505, 0.6442743181288801, 1.173881271234324" target="-0.04916192860540214, 1.301127253485706, 1.2075511447623934" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00129">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.06643296031147305, 0.6480036152998385, 2.0420589767106376" target="-0.8151497524005993, 0.019247680319498195, 1.8320848367058116" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00130">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6738874728581419, 0.5151931716642475, 2.073814438321814" target="0.2554505559814391, -0.1837166994498336, 2.6538450742834137" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00131">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8259482120137562, 0.6456142661891775, 0.5371880627489798" target="0.2929006795406296, -0.19756908987063904, 0.4671726630999341" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00132">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.4964485501624898, -0.8266373537709144, 1.2775687208820647" target="1.2606775130489587, -0.376234396841525, 1.7391868191784103" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00133">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.20649622569314952, -0.5956638120490307, 2.813715325907968" target="-1.069340328462427, -1.083537939587045, 2.9459230790667816" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00134">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.810446643277666, -0.9902011700228488, 0.968762410991935" target="-0.8362162671393305, -1.2808055268948872, 1.9252586390310304" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00135">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.981489436482444, -0.4706097432231202, 2.492082796553193" target="1.2602360408939202, -1.417428078809582, 2.331348948449087" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00136">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6537727259590691, 0.1727567095967555, 2.875228005538176" target="-0.8411970797723316, 0.0562208647350383, 3.850569744858322" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00137">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.43302646913161413, 0.9610159503569726, 1.723669947267119" target="1.1051213557472743, 1.6819084046129418, 1.5545471138533888" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00138">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9666694131068427, 0.6740940634400077, 2.3347446783057846" target="1.634934281069807, 1.0621988521323527, 1.7000819810874024" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00139">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7769797738230004, 0.26298303452323335, 1.0690936391297143" target="0.41116048778862957, 1.0031839203206823, 1.6332557600045343" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00140">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.05656488011398597, -0.5469992086352728, 2.332632371645116" target="0.8556770472457488, -0.9381141390527006, 1.8760703763514335" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00141">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.659842996770267, 0.15439589797318143, 1.607696788737343" target="-1.6365221581125429, 0.32411059177129153, 1.7392062504074548" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00142">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.343805606955381, 0.5209731973305001, 0.32948365819172676" target="1.1012591725813965, -0.0629638555251596, 0.62151381797438" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00143">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.24988192333596704, -0.17208823506961446, 1.8426043070038611" target="-0.5241076138626553, 0.02832433745288726, 1.241958823309881" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00144">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.38796908629299054, 0.17095917152124374, 2.1986582305761457" target="0.3996900790727723, -0.1933964406893378, 1.2674721019321948" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00145">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.04005051440929597, -0.07426438174145655, 0.8603065963456056" target="-0.18522338158278123, -0.05315133298519531, 1.8343732834655206" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00146">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.5416966600065869, 0.39060421218363683, 2.087134058437373" target="-0.7399536037352349, -0.3562211841248445, 2.721914344593186" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00147">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6090349740468073, 0.9436748332222242, 2.013452340868188" target="-0.8788031075841545, 1.544369608917275, 1.260862850787142" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00148">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.062432246419652504, 0.6823507030899352, 1.4595612999094647" target="0.6153509025130759, 0.22414762306656816, 2.1555001601557815" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00149">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.048110259799346355, -0.48345119984492624, 0.468406444172077" target="-0.13435062838473522, 0.38750149784157073, -0.015333152324705113" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+</scene>

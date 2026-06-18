@@ -81,6 +81,8 @@ SceneHandler::SceneHandler(const ParameterMap &params,
     m_tags["phase"]      = TagEntry(EPhase,      MTS_CLASS(PhaseFunction));
     m_tags["bsdf"]       = TagEntry(EBSDF,       MTS_CLASS(BSDF));
     m_tags["rfilter"]    = TagEntry(ERFilter,    MTS_CLASS(ReconstructionFilter));
+    // new: GeometryBVH
+    m_tags["geometrybvh"] = TagEntry(EGeometryBVH, MTS_CLASS(GeometryBVH));
     m_tags["null"]       = TagEntry(ENull,       (Class *) NULL);
     m_tags["ref"]        = TagEntry(EReference,  (Class *) NULL);
     m_tags["integer"]    = TagEntry(EInteger,    (Class *) NULL);
@@ -207,18 +209,79 @@ void SceneHandler::startElement(const XMLCh* const xmlName,
 
     for (size_t i=0; i<xmlAttributes.getLength(); i++) {
         std::string attrValue = transcode(xmlAttributes.getValue(i));
+        
+        // --- UPDATED PARAMETER PARSING BLOCK ---
         if (attrValue.length() > 0 && attrValue.find('$') != attrValue.npos) {
-            for (ParameterMap::const_reverse_iterator it = m_params.rbegin(); it != m_params.rend(); ++it) {
-                std::string::size_type pos = 0;
-                std::string searchString = "$" + it->first;
-                while ((pos = attrValue.find(searchString, pos)) != std::string::npos) {
-                    attrValue.replace(pos, searchString.size(), it->second);
-                    ++pos;
+            size_t pos = 0;
+            while ((pos = attrValue.find('$', pos)) != std::string::npos) {
+                // Ignore Mitsuba expression syntax $[...]
+                if (pos + 1 < attrValue.length() && attrValue[pos + 1] == '[') {
+                    pos++;
+                    continue;
+                }
+
+                // 1. Extract the parameter name (assuming alphanumeric + underscore)
+                size_t nameStart = pos + 1;
+                size_t nameEnd = nameStart;
+                while (nameEnd < attrValue.length() && (isalnum(attrValue[nameEnd]) || attrValue[nameEnd] == '_')) {
+                    nameEnd++;
+                }
+
+                std::string paramName = attrValue.substr(nameStart, nameEnd - nameStart);
+
+                // 2. Check for a default value separated by ':'
+                bool hasDefault = false;
+                std::string defaultValue = "";
+                size_t replaceEnd = nameEnd;
+
+                if (nameEnd < attrValue.length() && attrValue[nameEnd] == ':') {
+                    hasDefault = true;
+                    replaceEnd++; // Move past the ':'
+                    size_t defStart = replaceEnd;
+                    
+                    // Stop parsing the default value at spaces, commas, or another parameter
+                    while (replaceEnd < attrValue.length() && 
+                           attrValue[replaceEnd] != ' ' && 
+                           attrValue[replaceEnd] != ',' && 
+                           attrValue[replaceEnd] != '$') {
+                        replaceEnd++;
+                    }
+                    defaultValue = attrValue.substr(defStart, replaceEnd - defStart);
+                }
+
+                // 3. Search for the parameter in the command-line arguments (m_params)
+                bool paramFound = false;
+                std::string resolvedValue;
+                for (ParameterMap::const_reverse_iterator it = m_params.rbegin(); it != m_params.rend(); ++it) {
+                    if (it->first == paramName) {
+                        resolvedValue = it->second;
+                        paramFound = true;
+                        break;
+                    }
+                }
+
+                // 4. Perform the replacement
+                if (paramFound) {
+                    // Replace the entire "$name:default" or "$name" with the CLI value
+                    attrValue.replace(pos, replaceEnd - pos, resolvedValue);
+                    pos += resolvedValue.length();
+                } else if (hasDefault) {
+                    // Replace the entire "$name:default" with the default value
+                    attrValue.replace(pos, replaceEnd - pos, defaultValue);
+                    pos += defaultValue.length();
+                } else {
+                    // Not found and no default; skip to avoid infinite loop. 
+                    // The error check below will catch this.
+                    pos++;
                 }
             }
-            if (attrValue.find('$') != attrValue.npos && attrValue.find('[') == attrValue.npos)
+
+            // Check if there are still unresolved parameters (ignoring expression arrays "$[")
+            if (attrValue.find('$') != attrValue.npos && attrValue.find("$[") == attrValue.npos) {
                 XMLLog(EError, "The scene referenced an undefined parameter: \"%s\"", attrValue.c_str());
+            }
         }
+        // --- END UPDATED BLOCK ---
 
         context.attributes[transcode(xmlAttributes.getName(i))] = attrValue;
     }

@@ -1,0 +1,79 @@
+# Experiment v9.A5 — Sweep A, Scene 5: pure metallic, rough (metal=1.0, spec=0, rough=0.2).
+# No diffuse component at all. The diffuse BVH approximation is completely wrong;
+# only specular_approx or uniform can find the correct second vertices.
+
+docker:
+  container: bdpt_twopoints_mitsuba-mitsuba-1
+  workdir: /home/mitsuba
+  setpath_script: /home/mitsuba/setpath.sh
+
+scene: scenes/experiments/3_wildcard_disney/wildcard_disney_quads.xml
+output_root: scenes/experiments/3_wildcard_disney/results/v9.A5_metal1.0_rough0.2
+
+reference:
+  inherit_config_params: true
+  scene: scenes/experiments/3_wildcard_disney/wildcard_disney_quads_pathref.xml
+  spp: 25000
+  exclude_params:
+    - integrator
+    - useBVH
+    - disableNEE
+    - doAdditionalVertex
+    - maxLeafSize
+    - leafSamplingMode
+    - outputDebugCSV
+    - enableLightcuts
+    - lightcutThreshold
+    - gaussianSAThreshold
+    - useUniformBVHSampling
+    - enableSpecular
+    - enableFastLUT
+    - defensivePDF
+
+spp_schedule: [4, 8, 16, 32, 64, 128, 256, 512, 1024]
+repetitions_per_spp: 3
+
+global_defaults:
+  integrator: doublestep
+  maxDepth: 3
+  rrDepth: 5
+  maxLeafSize: 2
+  leafSamplingMode: SphericalAABB
+  useBVH: true
+  disableNEE: false
+  doAdditionalVertex: true
+  outputDebugCSV: false
+  enableLightcuts: false
+  lightcutThreshold: 0
+  gaussianSAThreshold: 0.031
+  useUniformBVHSampling: 1
+  enableFastLUT: 0
+  defensivePDF: 0.000001
+  geometry: quads-disney-metal1.0-rough0.2-k40.xml
+
+analysis:
+  baseline_config_name: baseline_path
+  average_bbox: [0.3, 0.3, 0.7, 0.7]
+
+named_configs:
+  - name: baseline_path
+    params:
+      __scene: scenes/experiments/3_wildcard_disney/wildcard_disney_quads_pathref.xml
+      integrator: path
+      maxDepth: 3
+      rrDepth: 5
+
+  - name: uniform
+    params:
+      enableSpecular: 0
+      useUniformBVHSampling: 0
+
+  - name: diffuse_approx
+    params:
+      enableSpecular: 0
+      useUniformBVHSampling: 1
+
+  - name: specular_approx
+    params:
+      enableSpecular: 1
+      useUniformBVHSampling: 1

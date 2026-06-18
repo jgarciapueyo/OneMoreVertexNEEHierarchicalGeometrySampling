@@ -1,0 +1,192 @@
+# Experiment v3: compare BVH leaf sampling modes (Primitive vs SphericalAABB)
+# Keep this file immutable; create config-v3.yaml for later changes.
+
+
+# Difference with config_v7: this also tests pruning (aka lightcuts)
+
+docker:
+  container: bdpt_twopoints_mitsuba-mitsuba-1
+  workdir: /home/mitsuba
+  setpath_script: /home/mitsuba/setpath.sh
+
+scene: scenes/experiments/4_wildcard_veach/wildcard_veach.xml
+output_root: scenes/experiments/4_wildcard_veach/results/10_veach
+
+# Reference render controls:
+ 
+reference:
+  inherit_config_params: false
+  # Fast path: set this to an existing EXR to skip rendering reference per config.
+  # When enabled, `scene`/`spp` below are ignored by the runner.
+  # pre_rendered_exr: scenes/experiments/references/ref_quads_k5_16kspp.exr
+  scene: scenes/experiments/4_wildcard_veach/wildcard_veach_pathref.xml
+  spp: 16000
+  geometry: quads-k5.xml
+
+# Main schedule for tested runs.
+spp_schedule: [4, 8, 16, 64, 128] #, , 512, 1024
+repetitions_per_spp: 3
+reference_spp: 16000
+
+# Defaults for tested (non-reference) configs.
+global_defaults:
+  integrator: doublestep
+  maxDepth: 3
+  rrDepth: 5
+  maxLeafSize: 2
+  leafSamplingMode: Primitive
+  useBVH: true
+  disableNEE: false
+  doAdditionalVertex: true
+  geometry: quads-k5.xml # must be one of x scenes in scenes/experiments/scene_geometries/<x>.xml: quads-big quads-geometry
+  outputDebugCSV: false # Whether to output debug info for each BVH node to CSV (for visualization/debugging)
+  lightcutThreshold: 1.5 # NOTE: This does nothing for now, since lightcuts are disabled in the scene XML. Threshold for lightcuts if enabled (lower = more aggressive pruning, 0 = disable)
+  useUniformBVHSampling: 1 # 0 means yes here
+  defensivePDF: 0.0000001 # value added to left&right importances to ensure the sum is never 0. notice that this value can be greater than the absolute value of our importance in some scenes (e.g., very far away): this would be bad 
+
+analysis:
+  baseline_config_name: baseline_path
+  average_bbox: [0.6, 0.65, 0.68, 0.8] # delimits the area used to check unbiasedness (this box is the bottom half of the image)
+
+named_configs:
+  # __scene is a reserved runner key (not passed as -D) to override scene per config.
+  - name: baseline_path
+    params:
+      __scene: scenes/experiments/4_wildcard_veach/wildcard_veach_pathref.xml
+      integrator: path
+      maxDepth: 3
+      rrDepth: 5
+  - name: uniform_bvh
+    params:
+      leafSamplingMode: SphericalAABB
+      maxLeafSize: 1
+      useUniformBVHSampling: 0 # 0 means yes here
+      integrator: doublestep
+      maxDepth: 3
+      rrDepth: 5
+      maxLeafSize: 2
+      useBVH: true
+      disableNEE: false
+      doAdditionalVertex: true
+      # geometry: quads-k5.xml # must be one of x scenes in scenes/experiments/scene_geometries/<x>.xml: quads-big quads-geometry
+      outputDebugCSV: false # Whether to output debug info for each BVH node to CSV (for visualization/debugging)
+      lightcutThreshold: 1.5 
+      gaussianSAThreshold: 0 
+  - name: ours_1
+    params:
+      leafSamplingMode: SphericalAABB
+      maxLeafSize: 1
+      # useUniformBVHSampling: 0 # 0 means yes here
+      integrator: doublestep
+      maxDepth: 3
+      rrDepth: 5
+      maxLeafSize: 2
+      useBVH: true
+      disableNEE: false
+      doAdditionalVertex: true
+      # geometry: quads-k5.xml # must be one of x scenes in scenes/experiments/scene_geometries/<x>.xml: quads-big quads-geometry
+      outputDebugCSV: false # Whether to output debug info for each BVH node to CSV (for visualization/debugging)
+      lightcutThreshold: 1.5 
+      gaussianSAThreshold: 0 
+  - name: ours_16
+    params:
+      leafSamplingMode: SphericalAABB
+      maxLeafSize: 1
+      # useUniformBVHSampling: 0 # 0 means yes here
+      integrator: doublestep
+      maxDepth: 3
+      rrDepth: 5
+      maxLeafSize: 16
+      useBVH: true
+      disableNEE: false
+      doAdditionalVertex: true
+      # geometry: quads-k5.xml # must be one of x scenes in scenes/experiments/scene_geometries/<x>.xml: quads-big quads-geometry
+      outputDebugCSV: false # Whether to output debug info for each BVH node to CSV (for visualization/debugging)
+      lightcutThreshold: 1.5 
+      gaussianSAThreshold: 0 
+  - name: ours_64
+    params:
+      leafSamplingMode: SphericalAABB
+      maxLeafSize: 1
+      # useUniformBVHSampling: 0 # 0 means yes here
+      integrator: doublestep
+      maxDepth: 3
+      rrDepth: 5
+      maxLeafSize: 64
+      useBVH: true
+      disableNEE: false
+      doAdditionalVertex: true
+      # geometry: quads-k5.xml # must be one of x scenes in scenes/experiments/scene_geometries/<x>.xml: quads-big quads-geometry
+      outputDebugCSV: false # Whether to output debug info for each BVH node to CSV (for visualization/debugging)
+      lightcutThreshold: 1.5 
+      gaussianSAThreshold: 0 
+  - name: ours_7k
+    params:
+      leafSamplingMode: SphericalAABB
+      maxLeafSize: 1
+      # useUniformBVHSampling: 0 # 0 means yes here
+      integrator: doublestep
+      maxDepth: 3
+      rrDepth: 5
+      maxLeafSize: 7000
+      useBVH: true
+      disableNEE: false
+      doAdditionalVertex: true
+      # geometry: quads-k5.xml # must be one of x scenes in scenes/experiments/scene_geometries/<x>.xml: quads-big quads-geometry
+      outputDebugCSV: false # Whether to output debug info for each BVH node to CSV (for visualization/debugging)
+      lightcutThreshold: 1.5 
+      gaussianSAThreshold: 0 
+  - name: ours_8k
+    params:
+      leafSamplingMode: SphericalAABB
+      maxLeafSize: 1
+      # useUniformBVHSampling: 0 # 0 means yes here
+      integrator: doublestep
+      maxDepth: 3
+      rrDepth: 5
+      maxLeafSize: 8000
+      useBVH: true
+      disableNEE: false
+      doAdditionalVertex: true
+      # geometry: quads-k5.xml # must be one of x scenes in scenes/experiments/scene_geometries/<x>.xml: quads-big quads-geometry
+      outputDebugCSV: false # Whether to output debug info for each BVH node to CSV (for visualization/debugging)
+      lightcutThreshold: 1.5 
+      gaussianSAThreshold: 0 
+
+  - name: ours_64_area
+    params:
+      leafSamplingMode: Primitive
+      maxLeafSize: 1
+      # useUniformBVHSampling: 0 # 0 means yes here
+      integrator: doublestep
+      maxDepth: 3
+      rrDepth: 5
+      maxLeafSize: 64
+      useBVH: true
+      disableNEE: false
+      doAdditionalVertex: true
+      # geometry: quads-k5.xml # must be one of x scenes in scenes/experiments/scene_geometries/<x>.xml: quads-big quads-geometry
+      outputDebugCSV: false # Whether to output debug info for each BVH node to CSV (for visualization/debugging)
+      lightcutThreshold: 1.5 
+      gaussianSAThreshold: 0 
+  - name: ours_7k_area
+    params:
+      leafSamplingMode: Primitive
+      maxLeafSize: 1
+      # useUniformBVHSampling: 0 # 0 means yes here
+      integrator: doublestep
+      maxDepth: 3
+      rrDepth: 5
+      maxLeafSize: 7000
+      useBVH: true
+      disableNEE: false
+      doAdditionalVertex: true
+      # geometry: quads-k5.xml # must be one of x scenes in scenes/experiments/scene_geometries/<x>.xml: quads-big quads-geometry
+      outputDebugCSV: false # Whether to output debug info for each BVH node to CSV (for visualization/debugging)
+      lightcutThreshold: 1.5 
+      gaussianSAThreshold: 0 
+
+# sweep:
+#   leafSamplingMode: [SphericalAABB]
+#   maxLeafSize: [1]
+#   gaussianSAThreshold: [0, 0.03141592, 100] # Threshold for treating a gaussian as a point (0: never ... 4PI: always; .01*PI or .001*PI might be reasonable)

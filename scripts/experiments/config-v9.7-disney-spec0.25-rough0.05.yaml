@@ -1,0 +1,80 @@
+# Experiment v9.7: Disney BSDF, specular=0.25 (effectively diffuse), roughness=0.05.
+# Compares specular-aware vs diffuse vs uniform BVH importance against a path-tracer baseline,
+# all on the same single geometry so results are directly comparable.
+# Part of the v9 series: each v9.x fixes one specular level; see v9.2–v9.5 for higher specularity.
+
+docker:
+  container: bdpt_twopoints_mitsuba-mitsuba-1
+  workdir: /home/mitsuba
+  setpath_script: /home/mitsuba/setpath.sh
+
+scene: scenes/experiments/3_wildcard_disney/wildcard_disney_quads.xml
+output_root: scenes/experiments/3_wildcard_disney/results/v9.7_spec0.25
+
+reference:
+  inherit_config_params: true
+  scene: scenes/experiments/3_wildcard_disney/wildcard_disney_quads_pathref.xml
+  spp: 8192
+  exclude_params:
+    - integrator
+    - useBVH
+    - disableNEE
+    - doAdditionalVertex
+    - maxLeafSize
+    - leafSamplingMode
+    - outputDebugCSV
+    - enableLightcuts
+    - lightcutThreshold
+    - gaussianSAThreshold
+    - useUniformBVHSampling
+    - enableSpecular
+    - enableFastLUT
+    - defensivePDF
+
+spp_schedule: [4, 8, 16, 32, 64]
+repetitions_per_spp: 3
+
+global_defaults:
+  integrator: doublestep
+  maxDepth: 3
+  rrDepth: 5
+  maxLeafSize: 2
+  leafSamplingMode: SphericalAABB
+  useBVH: true
+  disableNEE: false
+  doAdditionalVertex: true
+  outputDebugCSV: false
+  enableLightcuts: false
+  lightcutThreshold: 0
+  gaussianSAThreshold: 0.031
+  useUniformBVHSampling: 1
+  enableFastLUT: 0
+  defensivePDF: 0.000001
+  geometry: quads-disney-spec0.25-rough0.05-k40.xml
+
+analysis:
+  baseline_config_name: baseline_path
+  average_bbox: [0.3, 0.3, 0.7, 0.7]
+
+named_configs:
+  - name: baseline_path
+    params:
+      __scene: scenes/experiments/3_wildcard_disney/wildcard_disney_quads_pathref.xml
+      integrator: path
+      maxDepth: 3
+      rrDepth: 5
+
+  - name: uniform
+    params:
+      enableSpecular: 0
+      useUniformBVHSampling: 0
+
+  - name: diffuse_approx
+    params:
+      enableSpecular: 0
+      useUniformBVHSampling: 1
+
+  - name: specular_approx
+    params:
+      enableSpecular: 1
+      useUniformBVHSampling: 1

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene version="0.6.0">
+	<integrator type="path"/>
+	<sensor type="perspective">
+		<string name="fovAxis" value="smaller"/>
+		<float name="nearClip" value="0.0001"/>
+		<float name="farClip" value="1000"/>
+		<transform name="toWorld">
+			<lookAt origin="0, -20, 2.0" target="0, 20, 2.0" up="0, 0, 1"/>
+		</transform>
+		<float name="fov" value="45"/>
+		<sampler type="independent">
+			<integer name="sampleCount" value="32"/>
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="1024"/>
+			<integer name="height" value="1024"/>
+		</film>
+	</sensor>
+	<shape type="rectangle">
+		<transform name="toWorld">
+			<scale x="300" y="300" z="1"/>
+			<translate x="0" y="0" z="0"/>
+		</transform>
+		<bsdf type="diffuse">
+			<texture type="checkerboard" name="reflectance">
+				<float name="uscale" value="50"/>
+				<float name="vscale" value="50"/>
+			</texture>
+		</bsdf>
+	</shape>
+	
+	<!-- Same but with a normal cube shape and area emitter: -->
+	<shape type="cube">
+		<transform name="toWorld">
+			<scale x="6" y="5" z="2"/>
+			<translate x="0" y="10" z="6"/>
+		</transform>
+		<emitter type="area">
+			<rgb name="radiance" value="15"/>
+		</emitter>
+	</shape>
+</scene>

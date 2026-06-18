@@ -1,0 +1,3056 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene version="0.6.0">
+	<integrator type="bdpt"/>
+	<geometrybvh type="geometrybvh">
+		<integer name="maxLeafSize" value="4"/>
+		<string name="samplingMode" value="Primitive"/>
+		<float name="sggxCrossSectionScale" value="1.0"/>
+		<float name="solidAngleScale" value="0.0"/>
+		<float name="variancePenaltyScale" value="0.0"/>
+		<float name="cosinePenaltyScale" value="1.0"/>
+	</geometrybvh>
+	<sensor type="perspective">
+		<string name="fovAxis" value="smaller"/>
+		<float name="nearClip" value="0.0001"/>
+		<float name="farClip" value="1000"/>
+		<transform name="toWorld">
+			<lookAt origin="-5, 0, 3" target="0, 0, 1" up="0, 0, 1"/>
+		</transform>
+		<float name="fov" value="45"/>
+		<sampler type="independent">
+			<integer name="sampleCount" value="256"/>
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="256"/>
+			<integer name="height" value="256"/>
+		</film>
+	</sensor>
+	<shape type="rectangle" name="area_light">
+		<transform name="toWorld">
+			<rotate x="0" y="1" z="0" angle="90"/>
+			<translate x="-5" y="0" z="1"/>
+		</transform>
+		<emitter type="area">
+			<rgb name="radiance" value="10000"/>
+		</emitter>
+	</shape>
+	<shape type="rectangle" name="area_light">
+		<transform name="toWorld">
+			<scale x="1" y="10" z="1"/>
+			<rotate x="0" y="1" z="0" angle="90"/>
+			<translate x="-4" y="0" z="0.9"/>
+		</transform>
+	</shape>
+	<shape type="rectangle">
+		<transform name="toWorld">
+			<scale x="10" y="10" z="1"/>
+			<translate x="0" y="0" z="0"/>
+		</transform>
+		<bsdf type="diffuse">
+			<texture type="checkerboard" name="reflectance">
+				<float name="uscale" value="50"/>
+				<float name="vscale" value="50"/>
+			</texture>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00000">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.2739233746429086, -0.4604265724722594, 0.12292057180858407" target="1.134111836163527, -0.7949060765745956, -0.2620460137572894" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00001">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.9669447289429418, 0.6265404784005448, 2.738266731833165" target="-1.8862218700217381, 0.3239625933376622, 2.486520507708815" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00002">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.21327155153435973, 0.4589931219679968, 1.6308749743962685" target="1.0244564331485477, 0.02372031624415738, 2.021408804477444" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00003">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8701448475755365, 0.6317071082430643, 0.008215500510444285" target="0.3886610462512653, 1.42794691741856, -0.3580842610872124" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00004">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7148085531751387, -0.9328288493890713, 2.1889663392898324" target="0.8045028066472946, -1.9270306335634146, 2.2482769895865973" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00005">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.648688758794882, 0.7263578446997732, 1.624383660747275" target="-0.5665952303481449, -0.22320490993177544, 1.9270240870021134" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00006">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.40057621892523043, -0.1546255576046831, 0.0849590134363889" target="-1.178971587139038, -0.414475423993098, 0.6564296580728515" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00007">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.7514334470008721, 0.34124882938726064, 1.9415685347227503" target="-0.3317903525426246, 1.1495768274370055, 1.5286453931547361" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00008">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.2307702229625077, -0.23264489147623313, 2.991629807367633" target="-0.11747179266509206, 0.06971948748348461, 2.104328685488521" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00009">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9616706775524602, 0.3710839689613894, 1.951377828803449" target="0.7457503540364508, 1.1937697976882924, 1.4254819825518639" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00010">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.37689346114188016, -0.22215715204179243, 0.40528951506723365" target="1.3511771712598746, -0.42789181943188054, 0.49718346934392077" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00011">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.4429766803881634, 0.050708644951451776, 0.930725626676867" target="0.04010147920177343, -0.46613865178100755, 1.68608014220542" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00012">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.028329282336421846, 0.7789756686980005, 2.802130547868749" target="0.76990123439807, 0.26560786754088483, 3.1172202857036937" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00013">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.28440960658185954, 0.14305966145952187, 0.9656081732278264" target="-0.5637308247298509, 1.0789788269808147, 1.1801657941650683" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00014">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.1886000603993936, -0.3241775489857335, 1.1748570015844837" target="-0.1278000802401471, -0.17270905953020485, 0.23840185172126716" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00015">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7805487040095846, -0.5456848129332406, 1.8695614340581272" target="-0.13117736887589848, -0.9564647439246878, 1.8656350724501571" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00016">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8319693128352303, 0.6652882953067956, 2.36129492246605" target="-1.4074903477611869, 1.4098678617502671, 2.0230985185930823" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00017">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.5212611140140957, 0.7529684616214076, 0.17570410441558304" target="-1.4382103906718178, 1.0100230017710539, -0.1294630422849325" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00018">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.32776587890867925, -0.6994410662103219, 1.351018099947861" target="-0.6481561044714313, -0.9300936143513436, 2.2697941909514867" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00019">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.5926485405745885, -0.5387155820125051, 0.15606390319322883" target="1.320581977524422, -0.4079632921680173, -0.5170012868670102" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00020">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.1908963203569436, -0.6029739109814893, 0.2722591368573657" target="-0.4944937030201786, -0.12332394891887094, -0.5510054276256211" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00021">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.16066477197370133, -0.4026077343621548, 2.015984633869078" target="1.0815542405460596, -0.4013249525868363, 1.6261629552217303" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00022">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6009691120635734, 0.8842262210129956, 1.0953305047344857" target="-1.5536155492779646, 0.9891714357514647, 1.3807271893091733" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00023">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.789009440859541, 0.25821630307941845, 2.7814636592036024" target="-1.479902463275247, -0.2988707769671971, 2.3206808287699734" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00024">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.11924569056843204, 0.9091809873814745, 1.499687441062941" target="0.6409182866033997, 1.41187554819773, 1.9113291619028663" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00025">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.14954275030184894, 0.24042690403075562, 2.9852895157059725" target="-0.1038263967400779, 1.1600282658996128, 3.375473254816098" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00026">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8978873498755306, -0.07990972138180785, 2.273186535924874" target="1.2281062946306531, -1.0156851001932214, 2.1495746880494835" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00027">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.005154609024762058, 0.05862432039354082, 2.3573571021414224" target="0.3940220118979084, -0.5679246073741739, 3.026755687755319" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00028">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.17068830128865842, 0.4689671435774587, 2.1334286339692494" target="-0.8831943815392502, 1.0757011260558154, 1.7809957182081213" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00029">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8641193732267565, -0.7701347334381896, 2.187045351228928" target="1.244680880430099, -1.6614630097415297, 2.4334329383700757" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00030">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8548478572491198, 0.9358523798492928, 0.044118914896107864" target="0.6856904368026824, 1.9181855279336668, 0.12416485971875396" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00031">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7272801804911515, 0.9623900801326886, 2.871630538832891" target="0.5867850360012581, 0.4659251607705971, 2.0150187841753002" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00032">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.7024719755350042, 0.9452576276459099, 2.669806667161562" target="-1.6160751593378195, 0.6769865706861857, 2.364258205304737" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00033">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6447476550861408, -0.040024152384335654, 0.6971187589179115" target="-0.2778131317520173, 0.32457931351993824, 0.8233958638861101" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00034">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6037611574366157, 0.8470603195669391, 0.7983908168768777" target="0.4342080926841474, 0.5926413826293091, 1.7505057063521825" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00035">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.07786881524437383, -0.114494342050937, 2.7930519479434652" target="0.8984647103504922, -0.04528921333039049, 3.3603552416883202" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00036">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.9189785776231307, 0.46401239131312155, 1.84311974084699" target="-0.39655835785803384, 1.3158450877920274, 1.8049337330684343" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00037">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.9432692697729579, 0.43843954565348064, 0.04797518857071592" target="-1.159324258807322, 1.2031614203410737, -0.5590838662893975" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00038">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.5159020047128562, 0.025517446524156107, 2.7873126623910185" target="0.14070335848156612, -0.7791917650750839, 2.3272376026088817" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00039">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8678350065518505, 0.6826345592247665, 0.20007002630130422" target="-0.9772909067527299, 0.2946702528213432, -0.7150819298612371" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00040">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.31138004239174966, -0.1394025361043334, 2.8981862423522107" target="-0.727181361621331, -1.0341022328226586, 3.0613478665751783" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00041">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.12446368445691403, -0.4822708136581355, 0.7250271422830349" target="0.2336535783960722, -1.4646726321516814, 0.5734875960182756" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00042">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7762366413183597, -0.5482611431653512, 0.3736641175058505" target="1.608607285147305, -0.09371092544875881, 0.6907496120740906" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00043">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.4233384859848448, 0.1722461296254656, 1.6622715065198035" target="0.36182194818707225, 0.7883334031917889, 1.725196572754022" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00044">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6194215518255555, 0.12095190401237166, 0.8652636432936315" target="1.2254979934044645, -0.6568474456498493, 0.69883191967078" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00045">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.1742073146382146, 0.6362419419418208, 1.8795193872592604" target="-0.7683345451649107, 1.3841908610513747, 1.5835713371735598" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00046">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9181552853948844, -0.26119117781663825, 1.6578345315638616" target="0.5592035764012209, -0.42563566402559294, 0.7390790246056714" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00047">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.18784840322633656, 0.69658241655012, 0.43642061455959524" target="-0.0708769342177129, 0.6908872685797967, 1.4023547557172928" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00048">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.1869793265037467, 0.8199179233245939, 0.12920066570461253" target="-0.556004645155298, 0.44310107211332556, -0.7204047573226571" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00049">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6454125603630039, -0.1692319252575507, 2.489411955834308" target="0.9243730844440262, -0.022769307539161843, 1.540344135488724" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00050">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.9800908783854161, -0.2699076844834587, 0.23589011149691963" target="-0.8781339226471945, -1.0856252000445312, -0.33350405249096826" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00051">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.3052291526732769, -0.4523018028008856, 2.107956211979359" target="0.7951296242864638, 0.027860398395218422, 1.3803287053142461" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00052">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8876028538841816, -0.7463657954775045, 2.594334886202322" target="0.549803205074016, -1.48061957650989, 3.1832005604467755" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00053">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8810716967993231, -0.23845898337822113, 1.28932218353573" target="-1.467020376817935, 0.175324271054896, 0.5925815124570392" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00054">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.02230090633307147, 0.9529246438720891, 2.327073564305485" target="-0.9685650979611778, 0.9989697890298629, 2.006973698248334" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00055">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.382285274561478, -0.4603264289983997, 2.5893606125679534" target="-0.4903107075791452, -0.6618753098205561, 1.6158573745349811" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00056">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7626143454753798, 0.021413011087290545, 1.0328871928869758" target="0.4146277298213002, 0.3873335017280136, 1.8960253682997381" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00057">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9898346963218356, -0.3681129092645996, 0.5481371367796873" target="1.8847941840973186, -0.10176472787389718, 0.19021792590869996" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00058">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7601962426081394, 0.624670796222508, 2.0036682167140536" target="1.4697031943322352, 0.4623825900531613, 2.689425042121951" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00059">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9168272635559038, 0.8514291544288375, 2.244745509905262" target="0.5379982406415604, 0.7970841380979172, 3.1686151925974455" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00060">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7214028190953554, -0.505706519355785, 0.4237396707030948" target="0.677466546001859, -1.3951624861185703, 0.8786437123390565" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00061">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.3401236986298719, 0.42923707330950545, 0.5011587863468165" target="-0.5210346499981312, 0.2576898280256581, 0.022642494854234196" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00062">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.20888545379024803, 0.8205115324321095, 1.684202302650669" target="0.21506067614324842, -0.08503962826835298, 1.6684932521237856" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00063">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.15667182985254535, -0.6117404542184128, 1.5780667458536255" target="-0.6011559601606002, -0.9375142502287084, 2.1433706238845778" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00064">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.04686945478983984, -0.822128719507456, 2.9458280793801186" target="0.7048566735442051, -0.18243219996751325, 3.343120393481938" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00065">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.14279120091154884, -0.9871822346713797, 2.3179476036761657" target="-0.3317776743500498, -1.575035543504199, 2.9730910001377704" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00066">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9565314276802914, 0.17974005664190096, 0.959044908847995" target="1.4212664920609348, 1.0606906043335584, 1.048193394291596" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00067">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6249845685444302, 0.3450532678337386, 0.5853221953704151" target="-0.20127311892364508, -0.5042054235815545, 0.9003274056699225" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00068">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.15537578503571847, 0.20447835275925152, 2.887269279373143" target="-0.24834219963276882, -0.6685340734989811, 2.6136617274782274" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00069">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8554694689402464, -5.4352682762992544e-05, 2.2322924378479447" target="-0.12425508595415402, -0.29058009665700435, 1.6151050123421413" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00070">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6455465190506824, -0.22386653643096155, 0.188686495364914" target="-1.278438063718823, -0.8900747643276968, 0.5831670269127541" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00071">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.4517617275515535, -0.8244642264810265, 1.1852751250739026" target="0.4684261019416465, -0.7185471302142079, 0.19103980718150737" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00072">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7470452622414643, -0.05539932649997703, 2.737865800922657" target="-0.023666228150475144, -0.34462284429497453, 3.305627683521447" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00073">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.5318342354777448, 0.8306479202235317, 0.382209027146719" target="0.5549467804130734, 0.6627508864510964, -0.603324532057142" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00074">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8528741893387359, -0.8593474928615639, 2.606562883041958" target="-1.083492825424441, -1.8039348231007533, 2.840164724305184" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00075">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.2681399586948865, -0.00685661240229396, 0.4906302485894408" target="-0.2699150364189925, 0.8145383591464993, 0.6798579499107875" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00076">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.34746687545454735, -0.36396522430840395, 2.1326395897978347" target="0.003230799346160995, -0.8729050275555904, 1.3436644313953559" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00077">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.07928934226535045, 0.01493972108905428, 2.368997197379611" target="0.8233847772857579, -0.37387178007822053, 2.5534017809795904" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00078">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8145090489532385, 0.15751700664700508, 0.5917048418876056" target="-1.1557127867069137, -0.6283834814481237, 1.1073989684343015" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00079">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6162735036271363, -0.02230792774148016, 2.9660860001034592" target="-0.054072016729281636, 0.7162414606632462, 3.0380699165368394" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00080">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6341133506485626, 0.9260382802485345, 2.402751109825827" target="0.16060007199408088, 0.42699344811879203, 2.7482722110573037" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00081">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.037479006849462815, 0.627068128359271, 1.808546715723349" target="0.38837823851755315, -0.17572080519339695, 2.2258901411343497" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00082">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.3102421279827605, 0.8273815254147778, 0.19581124923387416" target="0.8066558570160994, 0.1889322944550189, -0.39236898599518144" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00083">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6699764079168011, -0.2363704400675224, 0.9766368483021133" target="1.0783401158075117, 0.08802516394177606, 1.8298698611287343" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00084">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9880535424199686, 0.5623810041527564, 1.4566054163387632" target="0.7498935920958117, 1.4702973168525504, 1.111688314421208" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00085">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.15474320715043755, 0.7550578117435922, 0.26044461664468244" target="0.09120399188939882, -0.199659898089666, 0.42784852883074154" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00086">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.41683751382773204, 0.578309247410292, 2.3975891391483444" target="0.3223904234734999, 1.1793287700706139, 1.603954915777919" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00087">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.35542655052033645, 0.5932783654921092, 0.6759853256269954" target="-0.2483342015384693, 0.6467523313359771, 1.668795359705255" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00088">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.2753840990308618, -0.16510377559124034, 1.6242299508904936" target="-0.6626781768634125, -1.0339912089824348, 1.9325121679752564" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00089">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.7747726689188856, -0.18610439872138773, 0.000902070320768722" target="-0.4710124959296254, -1.1357824526258795, -0.07552666274286299" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00090">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.4887614526947981, 0.7037518244685139, 0.41679503736059265" target="-0.13454245986670255, -0.06696534102548413, 0.5490345299428854" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00091">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.4075715385335956, 0.6422061767892775, 2.9454849686153812" target="0.22501112018728647, 0.9114052914749708, 1.9998616132007323" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00092">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6875811247374535, -0.15178702911197428, 2.9390661255289694" target="-0.10713981892669366, -0.46513070646935395, 2.4192254176561425" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00093">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9479688097047103, 0.007353958401157934, 2.2603396157517155" target="1.259237181973551, 0.04970013489284715, 3.209717728919299" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00094">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8276753353463258, -0.04770585606249389, 2.591358723291255" target="0.3236647445268205, -0.2570738944669652, 1.753421763349496" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00095">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.4031371321237456, -0.41215148805088475, 2.3029568099504205" target="0.8368409497743704, -0.9584005166492459, 1.5863585980418082" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00096">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.14136957171899822, -0.8123096931333875, 1.1741412789139924" target="1.0140307529415786, -0.3463683680847179, 1.3202958012494324" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00097">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8525179732043882, -0.047666073566008826, 1.2856188244287714" target="-1.4741206399766842, 0.5121260510712066, 1.833563075111012" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00098">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.1525251140591053, 0.17260070718156872, 0.3680719805282203" target="0.20863476054848878, 0.7820969548956392, 1.0738183010966633" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00099">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8675378199136854, 0.368100896150066, 2.471344075178315" target="0.3634935400498114, 0.8413829205667536, 3.1938006408627517" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00100">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7936024645275197, 0.1666400938469519, 0.1206546627138021" target="1.6446477677319842, 0.2363509908259141, 0.6410989755235488" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00101">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.422973648235516, 0.13805170852671633, 2.4778716665111977" target="0.8700448890847731, -0.7029564030240831, 2.1731871380046397" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00102">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.06432094694868828, 0.6264881907283848, 2.991030879217475" target="-0.9220034655188633, 0.6497736943877653, 3.154193187027423" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00103">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.29889037726422374, -0.6579571199586518, 1.1750243983617086" target="-1.0161692562085722, -0.3524629946266853, 1.8012706352430135" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00104">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.5060999797313528, -0.12154213628338706, 1.7651403282876443" target="-0.04877352433267346, -0.5343206358714186, 1.042832011316586" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00105">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.7452830561566579, 0.4522470218679606, 0.8402472055994984" target="-0.42370972405892515, 0.00980420548273725, 0.003088351908830722" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00106">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6187648791919635, 0.7258999971663891, 1.6932384633617823" target="-0.8742384822707618, 1.6891613812762025, 1.610408855051812" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00107">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.0310021153074993, 0.797647530496969, 0.25803730818300785" target="-0.13263359785907242, 1.717314801747956, -0.12128201895987994" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00108">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.3923089006817855, -0.34403542047079494, 0.5262292499552432" target="0.5084536146360528, -0.30670536967347395, -0.4663012899919923" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00109">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.3495972999345578, -0.27435609827412777, 0.9896874974818075" target="0.2467995009194473, 0.7197742249744025, 1.0234145328602953" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00110">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8873555304583756, -0.6014033186410277, 1.536520973513205" target="1.7720504787024633, -0.2105372707158072, 1.2824765263573776" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00111">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.9519735986573015, -0.6732638177260877, 2.650256200900686" target="-0.33123424697820547, -0.507389344088796, 3.4165252895846594" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00112">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.5784950965053526, 0.11367098010798049, 0.6673601879740808" target="-0.3136012524116121, -0.19320642609355326, 0.3357122393718918" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00113">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.11549516524261283, -0.9757069477727749, 2.138980892813762" target="0.4973796693671317, -0.11065392870245361, 2.4643230199766806" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00114">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.4335013611274563, 0.2920900471327097, 1.8340160528256035" target="1.3182982399363095, 0.7377309560752539, 1.9701728136822518" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00115">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8525671347509249, -0.5071880618980489, 1.7231341442937957" target="-0.05895566836863597, -0.9650602843055764, 1.3224673645701148" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00116">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.21162646794220485, 0.98404645716289, 2.771236072125544" target="0.3813280779242997, 1.7866727655906893, 2.7064601849775434" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00117">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6959841949549259, 0.17992118529906143, 2.0886453183103697" target="0.10217543599608558, 0.7211103016003387, 1.8239652398813582" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00118">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.7269131713982278, -0.37480870579765746, 2.147753540776483" target="0.10988989065604793, -0.5307455861846019, 1.6229256407256416" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00119">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8022161868456732, -0.3165146995877295, 0.7168311350738418" target="0.5196700760415058, -0.8080383716080505, -0.10692378910755518" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00120">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6435840054604292, 0.16996536045135668, 1.4297652651173114" target="0.5761230999199815, -0.2694294495511091, 0.5340079167430098" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00121">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.4876999571442153, -0.854683302703358, 0.05367426269092579" target="-1.2550636648860785, -1.1765197620097985, -0.5009194926848038" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00122">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.15994036112818955, -0.6177794530798504, 2.9265989352804613" target="0.659486241567824, -0.3812152108391343, 2.0932375055101207" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00123">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.7850455432277055, -0.09582242334578317, 1.18397939121288" target="-0.3946292208881665, -0.6952729950965181, 0.4852418816439531" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00124">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.535377049428938, 0.4975114500078701, 1.931114286240931" target="-1.110850733292069, 0.8232255423989943, 1.1809540572239405" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00125">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.45151537010373977, -0.8343828482070106, 1.0582302470892153" target="-0.30332027722974886, -0.22939487269379488, 0.8048280075587528" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00126">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.03966614866846352, -0.14655771253951788, 0.1218526856182357" target="0.6018161938509103, 0.4935794583226274, -0.4017996123639098" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00127">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6119450901984136, 0.890049296609253, 0.48770917425995464" target="-0.5115773755116046, 0.9765596123486086, -0.5034730930951592" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00128">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7041046649255505, 0.6442743181288801, 1.173881271234324" target="0.35077137455262825, 0.5945628826184837, 0.23970550667299706" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00129">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.06643296031147305, 0.6480036152998385, 2.0420589767106376" target="-0.24667428240763545, 0.5649200301666677, 3.0221662074208524" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00130">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6738874728581419, 0.5151931716642475, 2.073814438321814" target="-0.18053555327044157, 0.41441641168782634, 1.5641034054120597" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00131">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8259482120137562, 0.6456142661891775, 0.5371880627489798" target="0.5260049410375411, 0.38739562312566295, -0.3811567344652942" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00132">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.4964485501624898, -0.8266373537709144, 1.2775687208820647" target="1.1920020336634118, -1.4994608693229448, 1.529588300498291" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00133">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.20649622569314952, -0.5956638120490307, 2.813715325907968" target="-1.200801213330343, -0.6219392845936802, 2.9169974206889906" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00134">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.810446643277666, -0.9902011700228488, 0.968762410991935" target="-1.5175913517452888, -0.3189855398676792, 0.7464654494255671" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00135">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.981489436482444, -0.4706097432231202, 2.492082796553193" target="0.9449748617642791, 0.4130710291192483, 2.958746463904259" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00136">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6537727259590691, 0.1727567095967555, 2.875228005538176" target="-0.823689345707859, 0.6280721138241521, 3.749193808648565" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00137">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.43302646913161413, 0.9610159503569726, 1.723669947267119" target="-0.4747170909645234, 0.5962794779835139, 1.516380452056785" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00138">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9666694131068427, 0.6740940634400077, 2.3347446783057846" target="1.2390231601481558, -0.2552330257676847, 2.085396332136587" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00139">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7769797738230004, 0.26298303452323335, 1.0690936391297143" target="-0.15499137188371925, 0.6244039997985804, 1.09746033491087" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00140">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.05656488011398597, -0.5469992086352728, 2.332632371645116" target="0.8762671883845263, -0.3323451629100843, 1.8015845710943963" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00141">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.659842996770267, 0.15439589797318143, 1.607696788737343" target="-0.3725853331900615, 0.8560446644252914, 0.9556446104182503" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00142">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.343805606955381, 0.5209731973305001, 0.32948365819172676" target="1.1647942425626818, 1.046720280547554, 0.10684569042247427" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00143">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.24988192333596704, -0.17208823506961446, 1.8426043070038611" target="-0.21778488468069174, 0.6378159644514358, 2.196642361847795" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00144">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.38796908629299054, 0.17095917152124374, 2.1986582305761457" target="0.2912858785721195, -0.05008327879389629, 1.228198240415046" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00145">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.04005051440929597, -0.07426438174145655, 0.8603065963456056" target="-0.5413988645878657, -0.4469366668003632, 0.1370970916978942" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00146">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.5416966600065869, 0.39060421218363683, 2.087134058437373" target="-0.9547746913178186, -0.27995084314739005, 2.70335030117854" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00147">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6090349740468073, 0.9436748332222242, 2.013452340868188" target="-1.512927135244458, 1.2087750943511857, 1.67774292414772" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00148">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.062432246419652504, 0.6823507030899352, 1.4595612999094647" target="0.8284058424204434, 1.3142421189819578, 1.5778731283611969" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00149">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.048110259799346355, -0.48345119984492624, 0.468406444172077" target="-0.17932130288202297, -0.04477112558627222, -0.42060618488421364" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00150">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.4232411577618349, 0.688221936478085, 2.033396334287877" target="-0.5692314605300279, 0.6197653469019229, 2.134943354354914" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00151">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.2623569666080996, 0.1514441824381043, 1.69023742102197" target="-0.5907478017237853, 0.15729444352311417, 0.745713607739711" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00152">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8731321669485879, -0.2246515760886214, 0.49434795619801053" target="0.9054105036226457, 0.5853901612953554, -0.0911351713791253" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00153">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7538657866580216, 0.7894569937737368, 0.14479678500568594" target="1.2070628507043328, -0.09584151335808933, 0.040590382083582" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00154">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6035519383210353, 0.27256730719891964, 2.366535466904514" target="-1.5160097458770823, 0.6789570789927344, 2.414160069909506" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00155">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.21338501348110084, -0.6168216077468835, 0.3529247257865973" target="0.5871289144458572, -1.1633929979279678, -0.3964584952206277" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00156">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.011945268130367115, 0.6310208133180228, 0.6512015432163786" target="-0.08491742484483095, 1.6229409967156108, 0.5692749390020683" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00157">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8497346102544328, 0.10208999158660936, 0.5754514444057639" target="-0.07637351158354111, -0.1932549466391878, 1.136418447470072" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00158">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8651525590314608, 0.5465291960825365, 2.4636798182337674" target="-0.169752485894625, 1.135617387031425, 2.8752546492983613" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00159">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.20332889780352925, -0.41184727966343115, 0.8313626683108734" target="-0.08728824090200181, -1.3699568807464468, 0.5695219566971013" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00160">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.2780571483432983, 0.15381528623252416, 1.583460234337432" target="0.713880553335091, 0.28030695417816565, 1.5757495969238058" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00161">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.28930163765460737, 0.27484195847636284, 2.02730232584238" target="-0.22049834716587008, 1.0733752560353425, 2.625307911023241" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00162">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.1165578959500686, -0.22541016989625207, 1.8717083458174029" target="0.721676645407528, -0.8653234372285273, 1.3980604709703046" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00163">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.183805566428221, -0.3193522852386672, 0.9096030379927358" target="-0.22474144421518055, 0.24218500060934345, 0.190043994760848" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00164">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.09149775803857318, 0.22468347800370148, 1.8323953167654263" target="0.4073682581552209, 0.08201347875119333, 2.7704097614672913" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00165">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.23432398220429018, 0.1315478144325104, 2.957308905589257" target="0.3671843562358773, -0.15419646094913536, 3.703323602410685" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00166">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.14395096191209666, 0.6860294291799811, 0.2439710739208708" target="0.061775436897283126, 0.05546581773481141, 0.9923467688456519" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00167">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7504565074039438, 0.8834123110597727, 0.7855920475618118" target="-0.0431081481730341, 1.4901830378069867, 0.7399365705448051" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00168">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.9757971686556146, -0.0339831731324014, 0.5481367729868338" target="-0.743483266565568, -0.32110600937570644, -0.381159050636245" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00169">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9432625085705357, 0.7953968702350966, 2.881994657790815" target="0.10081585630989598, 1.0281168149868836, 3.367921674337092" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00170">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.20773931548150548, 0.030320733805284217, 2.4981535481406927" target="0.7793442630770552, 0.6104081862870511, 3.0784692651064685" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00171">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.30469793137804224, -0.5028846472655097, 2.8028581147735867" target="0.5239905322681182, -0.7970345293592631, 3.7331196919974863" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00172">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.12060110006893732, 0.5471124566185981, 1.5028138709654604" target="0.02959952048465203, 0.20734633511606715, 0.5743749896897762" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00173">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6332875137897449, -0.4081463059811734, 1.7232323064084514" target="-0.11946366608145553, 0.17886350591309041, 2.348855623002478" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00174">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.713995831471439, -0.9725242827670428, 1.3016736730497942" target="-0.08213201998776543, -1.6755240775197617, 0.9752699164614855" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00175">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.5243943437184393, 0.22831454748577595, 0.9724391274221281" target="-0.41178440849822895, 0.11623951470268874, 1.3056185549453652" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00176">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.4344818785909865, -0.03097073378025339, 2.998504056771081" target="0.4103864076477848, -0.628988463595682, 3.799624648883421" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00177">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.5520633048895611, 0.6612628825435181, 0.7786467184163344" target="0.4531631882305037, 1.5234951617083614, 0.28188292777633145" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00178">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6954100743023721, -0.601392181786, 1.2967948930387982" target="-0.660615690345132, -0.4435830587059736, 2.283651332201937" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00179">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.024298239241800745, -0.610781304535531, 2.3398343129657446" target="0.2453468220638523, -0.921911817210179, 1.4155316957914919" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00180">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7368623088344592, -0.36799002847951834, 1.52419259026887" target="0.22173354893362585, -0.7433112791483554, 0.7536237617276361" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00181">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.18874920502551773, 0.4447563478622474, 0.4424173633960692" target="0.7876888252224908, 1.2446175436989124, 0.40377284563422156" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00182">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.43825787719368714, 0.4614119917168056, 1.7045769428778799" target="-1.0364701857876293, 1.1325186848640487, 2.142478575964214" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00183">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7998915868778969, -0.1042832760225132, 1.219838535101544" target="1.1301403690960066, -0.5084459223472355, 2.0728263997041143" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00184">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.3869855649385956, -0.5372548546905089, 1.9522990042901949" target="-1.092198444150799, -0.39482956950866915, 2.6468418993903504" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00185">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.47062799635460895, 0.7245510412860947, 0.8119451869563249" target="-0.6462318007178987, 1.0137431667541927, 1.7529718701382544" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00186">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.3467192624502955, 0.13636828380346389, 1.885376393636725" target="-0.19042536805123522, 0.9716648833672826, 1.7680936724860992" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00187">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7908335512636762, -0.6600230970611745, 0.44944663762638626" target="1.234825959609749, -1.5362442553516251, 0.26207742165109627" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00188">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.7561955573293875, -0.8471219581635661, 1.602693070811222" target="-1.699778936750565, -0.5684732007032771, 1.7815932554001344" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00189">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6685376960954557, 0.6143358601869797, 0.06783159164064034" target="0.20664577427884623, 0.31992754834661624, 0.4517295456634518" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00190">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.25078605653028463, -0.05359205722286231, 0.6495849020304735" target="-0.47639488068352354, 0.4939915050626541, 1.4553472123794355" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00191">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.288187560965419, -0.5544171289430957, 0.8454843190041773" target="-0.2481770606993641, -1.536519932272645, 1.029531170541226" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00192">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.853742121457183, -0.1656492673803478, 1.15759482378216" target="0.7238777248755197, 0.40346876444516844, 1.9695307229463312" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00193">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.22234890486834846, 0.32828371349701113, 1.980829634783054" target="0.33259685568918884, -0.651208418883346, 1.8121863664774782" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00194">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8304820655519722, 0.16380515806937845, 2.207770799693927" target="0.004304458529432509, 0.25648664557135836, 2.750487669789658" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00195">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.591136732286899, 0.1770685038787052, 0.3917191747036737" target="0.6513368728940179, 0.24103081500738968, 1.3878540881696964" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00196">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.832519352206442, -0.35389261378836423, 2.782676428397888" target="-0.8638373915731892, 0.18395432892963126, 1.9402158378542544" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00197">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.054764942333035194, 0.7909478142952961, 1.3790248598310746" target="0.5685936284588887, 0.1279065419560934, 1.793512933718685" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00198">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.510236213120254, -0.029745648620719267, 2.1261067842971513" target="0.2500264406248039, 0.5014222975517006, 2.9324265020622815" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00199">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.3656414466656408, 0.7797305272734076, 0.7971242062097494" target="-0.9767692817957416, 0.8432165468347919, 1.5861060149033643" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00200">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.9876463424314437, 0.442331572233684, 2.0298133897337385" target="-0.46630963064376296, 0.8575570119132649, 2.7753305707465623" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00201">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.31380289985135423, 0.37483000462665306, 1.7587926330554495" target="-0.5054066990834308, 0.010022726317609643, 1.3162869464187048" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00202">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.7694420938429711, 0.33840744476010265, 0.019795571342114404" target="0.0395199629064531, 0.895598892107866, -0.1676026189966558" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00203">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6343142420905987, -0.1582431896093035, 1.135108141225964" target="-0.004762346455326916, 0.6185464760957747, 1.1513015335768113" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00204">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.7620696751709648, -0.14608479192022528, 1.8708517308700272" target="-0.654094577517616, -0.4716169328405226, 2.810197356033948" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00205">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.245073136935132, 0.4169989665734182, 0.692766286134831" target="-0.21128520580351098, 1.2996170848346589, 0.2238914275351921" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00206">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.7123494554581531, 0.4977996889769729, 2.0061843892861644" target="0.16545130126279195, 0.8533694261014826, 2.3271765909692324" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00207">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.14125861341047496, -0.7264654303645739, 1.9910512179869315" target="-0.8267072118608313, -1.2365824851078888, 2.510609500898914" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00208">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.49991149985242855, -0.672114693584348, 2.0679052107905527" target="0.9283090347551879, -0.10894621949823002, 1.361281674609686" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00209">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.28872582723642815, 0.8302372297793661, 2.254619062825174" target="0.3464669087577805, 1.0491255064263545, 2.9953066558674113" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00210">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.45253765953320735, 0.8760526392756081, 0.07569826831390347" target="0.032227649132752445, 0.0014708965008134456, 0.0861563139726192" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00211">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6303519710432035, -0.51619405770573, 2.196240250109653" target="-0.9568307225110573, -0.27004792786131815, 3.1088320030871874" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00212">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.05233606100324306, -0.07124918421186743, 0.6676000163165505" target="0.4680811570652419, -0.5399913551335623, 1.4469823309093413" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00213">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.5129342207192225, -0.7657871838968142, 0.7420236612145675" target="0.49620086146724174, -1.2117843369305044, 1.6369016049443186" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00214">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6127206391499522, -0.09790507106781599, 2.630453209798827" target="0.8471438151278499, 0.6387277755173048, 1.996089099924744" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00215">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.20332820846451205, 0.579089293916764, 0.5622098187873632" target="0.843302311481404, 0.9565454574182952, 1.2315079527324908" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00216">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.3675562646470665, -0.24658789639863476, 1.4825976176461042" target="-0.041227160104689686, 0.3591825205571746, 2.2082363138784338" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00217">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.055065951044939165, 0.6449323151649438, 0.5195715957361278" target="-0.5017614480263255, 0.6601498909986367, 1.4141282224302114" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00218">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7029718292593041, 0.7780925882868193, 0.22655710668329287" target="0.10519016485732857, 1.5218666207885991, 0.525651189340983" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00219">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.9812192607576353, -0.4144940543609297, 1.202234303284693" target="-0.505924090561813, -1.2541125553287908, 0.9392984289331585" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00220">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9408988134970142, -0.8571828058930344, 2.343915795684904" target="-0.025550526655052752, -0.668040705787407, 2.5176999689782953" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00221">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.049150092824542524, -0.7402529504537307, 1.0982409260119756" target="-0.7356852308035918, -0.9862018529065815, 0.41400511746179036" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00222">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.23819718583817862, -0.5128549993957083, 0.8830912725716393" target="-0.33191340994787144, -0.4327651374106745, 1.8754636237311424" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00223">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.16016233759485, 0.9245227898295085, 1.376581706944749" target="-0.13258498582255066, 0.029138740919059658, 1.8210216855987373" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00224">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9002700242246349, -0.9389358568328889, 0.19833077571965851" target="0.5457543926855638, -1.8172014597358381, -0.1225558051028689" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00225">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.9443681876054615, 0.33188927652470857, 0.6606980733413855" target="-1.1587982593239525, -0.1703015564672079, 1.4984475058101205" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00226">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.152840362586097, 0.5907322712108491, 0.9954417559755112" target="0.27529576099030795, -0.3062432806601094, 1.4202235055216228" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00227">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.5086450145818264, 0.45081717428114976, 1.4276933798987113" target="-1.2663922149797315, 1.0115573181756368, 1.093942467818569" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00228">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.7015797079013988, -0.8251097650606227, 2.211502503418262" target="-0.3260747975580825, -0.47652426880848775, 3.0702715143348827" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00229">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7208246697578495, 0.7807241565670258, 1.5302670224541108" target="1.1084302817018883, -0.07153095776098772, 1.1789507693555217" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00230">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6930908672707057, -0.548685175443044, 1.3605716670628052" target="-1.2200011807871372, 0.22119104136180212, 1.0004937139633778" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00231">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7037147472112273, 0.30039483767053743, 0.8226208708599726" target="0.5821849785642514, -0.016772419004288497, -0.11792973736160395" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00232">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.5118772831143588, -0.12911964935877962, 2.948291835582496" target="1.4251939905729691, -0.19542458703115065, 3.3501080213157564" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00233">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.14254572503038943, 0.6743926978070924, 0.04362489408305814" target="-0.32782585504682416, 0.08192310472494835, -0.7403719520165749" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00234">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.4364425301863364, -0.20304311443017586, 1.4970279239695043" target="0.7949302406383199, -0.44115988754470514, 0.5943724172470235" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00235">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6023483992688423, 0.8590230274539778, 0.5989350401435624" target="0.3443464693954472, 0.9386486981924698, 0.9110705527084559" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00236">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.12317340815028688, 0.1946912471536062, 2.575330281898535" target="-0.1551840942937241, -0.01765446518066291, 3.5120406956798615" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00237">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.06666692062878021, 0.6597825623218976, 1.571689692680714" target="0.33464932993200275, 0.9411649426196002, 0.7000422736552034" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00238">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9126693188452377, 0.4332156674645373, 2.7363157829520457" target="1.5072421853467115, -0.18030021402773666, 3.2560093172364146" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00239">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8847210646173089, 0.6044923126361175, 0.36710263978652025" target="1.6985971479198567, 0.3968743781443635, -0.17557637612019594" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00240">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.7511428035313013, 0.2324835005941024, 0.8136200482858977" target="-0.07559518015741717, 0.37971850443427535, 1.5360861458974613" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00241">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.22969535154745513, -0.6523436467527453, 2.286514989181163" target="-0.08304210262832276, -0.4896167812371498, 1.3108035606220156" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00242">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7089954072910942, -0.7343907458714236, 1.5505048102921042" target="1.1020736574191565, -1.420911515309029, 0.9388033124951322" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00243">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.20997414000482606, 0.5800306359615999, 1.3949769005264316" target="-0.3302363057780043, 0.29282879562726566, 2.3452674426198046" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00244">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.4616180982963456, 0.13220775315881372, 2.934744342058643" target="1.4436274815902903, 0.018529803053924557, 3.085525291726022" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00245">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.16073384810410585, 0.9753417393201456, 1.2463157498794046" target="-0.13307904417405567, 0.2995370476745153, 0.5097539869773754" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00246">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6346626972183824, 0.56416212087482, 0.8151570070594765" target="-0.7484217034000292, 0.48769495259609474, -0.17540427862051478" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00247">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.1315094616701118, 0.29203015978265334, 0.5990317744590296" target="-0.8220604454950031, 0.05202207638217646, 0.4170962033038982" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00248">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.9311861286439509, 0.9740666871199151, 2.452170429233719" target="0.058272094587506484, 1.0354902831791926, 2.321023312121697" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00249">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.7525894900810459, 0.6959388602463168, 0.7743906052548268" target="-0.5421746121635653, -0.2794694275373081, 0.8399973981499904" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00250">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.5054305192233479, 0.5452327007663249, 2.2720860370713662" target="-1.2009044896219243, 1.1661710358919826, 2.6336818618113877" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00251">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6919146878640814, -0.7266959842266825, 2.242758525675257" target="1.2576616163663843, -0.27836843335931183, 1.5507088020112159" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00252">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.06035225145358769, -0.34823318374522905, 2.2029086326467224" target="-0.9519847466059468, -0.6184610093322792, 1.8396340589880735" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00253">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6902861619164029, -0.3550784848736548, 0.46443466998138594" target="0.38367869437606744, -0.028421477929025385, -0.42959388698001144" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00254">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.9833694366677761, 0.8383799784757964, 0.8695234494481121" target="0.8904835471317237, 0.7655249306891313, 1.862531180302761" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00255">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6288286159993302, -0.8206135555672269, 2.7376377223609643" target="1.6117452787630948, -0.7172707582971796, 2.5853383451010905" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00256">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.5493044705300076, -0.6062737704789469, 0.8870617409930976" target="1.0249287577570776, 0.19768754570973202, 1.244031963101201" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00257">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.1911097096819987, -0.288484671537214, 2.2087014478423637" target="-0.6838359009631291, -0.5121420645586147, 1.7792278759433526" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00258">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.18472573868798725, -0.5859426948640207, 1.830328529651927" target="-0.35377285176084516, -1.0309000837257236, 1.1147642836320493" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00259">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.9718818297021763, -0.7765043693939115, 0.483623451319955" target="-0.2848423599154769, -0.3862576669707001, -0.12930744054553123" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00260">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.2926445759611722, -0.9761805233179643, 2.789722570991035" target="-0.4528193228425176, -1.161065454976462, 1.8201032578030554" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00261">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.5209820890554773, -0.4587228991098864, 1.1269269771157624" target="-0.018608937450586005, -1.2370710795345494, 1.503484179378825" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00262">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8814774314568838, -0.2963613417039239, 1.2933985686137919" target="0.8351988952624504, -0.09970197065377495, 2.272777651944583" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00263">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.4029854549951033, 0.9524900701035874, 1.094571674601751" target="-0.9747352195707686, 0.8753990304956594, 0.2777735487959677" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00264">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8329251580207364, 0.31596478847815335, 2.1498147621464287" target="-0.21565367543044223, -0.09721660131320975, 1.4802947430948263" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00265">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.25551795160996216, -0.5772296891002251, 1.2277543535507343" target="-0.4877960898002436, -1.340094662429157, 1.8311480053127531" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00266">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.12186357897527245, 0.9905996067757221, 2.5753059766625617" target="0.1365339134957339, 1.9173266101119983, 2.848083903137674" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00267">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.24181779683990268, -0.6121641042634907, 2.063743564167102" target="0.6768561503065198, -0.7051315575066334, 2.9593431865712985" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00268">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.517998004564127, -0.8492225226113046, 1.1384595501064712" target="-0.008395215883648999, -0.043183518201901694, 0.8678836811947784" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00269">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.3463044049083823, 0.14086264522293335, 1.959159655104864" target="0.09853850984297802, -0.7431139871441855, 1.8152843805633305" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00270">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6372244232232773, -0.0606811277725714, 2.9765036596076837" target="-1.501442983505192, 0.20508334527266042, 2.5493087100457243" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00271">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.9682947215452518, -0.2580127763419262, 1.0029373915689146" target="-0.772121447929125, -1.0267161801586653, 1.6117157779126576" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00272">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.18883395995490115, 0.738387431049363, 1.3149151148984215" target="0.4974243762798376, 0.36627819700080083, 0.6899477446428851" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00273">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7661560029919954, 0.15107968606047728, 1.2738530848039002" target="1.5610953786777726, -0.4059482143772418, 1.0334548586909502" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00274">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.49539382468450843, 0.6472277106432609, 1.9326015540098247" target="-0.17655864263016252, -0.24536020620134014, 2.2513976289345132" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00275">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.5755478602356814, -0.739859013089833, 0.37629398595945895" target="-0.8245305491690664, -0.2354169072804505, 1.20306226213973" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00276">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.8181439256986103, -0.19321692480788344, 2.4609233830828674" target="1.4836173730160798, -0.6002741882208786, 3.0865826155873726" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00277">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7907241855195537, -0.5473339044114316, 0.09771704944383297" target="1.1089652810345414, -0.08940543375999682, -0.7323577188103638" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00278">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.6393278269086344, 0.5459574113222123, 0.04623952836348599" target="-0.6832029544237169, 1.2299599405428738, 0.7743985173248757" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00279">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.1282641200357204, -0.6174664688239064, 2.299982047140703" target="-0.36438098577246736, -1.263855071543714, 2.8826333785535594" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00280">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.04124860714109024, 0.09815987815353444, 0.8802247707008505" target="-0.05265712431561207, -0.9000605067046694, 0.8216935056417568" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00281">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.08684299260372552, -0.9085747941084035, 2.4285589412097606" target="0.8580455070476618, -0.5993531329235724, 2.536112125637948" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00282">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.814997846752268, 0.5052950394367328, 1.4868668173435546" target="0.6975132119934118, 1.491853915068874, 1.3732932926689039" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00283">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6875686988880536, -0.9923582484016862, 1.9978722209646325" target="0.3762425936646668, -0.6567675899790764, 1.1087968775960766" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00284">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.5347718346311003, -0.3466875256154598, 2.569715072831934" target="1.0701326891709277, -1.1110136388400544, 2.210278919851506" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00285">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.999619996785313, 0.2642404228772748, 0.9030719429418467" target="-0.4362385711304728, 0.2710278707393132, 1.7292409933054147" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00286">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.25725584752030484, -0.4972826808994133, 0.6293396102608463" target="1.0126095121782903, -1.1222009105906539, 0.8266161863851235" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00287">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.25232077361106997, -0.006130358767640232, 0.5618420649270957" target="-0.04975274898627147, 0.5066273031407953, -0.24179415072015098" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00288">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7723498598246021, 0.7647733239747194, 1.6487052150884527" target="0.03275919929008453, 0.09962598126692113, 1.7515870275669974" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00289">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.41219205507411805, -0.0972265298929278, 2.4043300931126037" target="1.3056645713431967, -0.47880630514924666, 2.6411923691025514" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00290">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.6677124925620488, 0.5283193985677348, 0.7294465178443551" target="1.3924603950473013, 0.8237217325645441, 1.3519237775996529" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00291">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.9510230796040338, 0.3165061565826215, 1.2337730834502842" target="-1.89800709639133, 0.03974574486028426, 1.3969446080882553" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00292">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.7885216902278094, 0.7196950550934176, 1.6012562819857141" target="0.9278125062041851, 1.5095152605280753, 1.0039438748888996" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00293">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.24511169868897498, 0.42597908185071076, 2.1281090865372123" target="-0.3460644623441679, 0.0996700405842707, 3.067965963459521" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00294">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.36456578627602876, 0.6848481086806713, 1.73195575573448" target="0.7420322806912221, -0.14670890327673103, 1.3244855341742026" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00295">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.03208695968041053, 0.03381626721480324, 2.666941974058039" target="0.053120970590356725, 0.9262298264309698, 3.1176698406385" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00296">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.2664977331447438, 0.6838317196208097, 1.514668691274538" target="0.32382057688343246, -0.03070373735163423, 1.8901195849672536" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00297">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.8293220984613465, -0.10203602537480738, 0.873589192937619" target="-0.594881014398232, 0.3758599420354609, 1.7201426894375835" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00298">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="0.05577008932768046, 0.7066197106707892, 0.538366581661372" target="-0.7855557184379433, 0.8125157727414263, 1.0684202668909464" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="cube" name="quad_00299">
+		<transform name="toWorld">
+			<scale x="0.05" y="0.05" z="0.0005"/>
+			<lookAt origin="-0.049550751415952776, 0.1650045034703822, 2.3094609345024573" target="0.6117622626598493, 0.8807030392348053, 2.0848708560959555" up="0, 0, 1"/>
+		</transform>
+		<bsdf type="roughconductor">
+			<float name="alpha" value="0.001"/>
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+</scene>

@@ -450,7 +450,9 @@ public:
      */
     enum EEmitterFlags {
         /// Is this an environment emitter, such as a HDRI map?
-        EEnvironmentEmitter = 0x010
+        EEnvironmentEmitter = 0x010, 
+        EProjectedAreaEmitter = 0x020 // our new emitter type that samples the solid angle of the aabb of an area light
+                                      // we need this flag because the scene needs to intersect it (while normal area lights only need to check occlusions)
     };
 
     // =================================================================
@@ -564,6 +566,8 @@ public:
 
     /// Is this an environment emitter? (e.g. an HDRI environment map?)
     inline bool isEnvironmentEmitter() const { return m_type & EEnvironmentEmitter; }
+    /// Is this a projected area emitter? (e.g. a ProjectedAreaLight light that needs to be intersected) 
+    inline bool isProjectedAreaEmitter() const { return m_type & EProjectedAreaEmitter; }
 
     /**
      * \brief Return the radiant emittance from an environment emitter

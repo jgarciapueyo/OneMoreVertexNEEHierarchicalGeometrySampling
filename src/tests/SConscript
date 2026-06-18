@@ -1,4 +1,8 @@
-Import('env', 'plugins', 'glob', 'os', 'SCons')
+# from mitsubas.mitsuba3.ext.nanogui.ext.pybind11.tests import env
+
+# import env 
+
+Import('env', 'plugins', 'glob', 'os', 'SCons', 'sys')
 
 testEnv = env.Clone()
 testEnv.Append(CPPDEFINES = [['MTS_TESTCASE', '1']])
@@ -18,3 +22,85 @@ for plugin in glob.glob(GetBuildPath('test_*.cpp')):
         plugins += [ lib ]
 
 Export('plugins')
+
+tests = []
+
+"""
+# BVH Phase 1 test - use testEnv and ensure libraries are linked
+bvhTestEnv_aggregation = testEnv.Clone()
+bvhTestEnv_aggregation.Append(LIBS=['mitsuba-render', 'mitsuba-core', 'mitsuba-hw'])
+bvhTestEnv_aggregation.Append(LIBPATH=['#build/release/librender', '#build/release/libcore', '#build/release/libhw'])
+test_bvh_aggregation = bvhTestEnv_aggregation.Program('test_bvh_phase1_aggregation', ['test_bvh_phase1_aggregation.cpp'])
+bvhTestEnv_aggregation.Depends(test_bvh_aggregation, '#build/release/librender/libmitsuba-render.so')
+tests.append(test_bvh_aggregation)
+env.Install('$DISTDIR', test_bvh_aggregation)
+
+# BVH Phase 1 test - BVH tree construction
+bvhTestEnv_construction = testEnv.Clone()
+bvhTestEnv_construction.Append(LIBS=['mitsuba-render', 'mitsuba-core', 'mitsuba-hw'])
+bvhTestEnv_construction.Append(LIBPATH=['#build/release/librender', '#build/release/libcore', '#build/release/libhw'])
+test_bvh_construction = bvhTestEnv_construction.Program('test_bvh_phase1_bvhconstruction', ['test_bvh_phase1_bvhconstruction.cpp'])
+bvhTestEnv_construction.Depends(test_bvh_construction, '#build/release/librender/libmitsuba-render.so')
+tests.append(test_bvh_construction)
+env.Install('$DISTDIR', test_bvh_construction)
+
+# BVH Phase 2 test - aabb sampling (unit tests -> without BVH):
+bvhTestEnv_aabb_sampling = testEnv.Clone()
+bvhTestEnv_aabb_sampling.Append(LIBS=['mitsuba-render', 'mitsuba-core', 'mitsuba-hw'])
+bvhTestEnv_aabb_sampling.Append(LIBPATH=['#build/release/librender', '#build/release/libcore', '#build/release/libhw'])
+
+# Needed when tests include SceneHandler / XML parsing (Xerces-C++)
+if bvhTestEnv_aabb_sampling.has_key('XERCESLIBDIR'):
+        bvhTestEnv_aabb_sampling.Prepend(LIBPATH=bvhTestEnv_aabb_sampling['XERCESLIBDIR'])
+if bvhTestEnv_aabb_sampling.has_key('XERCESLIB'):
+        bvhTestEnv_aabb_sampling.Append(LIBS=bvhTestEnv_aabb_sampling['XERCESLIB'])
+else:
+        bvhTestEnv_aabb_sampling.Append(LIBS=['xerces-c'])
+
+test_bvh_phase2_unit_aabb_sampling = bvhTestEnv_aabb_sampling.Program('test_bvh_phase2_unit_aabb_sampling', ['test_bvh_phase2_unit_aabb_sampling.cpp'])
+bvhTestEnv_aabb_sampling.Depends(test_bvh_phase2_unit_aabb_sampling, '#build/release/librender/libmitsuba-render.so')
+tests.append(test_bvh_phase2_unit_aabb_sampling)
+env.Install('$DISTDIR', test_bvh_phase2_unit_aabb_sampling)
+
+# BVH Phase 2 test - sample
+bvhTestEnv_sample_primitive = testEnv.Clone()
+bvhTestEnv_sample_primitive.Append(LIBS=['mitsuba-render', 'mitsuba-core', 'mitsuba-hw'])
+bvhTestEnv_sample_primitive.Append(LIBPATH=['#build/release/librender', '#build/release/libcore', '#build/release/libhw'])
+test_bvh_sample_primitive = bvhTestEnv_sample_primitive.Program('test_bvh_phase2_sample_primitive', ['test_bvh_phase2_sample_primitive.cpp'])
+bvhTestEnv_sample_primitive.Depends(test_bvh_sample_primitive, '#build/release/librender/libmitsuba-render.so')
+tests.append(test_bvh_sample_primitive)
+env.Install('$DISTDIR', test_bvh_sample_primitive)
+
+# BVH Phase 2 test - sample with spherical aabb
+bvhTestEnv_sample_aabb = testEnv.Clone()
+bvhTestEnv_sample_aabb.Append(LIBS=['mitsuba-render', 'mitsuba-core', 'mitsuba-hw'])
+bvhTestEnv_sample_aabb.Append(LIBPATH=['#build/release/librender', '#build/release/libcore', '#build/release/libhw'])
+test_bvh_sample_aabb = bvhTestEnv_sample_aabb.Program('test_bvh_phase2_sample_aabb', ['test_bvh_phase2_sample_aabb.cpp'])
+bvhTestEnv_sample_aabb.Depends(test_bvh_sample_aabb, '#build/release/librender/libmitsuba-render.so')
+tests.append(test_bvh_sample_aabb)
+env.Install('$DISTDIR', test_bvh_sample_aabb)
+
+# BVH Phase 2 test - intersection in leaf node
+bvhTestEnv_leaf_check = testEnv.Clone()
+bvhTestEnv_leaf_check.Append(LIBS=['mitsuba-render', 'mitsuba-core', 'mitsuba-hw'])
+bvhTestEnv_leaf_check.Append(LIBPATH=['#build/release/librender', '#build/release/libcore', '#build/release/libhw'])
+test_bvh_leaf_check = bvhTestEnv_leaf_check.Program(
+        'test_bvh_phase2_checkintersectioninleafnode',
+        ['test_bvh_phase2_checkintersectioninleafnode.cpp'])
+bvhTestEnv_leaf_check.Depends(test_bvh_leaf_check, '#build/release/librender/libmitsuba-render.so')
+tests.append(test_bvh_leaf_check)
+env.Install('$DISTDIR', test_bvh_leaf_check)
+
+
+test_bvh_phase3_polyscope_bvh = bvhTestEnv_aabb_sampling.Program('test_bvh_phase3_polyscope_bvh', ['test_bvh_phase3_polyscope_bvh.cpp'])
+bvhTestEnv_aabb_sampling.Depends(test_bvh_phase3_polyscope_bvh, '#build/release/librender/libmitsuba-render.so')
+tests.append(test_bvh_phase3_polyscope_bvh)
+env.Install('$DISTDIR', test_bvh_phase3_polyscope_bvh)
+
+test_bvh_phase3_nodeimportancegt = bvhTestEnv_aabb_sampling.Program('test_bvh_phase3_nodeimportancegt', ['test_bvh_phase3_nodeimportancegt.cpp'])
+bvhTestEnv_aabb_sampling.Depends(test_bvh_phase3_nodeimportancegt, '#build/release/librender/libmitsuba-render.so')
+tests.append(test_bvh_phase3_nodeimportancegt)
+env.Install('$DISTDIR', test_bvh_phase3_nodeimportancegt)
+"""
+
+

@@ -206,7 +206,7 @@ class HDRFilm : public Film {
 public:
     HDRFilm(const Properties &props) : Film(props) {
         /* Should an Mitsuba banner be added to the output image? */
-        m_banner = props.getBoolean("banner", true);
+        m_banner = props.getBoolean("banner", false);
         /* Attach the log file as the EXR comment attribute? */
         m_attachLog = props.getBoolean("attachLog", true);
 

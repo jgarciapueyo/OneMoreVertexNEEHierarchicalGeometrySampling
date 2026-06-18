@@ -1,0 +1,60 @@
+# Experiment v3: compare BVH leaf sampling modes (Primitive vs SphericalAABB)
+# Keep this file immutable; create config-v3.yaml for later changes.
+
+
+docker:
+  container: bdpt_twopoints_mitsuba-mitsuba-1
+  workdir: /home/mitsuba
+  setpath_script: /home/mitsuba/setpath.sh
+
+scene: scenes/experiments/1_wildcard_spotlight/wildcard_spotlight_quads.xml
+output_root: scenes/experiments/1_wildcard_spotlight/results/quads_wide_gaussianSAThreshold
+
+# Reference render controls:
+# - Do not inherit per-config sweep/global params.
+# - Use a stable path reference with only explicit safe params.
+reference:
+  inherit_config_params: false
+  # Fast path: set this to an existing EXR to skip rendering reference per config.
+  # When enabled, `scene`/`spp` below are ignored by the runner.
+  # pre_rendered_exr: scenes/experiments/1_wildcard_spotlight/reference.exr
+  scene: scenes/experiments/1_wildcard_spotlight/wildcard_spotlight_quads_pathref.xml
+  spp: 16000
+  geometry: quads-k40 
+
+# Main schedule for tested runs.
+spp_schedule: [4, 8, 16, 64] #, 128, 512] #, 8, 16, 32, 128]
+repetitions_per_spp: 3
+reference_spp: 16000
+
+# Defaults for tested (non-reference) configs.
+global_defaults:
+  integrator: doublestep
+  maxDepth: 3
+  rrDepth: 5
+  maxLeafSize: 2
+  leafSamplingMode: Primitive
+  useBVH: true
+  disableNEE: false
+  doAdditionalVertex: true
+  geometry: quads-k40 # must be one of x scenes in scenes/experiments/scene_geometries/<x>.xml: quads-big quads-geometry
+  outputDebugCSV: false # Whether to output debug info for each BVH node to CSV (for visualization/debugging)
+  lightcutThreshold: 1.5 # NOTE: This does nothing for now, since lightcuts are disabled in the scene XML. Threshold for lightcuts if enabled (lower = more aggressive pruning, 0 = disable)
+
+analysis:
+  baseline_config_name: baseline_path
+
+named_configs:
+  # __scene is a reserved runner key (not passed as -D) to override scene per config.
+  - name: baseline_path
+    params:
+      __scene: scenes/experiments/1_wildcard_spotlight/wildcard_spotlight_quads_pathref.xml
+      integrator: path
+      maxDepth: 3
+      rrDepth: 5
+      geometry: quads-k40 
+
+sweep:
+  leafSamplingMode: [SphericalAABB]
+  maxLeafSize: [1, 2]
+  gaussianSAThreshold: [0, 0.03141592, 0.3141592, 3.141592] # Threshold for treating a gaussian as a point (0: never ... 4PI: always; .01*PI or .001*PI might be reasonable)

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<scene version="0.6.0">
+    <integrator type="path">
+        <integer name="maxDepth" value="3"/>
+        <integer name="rrDepth" value="5"/>
+    </integrator>
+    <sensor type="perspective">
+        <string name="fovAxis" value="smaller"/>
+        <float name="nearClip" value="0.1000"/>
+        <float name="farClip" value="100.0000"/>
+        <transform name="toWorld">
+            <lookAt origin="8.4790, -6.6131, 4.0819" target="7.8373, -6.0301, 3.5835" up="-0.3688, 0.3351, 0.8670"/>
+        </transform>
+        <float name="fov" value="39.5978"/>
+        <sampler type="independent">
+            <integer name="sampleCount" value="$spp:64"/>
+        </sampler>
+        <film type="hdrfilm">
+            <integer name="width" value="$w:1080"/>
+            <integer name="height" value="$h:1080"/>
+        </film>
+    </sensor>
+    <emitter type="spot" name="Light">
+        <transform name="toWorld">
+            <lookAt origin="21.5557, -1.6854, 3.1328" target="20.5928, -1.4166, 3.1555" up="-0.1532, -0.6146, 0.7739"/>
+        </transform>
+        <rgb name="intensity" value="50000.0"/>
+        <float name="cutoffAngle" value="25.0000"/>
+    </emitter>
+    <emitter type="envmap" id="envmap">
+        <string name="filename" value="../../textures/syferfontein_0d_clear_puresky_4k.hdr"/>
+    </emitter>
+
+    <shape type="obj" id="Plane">
+        <string name="filename" value="scene_geometries/Plane.obj"/>
+        <bsdf type="diffuse" name="Material.002">
+            <rgb name="reflectance" value="1.0000, 1.0000, 1.0000"/>
+        </bsdf>
+    </shape>
+
+    <shape type="obj" id="Tree">
+        <string name="filename" value="scene_geometries/Tree.obj"/>
+        <bsdf type="normalmap" name="Trunk_01">
+            <texture type="bitmap" name="normal">
+                <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Trunk_01_normal.jpg"/>
+            </texture>
+            <bsdf type="diffuse">
+                <texture type="bitmap" name="reflectance">
+                    <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Trunk_01_albedo.jpg"/>
+                </texture>
+            </bsdf>
+        </bsdf>
+        <bsdf type="normalmap" name="Petiole_01">
+            <texture type="bitmap" name="normal">
+                <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Petiole_01_normal.jpg"/>
+            </texture>
+            <bsdf type="diffuse">
+                <texture type="bitmap" name="reflectance">
+                    <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Petiole_01_albedo.jpg"/>
+                </texture>
+            </bsdf>
+        </bsdf>
+        <bsdf type="normalmap" name="Leaf_01">
+            <texture type="bitmap" name="normal">
+                <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Leaf_01_normal.jpg"/>
+            </texture>
+            <bsdf type="diffuse">
+                <rgb name="reflectance" value="0.8000, 0.8000, 0.8000"/>
+            </bsdf>
+        </bsdf>
+    </shape>
+
+    <shape type="obj" id="Tree.001">
+        <string name="filename" value="scene_geometries/Tree.001.obj"/>
+        <bsdf type="normalmap" name="Trunk_01">
+            <texture type="bitmap" name="normal">
+                <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Trunk_01_normal.jpg"/>
+            </texture>
+            <bsdf type="diffuse">
+                <texture type="bitmap" name="reflectance">
+                    <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Trunk_01_albedo.jpg"/>
+                </texture>
+            </bsdf>
+        </bsdf>
+        <bsdf type="normalmap" name="Petiole_01">
+            <texture type="bitmap" name="normal">
+                <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Petiole_01_normal.jpg"/>
+            </texture>
+            <bsdf type="diffuse">
+                <texture type="bitmap" name="reflectance">
+                    <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Petiole_01_albedo.jpg"/>
+                </texture>
+            </bsdf>
+        </bsdf>
+        <bsdf type="normalmap" name="Leaf_01">
+            <texture type="bitmap" name="normal">
+                <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Leaf_01_normal.jpg"/>
+            </texture>
+            <bsdf type="diffuse">
+                <rgb name="reflectance" value="0.8000, 0.8000, 0.8000"/>
+            </bsdf>
+        </bsdf>
+    </shape>
+
+    <shape type="obj" id="Tree.002">
+        <string name="filename" value="scene_geometries/Tree.002.obj"/>
+        <bsdf type="normalmap" name="Trunk_01">
+            <texture type="bitmap" name="normal">
+                <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Trunk_01_normal.jpg"/>
+            </texture>
+            <bsdf type="diffuse">
+                <texture type="bitmap" name="reflectance">
+                    <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Trunk_01_albedo.jpg"/>
+                </texture>
+            </bsdf>
+        </bsdf>
+        <bsdf type="normalmap" name="Petiole_01">
+            <texture type="bitmap" name="normal">
+                <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Petiole_01_normal.jpg"/>
+            </texture>
+            <bsdf type="diffuse">
+                <texture type="bitmap" name="reflectance">
+                    <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Petiole_01_albedo.jpg"/>
+                </texture>
+            </bsdf>
+        </bsdf>
+        <bsdf type="normalmap" name="Leaf_01">
+            <texture type="bitmap" name="normal">
+                <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Leaf_01_normal.jpg"/>
+            </texture>
+            <bsdf type="diffuse">
+                <rgb name="reflectance" value="0.8000, 0.8000, 0.8000"/>
+            </bsdf>
+        </bsdf>
+    </shape>
+
+    <shape type="obj" id="Tree.003">
+        <string name="filename" value="scene_geometries/Tree.003.obj"/>
+        <bsdf type="normalmap" name="Trunk_01">
+            <texture type="bitmap" name="normal">
+                <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Trunk_01_normal.jpg"/>
+            </texture>
+            <bsdf type="diffuse">
+                <texture type="bitmap" name="reflectance">
+                    <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Trunk_01_albedo.jpg"/>
+                </texture>
+            </bsdf>
+        </bsdf>
+        <bsdf type="normalmap" name="Petiole_01">
+            <texture type="bitmap" name="normal">
+                <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Petiole_01_normal.jpg"/>
+            </texture>
+            <bsdf type="diffuse">
+                <texture type="bitmap" name="reflectance">
+                    <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Petiole_01_albedo.jpg"/>
+                </texture>
+            </bsdf>
+        </bsdf>
+        <bsdf type="normalmap" name="Leaf_01">
+            <texture type="bitmap" name="normal">
+                <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Leaf_01_normal.jpg"/>
+            </texture>
+            <bsdf type="diffuse">
+                <rgb name="reflectance" value="0.8000, 0.8000, 0.8000"/>
+            </bsdf>
+        </bsdf>
+    </shape>
+
+    <shape type="obj" id="Tree.004">
+        <string name="filename" value="scene_geometries/Tree.004.obj"/>
+        <bsdf type="normalmap" name="Trunk_01">
+            <texture type="bitmap" name="normal">
+                <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Trunk_01_normal.jpg"/>
+            </texture>
+            <bsdf type="diffuse">
+                <texture type="bitmap" name="reflectance">
+                    <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Trunk_01_albedo.jpg"/>
+                </texture>
+            </bsdf>
+        </bsdf>
+        <bsdf type="normalmap" name="Petiole_01">
+            <texture type="bitmap" name="normal">
+                <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Petiole_01_normal.jpg"/>
+            </texture>
+            <bsdf type="diffuse">
+                <texture type="bitmap" name="reflectance">
+                    <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Petiole_01_albedo.jpg"/>
+                </texture>
+            </bsdf>
+        </bsdf>
+        <bsdf type="normalmap" name="Leaf_01">
+            <texture type="bitmap" name="normal">
+                <string name="filename" value="../../textures/MT_PM_V60_Acer_buergerianum_01_Leaf_01_normal.jpg"/>
+            </texture>
+            <bsdf type="diffuse">
+                <rgb name="reflectance" value="0.8000, 0.8000, 0.8000"/>
+            </bsdf>
+        </bsdf>
+    </shape>
+
+    <shape type="obj" id="Rocky Ground in Forest Photoscan">
+        <string name="filename" value="scene_geometries/Rocky Ground in Forest Photoscan.obj"/>
+        <bsdf type="normalmap" name="lynn_mar624_3_u1_v1">
+            <texture type="bitmap" name="normal">
+                <string name="filename" value="../../textures/lynn_mar624_3_u1_v1_normal.jpg"/>
+            </texture>
+            <bsdf type="diffuse">
+                <texture type="bitmap" name="reflectance">
+                    <string name="filename" value="../../textures/lynn_mar624_3_u1_v1_diffuse.jpg"/>
+                </texture>
+            </bsdf>
+        </bsdf>
+    </shape>
+
+    <shape type="obj" id="Rocky Ground in Forest Photoscan.001">
+        <string name="filename" value="scene_geometries/Rocky Ground in Forest Photoscan.001.obj"/>
+        <bsdf type="normalmap" name="lynn_mar624_3_u1_v1">
+            <texture type="bitmap" name="normal">
+                <string name="filename" value="../../textures/lynn_mar624_3_u1_v1_normal.jpg"/>
+            </texture>
+            <bsdf type="diffuse">
+                <texture type="bitmap" name="reflectance">
+                    <string name="filename" value="../../textures/lynn_mar624_3_u1_v1_diffuse.jpg"/>
+                </texture>
+            </bsdf>
+        </bsdf>
+    </shape>
+
+    <shape type="obj" id="Rocky Ground in Forest Photoscan.002">
+        <string name="filename" value="scene_geometries/Rocky Ground in Forest Photoscan.002.obj"/>
+        <bsdf type="normalmap" name="lynn_mar624_3_u1_v1">
+            <texture type="bitmap" name="normal">
+                <string name="filename" value="../../textures/lynn_mar624_3_u1_v1_normal.jpg"/>
+            </texture>
+            <bsdf type="diffuse">
+                <texture type="bitmap" name="reflectance">
+                    <string name="filename" value="../../textures/lynn_mar624_3_u1_v1_diffuse.jpg"/>
+                </texture>
+            </bsdf>
+        </bsdf>
+    </shape>
+
+</scene>

@@ -148,7 +148,8 @@ private:
         ELookAt, EScale, EMatrix, EPoint,
         EVector, ERGB, ESRGB, EBlackBody,
         ESpectrum, ETransform, EAnimation,
-        EInclude, EAlias, EDefault
+        EInclude, EAlias, EDefault,
+        EGeometryBVH // new
     };
 
     struct ParseContext {

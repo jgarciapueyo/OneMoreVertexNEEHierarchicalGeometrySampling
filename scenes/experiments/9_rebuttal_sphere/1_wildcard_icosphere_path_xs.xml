@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Note: this file has many wildcards so that it can be used from the scripts/experiments/ script
+To run it directly you must give values to all wildcards, e.g.:
+	./build/release/mitsuba/mitsuba scenes/experiments/1_wildcard_spotlight/wildcard_spotlight_quads.xml -Dintegrator=doublestep -DmaxDepth=3 -DrrDepth=4 -DuseBVH=true -DdisableNEE=false -DmaxLeafSize=2 -DleafSamplingMode=SphericalAABB -DoutputDebugCSV=false -Dgeometry=quads -Dspp=512
+ -->
+<scene version="0.6.0">
+	<integrator type="$integrator:path">
+		<integer name="maxDepth" value="$maxDepth:3"/>
+		<integer name="rrDepth" value="$rrDepth:5"/>
+	</integrator>
+	
+	
+	
+    <!-- Camera. This version looks at the hemisphere from outside -->
+    <!-- <sensor type="perspective">
+        <string name="fov_axis" value="x"/>
+        <float name="fov" value="40"/>
+        <transform name="toWorld">
+            <lookAt origin="0, -35, 5" target="0, 0, 4" up="0, 0, 1"/>
+        </transform>
+        <sampler type="independent">
+            <integer name="sample_count" value="64"/>
+        </sampler>
+        <film type="hdrfilm">
+            <integer name="width" value="800"/>
+            <integer name="height" value="600"/>
+        </film>
+    </sensor>  -->
+    <!-- Camera. This version looks at the center of the hemisphere from inside -->
+    <sensor type="orthographic">
+        <string name="fov_axis" value="x"/>
+        <float name="fov" value="40"/>
+        <transform name="toWorld">
+            <lookAt origin="0, 0, 0.1" target="0, 0, 0" up="0, 1, 0"/>
+        </transform>
+        <sampler type="independent">
+            <integer name="sample_count" value="64"/>
+        </sampler>
+        <film type="hdrfilm">
+            <integer name="width" value="64"/>
+            <integer name="height" value="64"/>
+        </film>
+    </sensor> 
+
+    <!-- Spotlight at center, slightly above floor, pointing up, near-180° cone -->
+    <!-- <emitter type="spot">
+        <transform name="toWorld">
+            <lookAt origin="0, 0, 0.1" target="0, 0, 1" up="0, 1, 0"/>
+        </transform>
+        <float name="cutoffAngle" value="10.0"/>
+        <float name="beamWidth" value="10.0"/>
+        <rgb name="intensity" value="100.0, 90.0, 40.0"/>
+    </emitter> -->
+	
+    <!-- <emitter type="spot">
+        <transform name="toWorld">
+            <lookAt origin="0, 0, 0.1" target="2, 0, 1" up="0, 1, 0"/>
+        </transform>
+        <float name="cutoffAngle" value="10.0"/>
+        <float name="beamWidth" value="10.0"/>
+        <rgb name="intensity" value="100.0, 90.0, 40.0"/>
+    </emitter> -->
+
+    <emitter type="spot">
+        <transform name="toWorld">
+            <lookAt origin="0, 0, 0.1" target="0, 0, 1" up="0, 1, 0"/>
+        </transform>
+        <float name="cutoffAngle" value="89.0"/>
+        <float name="beamWidth" value="89.0"/>
+        <rgb name="intensity" value="100.0, 90.0, 40.0"/>
+    </emitter>
+	
+	<!-- Add the geometry - floating quads -->
+	<include filename="$geometry:hemisphere_n1980_ratio0.4949.xml"/>
+	<!-- <include filename="../scene_geometries/quads-geometry.xml"/> -->
+</scene>

@@ -18,6 +18,8 @@
 
 #include <mitsuba/render/renderjob.h>
 #include <mitsuba/render/renderproc.h>
+#include <mitsuba/core/timer.h>
+#include <mitsuba/core/util.h>
 #include <boost/filesystem.hpp>
 
 MTS_NAMESPACE_BEGIN
@@ -100,12 +102,13 @@ void RenderJob::run() {
         }
 
         if (!m_cancelled) {
+            ref<Timer> renderTimer = new Timer();
             if (!m_scene->render(m_queue, this, m_sceneResID, m_sensorResID, m_samplerResID)) {
                 m_cancelled = true;
                 Log(EWarn, "Rendering of scene \"%s\" did not complete successfully!",
                     m_scene->getSourceFile().filename().string().c_str());
             }
-            Log(EInfo, "Render time: %s", timeString(m_queue->getRenderTime(this), true).c_str());
+            Log(EInfo, "Render time: %s", timeString(renderTimer->getSeconds(), true).c_str());
             m_scene->postprocess(m_queue, this, m_sceneResID, m_sensorResID, m_samplerResID);
         }
     } catch (const std::exception &ex) {

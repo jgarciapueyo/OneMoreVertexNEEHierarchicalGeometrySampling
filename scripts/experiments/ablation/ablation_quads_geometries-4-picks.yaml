@@ -1,0 +1,118 @@
+# BVH ablation across several non-Disney geometries
+docker:
+  container: bdpt_twopoints_mitsuba-mitsuba-1
+  workdir: /home/mitsuba
+  setpath_script: /home/mitsuba/setpath.sh
+
+scene: scenes/experiments/1_wildcard_spotlight/wildcard_spotlight_quads.xml
+output_root: scenes/experiments/1_wildcard_spotlight/results/ablation-5-quadsk5
+
+reference:
+  inherit_config_params: false
+  pre_rendered_exr: scenes/experiments/1_wildcard_spotlight/results/ablation-4-picks_quads_k5_picks/baseline_path/reference.exr
+  scene: scenes/experiments/1_wildcard_spotlight/wildcard_spotlight_quads_pathref.xml
+  spp: 16000
+  params:
+    geometry: quads-k5
+
+spp_schedule: [4, 8, 16, 32, 64, 128, 512]
+repetitions_per_spp: 3
+reference_spp: 16000
+
+global_defaults:
+  integrator: doublestep
+  maxDepth: 3
+  bvhMaxDepth: 16
+  rrDepth: 5
+  leafSamplingMode: Primitive
+  useBVH: true
+  disableNEE: false
+  doAdditionalVertex: true
+  geometry: quads-k5.xml
+  outputDebugCSV: false
+  enableLightcuts: false
+  lightcutThreshold: 1.5
+  gaussianSAThreshold: 0.03141592
+  useUniformBVHSampling: 1
+  enableSpecular: 0
+  enableFastLUT: 0
+  defensivePDF: 0.000001
+
+analysis:
+  baseline_config_name: baseline_path
+  average_bbox: [0.2, 0.5, 0.8, 1.0] # delimits the area used to check unbiasedness (this box is the bottom half of the image)
+  figure_format: svg
+  exposure_scale: .4
+  n_top_techniques: 3
+
+named_configs:
+  - name: baseline_path
+    params:
+      __scene: scenes/experiments/1_wildcard_spotlight/wildcard_spotlight_quads_pathref.xml
+      integrator: path
+      maxDepth: 3
+      rrDepth: 5
+      geometry: quads-k5
+
+  - name: spherical
+    params:
+      geometry: quads-k5.xml
+      leafSamplingMode: SphericalAABB
+
+  - name: primitive
+    params:
+      geometry: quads-k5.xml
+      leafSamplingMode: Primitive
+      
+  
+  - name: bvhdepth_24
+    params:
+      geometry: quads-k5.xml
+      bvhMaxDepth: 24      
+
+  
+  - name: bvhdepth_12
+    params:
+      geometry: quads-k5.xml
+      bvhMaxDepth: 12
+
+  - name: gaussianSAThreshold_3
+    params:
+      geometry: quads-k5.xml
+      gaussianSAThreshold: 3.14
+
+  - name: gaussianSAThreshold_10
+    params:
+      geometry: quads-k5.xml
+      gaussianSAThreshold: 10
+      
+  # - name: geom_k40_bvhdepth_24
+  #   params:
+  #     geometry: quads-k5.xml
+  #     bvhMaxDepth: 24
+
+  # - name: geom_k40_bvhdepth_20
+  #   params:
+  #     geometry: quads-k5.xml
+  #     bvhMaxDepth: 20
+
+  # - name: geom_k40_bvhdepth_20_fastlut
+  #   params:
+  #     geometry: quads-k5.xml
+  #     bvhMaxDepth: 20
+  #     enableFastLUT: 1
+
+  # - name: geom_k40_bvhdepth_14
+  #   params:
+  #     geometry: quads-k5.xml
+  #     bvhMaxDepth: 14
+
+  # - name: geom_k40_uniform_on
+  #   params:
+  #     geometry: quads-k5.xml
+  #     useUniformBVHSampling: 0
+
+  # - name: geom_k40_specular_on
+  #   params:
+  #     geometry: quads-k5.xml
+  #     enableSpecular: 1

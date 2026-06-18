@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- lighthouse_glints_path_N50000_size0001000_mm00_ss00_r001_spp256 -->
+<scene version="0.6.0">
+	<integrator type="path">
+		<integer name="maxDepth" value="2"/>
+		<boolean name="hideEmitters" value="false"/>
+	</integrator>
+	<geometrybvh type="geometrybvh">
+		<integer name="maxLeafSize" value="4"/>
+		<string name="samplingMode" value="Primitive"/>
+		<float name="defensivePDF" value="0.000001"/>
+		<float name="debug1" value="1"/>
+		<float name="debug2" value="0"/>
+		<float name="debug3" value="0"/>
+	</geometrybvh>
+	<sensor type="perspective">
+		<string name="fovAxis" value="smaller"/>
+		<float name="nearClip" value="0.0001"/>
+		<float name="farClip" value="100"/>
+		<transform name="toWorld">
+			<lookAt origin="8, -1, 2" target="0, -.5, 3" up="0, 0, 1"/>
+		</transform>
+		<!-- <float name="fov" value="70.0"/> -->
+		<float name="fov" value="30"/>
+		<sampler type="independent">
+			<integer name="sampleCount" value="$spp:16"/>
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="700"/>
+			<integer name="height" value="350"/>
+		</film>
+	</sensor>
+	<emitter type="spot" name="spotlight">
+		<transform name="toWorld">
+			<!-- <lookAt origin="0, 1.75, 3.7" target="-0.5, -1, 3.7" up="0, 0, 1"/> -->
+			<lookAt origin="3, 2.75, 3.4" target="-100, -150, 3.4" up="0, 0, 1"/>
+			<!-- <lookAt origin="0, 1.75, 3.7" target="-1, -1.5, 3.7" up="0, 0, 1"/> -->
+			<!-- <lookAt origin="7, 6.75, 3.7" target="-100, -404, 3.7" up="0, 0, 1"/> -->
+		</transform>
+		<rgb name="intensity" value="10000000, 9000000, 7800000"/>
+		<!-- <float name="cutoffAngle" value="15"/> -->
+		<float name="cutoffAngle" value="12"/>
+		<float name="beamWidth" value="8"/>
+	</emitter>
+	<emitter type="spot" name="spotlight2">
+		<transform name="toWorld">
+			<lookAt origin="-0.25, 1., 3.7" target="-10, 1.5, 3.7" up="0, 0, 1"/>
+			<!-- <lookAt origin="-0.25, 2, 3.7" target="-1, 2, 3.7" up="0, 0, 1"/> -->
+		</transform>
+		<rgb name="intensity" value="10000, 9000, 8000"/>
+		<float name="cutoffAngle" value="70"/>
+		<float name="beamWidth" value="30"/>
+	</emitter>
+	<emitter type="spot" name="spotlight3">
+		<transform name="toWorld">
+			<lookAt origin="10, 2, 3" target="0, 2, 3" up="0, 0, 1"/>
+		</transform>
+		<rgb name="intensity" value=".6, .6, 1"/>
+		<float name="cutoffAngle" value="70"/>
+		<float name="beamWidth" value="30"/>
+	</emitter>
+
+
+	<shape type="obj" name="sky">
+		<string name="filename" value="scenes/experiments/scene_geometries/quad_2tri.obj"/>
+		<transform name="toWorld">
+			<scale x="50" y="50" z="1"/>
+			<rotate x="0" y="1" z="0" angle="90"/>
+			<!-- <rotate x="0" y="0" z="1" angle="-"/> -->
+			<translate x="-45" y="0" z="4"/>
+		</transform>
+		
+		<bsdf type="diffuse">
+			<texture type="scale" name="reflectance">
+			<rgb name="scale" value="0.05, 0.075, 0.125"/>
+				<texture type="bitmap" name="value">
+					<string name="filename" value="scene_geometries/clouds.jpg"/>
+				</texture>
+					
+			</texture>
+		</bsdf>
+	</shape> 
+<!-- 	<
+	<shape type="obj" name="light">
+		<string name="filename" value="scenes/experiments/scene_geometries/quad_2tri2.obj"/>
+		<transform name="toWorld">
+			<scale x=".2" y=".2" z="1"/>
+			<rotate x="0" y="1" z="0" angle="90"/>
+			
+			<translate x="-2" y="2" z="4"/>
+		</transform>
+		<emitter type="area">
+			<rgb name="radiance" value="30, 0.15, 0.25"/>
+		</emitter>
+	</shape> > -->
+
+
+	<shape type="obj" name="lighthouse">
+		<string name="filename" value="lighthouse.obj"/>
+		<!-- <bsdf type="dielectric" name="transparent"/> -->
+		<transform name="toWorld">
+			<scale value="0.15"/>
+			<rotate x="1" y="0" z="0" angle="90"/>
+			<translate x="0" y="2" z="1"/>
+		</transform>
+	</shape>
+	
+
+    <shape type="obj" id="Plane.003">
+        <string name="filename" value="scene_geometries/Plane.003.obj"/>
+
+		<transform name="toWorld">
+			<!-- move up a few meters -->
+			<translate x="0" y="18" z="1"/>
+			<scale x="0.15" y="0.15" z="0.23"/>
+		</transform>
+        <bsdf type="diffuse" name="default">
+            <rgb name="reflectance" value="0.8, 0.8, 0.8"/>
+        </bsdf>
+    </shape>
+	
+	<include filename="50ksnowflakes.0001.xml"/>
+	<!-- <include filename="50k_snowflakes.xml"/> -->
+</scene>

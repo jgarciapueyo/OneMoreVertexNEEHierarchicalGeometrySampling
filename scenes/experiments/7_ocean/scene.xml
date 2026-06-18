@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<scene version="0.6.0">
+	<!-- <integrator type="glinttracer">
+        <integer name="granularity" value="2000000"/>
+	</integrator>
+    
+	<geometrybvh type="geometrybvh">
+		<integer name="maxLeafSize" value="4"/>
+		<string name="samplingMode" value="Primitive"/>
+		<float name="defensivePDF" value="0.000001"/>
+		<float name="debug1" value="1"/>
+		<float name="debug2" value="0"/>
+		<float name="debug3" value="0"/>
+	</geometrybvh> -->
+    <integrator type="$integrator:path">
+        <integer name="maxDepth" value="3"/>
+        <integer name="rrDepth" value="5"/>
+    </integrator>
+    <!-- <sensor type="perspective">
+        <string name="fovAxis" value="smaller"/>
+        <float name="nearClip" value="0.1000"/>
+        <float name="farClip" value="1000.0000"/>
+        <transform name="toWorld">
+            <lookAt origin="14.7036, 0.5637, 4.6662" target="13.7683, 0.5442, 4.3127" up="-0.3534, -0.0074, 0.9354"/>
+        </transform>
+        <float name="fov" value="28.8415"/>
+        
+        <sampler type="independent">
+            <integer name="sampleCount" value="$spp:64"/>
+        </sampler>
+        <film type="hdrfilm">
+            <integer name="width" value="$w:1080"/>
+            <integer name="height" value="$h:1080"/>
+        </film>
+    </sensor> -->
+    
+    <sensor type="thinlens">
+        <string name="fovAxis" value="smaller"/>
+        <float name="nearClip" value="0.1000"/>
+        <float name="farClip" value="1000.0000"/>
+        <float name="apertureRadius" value="0.1"/>
+        <float name="focusDistance" value="10.0"/>
+        <transform name="toWorld">
+            <lookAt origin="14.7036, 0.5637, 4.6662" target="13.7683, 0.5442, 4.3127" up="-0.3534, -0.0074, 0.9354"/>
+        </transform>
+        <float name="fov" value="28.8415"/>
+        <!-- <float name="fov" value="70"/> -->
+        <sampler type="independent">
+            <integer name="sampleCount" value="$spp:64"/>
+        </sampler>
+        <film type="hdrfilm">
+            <integer name="width" value="$w:1080"/>
+            <integer name="height" value="$h:1080"/>
+        </film>
+    </sensor>
+    <!-- <emitter type="sunsky">
+        <vector name="sunDirection" x="1.0" y="0.5" z="-0.5"/>
+    </emitter> -->
+    <!-- <emitter type="sunsky">
+        <transform name="toWorld">
+            <rotate x="1" angle="90"/>
+        </transform>
+        <vector name="sunDirection" x="0.9" y="0.01" z="0.35"/>
+        <float name="sunScale" value="5.0"/>
+        <float name="sunRadiusScale" value="15.0"/>
+    </emitter> -->
+    <emitter type="spot" name="spot_light">
+        <transform name="toWorld">
+            <lookat origin="28.7036, 1, 9" target="5.7683, 0.5442, 4.3127" up="-0.3534, -0.0074, 0.9354"/>
+        </transform>
+        <rgb name="intensity" value="1000000"/>
+        <float name="cutoffAngle" value="20"/>
+    </emitter>
+    <!-- <emitter type="sun" name="Sun"> -->
+    <!-- 
+        m_scale = props.getFloat("scale", 1.0f);
+        m_resolution = props.getInteger("resolution", 512);
+        m_sun = computeSunCoordinates(props);
+        m_sunRadiusScale = props.getFloat("sunRadiusScale", 1.0f);
+        m_turbidity = props.getFloat("turbidity", 3.0f);
+        m_stretch = props.getFloat("stretch", 1.0f);
+         -->
+        <!-- <vector name="sunDirection" x="0.5" y="1.0" z="0.5"/> -->
+
+        <!-- <float name="cutoffAngle" value="22.5000"/> -->
+    <!-- </emitter>
+    <emitter type="sky"> -->
+
+    <shape type="obj" id="ocean">
+        <transform name="toWorld">
+            <!-- <scale x="10" y="10" z="10"/> -->
+            <translate x="-40" y="-0.6" z="0"/>
+        </transform>
+        <string name="filename" value="scene_geometries/ocean.obj"/>
+        <!-- <bsdf type="diffuse" name="Material.002">
+            <rgb name="reflectance" value="0.0016, 0.0000, 0.0447"/>
+        </bsdf>
+         -->
+        <bsdf type="basicprincipled">
+            <rgb name="reflectance" value="0.0016, 0.0000, 0.0447"/>
+            <float name="roughness" value="0.002"/>
+            <float name="specular" value="1"/>
+            <float name="metallic" value="0"/>
+        </bsdf>
+        <!-- <bsdf type="roughplastic">
+            <rgb name="reflectance" value="0.0016, 0.0000, 0.0447"/>
+            <float name="alpha" value="0.001"/>
+        </bsdf> -->
+    </shape>
+
+    <!-- <shape type="obj" id="ocean.001">
+        <string name="filename" value="scene_geometries/ocean.001.obj"/>
+        <bsdf type="diffuse" name="Material.003">
+            <rgb name="reflectance" value="0.0016, 0.0000, 0.0447"/>
+        </bsdf>
+    </shape> -->
+
+</scene>

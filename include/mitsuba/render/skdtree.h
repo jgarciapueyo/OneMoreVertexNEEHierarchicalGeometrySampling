@@ -23,8 +23,6 @@
 #include <mitsuba/render/shape.h>
 #include <mitsuba/render/sahkdtree3.h>
 #include <mitsuba/render/triaccel.h>
-#include <mitsuba/render/kdnodeinfo.h>
-#include <vector>
 
 #if defined(MTS_KD_CONSERVE_MEMORY)
 #if defined(MTS_HAS_COHERENT_RT)
@@ -192,93 +190,6 @@ public:
     void rayIntersectPacketIncoherent(const RayPacket4 &packet,
         const RayInterval4 &interval, Intersection4 &its, void *temp) const;
 #endif
-    //! @}
-    // =============================================================
-
-    // =============================================================
-    //! @{ \name Geometric aggregates for geometry-aware sampling
-    // =============================================================
-
-    /**
-     * \brief Build geometric aggregates for all KD-tree nodes.
-     *
-     * Must be called after build(). Computes per-node diffuse albedo,
-     * surface area, and normal distribution for geometry-aware sampling.
-     * The aggregates are stored in a parallel array indexed by node index.
-     */
-    void buildGeometricAggregates();
-
-    /**
-     * \brief Check if geometric aggregates have been built.
-     * \return true if buildGeometricAggregates() has been called
-     */
-    inline bool hasGeometricAggregates() const {
-        return !m_nodeInfo.empty();
-    }
-
-    /**
-     * \brief Retrieve the geometric aggregate info for a node.
-     *
-     * \param node Pointer to a KD-tree node
-     * \return Reference to the KDNodeInfo for that node
-     */
-    inline const KDNodeInfo& getNodeInfo(const KDNode *node) const {
-        SAssert(hasGeometricAggregates());
-        size_t idx = node - m_nodes;
-        SAssert(idx < m_nodeInfo.size());
-        return m_nodeInfo[idx];
-    }
-
-    /**
-     * \brief Retrieve the geometric aggregate info by node index.
-     *
-     * \param idx Node index (0 = root)
-     * \return Reference to the KDNodeInfo for that node
-     */
-    inline const KDNodeInfo& getNodeInfoByIndex(size_t idx) const {
-        SAssert(hasGeometricAggregates());
-        SAssert(idx < m_nodeInfo.size());
-        return m_nodeInfo[idx];
-    }
-
-    /**
-     * \brief Get a node pointer by index.
-     *
-     * \param idx Node index
-     * \return Pointer to the KDNode
-     */
-    inline const KDNode* getNodeByIndex(size_t idx) const {
-        return m_nodes + idx;
-    }
-
-    /**
-     * \brief Get the node index for a given node pointer.
-     *
-     * \param node Pointer to a KD-tree node
-     * \return Node index
-     */
-    inline size_t getNodeIndex(const KDNode *node) const {
-        return node - m_nodes;
-    }
-
-    /**
-     * \brief Get the total surface area of all geometry.
-     * \return Total surface area (available after buildGeometricAggregates)
-     */
-    inline Float getTotalSurfaceArea() const {
-        return m_totalSurfaceArea;
-    }
-
-    /**
-     * \brief Get the total number of nodes in the KD-tree.
-     * \return Node count
-     */
-    inline size_t getNodeCount() const {
-        return m_nodeCount;
-    }
-
-    void dumpNodeStats() const;
-
     //! @}
     // =============================================================
 
@@ -555,43 +466,6 @@ private:
 #if !defined(MTS_KD_CONSERVE_MEMORY)
     TriAccel *m_triAccel;
 #endif
-
-    // =============================================================
-    // Geometric aggregates for geometry-aware sampling
-    // =============================================================
-
-    /// Parallel array: m_nodeInfo[node_index] = KDNodeInfo
-    /// Index computed as: node_index = (node_ptr - m_nodes)
-    std::vector<KDNodeInfo> m_nodeInfo;
-
-    /// Pre-computed total surface area across all shapes
-    Float m_totalSurfaceArea;
-
-    /**
-     * \brief Recursively build geometric aggregates (post-order DFS).
-     *
-     * \param node Current node being processed
-     * \param nodeAABB Axis-aligned bounding box of the current node
-     * \return KDNodeInfo for the current node
-     */
-    KDNodeInfo buildGeometricAggregatesRecursive(const KDNode *node, const AABB &nodeAABB);
-
-    /**
-     * \brief Compute aggregate properties for a single shape.
-     *
-     * \param shape The shape to analyze
-     * \return KDNodeInfo with shape's diffuse albedo, area, and normal info
-     */
-    KDNodeInfo computeShapeAggregate(const Shape *shape) const;
-
-    /**
-     * \brief Compute aggregate properties for a triangle within a mesh.
-     *
-     * \param mesh The triangle mesh
-     * \param triIdx Index of the triangle within the mesh
-     * \return KDNodeInfo with triangle's properties
-     */
-    KDNodeInfo computeTriangleAggregate(const TriMesh *mesh, IndexType triIdx) const;
 };
 
 MTS_NAMESPACE_END

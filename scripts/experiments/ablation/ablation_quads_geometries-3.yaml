@@ -1,0 +1,163 @@
+# BVH ablation across several non-Disney geometries
+docker:
+  container: bdpt_twopoints_mitsuba-mitsuba-1
+  workdir: /home/mitsuba
+  setpath_script: /home/mitsuba/setpath.sh
+
+scene: scenes/experiments/1_wildcard_spotlight/wildcard_spotlight_quads.xml
+output_root: scenes/experiments/1_wildcard_spotlight/results/ablation_quads_geometries_quads_k5
+
+reference:
+  inherit_config_params: false
+  # pre_rendered_exr: scenes/experiments/1_wildcard_spotlight/results/ablation_quads_geometries_specular/baseline_path/reference.exr
+  scene: scenes/experiments/1_wildcard_spotlight/wildcard_spotlight_quads_pathref.xml
+  spp: 16000
+  params:
+    geometry: quads-k5
+
+spp_schedule: [4, 8, 16, 32, 64, 128, 512]
+repetitions_per_spp: 3
+reference_spp: 16000
+
+global_defaults:
+  integrator: doublestep
+  maxDepth: 3
+  bvhMaxDepth: 16
+  rrDepth: 5
+  leafSamplingMode: SphericalAABB
+  useBVH: true
+  disableNEE: false
+  doAdditionalVertex: true
+  geometry: quads-k5.xml
+  outputDebugCSV: false
+  enableLightcuts: false
+  lightcutThreshold: 1.5
+  gaussianSAThreshold: 0.03141592
+  useUniformBVHSampling: 1
+  enableSpecular: 0
+  enableFastLUT: 0
+  defensivePDF: 0.000001
+
+analysis:
+  baseline_config_name: baseline_path
+  average_bbox: [0.0, 0.5, 1.0, 1.0] # delimits the area used to check unbiasedness (this box is the bottom half of the image)
+  figure-format: svg
+
+named_configs:
+  - name: baseline_path
+    params:
+      __scene: scenes/experiments/1_wildcard_spotlight/wildcard_spotlight_quads_pathref.xml
+      integrator: path
+      maxDepth: 3
+      rrDepth: 5
+      geometry: quads-k5
+
+  - name: geom_k40_mode_spherical
+    params:
+      geometry: quads-k5.xml
+      leafSamplingMode: SphericalAABB
+
+  - name: geom_k40_mode_primitive
+    params:
+      geometry: quads-k5.xml
+      leafSamplingMode: Primitive
+      
+
+  - name: geom_k40_bvhdepth_24
+    params:
+      geometry: quads-k5.xml
+      bvhMaxDepth: 24
+
+  - name: geom_k40_bvhdepth_20
+    params:
+      geometry: quads-k5.xml
+      bvhMaxDepth: 20
+
+  - name: geom_k40_bvhdepth_20_fastlut
+    params:
+      geometry: quads-k5.xml
+      bvhMaxDepth: 20
+      enableFastLUT: 1
+
+  - name: geom_k40_bvhdepth_14
+    params:
+      geometry: quads-k5.xml
+      bvhMaxDepth: 14
+
+  - name: geom_k40_uniform_on
+    params:
+      geometry: quads-k5.xml
+      useUniformBVHSampling: 0
+
+  - name: geom_k40_specular_on
+    params:
+      geometry: quads-k5.xml
+      enableSpecular: 1
+
+  - name: geom_k40_defensive_1e-8
+    params:
+      geometry: quads-k5.xml
+      defensivePDF: 0.00000001
+
+  - name: geom_k40_lightcuts1.5_Primitive
+    params:
+      geometry: quads-k5.xml
+      leafSamplingMode: Primitive
+      enableLightcuts: true
+      lightcutThreshold: 1.5
+
+  - name: geom_k40_lightcuts1.5_on_spherical
+    params:
+      geometry: quads-k5.xml
+      leafSamplingMode: SphericalAABB
+      enableLightcuts: true
+      lightcutThreshold: 1.5
+
+  - name: geom_k40_lightcuts1.5_on_spherical_anynode
+    params:
+      geometry: quads-k5.xml
+      leafSamplingMode: SphericalAABB_anyNode
+      enableLightcuts: true
+      lightcutThreshold: 1.5
+
+  - name: geom_k40_lightcuts1.1_Primitive
+    params:
+      geometry: quads-k5.xml
+      leafSamplingMode: Primitive
+      enableLightcuts: true
+      lightcutThreshold: 1.1
+
+  - name: geom_k40_lightcuts1.1_on_spherical
+    params:
+      geometry: quads-k5.xml
+      leafSamplingMode: SphericalAABB
+      enableLightcuts: true
+      lightcutThreshold: 1.1
+
+  - name: geom_k40_lightcuts1.1_on_spherical_anynode
+    params:
+      geometry: quads-k5.xml
+      leafSamplingMode: SphericalAABB_anyNode
+      enableLightcuts: true
+      lightcutThreshold: 1.1
+
+  - name: geom_k40_lightcuts10_Primitive
+    params:
+      geometry: quads-k5.xml
+      leafSamplingMode: Primitive
+      enableLightcuts: true
+      lightcutThreshold: 10
+
+  - name: geom_k40_lightcuts10_on_spherical
+    params:
+      geometry: quads-k5.xml
+      leafSamplingMode: SphericalAABB
+      enableLightcuts: true
+      lightcutThreshold: 10
+
+  - name: geom_k40_lightcuts10_on_spherical_anynode
+    params:
+      geometry: quads-k5.xml
+      leafSamplingMode: SphericalAABB_anyNode
+      enableLightcuts: true
+      lightcutThreshold: 10

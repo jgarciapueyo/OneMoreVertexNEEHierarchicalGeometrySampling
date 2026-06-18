@@ -78,6 +78,10 @@ MTS_NAMESPACE_BEGIN
  *         Scale factor to adjust the radius of the sun, while preserving its power.
  *         Set to \code{0} to turn it into a directional light source.
  *     }
+ *     \parameter{toWorld}{\Transform\Or\Animation}{
+ *        Specifies an optional sensor-to-world transformation.
+ *        \default{none (i.e. sensor space $=$ world space)}
+ *     }
  * }
  * \vspace{-3mm}
  *
@@ -107,9 +111,6 @@ public:
         const Transform &trafo = m_worldTransform->eval(0);
 
         Properties skyProps(props);
-        skyProps.removeProperty("toWorld");
-        if (props.hasProperty("sunDirection"))
-            skyProps.setVector("sunDirection", trafo.inverse()(props.getVector("sunDirection")));
         skyProps.setPluginName("sky");
         skyProps.setFloat("scale", skyScale, false);
 

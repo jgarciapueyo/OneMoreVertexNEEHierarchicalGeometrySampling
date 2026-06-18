@@ -459,6 +459,25 @@ public:
     virtual Float getRoughness(const Intersection &its, int index) const;
 
     /**
+     * \brief For principled BSDFs: return the metallic factor at the given intersection.
+     * The default implementation returns 0 (fully dielectric).
+     */
+    virtual Float getMetallic(const Intersection &its) const;
+
+    /**
+     * \brief For principled BSDFs: return the dielectric F0 specular value at the given intersection.
+     * The default implementation returns 0.5 (BasicPrincipled default).
+     */
+    virtual Float getSpecularF0(const Intersection &its) const;
+
+    /**
+     * \brief Return the raw base reflectance color (before metallic/diffuse split).
+     * For BasicPrincipled this is the full m_reflectance Spectrum; for other BSDFs
+     * defaults to getDiffuseReflectance(its).
+     */
+    virtual Spectrum getRawReflectance(const Intersection &its) const;
+
+    /**
      * \brief Sometimes, BSDF models make use of a perturbed frame for
      * internal shading computations (e.g. bump maps). This function
      * exposes this internal frame.

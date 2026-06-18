@@ -1,0 +1,51 @@
+# Experiment v11-cbox-n5: cbox with 5x5 tiles/wall (125 wall primitives total)
+# Compares baseline path tracer vs our additionalvertex (doublestep) method.
+
+docker:
+  container: bdpt_twopoints_mitsuba-mitsuba-1
+  workdir: /home/mitsuba
+  setpath_script: /home/mitsuba/setpath.sh
+
+scene: scenes/experiments/6_cbox/cbox_geometry.xml
+output_root: scenes/experiments/6_cbox/results/v11_n5
+
+reference:
+  inherit_config_params: false
+  scene: scenes/experiments/6_cbox/cbox_geometry.xml
+  spp: 1024
+  geometry: cbox_geometries_5_1.0
+
+spp_schedule: [4, 8, 16, 64, 128]
+repetitions_per_spp: 3
+
+global_defaults:
+  integrator: doublestep
+  maxDepth: 5
+  rrDepth: 5
+  maxLeafSize: 2
+  leafSamplingMode: SphericalAABB
+  useBVH: true
+  disableNEE: false
+  doAdditionalVertex: true
+  geometry: cbox_geometries_5_1.0
+  outputDebugCSV: false
+  lightcutThreshold: 1.5
+  useUniformBVHSampling: 1
+  defensivePDF: 0.0000001
+
+analysis:
+  baseline_config_name: baseline_path
+  average_bbox: [0.3, 0.3, 0.7, 0.7]
+
+named_configs:
+  - name: baseline_path
+    params:
+      __scene: scenes/experiments/6_cbox/cbox_geometry.xml
+      integrator: path
+      maxDepth: 5
+      rrDepth: 5
+  - name: ours
+    params:
+      leafSamplingMode: SphericalAABB
+      maxLeafSize: 2
+      gaussianSAThreshold: 0

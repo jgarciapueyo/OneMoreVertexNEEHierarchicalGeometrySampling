@@ -1,5 +1,6 @@
 #include <mitsuba/render/scene.h>
 #include <mitsuba/core/statistics.h>
+#include "sampleGeometryExplicit.h"
 
 MTS_NAMESPACE_BEGIN
 
@@ -8,7 +9,11 @@ static StatsCounter avgPathLength("Path tracer", "Average path length", EAverage
 class AdditionalVertexIntegrator : public MonteCarloIntegrator {
 public:
     AdditionalVertexIntegrator(const Properties &props)
-        : MonteCarloIntegrator(props) { }
+        : MonteCarloIntegrator(props) { 
+        m_doAdditionalVertex = props.getBoolean("doAdditionalVertex", false);
+        m_useBVH = props.getBoolean("useBVH", false);
+        m_disableNee = props.getBoolean("disableNEE", false);
+    }
 
     /// Unserialize from a binary data stream
     AdditionalVertexIntegrator(Stream *stream, InstanceManager *manager)
@@ -21,6 +26,8 @@ public:
         RayDifferential ray(r);
         Spectrum Li(0.0f);
         bool scattered = false;
+
+        bool disableNee = m_disableNee; // local copy of the flag to disable NEE for the next bounces to avoid double counting
 
         /* Perform the first ray intersection (or ignore if the
            intersection has already been provided). */
@@ -69,7 +76,8 @@ public:
             /* Estimate the direct illumination if this is requested */
             DirectSamplingRecord dRec(its);
 
-            if (rRec.type & RadianceQueryRecord::EDirectSurfaceRadiance &&
+            if (!disableNee && // flag to disable NEE if needed
+                (rRec.type & RadianceQueryRecord::EDirectSurfaceRadiance) &&
                 (bsdf->getType() & BSDF::ESmooth)) {
                 Spectrum value = scene->sampleEmitterDirect(dRec, rRec.nextSample2D());
                 if (!value.isZero()) {
@@ -95,6 +103,24 @@ public:
                         Li += throughput * value * bsdfVal * weight;
                     }
                 }
+            }
+
+            /* ==================================================================== */
+            /*                     Length-2 NEE (Additional vertex)                 */
+            /* ==================================================================== */
+            /*
+            std::cout << "additional vertex integrator - length 2 nee - before ifloop "
+                      << "m_doAdditionalVertex: " << m_doAdditionalVertex << " disableNee: " << disableNee
+                      << "rRec.depth: " << rRec.depth << " maxDepth: " << m_maxDepth
+                      << "(rRec.depth + 1) <= maxDepth: " << ((rRec.depth + 1) <= m_maxDepth) << "\n";
+            */
+            if (m_doAdditionalVertex && ((rRec.depth + 1) <= m_maxDepth || m_maxDepth < 0)) {
+                // Log(EInfo, "additional vertex integrator - length 2 nee - ifloop start\n");
+                Spectrum additionalLi = estimateLength2NEE(scene, rRec.sampler, its, bsdf, rRec, ray);
+                // Log(EInfo, "additional vertex integrator - length 2 nee - additionalLi: %f\n", additionalLi.max());
+                Li += throughput * additionalLi;
+                // Log(EInfo, "additional vertex integrator - length 2 nee - ifloop end\n");
+                disableNee = true; // disable NEE for the next bounces to avoid double counting
             }
 
             /* ==================================================================== */
@@ -188,7 +214,55 @@ public:
         avgPathLength.incrementBase();
         avgPathLength += rRec.depth;
 
+        // Log(EInfo, "additional vertex integrator - end\n");
         return Li;
+    }
+
+    /* Function to estimate a length-2 path with NEE (1 bounce).
+        The name of the three vertices is:
+        x_s: the current vertex (intersection of the incoming ray with the geometry)
+        x_p: the intermediate vertex (sampled stochastically)
+        x_e: the vertex on the emitter
+    */
+    Spectrum estimateLength2NEE(
+        const Scene *scene,
+        Sampler *sampler,
+        const Intersection &its_xs,
+        const BSDF *bsdf,
+        RadianceQueryRecord &rRec,
+        const Ray &ray
+    ) const {
+        // Log(EInfo, "additional vertex integrator - length 2 nee - start\n");
+        // 1. Sample an emitter and a point on it
+        PositionSamplingRecord pRec_xe;
+        Spectrum emitted_radiance = scene->sampleEmitterPosition(pRec_xe, sampler->next2D()); 
+        // TODO(jorge): not really understand how sample position can return a spectrum value without 
+        // knowing which direction it casts to. For now, I'll will not use that emited_radiance and reevaluate it later when
+        // knowing the direction after having sampled x_e and x_s.
+
+        // Define samples for importance heuristic
+
+        Intersection its_xp;
+        Float xp_pdf;
+
+        // 2. Sample intermediate geometry p using brute-force stochastic logic
+        if (m_useBVH) {
+            if (!scene->getGeometryBVH()->sampleGeometry(scene, sampler, its_xs, pRec_xe, its_xp, xp_pdf))
+                return Spectrum(0.0f);
+        } else {
+            if (!sampleGeometryExplicit(scene, sampler, its_xs, pRec_xe, its_xp, xp_pdf))
+                return Spectrum(0.0f);
+        }
+        // Fill remaining Intersection fields that sampleGeometry might not set
+        its_xp.wi = its_xp.toLocal(normalize(its_xs.p - its_xp.p));
+        its_xp.hasUVPartials = false;
+
+        if (xp_pdf <= 0) return Spectrum(0.0f);
+
+        Spectrum contribution = evalLength2Contribution(scene, its_xs, its_xp, pRec_xe, true);
+        Float pdf = xp_pdf * pRec_xe.pdf;
+
+        return (contribution / pdf);
     }
 
     inline Float miWeight(Float pdfA, Float pdfB) const {
@@ -203,15 +277,22 @@ public:
 
     std::string toString() const {
         std::ostringstream oss;
-        oss << "MIPathTracer[" << endl
+        oss << "AdditionalVertexIntegrator[" << endl
             << "  maxDepth = " << m_maxDepth << "," << endl
             << "  rrDepth = " << m_rrDepth << "," << endl
-            << "  strictNormals = " << m_strictNormals << endl
+            << "  strictNormals = " << m_strictNormals << "," << endl
+            << "  doAdditionalVertex = " << m_doAdditionalVertex << "," << endl
+            << "  useBVH = " << m_useBVH << endl
+            << "  disableNEE = " << m_disableNee << endl
             << "]";
         return oss.str();
     }
 
     MTS_DECLARE_CLASS()
+private:
+    bool m_doAdditionalVertex;
+    bool m_useBVH;
+    bool m_disableNee; 
 };
 
 MTS_IMPLEMENT_CLASS_S(AdditionalVertexIntegrator, false, SamplingIntegrator)

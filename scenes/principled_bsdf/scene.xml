@@ -1,0 +1,758 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene version="0.6.0">
+	<integrator type="path">
+		<integer name="maxDepth" value="8"/>
+		<integer name="rrDepth" value="5"/>
+		<integer name="sampleCount" value="512"/>
+	</integrator>
+	<sensor type="perspective">
+		<string name="fovAxis" value="smaller"/>
+		<float name="nearClip" value="0.0001"/>
+		<float name="farClip" value="1000"/>
+		<transform name="toWorld">
+			<lookAt origin="0, 2.5, 8" target="0, 2.5, 0" up="-1, 0, 0"/>
+		</transform>
+		<float name="fov" value="45"/>
+		<sampler type="independent">
+			<integer name="sampleCount" value="512"/>
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="512"/>
+			<integer name="height" value="512"/>
+		</film>
+	</sensor>
+	<emitter type="envmap">
+		<string name="filename" value="env.hdr"/>
+	</emitter>
+	<shape type="rectangle" name="floor">
+		<transform name="toWorld">
+			<scale x="10" y="10" z="1"/>
+		</transform>
+		<bsdf type="diffuse">
+			<texture type="checkerboard" name="reflectance">
+				<float name="uscale" value="50"/>
+				<float name="vscale" value="50"/>
+			</texture>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r00_c00_0.00">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-2.5" y="0" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.0"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r00_c01_0.10">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-1.9444444444444444" y="0" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.1"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r00_c02_0.20">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-1.3888888888888888" y="0" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.2"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r00_c03_0.30">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-0.8333333333333333" y="0" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.3"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r00_c04_0.40">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-0.2777777777777777" y="0" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.4"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r00_c05_0.50">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="0.2777777777777777" y="0" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.5"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r00_c06_0.60">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="0.8333333333333335" y="0" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.6"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r00_c07_0.70">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="1.3888888888888893" y="0" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.7"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r00_c08_0.80">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="1.9444444444444446" y="0" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.8"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r00_c09_0.90">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="2.5" y="0" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.9"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r01_c00_0.00">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-2.5" y="1" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.0"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r01_c01_0.10">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-1.9444444444444444" y="1" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.1"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r01_c02_0.20">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-1.3888888888888888" y="1" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.2"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r01_c03_0.30">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-0.8333333333333333" y="1" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.3"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r01_c04_0.40">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-0.2777777777777777" y="1" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.4"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r01_c05_0.50">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="0.2777777777777777" y="1" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.5"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r01_c06_0.60">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="0.8333333333333335" y="1" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.6"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r01_c07_0.70">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="1.3888888888888893" y="1" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.7"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r01_c08_0.80">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="1.9444444444444446" y="1" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.8"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r01_c09_0.90">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="2.5" y="1" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.46, 0.48, 0.76"/>
+			<float name="roughness" value="0.9"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r02_c00_0.00">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-2.5" y="2" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r02_c01_0.10">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-1.9444444444444444" y="2" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.1"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r02_c02_0.20">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-1.3888888888888888" y="2" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.2"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r02_c03_0.30">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-0.8333333333333333" y="2" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.3"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r02_c04_0.40">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-0.2777777777777777" y="2" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.4"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r02_c05_0.50">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="0.2777777777777777" y="2" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.5"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r02_c06_0.60">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="0.8333333333333335" y="2" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.6"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r02_c07_0.70">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="1.3888888888888893" y="2" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.7"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r02_c08_0.80">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="1.9444444444444446" y="2" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.8"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r02_c09_0.90">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="2.5" y="2" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.9"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r03_c00_0.00">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-2.5" y="3" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r03_c01_0.10">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-1.9444444444444444" y="3" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.1"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r03_c02_0.20">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-1.3888888888888888" y="3" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.2"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r03_c03_0.30">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-0.8333333333333333" y="3" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.3"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r03_c04_0.40">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-0.2777777777777777" y="3" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.4"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r03_c05_0.50">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="0.2777777777777777" y="3" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.5"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r03_c06_0.60">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="0.8333333333333335" y="3" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.6"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r03_c07_0.70">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="1.3888888888888893" y="3" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.7"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r03_c08_0.80">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="1.9444444444444446" y="3" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.8"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r03_c09_0.90">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="2.5" y="3" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.98, 0.92, 0.44"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.9"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r04_c00_0.00">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-2.5" y="4" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.0"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r04_c01_0.10">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-1.9444444444444444" y="4" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.1"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r04_c02_0.20">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-1.3888888888888888" y="4" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r04_c03_0.30">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-0.8333333333333333" y="4" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.3"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r04_c04_0.40">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-0.2777777777777777" y="4" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.4"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r04_c05_0.50">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="0.2777777777777777" y="4" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.5"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r04_c06_0.60">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="0.8333333333333335" y="4" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.6"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r04_c07_0.70">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="1.3888888888888893" y="4" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.7"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r04_c08_0.80">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="1.9444444444444446" y="4" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r04_c09_0.90">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="2.5" y="4" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.0"/>
+			<float name="specular" value="0.9"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r05_c00_0.00">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-2.5" y="5" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.8"/>
+			<float name="specular" value="0.0"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r05_c01_0.10">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-1.9444444444444444" y="5" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.8"/>
+			<float name="specular" value="0.1"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r05_c02_0.20">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-1.3888888888888888" y="5" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.8"/>
+			<float name="specular" value="0.2"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r05_c03_0.30">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-0.8333333333333333" y="5" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.8"/>
+			<float name="specular" value="0.3"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r05_c04_0.40">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="-0.2777777777777777" y="5" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.8"/>
+			<float name="specular" value="0.4"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r05_c05_0.50">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="0.2777777777777777" y="5" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.8"/>
+			<float name="specular" value="0.5"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r05_c06_0.60">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="0.8333333333333335" y="5" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.8"/>
+			<float name="specular" value="0.6"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r05_c07_0.70">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="1.3888888888888893" y="5" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.8"/>
+			<float name="specular" value="0.7"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r05_c08_0.80">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="1.9444444444444446" y="5" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.8"/>
+			<float name="specular" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="sphere" name="sphere_r05_c09_0.90">
+		<transform name="toWorld">
+			<scale x="0.2" y="0.2" z="0.2"/>
+			<translate x="2.5" y="5" z="1"/>
+		</transform>
+		<bsdf type="basicprincipled">
+			<rgb name="reflectance" value="0.89, 0.21, 0.25"/>
+			<float name="roughness" value="0.01"/>
+			<float name="metallic" value="0.8"/>
+			<float name="specular" value="0.9"/>
+		</bsdf>
+	</shape>
+</scene>

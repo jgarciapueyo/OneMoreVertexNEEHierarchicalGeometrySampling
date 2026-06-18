@@ -15,6 +15,7 @@
 				<xsd:element name="phase" type="phase"/>
 				<xsd:element name="include" type="include"/>
 				<xsd:element name="null" type="null"/>
+				<xsd:element name="geometrybvh" type="geometrybvh"/>
 
 				<!-- Usual attributes -->
 				<xsd:element name="integer" type="integer"/>
@@ -106,6 +107,19 @@
 					<xsd:group ref="objectGroup"/>
 					<xsd:element name="integrator" type="integrator"/>
 					<xsd:element name="sampler" type="object"/>
+				</xsd:choice>
+			</xsd:extension>
+		</xsd:complexContent>
+	</xsd:complexType>
+
+	<!-- GEOMETRYBVH Element -->
+	<xsd:complexType name="geometrybvh">
+		<xsd:complexContent>
+			<xsd:extension base="objectBase">
+				<xsd:choice minOccurs="0" maxOccurs="unbounded">
+					<xsd:group ref="objectGroup"/>
+					<xsd:element name="geometrybvh" type="geometrybvh"/>
+					<!-- <xsd:element name="sampler" type="object"/> -->
 				</xsd:choice>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -387,4 +401,5 @@
 		<xsd:attribute name="temperature" type="xsd:string" use="required"/>
 		<xsd:attribute name="scale" type="doubleType" use="optional"/>
 	</xsd:complexType>
+
 </xsd:schema>

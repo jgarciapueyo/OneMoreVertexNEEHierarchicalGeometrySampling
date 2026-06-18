@@ -1,0 +1,95 @@
+# testing gaussian SA thresholds
+docker:
+  container: bdpt_twopoints_mitsuba-mitsuba-1
+  workdir: /home/mitsuba
+  setpath_script: /home/mitsuba/setpath.sh
+
+scene: scenes/experiments/2_wildcard_asteroids/wildcard_spotlight.xml
+output_root: scenes/experiments/2_wildcard_asteroids/results/ablation_asteroids_gaussianThreshold
+
+reference:
+  inherit_config_params: false
+  pre_rendered_exr: scenes/experiments/2_wildcard_asteroids/results/ablation_asteroids/baseline_path/reference.exr
+  scene: scenes/experiments/2_wildcard_asteroids/wildcard_spotlight_pathref.xml
+  spp: 16000
+  
+
+spp_schedule: [2, 4, 8, 16, 32, 64, 128, 512] # , 16, 32, 64, 128, 512
+repetitions_per_spp: 3
+reference_spp: 16000
+
+global_defaults:
+  integrator: doublestep
+  maxDepth: 3
+  bvhMaxDepth: 20
+  rrDepth: 5
+  leafSamplingMode: Primitive
+  useBVH: true
+  disableNEE: false
+  doAdditionalVertex: true
+  outputDebugCSV: false
+  enableLightcuts: false
+  lightcutThreshold: 1.5
+  gaussianSAThreshold: 0.03141592
+  useUniformBVHSampling: 1
+  enableSpecular: 0
+  enableFastLUT: 1 # Should be 1 to precompute gaussians (>1.5 evals the lut once at the cost of variance)
+  defensivePDF: 0.000001
+
+analysis:
+  baseline_config_name: baseline_path
+  average_bbox: [0.6, 0.4, 0.68, 0.5] # delimits the area used to check unbiasedness (this box is the bottom half of the image)
+  figure_format: svg
+  exposure_scale: .5
+  n_top_techniques: 15
+
+named_configs:
+  - name: baseline_path
+    params:
+      __scene: scenes/experiments/2_wildcard_asteroids/wildcard_spotlight_pathref.xml
+      integrator: path
+      maxDepth: 3
+      rrDepth: 5
+
+  - name: bdpt
+    params:
+      integrator: bdpt
+      __scene: scenes/experiments/2_wildcard_asteroids/wildcard_spotlight_pathref.xml
+
+  - name: thresh_0
+    params:
+      gaussianSAThreshold: 0.0
+
+  - name: thresh_0.01
+    params:
+      gaussianSAThreshold: 0.01
+
+  - name: thresh_0.03141592
+    params:
+      gaussianSAThreshold: 0.03141592
+
+  - name: thresh_0.06
+    params:
+      gaussianSAThreshold: 0.06
+
+  - name: thresh_0.1
+    params:
+      gaussianSAThreshold: 0.1
+
+  - name: thresh_0.2
+    params:
+      gaussianSAThreshold: 0.2
+  
+  - name: thresh_1
+    params:
+      gaussianSAThreshold: 1.0
+
+  - name: thresh_3
+    params:
+      gaussianSAThreshold: 3.0
+
+  - name: thresh_10
+    params:
+      gaussianSAThreshold: 10.0
+
+      

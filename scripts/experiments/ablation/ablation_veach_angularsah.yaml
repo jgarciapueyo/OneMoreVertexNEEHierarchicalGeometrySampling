@@ -1,0 +1,87 @@
+
+# BVH ablation across several non-Disney geometries
+docker:
+  container: bdpt_twopoints_mitsuba-mitsuba-1
+  workdir: /home/mitsuba
+  setpath_script: /home/mitsuba/setpath.sh
+
+scene: scenes/experiments/4_wildcard_veach/wildcard_veach.xml
+output_root: scenes/experiments/4_wildcard_veach/results/ablation_veach_angularsah_specular
+
+reference:
+  inherit_config_params: false
+  pre_rendered_exr: /home/nestor/bdpt_twopoints_mitsuba/scenes/experiments/4_wildcard_veach/results/ablation_veach_angularsah_specular/reference.exr
+  scene: scenes/experiments/4_wildcard_veach/wildcard_veach_pathref.xml
+  spp: 16000
+  
+
+spp_schedule: [1, 2, 4, 8, 16, 32, 64, 128, 512, 1024] #, 4, 8, 16, 32, 64, 128, 512] # , 16, 32, 64, 128, 512
+repetitions_per_spp: 3
+reference_spp: 16000
+
+global_defaults:
+  integrator: doublestep
+  maxDepth: 3
+  bvhMaxDepth: 16
+  rrDepth: 5
+  leafSamplingMode: Primitive
+  useBVH: true
+  disableNEE: false
+  doAdditionalVertex: true
+  outputDebugCSV: false
+  enableLightcuts: false
+  lightcutThreshold: 1.5
+  gaussianSAThreshold: 0.03141592
+  useUniformBVHSampling: 1
+  enableSpecular: 1
+  enableFastLUT: 1 # Should be 1 to precompute gaussians (>1.5 evals the lut once at the cost of variance)
+  defensivePDF: 0.000001
+  angularSAHWeight: 0.0
+  geometry: quads-disney-spec1.0-rough0.05-k40.xml
+analysis:
+  baseline_config_name: baseline_path
+  average_bbox: [0.6, 0.65, 0.68, 0.8] # delimits the area used to check unbiasedness (this box is the bottom half of the image)
+  figure_format: svg
+  exposure_scale: .5
+  n_top_techniques: 4
+
+
+named_configs:
+  - name: baseline_path
+    params:
+      __scene: scenes/experiments/4_wildcard_veach/wildcard_veach_pathref.xml
+      integrator: path
+      maxDepth: 3
+      rrDepth: 5
+      geometry: quads-disney-spec1.0-rough0.05-k40.xml
+
+  - name: bdpt
+    params:
+      integrator: bdpt
+      __scene: scenes/experiments/4_wildcard_veach/wildcard_veach_pathref.xml
+      geometry: quads-disney-spec1.0-rough0.05-k40.xml
+
+  - name: angularweight_0
+    params:
+      angularSAHWeight: 0. 
+
+  - name: angularweight_0.5
+    params:
+      angularSAHWeight: 0.5 
+      
+  - name: angularweight_1.0
+    params:
+      angularSAHWeight: 1.0
+
+
+  - name: angularweight_2.0
+    params:
+      angularSAHWeight: 2.0
+
+  - name: angularweight_5.0
+    params:
+      angularSAHWeight: 5.0
+
+  - name: angularweight_10.0
+    params:
+      angularSAHWeight: 10.0

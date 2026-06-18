@@ -1,0 +1,9 @@
+bash scripts/experiments/comparison.sh scripts/experiments/config-v9.A1-disney-diffuse.yaml
+bash scripts/experiments/comparison.sh scripts/experiments/config-v9.A2-disney-spec0.5-rough0.2.yaml
+bash scripts/experiments/comparison.sh scripts/experiments/config-v9.A3-disney-spec1.0-rough0.2.yaml
+bash scripts/experiments/comparison.sh scripts/experiments/config-v9.A4-disney-spec1.0-rough0.05.yaml
+bash scripts/experiments/comparison.sh scripts/experiments/config-v9.A5-disney-metal1.0-rough0.2.yaml
+bash scripts/experiments/comparison.sh scripts/experiments/config-v9.A6-disney-metal1.0-rough0.05.yaml
+bash scripts/experiments/comparison.sh scripts/experiments/config-v9.B1-disney-random-homogeneous.yaml
+bash scripts/experiments/comparison.sh scripts/experiments/config-v9.B2-disney-grouped.yaml
+bash scripts/experiments/comparison.sh scripts/experiments/config-v9.B3-disney-heterogeneous.yaml

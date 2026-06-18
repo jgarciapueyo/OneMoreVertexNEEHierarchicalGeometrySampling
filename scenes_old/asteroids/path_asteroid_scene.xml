@@ -1,0 +1,3949 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene version="0.6.0">
+	<integrator type="path"/>
+	<sensor type="perspective">
+		<string name="fovAxis" value="smaller"/>
+		<float name="nearClip" value="0.0001"/>
+		<float name="farClip" value="1000"/>
+		<transform name="toWorld">
+			<lookAt origin="0, 5, 3" target="0, 0, 1" up="0, 0, 1"/>
+		</transform>
+		<float name="fov" value="45"/>
+		<sampler type="independent">
+			<integer name="sampleCount" value="4096"/>
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="512"/>
+			<integer name="height" value="512"/>
+		</film>
+	</sensor>
+	<shape type="rectangle" name="area_light">
+		<transform name="toWorld">
+			<rotate x="0" y="1" z="0" angle="90"/>
+			<translate x="-5" y="0" z="1"/>
+		</transform>
+		<emitter type="area">
+			<rgb name="radiance" value="10000"/>
+		</emitter>
+	</shape>
+	<shape type="rectangle" name="area_blocker">
+		<transform name="toWorld">
+			<scale x="1" y="10" z="1"/>
+			<rotate x="0" y="1" z="0" angle="90"/>
+			<translate x="-4" y="0" z="0.9"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="floor">
+		<string name="filename" value="floor.ply"/>
+		<transform name="toWorld">
+			<scale x="1.0" y="1.0" z="1.0"/>
+			<translate x="0" y="0" z="0"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00000">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="159.21824894753087"/>
+			<rotate x="0" y="1" z="0" angle="322.1461867923978"/>
+			<rotate x="0" y="0" z="1" angle="179.88289547893731"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.5478467492858172" y="-0.9208531449445188" z="0.20486761968097345"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00001">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="81.79443703130418"/>
+			<rotate x="0" y="1" z="0" angle="139.43604099060988"/>
+			<rotate x="0" y="0" z="1" angle="240.7196712400831"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.9338894578858836" y="1.2530809568010897" z="4.563777886388609"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00002">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="62.5612703000245"/>
+			<rotate x="0" y="1" z="0" angle="308.44929517678844"/>
+			<rotate x="0" y="0" z="1" angle="0.1349930009508249"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.42654310306871945" y="0.9179862439359936" z="2.7181249573271145"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00003">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="267.83688819375885"/>
+			<rotate x="0" y="1" z="0" angle="95.65263923164152"/>
+			<rotate x="0" y="0" z="1" angle="18.829903413568005"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.740289695151073" y="1.2634142164861286" z="0.013692500850740474"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00004">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="287.01445890566055"/>
+			<rotate x="0" y="1" z="0" angle="91.50808264154409"/>
+			<rotate x="0" y="0" z="1" angle="170.70690757322063"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.4296171063502774" y="-1.8656576987781426" z="3.64827723214972"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00005">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="122.7822123354705"/>
+			<rotate x="0" y="1" z="0" angle="294.7000915346757"/>
+			<rotate x="0" y="0" z="1" angle="208.0978680227342"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.297377517589764" y="1.4527156893995463" z="2.7073061012454587"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00006">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="300.3587455239525"/>
+			<rotate x="0" y="1" z="0" angle="266.971066578216"/>
+			<rotate x="0" y="0" z="1" angle="120.65563221352392"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.8011524378504609" y="-0.3092511152093662" z="0.14159835572731483"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00007">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="255.5873285824377"/>
+			<rotate x="0" y="1" z="0" angle="319.32023389241766"/>
+			<rotate x="0" y="0" z="1" angle="73.70987762564762"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.5028668940017442" y="0.6824976587745213" z="3.2359475578712504"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00008">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="223.33566532578462"/>
+			<rotate x="0" y="1" z="0" angle="269.76319000836946"/>
+			<rotate x="0" y="0" z="1" angle="119.36330788046612"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.4615404459250154" y="-0.46528978295246626" z="4.986049678946055"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00009">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="152.07861889325366"/>
+			<rotate x="0" y="1" z="0" angle="357.09063711054506"/>
+			<rotate x="0" y="0" z="1" angle="67.75017431345742"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.9233413551049203" y="0.7421679379227788" z="3.2522963813390815"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00010">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="249.17570103212486"/>
+			<rotate x="0" y="1" z="0" angle="298.0598221433346"/>
+			<rotate x="0" y="0" z="1" angle="111.529208009283"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.7537869222837603" y="-0.44431430408358485" z="0.6754825251120561"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00011">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="202.32344307498715"/>
+			<rotate x="0" y="1" z="0" angle="114.4050761870763"/>
+			<rotate x="0" y="0" z="1" angle="327.85936097545664"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.8859533607763268" y="0.10141728990290355" z="1.5512093777947782"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00012">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="282.2212006862074"/>
+			<rotate x="0" y="1" z="0" angle="175.85868310981627"/>
+			<rotate x="0" y="0" z="1" angle="136.10032982744877"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.05665856467284369" y="1.557951337396001" z="4.670217579781248"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00013">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="76.7522959078528"/>
+			<rotate x="0" y="1" z="0" angle="144.026396220882"/>
+			<rotate x="0" y="0" z="1" angle="142.1959558397179"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.5688192131637191" y="0.28611932291904374" z="1.6093469553797108"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00014">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="263.3372127203296"/>
+			<rotate x="0" y="1" z="0" angle="51.68038059969716"/>
+			<rotate x="0" y="0" z="1" angle="123.07378824341443"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.3772001207987872" y="-0.648355097971467" z="1.9580950026408062"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00015">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="254.757856178676"/>
+			<rotate x="0" y="1" z="0" angle="160.2045171134705"/>
+			<rotate x="0" y="0" z="1" angle="143.80089353938814"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.5610974080191693" y="-1.0913696258664811" z="3.115935723430212"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00016">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="247.97301231537173"/>
+			<rotate x="0" y="1" z="0" angle="229.97661262418853"/>
+			<rotate x="0" y="0" z="1" angle="322.87371143979345"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.6639386256704607" y="1.3305765906135911" z="3.9354915374434167"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00017">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="214.8071401202913"/>
+			<rotate x="0" y="1" z="0" angle="42.56992884150381"/>
+			<rotate x="0" y="0" z="1" angle="33.275104922919795"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.0425222280281914" y="1.5059369232428153" z="0.29284017402597173"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00018">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="331.99715836271406"/>
+			<rotate x="0" y="1" z="0" angle="21.537970687688155"/>
+			<rotate x="0" y="0" z="1" angle="96.74386711101596"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.6555317578173585" y="-1.3988821324206437" z="2.251696833246435"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00019">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="301.4259641559329"/>
+			<rotate x="0" y="1" z="0" angle="128.15666795160135"/>
+			<rotate x="0" y="0" z="1" angle="1.4220958251138471"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.185297081149177" y="-1.0774311640250103" z="0.26010650532204804"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00020">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="255.92065636185862"/>
+			<rotate x="0" y="1" z="0" angle="94.79166046173347"/>
+			<rotate x="0" y="0" z="1" angle="356.12935717171723"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.3817926407138872" y="-1.2059478219629787" z="0.4537652280956095"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00021">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="178.75050820885232"/>
+			<rotate x="0" y="1" z="0" angle="276.2708028504737"/>
+			<rotate x="0" y="0" z="1" angle="78.61124328119487"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.32132954394740265" y="-0.8052154687243096" z="3.359974389781797"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00022">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="93.45494074408288"/>
+			<rotate x="0" y="1" z="0" angle="162.792974855271"/>
+			<rotate x="0" y="0" z="1" angle="102.3401919133595"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.2019382241271468" y="1.7684524420259913" z="1.8255508412241428"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00023">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="312.3032981371939"/>
+			<rotate x="0" y="1" z="0" angle="132.9138963531794"/>
+			<rotate x="0" y="0" z="1" angle="18.327053833577075"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.578018881719082" y="0.5164326061588369" z="4.635772765339337"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00024">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="301.99875563795035"/>
+			<rotate x="0" y="1" z="0" angle="209.99078589758852"/>
+			<rotate x="0" y="0" z="1" angle="276.9761329324535"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.23849138113686408" y="1.818361974762949" z="2.499479068438235"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00025">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="335.2865575066003"/>
+			<rotate x="0" y="1" z="0" angle="35.744039443120364"/>
+			<rotate x="0" y="0" z="1" angle="94.99339445253374"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.2990855006036979" y="0.48085380806151123" z="4.975482526176621"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00026">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="183.03395479189084"/>
+			<rotate x="0" y="1" z="0" angle="300.79349188462766"/>
+			<rotate x="0" y="0" z="1" angle="3.785717326788225"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.7957746997510613" y="-0.1598194427636157" z="3.7886442265414573"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00027">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="309.2323923401583"/>
+			<rotate x="0" y="1" z="0" angle="107.2294402681696"/>
+			<rotate x="0" y="0" z="1" angle="299.39778602517265"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.010309218049524116" y="0.11724864078708164" z="3.9289285035690376"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00028">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="71.72034989326555"/>
+			<rotate x="0" y="1" z="0" angle="194.92548400638367"/>
+			<rotate x="0" y="0" z="1" angle="90.35080980502066"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.34137660257731683" y="0.9379342871549174" z="3.5557143899487493"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00029">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="201.92709021131927"/>
+			<rotate x="0" y="1" z="0" angle="226.88595466395174"/>
+			<rotate x="0" y="0" z="1" angle="64.09443025687796"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.728238746453513" y="-1.5402694668763792" z="3.645075585381547"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00030">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="69.40729255535616"/>
+			<rotate x="0" y="1" z="0" angle="97.0829904653497"/>
+			<rotate x="0" y="0" z="1" angle="199.98764958980004"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.7096957144982396" y="1.8717047596985856" z="0.07353152482684644"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00031">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="25.353616859574124"/>
+			<rotate x="0" y="1" z="0" angle="66.1095934228477"/>
+			<rotate x="0" y="0" z="1" angle="15.670153053124034"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.454560360982303" y="1.9247801602653771" z="4.7860508980548175"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00032">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="310.97365948340837"/>
+			<rotate x="0" y="1" z="0" angle="79.75171695611364"/>
+			<rotate x="0" y="0" z="1" angle="187.810345163719"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.4049439510700084" y="1.8905152552918199" z="4.449677778602603"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00033">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="337.1172715584419"/>
+			<rotate x="0" y="1" z="0" angle="118.81086582033728"/>
+			<rotate x="0" y="0" z="1" angle="85.88817110798018"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.2894953101722817" y="-0.08004830476867131" z="1.1618645981965192"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00034">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="339.7819315979377"/>
+			<rotate x="0" y="1" z="0" angle="351.7478237003722"/>
+			<rotate x="0" y="0" z="1" angle="89.6369524693994"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.2075223148732315" y="1.6941206391338781" z="1.330651361461463"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00035">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="292.9517058786132"/>
+			<rotate x="0" y="1" z="0" angle="101.10464527238445"/>
+			<rotate x="0" y="0" z="1" angle="131.07849052337633"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.15573763048874767" y="-0.228988684101874" z="4.655086579905775"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00036">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="288.11673810814926"/>
+			<rotate x="0" y="1" z="0" angle="41.177920668972234"/>
+			<rotate x="0" y="0" z="1" angle="127.95192569373117"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.8379571552462615" y="0.9280247826262431" z="3.0718662347449834"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00037">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="333.78295235861776"/>
+			<rotate x="0" y="1" z="0" angle="233.5582819397129"/>
+			<rotate x="0" y="0" z="1" angle="77.09438825855393"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.8865385395459158" y="0.8768790913069613" z="0.07995864761785987"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00038">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="332.73433349428217"/>
+			<rotate x="0" y="1" z="0" angle="60.73635758032544"/>
+			<rotate x="0" y="0" z="1" angle="94.09243514266173"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.0318040094257124" y="0.05103489304831221" z="4.645521103985031"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00039">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="146.31424422934333"/>
+			<rotate x="0" y="1" z="0" angle="97.568516892225"/>
+			<rotate x="0" y="0" z="1" angle="20.845604702887673"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.735670013103701" y="1.365269118449533" z="0.333450043835507"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00040">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="86.70199757154802"/>
+			<rotate x="0" y="1" z="0" angle="291.8639910188053"/>
+			<rotate x="0" y="0" z="1" angle="68.79654906069685"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.6227600847834993" y="-0.2788050722086668" z="4.830310403920351"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00041">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="85.21422879131299"/>
+			<rotate x="0" y="1" z="0" angle="120.2474321089007"/>
+			<rotate x="0" y="0" z="1" angle="229.72078273648992"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.24892736891382805" y="-0.964541627316271" z="1.2083785704717247"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00042">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="259.2598614812772"/>
+			<rotate x="0" y="1" z="0" angle="351.29548634450566"/>
+			<rotate x="0" y="0" z="1" angle="217.0180178676242"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.5524732826367194" y="-1.0965222863307025" z="0.6227735291764175"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00043">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="236.94585186576836"/>
+			<rotate x="0" y="1" z="0" angle="211.70913182935323"/>
+			<rotate x="0" y="0" z="1" angle="160.66039097632407"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.8466769719696896" y="0.3444922592509312" z="2.770452510866339"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00044">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="271.26402110599497"/>
+			<rotate x="0" y="1" z="0" angle="111.56286566266252"/>
+			<rotate x="0" y="0" z="1" angle="14.831880942122808"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.238843103651111" y="0.24190380802474332" z="1.4421060721560526"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00045">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="47.64771152275939"/>
+			<rotate x="0" y="1" z="0" angle="324.2207895460686"/>
+			<rotate x="0" y="0" z="1" angle="114.4665752788273"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.3484146292764292" y="1.2724838838836416" z="3.1325323120987676"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00046">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="160.60009587135917"/>
+			<rotate x="0" y="1" z="0" angle="276.64933630323554"/>
+			<rotate x="0" y="0" z="1" angle="87.11466829801688"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.836310570789769" y="-0.5223823556332765" z="2.763057552606436"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00047">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="341.4091127414695"/>
+			<rotate x="0" y="1" z="0" angle="190.12883656043994"/>
+			<rotate x="0" y="0" z="1" angle="88.78299701556809"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.3756968064526731" y="1.39316483310024" z="0.7273676909326587"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00048">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="160.77573085118394"/>
+			<rotate x="0" y="1" z="0" angle="126.66262523195138"/>
+			<rotate x="0" y="0" z="1" angle="145.56807384031595"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.3739586530074934" y="1.6398358466491878" z="0.21533444284102088"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00049">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="164.07451704919347"/>
+			<rotate x="0" y="1" z="0" angle="118.23337458312426"/>
+			<rotate x="0" y="0" z="1" angle="324.63345899158776"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.2908251207260077" y="-0.3384638505151014" z="4.149019926390514"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00050">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="314.98894113241954"/>
+			<rotate x="0" y="1" z="0" angle="109.9522388714693"/>
+			<rotate x="0" y="0" z="1" angle="198.83983998750412"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.9601817567708322" y="-0.5398153689669174" z="0.3931501858281994"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00051">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="54.653074110676485"/>
+			<rotate x="0" y="1" z="0" angle="206.27950346268628"/>
+			<rotate x="0" y="0" z="1" angle="331.91992497178154"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.6104583053465538" y="-0.9046036056017712" z="3.5132603532989313"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00052">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="159.20389061410347"/>
+			<rotate x="0" y="1" z="0" angle="186.66616297750437"/>
+			<rotate x="0" y="0" z="1" angle="77.20201536088598"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.7752057077683632" y="-1.492731590955009" z="4.323891477003871"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00053">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="38.65661022423767"/>
+			<rotate x="0" y="1" z="0" angle="322.8918462778342"/>
+			<rotate x="0" y="0" z="1" angle="210.62568470285285"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.7621433935986461" y="-0.47691796675644227" z="2.148870305892883"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00054">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="289.7549938212927"/>
+			<rotate x="0" y="1" z="0" angle="10.634274284297515"/>
+			<rotate x="0" y="0" z="1" angle="141.45965893426595"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.04460181266614294" y="1.9058492877441782" z="3.878455940509142"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00055">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="346.7960652682633"/>
+			<rotate x="0" y="1" z="0" angle="125.0057767303988"/>
+			<rotate x="0" y="0" z="1" angle="212.86429220202834"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.764570549122956" y="-0.9206528579967994" z="4.315601020946589"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00056">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="87.61776062219013"/>
+			<rotate x="0" y="1" z="0" angle="336.73822618433013"/>
+			<rotate x="0" y="0" z="1" angle="137.2297599618036"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.5252286909507595" y="0.04282602217458109" z="1.721478654811626"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00057">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="268.95979039638075"/>
+			<rotate x="0" y="1" z="0" angle="102.3593309376508"/>
+			<rotate x="0" y="0" z="1" angle="115.68610592298303"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.9796693926436713" y="-0.7362258185291992" z="0.9135618946328122"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00058">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="332.6665028338299"/>
+			<rotate x="0" y="1" z="0" angle="120.03924582576101"/>
+			<rotate x="0" y="0" z="1" angle="112.43455730694755"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.520392485216279" y="1.249341592445016" z="3.3394470278567563"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00059">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="206.2972213903459"/>
+			<rotate x="0" y="1" z="0" angle="8.869303214793822"/>
+			<rotate x="0" y="0" z="1" angle="351.16616705576956"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.8336545271118077" y="1.702858308857675" z="3.7412425165087706"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00060">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="223.00790058894137"/>
+			<rotate x="0" y="1" z="0" angle="46.39635536315817"/>
+			<rotate x="0" y="0" z="1" angle="90.47994937866446"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.4428056381907108" y="-1.01141303871157" z="0.706232784505158"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00061">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="326.2993024270724"/>
+			<rotate x="0" y="1" z="0" angle="294.0099264554414"/>
+			<rotate x="0" y="0" z="1" angle="311.4905797724729"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.6802473972597438" y="0.8584741466190109" z="0.8352646439113609"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00062">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="94.61867567882993"/>
+			<rotate x="0" y="1" z="0" angle="354.34388861752245"/>
+			<rotate x="0" y="0" z="1" angle="24.834753829876583"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.41777090758049606" y="1.641023064864219" z="2.8070038377511146"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00063">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="171.36626167766278"/>
+			<rotate x="0" y="1" z="0" angle="311.2433961138771"/>
+			<rotate x="0" y="0" z="1" angle="209.94463866006063"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.3133436597050907" y="-1.2234809084368257" z="2.6301112430893756"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00064">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="162.27812678958944"/>
+			<rotate x="0" y="1" z="0" angle="261.0648716804842"/>
+			<rotate x="0" y="0" z="1" angle="236.14420113774256"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.09373890957967967" y="-1.644257439014912" z="4.909713465633531"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00065">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="76.28770585873588"/>
+			<rotate x="0" y="1" z="0" angle="289.92344518286774"/>
+			<rotate x="0" y="0" z="1" angle="239.99604214102993"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.2855824018230977" y="-1.9743644693427593" z="3.863246006126943"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00066">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="278.41263800962963"/>
+			<rotate x="0" y="1" z="0" angle="215.5343684660198"/>
+			<rotate x="0" y="0" z="1" angle="166.43877647706398"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.9130628553605828" y="0.3594801132838019" z="1.5984081814133249"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00067">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="297.934062832459"/>
+			<rotate x="0" y="1" z="0" angle="80.03394093465364"/>
+			<rotate x="0" y="0" z="1" angle="343.2969798429932"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.2499691370888604" y="0.6901065356674772" z="0.9755369922840251"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00068">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="115.53618816105704"/>
+			<rotate x="0" y="1" z="0" angle="316.9700784876943"/>
+			<rotate x="0" y="0" z="1" angle="12.128972835284927"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.31075157007143694" y="0.40895670551850305" z="4.812115465621905"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00069">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="173.39018909721102"/>
+			<rotate x="0" y="1" z="0" angle="308.154225916379"/>
+			<rotate x="0" y="0" z="1" angle="171.37582829853991"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.710938937880493" y="-0.00010870536552598509" z="3.720487396413241"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00070">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="340.0978845230615"/>
+			<rotate x="0" y="1" z="0" angle="106.45515774278692"/>
+			<rotate x="0" y="0" z="1" angle="347.74652854950943"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.2910930381013648" y="-0.4477330728619231" z="0.31447749227485666"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00071">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="36.09020662084538"/>
+			<rotate x="0" y="1" z="0" angle="21.34828553921588"/>
+			<rotate x="0" y="0" z="1" angle="306.6953115592414"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.903523455103107" y="-1.648928452962053" z="1.975458541789838"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00072">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="184.93511484787413"/>
+			<rotate x="0" y="1" z="0" angle="16.399202281698592"/>
+			<rotate x="0" y="0" z="1" angle="68.99067381284864"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.4940905244829286" y="-0.11079865299995406" z="4.563109668204428"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00073">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="203.29576185722655"/>
+			<rotate x="0" y="1" z="0" angle="203.88733769603783"/>
+			<rotate x="0" y="0" z="1" angle="64.18956436816154"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.0636684709554896" y="1.6612958404470635" z="0.6370150452445317"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00074">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="261.46469246456047"/>
+			<rotate x="0" y="1" z="0" angle="282.7529326915741"/>
+			<rotate x="0" y="0" z="1" angle="50.03630573074626"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.7057483786774719" y="-1.7186949857231277" z="4.3442714717365964"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00075">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="338.39522566165925"/>
+			<rotate x="0" y="1" z="0" angle="210.94251311894737"/>
+			<rotate x="0" y="0" z="1" angle="330.6008326668904"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.536279917389773" y="-0.01371322480458792" z="0.8177170809824014"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00076">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="6.902949406163059"/>
+			<rotate x="0" y="1" z="0" angle="34.76591023900942"/>
+			<rotate x="0" y="0" z="1" angle="222.04952682344472"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.6949337509090947" y="-0.7279304486168079" z="3.5543993163297243"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00077">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="54.06287610389996"/>
+			<rotate x="0" y="1" z="0" angle="307.6328042262491"/>
+			<rotate x="0" y="0" z="1" angle="168.05625746638248"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.1585786845307009" y="0.02987944217810856" z="3.948328662299352"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00078">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="296.9024049888547"/>
+			<rotate x="0" y="1" z="0" angle="229.95069658895517"/>
+			<rotate x="0" y="0" z="1" angle="315.6207198463908"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.629018097906477" y="0.31503401329401015" z="0.9861747364793427"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00079">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="44.04312662272383"/>
+			<rotate x="0" y="1" z="0" angle="61.28890785549233"/>
+			<rotate x="0" y="0" z="1" angle="277.66656938405004"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.2325470072542726" y="-0.04461585548296032" z="4.943476666839098"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00080">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="161.42852918336467"/>
+			<rotate x="0" y="1" z="0" angle="343.2962819586886"/>
+			<rotate x="0" y="0" z="1" angle="66.04002088795883"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.2682267012971251" y="1.852076560497069" z="4.004585183043045"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00081">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="354.0812772193915"/>
+			<rotate x="0" y="1" z="0" angle="97.72755528529788"/>
+			<rotate x="0" y="0" z="1" angle="316.9339812097785"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.07495801369892563" y="1.254136256718542" z="3.014244526205582"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00082">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="204.962558848876"/>
+			<rotate x="0" y="1" z="0" angle="184.19346177355308"/>
+			<rotate x="0" y="0" z="1" angle="267.93919749897384"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.620484255965521" y="1.6547630508295557" z="0.32635208205645694"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00083">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="0.020485803306753425"/>
+			<rotate x="0" y="1" z="0" angle="131.62922280859428"/>
+			<rotate x="0" y="0" z="1" angle="302.57878036666926"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.3399528158336023" y="-0.4727408801350448" z="1.6277280805035221"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00084">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="38.76428748546479"/>
+			<rotate x="0" y="1" z="0" angle="22.55764178454848"/>
+			<rotate x="0" y="0" z="1" angle="205.70830009655907"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.9761070848399371" y="1.1247620083055128" z="2.427675693897939"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00085">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="262.63765152257696"/>
+			<rotate x="0" y="1" z="0" angle="350.16448270070345"/>
+			<rotate x="0" y="0" z="1" angle="122.30045117486588"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.3094864143008751" y="1.5101156234871844" z="0.4340743610744707"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00086">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="93.1514222884302"/>
+			<rotate x="0" y="1" z="0" angle="244.05438415299497"/>
+			<rotate x="0" y="0" z="1" angle="346.96994441124787"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.8336750276554641" y="1.156618494820584" z="3.995981898580574"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00087">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="170.65609674139884"/>
+			<rotate x="0" y="1" z="0" angle="339.6105069385692"/>
+			<rotate x="0" y="0" z="1" angle="209.65916509073858"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.7108531010406729" y="1.1865567309842184" z="1.1266422093783257"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00088">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="29.583942610872874"/>
+			<rotate x="0" y="1" z="0" angle="83.04351140421684"/>
+			<rotate x="0" y="0" z="1" angle="128.00699333390656"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.5507681980617236" y="-0.3302075511824807" z="2.707049918150823"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00089">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="243.14020468381156"/>
+			<rotate x="0" y="1" z="0" angle="172.37301607474137"/>
+			<rotate x="0" y="0" z="1" angle="221.47820118962986"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.5495453378377713" y="-0.37220879744277546" z="0.0015034505346145366"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00090">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="12.122791394438739"/>
+			<rotate x="0" y="1" z="0" angle="118.0939970358149"/>
+			<rotate x="0" y="0" z="1" angle="172.52806871205246"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.9775229053895962" y="1.4075036489370278" z="0.6946583956009877"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00091">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="273.98236442698675"/>
+			<rotate x="0" y="1" z="0" angle="337.0698963259276"/>
+			<rotate x="0" y="0" z="1" angle="140.62456847047815"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.8151430770671912" y="1.284412353578555" z="4.909141614358969"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00092">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="78.33708357005222"/>
+			<rotate x="0" y="1" z="0" angle="200.45067400046096"/>
+			<rotate x="0" y="0" z="1" angle="302.2343463059619"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.375162249474907" y="-0.30357405822394856" z="4.898443542548282"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00093">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="249.4834640849894"/>
+			<rotate x="0" y="1" z="0" angle="170.53286885175785"/>
+			<rotate x="0" y="0" z="1" angle="353.0345010538974"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.8959376194094206" y="0.014707916802315868" z="3.767232692919526"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00094">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="132.22770824916347"/>
+			<rotate x="0" y="1" z="0" angle="304.25271324092114"/>
+			<rotate x="0" y="0" z="1" angle="218.84749672720162"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.6553506706926515" y="-0.09541171212498778" z="4.318931205485424"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00095">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="90.13789717080998"/>
+			<rotate x="0" y="1" z="0" angle="163.64287667414635"/>
+			<rotate x="0" y="0" z="1" angle="312.08736946160866"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.8062742642474912" y="-0.8243029761017695" z="3.838261349917368"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00096">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="121.32462716656586"/>
+			<rotate x="0" y="1" z="0" angle="162.97736970550972"/>
+			<rotate x="0" y="0" z="1" angle="238.14553867063253"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.28273914343799644" y="-1.624619386266775" z="1.956902131523321"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00097">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="226.95552802249787"/>
+			<rotate x="0" y="1" z="0" angle="253.9593375248448"/>
+			<rotate x="0" y="0" z="1" angle="139.3391048664172"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.7050359464087763" y="-0.09533214713201765" z="2.142698040714619"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00098">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="324.8026955789275"/>
+			<rotate x="0" y="1" z="0" angle="49.87145514806729"/>
+			<rotate x="0" y="0" z="1" angle="111.2317249099015"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.3050502281182106" y="0.34520141436313745" z="0.6134533008803672"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00099">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="301.71181715638727"/>
+			<rotate x="0" y="1" z="0" angle="203.39396695828813"/>
+			<rotate x="0" y="0" z="1" angle="268.73653905805105"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.7350756398273708" y="0.736201792300132" z="4.118906791963858"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00100">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="174.6257715814186"/>
+			<rotate x="0" y="1" z="0" angle="317.03206316462655"/>
+			<rotate x="0" y="0" z="1" angle="110.64415102686804"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.5872049290550394" y="0.3332801876939038" z="0.2010911045230035"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00101">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="319.3471671472844"/>
+			<rotate x="0" y="1" z="0" angle="30.597944206019697"/>
+			<rotate x="0" y="0" z="1" angle="247.97877180138514"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.845947296471032" y="0.27610341705343266" z="4.129786110851996"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00102">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="349.6612616402272"/>
+			<rotate x="0" y="1" z="0" angle="188.5237463320122"/>
+			<rotate x="0" y="0" z="1" angle="202.17944040540115"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.12864189389737657" y="1.2529763814567696" z="4.985051465362459"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00103">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="73.25914823184995"/>
+			<rotate x="0" y="1" z="0" angle="65.83939376367262"/>
+			<rotate x="0" y="0" z="1" angle="344.51383750892865"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.5977807545284475" y="-1.3159142399173036" z="1.958373997269514"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00104">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="103.39717304010983"/>
+			<rotate x="0" y="1" z="0" angle="188.5117944248009"/>
+			<rotate x="0" y="0" z="1" angle="223.1978866731818"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.0121999594627056" y="-0.24308427256677412" z="2.941900547146074"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00105">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="90.69643258976856"/>
+			<rotate x="0" y="1" z="0" angle="106.1740248002592"/>
+			<rotate x="0" y="0" z="1" angle="326.90156286479214"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.4905661123133158" y="0.9044940437359212" z="1.4004120093324972"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00106">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="191.40900883111485"/>
+			<rotate x="0" y="1" z="0" angle="169.2360562842036"/>
+			<rotate x="0" y="0" z="1" angle="104.88983662944322"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.237529758383927" y="1.4517999943327782" z="2.8220641056029705"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00107">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="114.8390240434335"/>
+			<rotate x="0" y="1" z="0" angle="305.5143637826993"/>
+			<rotate x="0" y="0" z="1" angle="305.6584669396066"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.0620042306149986" y="1.595295060993938" z="0.4300621803050131"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00108">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="158.91039248467806"/>
+			<rotate x="0" y="1" z="0" angle="273.7294092177886"/>
+			<rotate x="0" y="0" z="1" angle="37.278134703910276"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.784617801363571" y="-0.6880708409415899" z="0.8770487499254054"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00109">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="190.1162240090011"/>
+			<rotate x="0" y="1" z="0" angle="111.2774138527389"/>
+			<rotate x="0" y="0" z="1" angle="83.65743204496394"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.6991945998691156" y="-0.5487121965482555" z="1.6494791624696792"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00110">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="60.15694909026075"/>
+			<rotate x="0" y="1" z="0" angle="310.24845959873113"/>
+			<rotate x="0" y="0" z="1" angle="173.02690309465106"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.7747110609167511" y="-1.2028066372820554" z="2.5608682891886754"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00111">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="322.0320211538324"/>
+			<rotate x="0" y="1" z="0" angle="120.67316371112908"/>
+			<rotate x="0" y="0" z="1" angle="63.361416318640025"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.903947197314603" y="-1.3465276354521754" z="4.4170936681678095"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00112">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="137.81207193629427"/>
+			<rotate x="0" y="1" z="0" angle="236.836890958756"/>
+			<rotate x="0" y="0" z="1" angle="18.164164089656953"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.1569901930107052" y="0.22734196021596098" z="1.1122669799568015"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00113">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="352.6427025197278"/>
+			<rotate x="0" y="1" z="0" angle="14.371930172848408"/>
+			<rotate x="0" y="0" z="1" angle="123.9837919431902"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.23099033048522566" y="-1.9514138955455498" z="3.5649681546896033"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00114">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="316.5824417194995"/>
+			<rotate x="0" y="1" z="0" angle="99.25339041603397"/>
+			<rotate x="0" y="0" z="1" angle="331.34269974689903"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.8670027222549126" y="0.5841800942654194" z="3.056693421376006"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00115">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="318.81409812304065"/>
+			<rotate x="0" y="1" z="0" angle="181.48999751089426"/>
+			<rotate x="0" y="0" z="1" angle="281.8779311333008"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.7051342695018499" y="-1.0143761237960978" z="2.87189024048966"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00116">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="222.74213821415987"/>
+			<rotate x="0" y="1" z="0" angle="110.70324600162189"/>
+			<rotate x="0" y="0" z="1" angle="179.94203444256226"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.4232529358844097" y="1.96809291432578" z="4.618726786875906"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00117">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="68.51661587590122"/>
+			<rotate x="0" y="1" z="0" angle="239.13593212133514"/>
+			<rotate x="0" y="0" z="1" angle="251.2567853847479"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.3919683899098518" y="0.35984237059812285" z="3.481075530517283"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00118">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="304.07341093753894"/>
+			<rotate x="0" y="1" z="0" angle="221.08269367401485"/>
+			<rotate x="0" y="0" z="1" angle="36.21580899903484"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.4538263427964555" y="-0.7496174115953149" z="3.5795892346274716"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00119">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="0.703145069103579"/>
+			<rotate x="0" y="1" z="0" angle="296.871713254016"/>
+			<rotate x="0" y="0" z="1" angle="222.73767831329818"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.6044323736913464" y="-0.633029399175459" z="1.1947185584564028"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00120">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="319.046432119421"/>
+			<rotate x="0" y="1" z="0" angle="167.83427763379476"/>
+			<rotate x="0" y="0" z="1" angle="161.61022052505638"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.2871680109208583" y="0.33993072090271337" z="2.382942108528852"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00121">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="63.73826825684267"/>
+			<rotate x="0" y="1" z="0" angle="189.32627027679501"/>
+			<rotate x="0" y="0" z="1" angle="247.06593232582506"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.9753999142884306" y="-1.709366605406716" z="0.08945710448487632"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00122">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="356.2814106586616"/>
+			<rotate x="0" y="1" z="0" angle="269.38711768318547"/>
+			<rotate x="0" y="0" z="1" angle="130.46321145577747"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.3198807222563791" y="-1.2355589061597008" z="4.877664892134102"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00123">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="345.0204300422838"/>
+			<rotate x="0" y="1" z="0" angle="26.70934871136322"/>
+			<rotate x="0" y="0" z="1" angle="154.72035790827886"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.570091086455411" y="-0.19164484669156634" z="1.9732989853548"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00124">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="307.1270664449631"/>
+			<rotate x="0" y="1" z="0" angle="352.40312872127515"/>
+			<rotate x="0" y="0" z="1" angle="99.77579203654692"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.070754098857876" y="0.9950229000157402" z="3.218523810401552"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00125">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="267.67823161959126"/>
+			<rotate x="0" y="1" z="0" angle="71.0200989372868"/>
+			<rotate x="0" y="0" z="1" angle="359.80839729052104"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.9030307402074795" y="-1.6687656964140212" z="1.7637170784820255"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00126">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="27.468374171765305"/>
+			<rotate x="0" y="1" z="0" angle="357.56063115645424"/>
+			<rotate x="0" y="0" z="1" angle="12.187742334906847"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.07933229733692704" y="-0.29311542507903576" z="0.20308780936372617"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00127">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="73.60566323156526"/>
+			<rotate x="0" y="1" z="0" angle="205.52386131601614"/>
+			<rotate x="0" y="0" z="1" angle="303.85003037151614"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.2238901803968272" y="1.780098593218506" z="0.8128486237665911"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00128">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="128.40115196422343"/>
+			<rotate x="0" y="1" z="0" angle="301.87380259137274"/>
+			<rotate x="0" y="0" z="1" angle="127.38716023719036"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.408209329851101" y="1.2885486362577603" z="1.9564687853905398"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00129">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="242.50480719364754"/>
+			<rotate x="0" y="1" z="0" angle="215.45531694793056"/>
+			<rotate x="0" y="0" z="1" angle="12.716441253304907"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.1328659206229461" y="1.296007230599677" z="3.403431627851062"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00130">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="239.47550837412342"/>
+			<rotate x="0" y="1" z="0" angle="295.5451503572372"/>
+			<rotate x="0" y="0" z="1" angle="8.037592431896673"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.3477749457162838" y="1.030386343328495" z="3.456357397203023"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00131">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="201.58677000392055"/>
+			<rotate x="0" y="1" z="0" angle="337.80287072317293"/>
+			<rotate x="0" y="0" z="1" angle="84.45477386885771"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.6518964240275125" y="1.291228532378355" z="0.8953134379149663"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00132">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="46.99218923585029"/>
+			<rotate x="0" y="1" z="0" angle="239.13421702520995"/>
+			<rotate x="0" y="0" z="1" angle="290.3846565383287"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.9928971003249796" y="-1.6532747075418288" z="2.129281201470108"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00133">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="168.58230330304357"/>
+			<rotate x="0" y="1" z="0" angle="108.3527953035196"/>
+			<rotate x="0" y="0" z="1" angle="147.72192815340745"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.41299245138629903" y="-1.1913276240980615" z="4.689525543179947"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00134">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="240.85498665936572"/>
+			<rotate x="0" y="1" z="0" angle="286.13210688644165"/>
+			<rotate x="0" y="0" z="1" angle="350.0373379909541"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.620893286555332" y="-1.9804023400456976" z="1.6146040183198918"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00135">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="322.31251591511364"/>
+			<rotate x="0" y="1" z="0" angle="24.130226437413427"/>
+			<rotate x="0" y="0" z="1" angle="17.796635699680014"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.962978872964888" y="-0.9412194864462404" z="4.153471327588655"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00136">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="230.11918101866638"/>
+			<rotate x="0" y="1" z="0" angle="8.417828570690604"/>
+			<rotate x="0" y="0" z="1" angle="230.7534175600543"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.3075454519181382" y="0.345513419193511" z="4.79204667589696"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00137">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="227.44908705009456"/>
+			<rotate x="0" y="1" z="0" angle="66.4107556965914"/>
+			<rotate x="0" y="0" z="1" angle="256.5531255147725"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.8660529382632283" y="1.9220319007139453" z="2.8727832454451985"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00138">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="205.34448640628165"/>
+			<rotate x="0" y="1" z="0" angle="4.722349029043067"/>
+			<rotate x="0" y="0" z="1" angle="107.15090939850147"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.9333388262136855" y="1.3481881268800153" z="3.8912411305096413"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00139">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="43.968716472250485"/>
+			<rotate x="0" y="1" z="0" angle="164.96462988458612"/>
+			<rotate x="0" y="0" z="1" angle="232.06485680181754"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.5539595476460009" y="0.5259660690464667" z="1.7818227318828572"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00140">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="298.9099350905605"/>
+			<rotate x="0" y="1" z="0" angle="124.873573404097"/>
+			<rotate x="0" y="0" z="1" angle="250.33077989278894"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.11312976022797194" y="-1.0939984172705457" z="3.887720619408527"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00141">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="237.48161531503317"/>
+			<rotate x="0" y="1" z="0" angle="151.81039518362311"/>
+			<rotate x="0" y="0" z="1" angle="215.06625663016587"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.319685993540534" y="0.30879179594636286" z="2.679494647895572"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00142">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="40.29030004683318"/>
+			<rotate x="0" y="1" z="0" angle="344.04804626093596"/>
+			<rotate x="0" y="0" z="1" angle="45.33507034771641"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.687611213910762" y="1.0419463946610001" z="0.5491394303195446"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00143">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="253.43303103413737"/>
+			<rotate x="0" y="1" z="0" angle="88.10958394981927"/>
+			<rotate x="0" y="0" z="1" angle="238.60412728830528"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.4997638466719341" y="-0.3441764701392289" z="3.0710071783397686"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00144">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="106.02195523816725"/>
+			<rotate x="0" y="1" z="0" angle="60.905092344152166"/>
+			<rotate x="0" y="0" z="1" angle="298.23057142133035"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.7759381725859811" y="0.34191834304248747" z="3.664430384293576"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00145">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="345.8033106251346"/>
+			<rotate x="0" y="1" z="0" angle="33.68982969621801"/>
+			<rotate x="0" y="0" z="1" angle="77.53610116827768"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.08010102881859194" y="-0.1485287634829131" z="1.433844327242676"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00146">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="320.91913104423844"/>
+			<rotate x="0" y="1" z="0" angle="353.6431668696646"/>
+			<rotate x="0" y="0" z="1" angle="339.3994978048834"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.0833933200131738" y="0.7812084243672737" z="3.4785567640622883"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00147">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="92.51455364998901"/>
+			<rotate x="0" y="1" z="0" angle="333.955744130634"/>
+			<rotate x="0" y="0" z="1" angle="125.3505536434052"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.2180699480936146" y="1.8873496664444485" z="3.35575390144698"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00148">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="280.2107177791745"/>
+			<rotate x="0" y="1" z="0" angle="215.6727437569587"/>
+			<rotate x="0" y="0" z="1" angle="164.71929390086873"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.12486449283930501" y="1.3647014061798703" z="2.432602166515774"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00149">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="295.6551343791986"/>
+			<rotate x="0" y="1" z="0" angle="308.83839599566284"/>
+			<rotate x="0" y="0" z="1" angle="105.16022222320419"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.09622051959869271" y="-0.9669023996898525" z="0.7806774069534617"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00150">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="138.56204185396493"/>
+			<rotate x="0" y="1" z="0" angle="326.2153535948243"/>
+			<rotate x="0" y="0" z="1" angle="213.59611291235245"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.8464823155236698" y="1.37644387295617" z="3.388993890479795"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00151">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="330.6674945776565"/>
+			<rotate x="0" y="1" z="0" angle="328.95911135093286"/>
+			<rotate x="0" y="0" z="1" angle="336.6022594297296"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.5247139332161992" y="0.3028883648762086" z="2.8170623683699496"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00152">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="212.36581871193684"/>
+			<rotate x="0" y="1" z="0" angle="150.01938089134342"/>
+			<rotate x="0" y="0" z="1" angle="311.37984195427634"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.7462643338971757" y="-0.4493031521772428" z="0.8239132603300175"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00153">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="320.2572867627751"/>
+			<rotate x="0" y="1" z="0" angle="353.29666591975484"/>
+			<rotate x="0" y="0" z="1" angle="107.95998547534111"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.5077315733160432" y="1.5789139875474736" z="0.24132797500947656"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00154">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="106.40872980753234"/>
+			<rotate x="0" y="1" z="0" angle="274.3976379550897"/>
+			<rotate x="0" y="0" z="1" angle="266.4674672063281"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.2071038766420705" y="0.5451346143978393" z="3.9442257781741894"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00155">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="16.667706060929717"/>
+			<rotate x="0" y="1" z="0" angle="246.37073745286398"/>
+			<rotate x="0" y="0" z="1" angle="309.79576081486107"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.4267700269622017" y="-1.233643215493767" z="0.5882078763109955"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00156">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="159.19526869735265"/>
+			<rotate x="0" y="1" z="0" angle="180.0378420270631"/>
+			<rotate x="0" y="0" z="1" angle="300.348347100305"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.02389053626073423" y="1.2620416266360457" z="1.085335905360631"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00157">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="53.844305610549256"/>
+			<rotate x="0" y="1" z="0" angle="43.96634004693667"/>
+			<rotate x="0" y="0" z="1" angle="242.42813042640626"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.6994692205088655" y="0.20417998317321873" z="0.9590857406762732"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00158">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="343.33686714114344"/>
+			<rotate x="0" y="1" z="0" angle="80.52789351701527"/>
+			<rotate x="0" y="0" z="1" angle="253.9244846624892"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.7303051180629216" y="1.093058392165073" z="4.106133030389612"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00159">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="246.49368726570074"/>
+			<rotate x="0" y="1" z="0" angle="270.82154370662727"/>
+			<rotate x="0" y="0" z="1" angle="336.24241444349656"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.4066577956070585" y="-0.8236945593268623" z="1.385604447184789"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00160">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="260.07761930325074"/>
+			<rotate x="0" y="1" z="0" angle="348.48766865322085"/>
+			<rotate x="0" y="0" z="1" angle="301.0845871990547"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.5561142966865966" y="0.3076305724650483" z="2.639100390562387"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00161">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="95.76542285787136"/>
+			<rotate x="0" y="1" z="0" angle="70.07447364320485"/>
+			<rotate x="0" y="0" z="1" angle="266.7605488747022"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.5786032753092147" y="0.5496839169527257" z="3.3788372097373"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00162">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="271.85576334091706"/>
+			<rotate x="0" y="1" z="0" angle="248.95580195925714"/>
+			<rotate x="0" y="0" z="1" angle="265.98617570053955"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.2331157919001372" y="-0.45082033979250413" z="3.119513909695671"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00163">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="65.05517649326904"/>
+			<rotate x="0" y="1" z="0" angle="138.93930969165586"/>
+			<rotate x="0" y="0" z="1" angle="249.03077531890972"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.367611132856442" y="-0.6387045704773344" z="1.5160050633212263"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00164">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="289.79251875179267"/>
+			<rotate x="0" y="1" z="0" angle="25.302101812967507"/>
+			<rotate x="0" y="0" z="1" angle="163.33373923945592"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.18299551607714637" y="0.44936695600740295" z="3.0539921946090436"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00165">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="146.26420861890114"/>
+			<rotate x="0" y="1" z="0" angle="120.02093625937165"/>
+			<rotate x="0" y="0" z="1" angle="131.33278494256263"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.46864796440858036" y="0.2630956288650208" z="4.928848175982096"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00166">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="349.8805129427864"/>
+			<rotate x="0" y="1" z="0" angle="182.34269581241065"/>
+			<rotate x="0" y="0" z="1" angle="304.0245252910796"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.28790192382419333" y="1.3720588583599622" z="0.4066184565347847"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00167">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="244.1818379093161"/>
+			<rotate x="0" y="1" z="0" angle="134.04665629849896"/>
+			<rotate x="0" y="0" z="1" angle="224.56808033362097"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.5009130148078875" y="1.7668246221195454" z="1.3093200792696864"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00168">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="206.57955491411212"/>
+			<rotate x="0" y="1" z="0" angle="311.8426522411449"/>
+			<rotate x="0" y="0" z="1" angle="21.73870099728598"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.9515943373112292" y="-0.0679663462648028" z="0.9135612883113897"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00169">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="339.77987514642643"/>
+			<rotate x="0" y="1" z="0" angle="182.86312982909104"/>
+			<rotate x="0" y="0" z="1" angle="144.8850554033337"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.8865250171410715" y="1.5907937404701933" z="4.803324429651358"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00170">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="281.8440071437408"/>
+			<rotate x="0" y="1" z="0" angle="210.5189711137786"/>
+			<rotate x="0" y="0" z="1" angle="328.1536646588319"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.41547863096301096" y="0.060641467610568434" z="4.163589246901155"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00171">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="322.1046554486696"/>
+			<rotate x="0" y="1" z="0" angle="236.0413515365389"/>
+			<rotate x="0" y="0" z="1" angle="60.38146272415288"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.6093958627560845" y="-1.0057692945310195" z="4.671430191289311"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00172">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="323.55172945289917"/>
+			<rotate x="0" y="1" z="0" angle="311.0942178065804"/>
+			<rotate x="0" y="0" z="1" angle="165.81272479972353"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.24120220013787463" y="1.0942249132371962" z="2.5046897849424337"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00173">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="94.30304169012096"/>
+			<rotate x="0" y="1" z="0" angle="53.38528580184137"/>
+			<rotate x="0" y="0" z="1" angle="140.8770151877415"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.2665750275794898" y="-0.8162926119623468" z="2.872053844014086"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00174">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="353.3926864860184"/>
+			<rotate x="0" y="1" z="0" angle="228.26924077026544"/>
+			<rotate x="0" y="0" z="1" angle="43.71147795037011"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.427991662942878" y="-1.9450485655340857" z="2.1694561217496573"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00175">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="98.05355519399234"/>
+			<rotate x="0" y="1" z="0" angle="240.1946815901239"/>
+			<rotate x="0" y="0" z="1" angle="235.93084666170557"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.0487886874368786" y="0.4566290949715519" z="1.6207318790368803"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00176">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="59.59875542068612"/>
+			<rotate x="0" y="1" z="0" angle="203.52648413689533"/>
+			<rotate x="0" y="0" z="1" angle="17.781432885253903"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.868963757181973" y="-0.06194146756050678" z="4.997506761285134"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00177">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="315.7990668123055"/>
+			<rotate x="0" y="1" z="0" angle="82.45552509858739"/>
+			<rotate x="0" y="0" z="1" angle="210.6082342044466"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.1041266097791222" y="1.3225257650870361" z="1.2977445306938906"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00178">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="317.65482821678825"/>
+			<rotate x="0" y="1" z="0" angle="199.3634000558721"/>
+			<rotate x="0" y="0" z="1" angle="135.2184339098317"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.3908201486047442" y="-1.202784363572" z="2.16132482173133"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00179">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="117.80738097117808"/>
+			<rotate x="0" y="1" z="0" angle="95.90527992250537"/>
+			<rotate x="0" y="0" z="1" angle="166.21583486209934"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.04859647848360149" y="-1.221562609071062" z="3.8997238549429083"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00180">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="192.32971988796703"/>
+			<rotate x="0" y="1" z="0" angle="343.88528749473886"/>
+			<rotate x="0" y="0" z="1" angle="244.39137734254913"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.4737246176689185" y="-0.7359800569590367" z="2.54032098378145"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00181">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="101.72151772515164"/>
+			<rotate x="0" y="1" z="0" angle="105.21197197812256"/>
+			<rotate x="0" y="0" z="1" angle="336.64145117654726"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.37749841005103546" y="0.8895126957244948" z="0.737362272326782"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00182">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="284.3025524145177"/>
+			<rotate x="0" y="1" z="0" angle="34.79261068274796"/>
+			<rotate x="0" y="0" z="1" angle="78.88730749322917"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.8765157543873743" y="0.9228239834336112" z="2.840961571463133"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00183">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="187.8727449245415"/>
+			<rotate x="0" y="1" z="0" angle="332.1016086364983"/>
+			<rotate x="0" y="0" z="1" angle="48.0046327272833"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.5997831737557937" y="-0.2085665520450264" z="2.03306422516924"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00184">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="91.89996068216966"/>
+			<rotate x="0" y="1" z="0" angle="137.07547039359625"/>
+			<rotate x="0" y="0" z="1" angle="52.028082431922805"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.7739711298771912" y="-1.0745097093810179" z="3.2538316738169915"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00185">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="202.5625930922879"/>
+			<rotate x="0" y="1" z="0" angle="208.13387405518344"/>
+			<rotate x="0" y="0" z="1" angle="350.9642453236527"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.9412559927092179" y="1.4491020825721894" z="1.3532419782605416"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00186">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="195.6776098654214"/>
+			<rotate x="0" y="1" z="0" angle="285.9143998324384"/>
+			<rotate x="0" y="0" z="1" angle="331.00764544701616"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.693438524900591" y="0.27273656760692777" z="3.142293989394542"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00187">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="200.05512754193745"/>
+			<rotate x="0" y="1" z="0" angle="230.7379554919696"/>
+			<rotate x="0" y="0" z="1" angle="36.19836517161723"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.5816671025273523" y="-1.320046194122349" z="0.7490777293773104"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00188">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="296.65305405727594"/>
+			<rotate x="0" y="1" z="0" angle="300.6365672285833"/>
+			<rotate x="0" y="0" z="1" angle="25.39861429272345"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.512391114658775" y="-1.6942439163271321" z="2.671155118018703"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00189">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="181.07892730987427"/>
+			<rotate x="0" y="1" z="0" angle="89.21639899115873"/>
+			<rotate x="0" y="0" z="1" angle="174.7592762084932"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.3370753921909113" y="1.2286717203739594" z="0.11305265273440057"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00190">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="111.67623660308088"/>
+			<rotate x="0" y="1" z="0" angle="73.43385120492337"/>
+			<rotate x="0" y="0" z="1" angle="176.01787502749568"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.5015721130605693" y="-0.10718411444572462" z="1.0826415033841226"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00191">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="97.99139386007303"/>
+			<rotate x="0" y="1" z="0" angle="313.69062966920217"/>
+			<rotate x="0" y="0" z="1" angle="227.82966640109797"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.576375121930838" y="-1.1088342578861914" z="1.409140531673629"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00192">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="18.100728678297454"/>
+			<rotate x="0" y="1" z="0" angle="20.544938924301043"/>
+			<rotate x="0" y="0" z="1" angle="324.729378824517"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.707484242914366" y="-0.3312985347606956" z="1.9293247063036"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00193">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="190.54100941031672"/>
+			<rotate x="0" y="1" z="0" angle="81.06936730823128"/>
+			<rotate x="0" y="0" z="1" angle="190.1246135855057"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.4446978097366969" y="0.6565674269940223" z="3.3013827246384237"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00194">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="42.31300947645029"/>
+			<rotate x="0" y="1" z="0" angle="83.41218404869745"/>
+			<rotate x="0" y="0" z="1" angle="165.61663438736312"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.6609641311039445" y="0.3276103161387569" z="3.679617999489878"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00195">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="194.00832109541363"/>
+			<rotate x="0" y="1" z="0" angle="109.52172153238315"/>
+			<rotate x="0" y="0" z="1" angle="180.69648159900052"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.182273464573798" y="0.3541370077574104" z="0.6528652911727895"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00196">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="209.82066857539195"/>
+			<rotate x="0" y="1" z="0" angle="319.5323770000678"/>
+			<rotate x="0" y="0" z="1" angle="303.14292863163877"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.665038704412884" y="-0.7077852275767285" z="4.637794047329813"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00197">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="184.04776231493082"/>
+			<rotate x="0" y="1" z="0" angle="259.2995460527148"/>
+			<rotate x="0" y="0" z="1" angle="96.39571346252987"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.10952988466607039" y="1.5818956285905923" z="2.2983747663851246"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00198">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="120.64341859391531"/>
+			<rotate x="0" y="1" z="0" angle="87.50252470445423"/>
+			<rotate x="0" y="0" z="1" angle="254.97514331309677"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.020472426240508" y="-0.059491297241438534" z="3.543511307161919"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00199">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="163.02520584411218"/>
+			<rotate x="0" y="1" z="0" angle="209.6837449925966"/>
+			<rotate x="0" y="0" z="1" angle="131.03194943425513"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.7312828933312816" y="1.5594610545468153" z="1.3285403436829157"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00200">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="298.1914248399093"/>
+			<rotate x="0" y="1" z="0" angle="219.19597817449622"/>
+			<rotate x="0" y="0" z="1" angle="114.25113394188799"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.9752926848628873" y="0.884663144467368" z="3.383022316222898"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00201">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="42.80732382586451"/>
+			<rotate x="0" y="1" z="0" angle="129.2799139996511"/>
+			<rotate x="0" y="0" z="1" angle="259.2436491468804"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.6276057997027085" y="0.7496600092533061" z="2.9313210550924156"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00202">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="250.07288976738135"/>
+			<rotate x="0" y="1" z="0" angle="253.9544197280204"/>
+			<rotate x="0" y="0" z="1" angle="257.46127328763964"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.5388841876859423" y="0.6768148895202053" z="0.03299261890352401"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00203">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="2.863216903675192"/>
+			<rotate x="0" y="1" z="0" angle="86.89472654459956"/>
+			<rotate x="0" y="0" z="1" angle="58.1183263459197"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.2686284841811974" y="-0.316486379218607" z="1.891846902043273"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00204">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="26.781169974799823"/>
+			<rotate x="0" y="1" z="0" angle="53.86902210847092"/>
+			<rotate x="0" y="0" z="1" angle="272.29776191354773"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.5241393503419296" y="-0.29216958384045055" z="3.1180862181167117"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00205">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="250.39682352866214"/>
+			<rotate x="0" y="1" z="0" angle="32.101295462136946"/>
+			<rotate x="0" y="0" z="1" angle="34.16082458751224"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.490146273870264" y="0.8339979331468363" z="1.154610476891385"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00206">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="104.3215933078728"/>
+			<rotate x="0" y="1" z="0" angle="279.1363374774249"/>
+			<rotate x="0" y="0" z="1" angle="7.736799281353983"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.4246989109163062" y="0.9955993779539458" z="3.3436406488102746"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00207">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="159.50065361826907"/>
+			<rotate x="0" y="1" z="0" angle="39.243543976621524"/>
+			<rotate x="0" y="0" z="1" angle="25.244002576311516"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.28251722682094993" y="-1.4529308607291478" z="3.318418696644886"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00208">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="343.5120820690799"/>
+			<rotate x="0" y="1" z="0" angle="152.07099861055784"/>
+			<rotate x="0" y="0" z="1" angle="5.798977425593357"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.9998229997048571" y="-1.344229387168696" z="3.4465086846509205"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00209">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="76.01001818973444"/>
+			<rotate x="0" y="1" z="0" angle="54.55134468291803"/>
+			<rotate x="0" y="0" z="1" angle="129.65719058900845"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.5774516544728563" y="1.6604744595587322" z="3.7576984380419565"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00210">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="156.95414074864627"/>
+			<rotate x="0" y="1" z="0" angle="37.335792078621154"/>
+			<rotate x="0" y="0" z="1" angle="219.32822432254574"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.9050753190664147" y="1.7521052785512161" z="0.12616378052317245"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00211">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="284.6812306636014"/>
+			<rotate x="0" y="1" z="0" angle="122.79779530456436"/>
+			<rotate x="0" y="0" z="1" angle="281.75916098887586"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.260703942086407" y="-1.03238811541146" z="3.6604004168494213"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00212">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="353.14680871025223"/>
+			<rotate x="0" y="1" z="0" angle="317.5470832461558"/>
+			<rotate x="0" y="0" z="1" angle="191.97058829672494"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.10467212200648612" y="-0.14249836842373487" z="1.1126666938609175"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00213">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="271.80025776592674"/>
+			<rotate x="0" y="1" z="0" angle="131.39084095707446"/>
+			<rotate x="0" y="0" z="1" angle="14.86191784357434"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.025868441438445" y="-1.5315743677936284" z="1.236706102024279"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00214">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="264.88935363329426"/>
+			<rotate x="0" y="1" z="0" angle="7.0729775965726205"/>
+			<rotate x="0" y="0" z="1" angle="147.94077746598148"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.2254412782999045" y="-0.19581014213563197" z="4.384088682998045"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00215">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="257.31229958432516"/>
+			<rotate x="0" y="1" z="0" angle="179.15529949176138"/>
+			<rotate x="0" y="0" z="1" angle="164.61154215677755"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.4066564169290241" y="1.158178587833528" z="0.9370163646456053"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00216">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="171.31620603163745"/>
+			<rotate x="0" y="1" z="0" angle="186.76257858408417"/>
+			<rotate x="0" y="0" z="1" angle="296.27214260815833"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.735112529294133" y="-0.49317579279726953" z="2.4709960294101734"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00217">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="230.71339271777495"/>
+			<rotate x="0" y="1" z="0" angle="250.3434083290339"/>
+			<rotate x="0" y="0" z="1" angle="99.39465933174927"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.11013190208987833" y="1.2898646303298875" z="0.865952659560213"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00218">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="117.9505847147496"/>
+			<rotate x="0" y="1" z="0" angle="218.3671125229674"/>
+			<rotate x="0" y="0" z="1" angle="188.61017668509726"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.4059436585186083" y="1.5561851765736385" z="0.3775951778054881"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00219">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="3.3146313774272285"/>
+			<rotate x="0" y="1" z="0" angle="219.329249454944"/>
+			<rotate x="0" y="0" z="1" angle="246.17842456256852"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.9624385215152707" y="-0.8289881087218594" z="2.0037238388078213"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00220">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="211.67249242141872"/>
+			<rotate x="0" y="1" z="0" angle="127.21644503148227"/>
+			<rotate x="0" y="0" z="1" angle="115.7846563957968"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.8817976269940284" y="-1.7143656117860688" z="3.9065263261415066"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00221">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="75.95160161005646"/>
+			<rotate x="0" y="1" z="0" angle="21.803179894415635"/>
+			<rotate x="0" y="0" z="1" angle="13.987868251798844"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.09830018564908505" y="-1.4805059009074615" z="1.8304015433532927"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00222">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="44.550728964032906"/>
+			<rotate x="0" y="1" z="0" angle="146.2218024467679"/>
+			<rotate x="0" y="0" z="1" angle="159.87746838035784"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.47639437167635723" y="-1.0257099987914167" z="1.4718187876193989"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00223">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="114.70783375544235"/>
+			<rotate x="0" y="1" z="0" angle="0.9243712491541967"/>
+			<rotate x="0" y="0" z="1" angle="183.99009459780268"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.3203246751897" y="1.849045579659017" z="2.2943028449079153"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00224">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="28.765133455926627"/>
+			<rotate x="0" y="1" z="0" angle="191.2943030455794"/>
+			<rotate x="0" y="0" z="1" angle="342.2149546369564"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.8005400484492697" y="-1.8778717136657779" z="0.3305512928660975"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00225">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="50.18294387389518"/>
+			<rotate x="0" y="1" z="0" angle="32.152737855711536"/>
+			<rotate x="0" y="0" z="1" angle="266.7127161817794"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.888736375210923" y="0.6637785530494171" z="1.101163455568976"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00226">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="260.9323064849766"/>
+			<rotate x="0" y="1" z="0" angle="295.5053213724501"/>
+			<rotate x="0" y="0" z="1" angle="41.85739218069527"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.305680725172194" y="1.1814645424216983" z="1.6590695932925188"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00227">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="25.303400305664596"/>
+			<rotate x="0" y="1" z="0" angle="141.23352968108023"/>
+			<rotate x="0" y="0" z="1" angle="68.86428394527671"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.0172900291636529" y="0.9016343485622995" z="2.379488966497852"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00228">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="33.82381061047478"/>
+			<rotate x="0" y="1" z="0" angle="350.65859464666596"/>
+			<rotate x="0" y="0" z="1" angle="176.235871308768"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.4031594158027976" y="-1.6502195301212454" z="3.685837505697103"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00229">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="147.47715735310516"/>
+			<rotate x="0" y="1" z="0" angle="134.56737735592532"/>
+			<rotate x="0" y="0" z="1" angle="157.99803692723026"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.441649339515699" y="1.5614483131340515" z="2.5504450374235184"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00230">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="256.7419645792718"/>
+			<rotate x="0" y="1" z="0" angle="186.37576191724082"/>
+			<rotate x="0" y="0" z="1" angle="19.816820060180405"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.3861817345414114" y="-1.097370350886088" z="2.2676194451046756"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00231">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="229.75266398444106"/>
+			<rotate x="0" y="1" z="0" angle="3.091111327023266"/>
+			<rotate x="0" y="0" z="1" angle="181.54709454387643"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.4074294944224546" y="0.6007896753410749" z="1.3710347847666209"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00232">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="198.77593427827813"/>
+			<rotate x="0" y="1" z="0" angle="61.38015513144684"/>
+			<rotate x="0" y="0" z="1" angle="108.00305855929892"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.0237545662287175" y="-0.25823929871755924" z="4.913819725970827"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00233">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="80.3957989989947"/>
+			<rotate x="0" y="1" z="0" angle="149.08482050571976"/>
+			<rotate x="0" y="0" z="1" angle="210.41341498482717"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.28509145006077885" y="1.3487853956141849" z="0.0727081568050969"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00234">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="233.9631867132622"/>
+			<rotate x="0" y="1" z="0" angle="141.47765834511816"/>
+			<rotate x="0" y="0" z="1" angle="76.79530336822884"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.8728850603726728" y="-0.40608622886035173" z="2.4950465399491737"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00235">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="226.3823364408297"/>
+			<rotate x="0" y="1" z="0" angle="50.458832296522125"/>
+			<rotate x="0" y="0" z="1" angle="164.465590122366"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.2046967985376846" y="1.7180460549079557" z="0.9982250669059373"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00236">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="192.1795483057711"/>
+			<rotate x="0" y="1" z="0" angle="355.0982010738248"/>
+			<rotate x="0" y="0" z="1" angle="349.47649481556044"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.24634681630057376" y="0.3893824943072124" z="4.292217136497558"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00237">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="339.0890964040343"/>
+			<rotate x="0" y="1" z="0" angle="311.51470905422997"/>
+			<rotate x="0" y="0" z="1" angle="280.4170100028865"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.13333384125756043" y="1.3195651246437952" z="2.6194828211345236"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00238">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="89.03715128748391"/>
+			<rotate x="0" y="1" z="0" angle="243.35508406079867"/>
+			<rotate x="0" y="0" z="1" angle="139.91021541724535"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.8253386376904754" y="0.8664313349290746" z="4.560526304920076"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00239">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="43.44721608637729"/>
+			<rotate x="0" y="1" z="0" angle="165.347757666813"/>
+			<rotate x="0" y="0" z="1" angle="278.16321875029104"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.7694421292346179" y="1.208984625272235" z="0.6118377329775337"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00240">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="309.675715339517"/>
+			<rotate x="0" y="1" z="0" angle="317.47000874891705"/>
+			<rotate x="0" y="0" z="1" angle="88.68484331198646"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.5022856070626025" y="0.4649670011882048" z="1.3560334138098296"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00241">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="167.69406301396563"/>
+			<rotate x="0" y="1" z="0" angle="33.620845213929634"/>
+			<rotate x="0" y="0" z="1" angle="291.2451526097972"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.45939070309491026" y="-1.3046872935054905" z="3.810858315301938"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00242">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="209.14576007740095"/>
+			<rotate x="0" y="1" z="0" angle="42.7670074282381"/>
+			<rotate x="0" y="0" z="1" angle="35.205898154242036"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.4179908145821885" y="-1.4687814917428472" z="2.5841746838201733"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00243">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="280.6248268872206"/>
+			<rotate x="0" y="1" z="0" angle="314.03489404077067"/>
+			<rotate x="0" y="0" z="1" angle="324.1718191088949"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.4199482800096521" y="1.1600612719231997" z="2.324961500877386"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00244">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="319.01898996600227"/>
+			<rotate x="0" y="1" z="0" angle="230.10721718070542"/>
+			<rotate x="0" y="0" z="1" angle="186.39865404070355"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.9232361965926912" y="0.26441550631762745" z="4.891240570097739"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00245">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="26.295292803474346"/>
+			<rotate x="0" y="1" z="0" angle="149.85055777340182"/>
+			<rotate x="0" y="0" z="1" angle="70.52825066400987"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.3214676962082117" y="1.9506834786402911" z="2.077192916465674"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00246">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="157.4852871404866"/>
+			<rotate x="0" y="1" z="0" angle="48.76242883414534"/>
+			<rotate x="0" y="0" z="1" angle="101.98492881982223"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.2693253944367648" y="1.12832424174964" z="1.3585950117657941"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00247">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="98.25685488876078"/>
+			<rotate x="0" y="1" z="0" angle="233.6946654545418"/>
+			<rotate x="0" y="0" z="1" angle="322.7696961353176"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.2630189233402236" y="0.5840603195653067" z="0.9983862907650493"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00248">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="269.4459414043057"/>
+			<rotate x="0" y="1" z="0" angle="86.3750456937931"/>
+			<rotate x="0" y="0" z="1" angle="160.7774977281333"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.8623722572879018" y="1.9481333742398301" z="4.0869507153895315"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00249">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="310.6212125459269"/>
+			<rotate x="0" y="1" z="0" angle="345.15388905775507"/>
+			<rotate x="0" y="0" z="1" angle="271.08119627139416"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.5051789801620918" y="1.3918777204926336" z="1.2906510087580447"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00250">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="141.86015272439045"/>
+			<rotate x="0" y="1" z="0" angle="49.236990862715054"/>
+			<rotate x="0" y="0" z="1" angle="277.2304610521788"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.0108610384466958" y="1.0904654015326498" z="3.7868100617856104"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00251">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="299.8189196183892"/>
+			<rotate x="0" y="1" z="0" angle="35.58201675287702"/>
+			<rotate x="0" y="0" z="1" angle="216.74638375338938"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.3838293757281628" y="-1.453391968453365" z="3.737930876125428"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00252">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="340.22790471206883"/>
+			<rotate x="0" y="1" z="0" angle="120.89357042648643"/>
+			<rotate x="0" y="0" z="1" angle="151.64755758805248"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.12070450290717538" y="-0.6964663674904581" z="3.671514387744537"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00253">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="304.0139605306053"/>
+			<rotate x="0" y="1" z="0" angle="80.30030663478153"/>
+			<rotate x="0" y="0" z="1" angle="136.01721000681425"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.3805723238328058" y="-0.7101569697473096" z="0.7740577833023099"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00254">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="131.5164427206015"/>
+			<rotate x="0" y="1" z="0" angle="302.68190437822983"/>
+			<rotate x="0" y="0" z="1" angle="236.81515272528628"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.9667388733355522" y="1.6767599569515927" z="1.4492057490801868"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00255">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="122.16355537416213"/>
+			<rotate x="0" y="1" z="0" angle="93.56898653475129"/>
+			<rotate x="0" y="0" z="1" angle="199.47486746700739"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.2576572319986603" y="-1.6412271111344539" z="4.5627295372682735"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00256">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="213.59882051649055"/>
+			<rotate x="0" y="1" z="0" angle="293.24418215053066"/>
+			<rotate x="0" y="0" z="1" angle="301.58602606468605"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.0986089410600153" y="-1.2125475409578939" z="1.478436234988496"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00257">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="194.91971052245293"/>
+			<rotate x="0" y="1" z="0" angle="312.1358641210582"/>
+			<rotate x="0" y="0" z="1" angle="304.6497354463415"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.3822194193639974" y="-0.576969343074428" z="3.6811690797372725"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00258">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="32.39344203181873"/>
+			<rotate x="0" y="1" z="0" angle="56.76104367829445"/>
+			<rotate x="0" y="0" z="1" angle="154.62750777501273"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.3694514773759745" y="-1.1718853897280415" z="3.050547549419878"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00259">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="73.64790836442558"/>
+			<rotate x="0" y="1" z="0" angle="343.98092247001165"/>
+			<rotate x="0" y="0" z="1" angle="163.69060939924"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.9437636594043526" y="-1.553008738787823" z="0.8060390855332583"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00260">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="195.87439730028842"/>
+			<rotate x="0" y="1" z="0" angle="180.0649152082069"/>
+			<rotate x="0" y="0" z="1" angle="188.4602365685953"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.5852891519223444" y="-1.9523610466359287" z="4.649537618318392"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00261">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="286.9462621463836"/>
+			<rotate x="0" y="1" z="0" angle="241.8081340760678"/>
+			<rotate x="0" y="0" z="1" angle="240.8484145484265"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.0419641781109545" y="-0.9174457982197728" z="1.8782116285262707"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00262">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="35.423374531842825"/>
+			<rotate x="0" y="1" z="0" angle="234.92333498519983"/>
+			<rotate x="0" y="0" z="1" angle="49.964785561536885"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.7629548629137677" y="-0.5927226834078478" z="2.1556642810229865"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00263">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="248.50651481400723"/>
+			<rotate x="0" y="1" z="0" angle="196.1315581435011"/>
+			<rotate x="0" y="0" z="1" angle="106.27743665065303"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.8059709099902066" y="1.9049801402071749" z="1.8242861243362518"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00264">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="20.582017895061337"/>
+			<rotate x="0" y="1" z="0" angle="71.33330710021822"/>
+			<rotate x="0" y="0" z="1" angle="36.40993349784218"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.6658503160414728" y="0.6319295769563067" z="3.583024603577382"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00265">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="289.6661306887824"/>
+			<rotate x="0" y="1" z="0" angle="235.32185183455172"/>
+			<rotate x="0" y="0" z="1" angle="6.925614295352909"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.5110359032199243" y="-1.1544593782004502" z="2.04625725591789"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00266">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="216.56550018476355"/>
+			<rotate x="0" y="1" z="0" angle="238.2338239504737"/>
+			<rotate x="0" y="0" z="1" angle="202.50246799742766"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.2437271579505449" y="1.9811992135514442" z="4.292176627770936"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00267">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="247.523580613793"/>
+			<rotate x="0" y="1" z="0" angle="101.02603340722332"/>
+			<rotate x="0" y="0" z="1" angle="151.86766036219524"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.48363559367980535" y="-1.2243282085269813" z="3.4395726069451698"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00268">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="336.82259865994536"/>
+			<rotate x="0" y="1" z="0" angle="64.30055167248015"/>
+			<rotate x="0" y="0" z="1" angle="240.6033582505961"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.035996009128254" y="-1.6984450452226092" z="1.8974325835107853"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00269">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="39.375655745181476"/>
+			<rotate x="0" y="1" z="0" angle="321.13804650125206"/>
+			<rotate x="0" y="0" z="1" angle="138.21164899720884"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.6926088098167646" y="0.2817252904458667" z="3.26526609184144"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00270">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="257.7850980859163"/>
+			<rotate x="0" y="1" z="0" angle="150.5572724279767"/>
+			<rotate x="0" y="0" z="1" angle="276.2717499889436"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.2744488464465547" y="-0.1213622555451428" z="4.960839432679473"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00271">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="131.20442631425024"/>
+			<rotate x="0" y="1" z="0" angle="333.4601590809654"/>
+			<rotate x="0" y="0" z="1" angle="20.702115875227705"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.9365894430905035" y="-0.5160255526838524" z="1.6715623192815243"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00272">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="156.09370125739684"/>
+			<rotate x="0" y="1" z="0" angle="180.41063987176142"/>
+			<rotate x="0" y="0" z="1" angle="346.94769198212816"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.3776679199098023" y="1.476774862098726" z="2.1915251914973695"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00273">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="96.30381280659049"/>
+			<rotate x="0" y="1" z="0" angle="125.51422332270961"/>
+			<rotate x="0" y="0" z="1" angle="272.5012687364751"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.5323120059839908" y="0.30215937212095456" z="2.123088474673167"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00274">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="191.09355711551237"/>
+			<rotate x="0" y="1" z="0" angle="200.5406308349617"/>
+			<rotate x="0" y="0" z="1" angle="252.46827302105982"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.9907876493690169" y="1.2944554212865218" z="3.221002590016375"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00275">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="246.203461317839"/>
+			<rotate x="0" y="1" z="0" angle="180.96193782956433"/>
+			<rotate x="0" y="0" z="1" angle="15.03767861610302"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.1510957204713628" y="-1.479718026179666" z="0.6271566432657649"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00276">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="231.97253531270763"/>
+			<rotate x="0" y="1" z="0" angle="212.65671105711786"/>
+			<rotate x="0" y="0" z="1" angle="24.423409397373888"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.6362878513972205" y="-0.3864338496157669" z="4.1015389718047786"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00277">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="101.97277842341897"/>
+			<rotate x="0" y="1" z="0" angle="170.37549222590016"/>
+			<rotate x="0" y="0" z="1" angle="145.38142168273936"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.5814483710391074" y="-1.0946678088228632" z="0.16286174907305495"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00278">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="30.75037975786053"/>
+			<rotate x="0" y="1" z="0" angle="206.2734504122982"/>
+			<rotate x="0" y="0" z="1" angle="237.26368491775787"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.2786556538172689" y="1.0919148226444246" z="0.07706588060580999"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00279">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="95.24584325804022"/>
+			<rotate x="0" y="1" z="0" angle="182.37138412940308"/>
+			<rotate x="0" y="0" z="1" angle="177.84288324457754"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.2565282400714408" y="-1.2349329376478129" z="3.8333034119011717"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00280">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="356.6540321532633"/>
+			<rotate x="0" y="1" z="0" angle="153.63396680287624"/>
+			<rotate x="0" y="0" z="1" angle="6.0015009277960685"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.08249721428218049" y="0.19631975630706888" z="1.4670412845014176"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00281">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="249.90252057189207"/>
+			<rotate x="0" y="1" z="0" angle="182.1545105625331"/>
+			<rotate x="0" y="0" z="1" angle="43.75561816091054"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.17368598520745104" y="-1.817149588216807" z="4.047598235349601"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00282">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="181.16077234106223"/>
+			<rotate x="0" y="1" z="0" angle="329.4698506906445"/>
+			<rotate x="0" y="0" z="1" angle="178.30571435891778"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.629995693504536" y="1.0105900788734656" z="2.4781113622392574"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00283">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="112.99296770769672"/>
+			<rotate x="0" y="1" z="0" angle="119.38842879725307"/>
+			<rotate x="0" y="0" z="1" angle="89.27973945428863"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.3751373977761072" y="-1.9847164968033724" z="3.329787034941054"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00284">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="308.5493499113279"/>
+			<rotate x="0" y="1" z="0" angle="3.4310358030008192"/>
+			<rotate x="0" y="0" z="1" angle="209.10940441546413"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.0695436692622007" y="-0.6933750512309196" z="4.282858454719889"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00285">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="77.18556602541456"/>
+			<rotate x="0" y="1" z="0" angle="346.42950808340436"/>
+			<rotate x="0" y="0" z="1" angle="316.0992118973428"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.999239993570626" y="0.5284808457545496" z="1.505119904903078"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00286">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="359.91746444007407"/>
+			<rotate x="0" y="1" z="0" angle="218.50985368713506"/>
+			<rotate x="0" y="0" z="1" angle="66.54661846338205"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.5145116950406097" y="-0.9945653617988266" z="1.048899350434744"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00287">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="355.2485339926091"/>
+			<rotate x="0" y="1" z="0" angle="193.34725182183988"/>
+			<rotate x="0" y="0" z="1" angle="314.98314811847416"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.5046415472221399" y="-0.012260717535280463" z="0.9364034415451594"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00288">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="196.55062411571313"/>
+			<rotate x="0" y="1" z="0" angle="187.26461305033052"/>
+			<rotate x="0" y="0" z="1" angle="50.384266155516364"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.5446997196492043" y="1.5295466479494388" z="2.7478420251474214"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00289">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="304.14535950342616"/>
+			<rotate x="0" y="1" z="0" angle="270.5227727339302"/>
+			<rotate x="0" y="0" z="1" angle="137.87898708315836"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.8243841101482361" y="-0.1944530597858556" z="4.00721682185434"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00290">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="221.58948441171137"/>
+			<rotate x="0" y="1" z="0" angle="176.32915708166908"/>
+			<rotate x="0" y="0" z="1" angle="300.73919692626794"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.3354249851240976" y="1.0566387971354696" z="1.2157441964072584"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00291">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="203.72014823724604"/>
+			<rotate x="0" y="1" z="0" angle="266.0574975874682"/>
+			<rotate x="0" y="0" z="1" angle="273.36809020949977"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.9020461592080675" y="0.633012313165243" z="2.0562884724171404"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00292">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="6.237172792527779"/>
+			<rotate x="0" y="1" z="0" angle="104.22521258953088"/>
+			<rotate x="0" y="0" z="1" angle="152.67041942505173"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="1.5770433804556188" y="1.4393901101868352" z="2.66876046997619"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00293">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="204.94106987737007"/>
+			<rotate x="0" y="1" z="0" angle="286.3192424329189"/>
+			<rotate x="0" y="0" z="1" angle="244.9588916164303"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.49022339737794995" y="0.8519581637014215" z="3.54684847756202"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00294">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="333.5883104217804"/>
+			<rotate x="0" y="1" z="0" angle="113.04767903925634"/>
+			<rotate x="0" y="0" z="1" angle="245.33371809066222"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.7291315725520575" y="1.3696962173613425" z="2.8865929262241337"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00295">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="90.79259255029723"/>
+			<rotate x="0" y="1" z="0" angle="152.81160161232665"/>
+			<rotate x="0" y="0" z="1" angle="195.41340341275225"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.06417391936082106" y="0.06763253442960648" z="4.4449032900967325"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00296">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="256.4375243050898"/>
+			<rotate x="0" y="1" z="0" angle="306.0514030617679"/>
+			<rotate x="0" y="0" z="1" angle="356.6801825662502"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.5329954662894876" y="1.3676634392416194" z="2.5244478187908963"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00297">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="303.2895957424997"/>
+			<rotate x="0" y="1" z="0" angle="134.2090532358684"/>
+			<rotate x="0" y="0" z="1" angle="114.54501936882063"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-1.658644196922693" y="-0.20407205074961476" z="1.455981988229365"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00298">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="196.06135414866958"/>
+			<rotate x="0" y="1" z="0" angle="60.74852811762868"/>
+			<rotate x="0" y="0" z="1" angle="37.63531306367262"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="0.11154017865536092" y="1.4132394213415784" z="0.8972776361022866"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+	<shape type="ply" name="asteroid_00299">
+		<string name="filename" value="shapes/Astroid.002-Rock.019-0.ply"/>
+		<transform name="toWorld">
+			<rotate x="1" y="0" z="0" angle="309.98512306853183"/>
+			<rotate x="0" y="1" z="0" angle="232.78072601093555"/>
+			<rotate x="0" y="0" z="1" angle="300.30037675840435"/>
+			<scale x="0.04" y="0.04" z="0.04"/>
+			<translate x="-0.09910150283190555" y="0.3300090069407644" z="3.8491015575040954"/>
+		</transform>
+		<bsdf type="diffuse">
+			<rgb name="reflectance" value="0.8"/>
+		</bsdf>
+	</shape>
+</scene>

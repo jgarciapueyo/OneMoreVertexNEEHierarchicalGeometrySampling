@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene version="0.6.0">
+
+    <!-- Hemisphere mesh -->
+    <shape type="obj">
+        <string name="filename" value="scenes/experiments/9_rebuttal_sphere/hemispheres/hemisphere_subdiv20_area0.75_n2971_ratio0.7427.obj"/>
+        <bsdf type="diffuse">
+            <rgb name="reflectance" value="0.8"/>
+        </bsdf>
+    </shape>
+
+    <!-- Spotlight at center, slightly above floor, pointing up, near-180° cone -->
+    <emitter type="spot">
+        <transform name="toWorld">
+            <lookAt origin="0, 0, 0.1" target="0, 0, 1" up="0, 1, 0"/>
+        </transform>
+        <float name="cutoffAngle" value="89.0"/>
+        <float name="beamWidth" value="85.0"/>
+        <rgb name="intensity" value="1.0"/>
+    </emitter>
+
+    <!-- Floor plane -->
+    <shape type="rectangle">
+        <transform name="toWorld">
+            <scale x="20" y="20" z="1"/>
+            <rotate x="1" angle="0"/>
+        </transform>
+        <bsdf type="diffuse">
+            <rgb name="reflectance" value="0.8"/>
+        </bsdf>
+    </shape>
+
+</scene>

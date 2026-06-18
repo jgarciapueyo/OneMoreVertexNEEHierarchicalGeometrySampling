@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Note: this file has many wildcards so that it can be used from the scripts/experiments/ script
+To run it directly you must give values to all wildcards, e.g.:
+	./build/release/mitsuba/mitsuba scenes/experiments/1_wildcard_spotlight/wildcard_spotlight_quads.xml -Dintegrator=doublestep -DmaxDepth=3 -DrrDepth=4 -DuseBVH=true -DdisableNEE=false -DmaxLeafSize=2 -DleafSamplingMode=SphericalAABB -DoutputDebugCSV=false -Dgeometry=quads -Dspp=512
+ -->
+<scene version="0.6.0">
+	<integrator type="$integrator:doublestep">
+		<integer name="maxDepth" value="$maxDepth:3"/>
+		<integer name="rrDepth" value="$rrDepth:5"/>
+		<boolean name="useBVH" value="$useBVH:true"/>
+		<boolean name="disableNEE" value="$disableNEE:false"/>
+	</integrator>
+	<geometrybvh type="geometrybvh"> 
+		<!-- Note: Now the geometrybvh is a separate plugin, so it can have its own props here: -->
+		<!-- <integer name="maxLeafSize" value="$maxLeafSize:1"/> NOTE: Removed in favor of maxDepth -->
+		<integer name="maxDepth" value="$bvhMaxDepth:20"/>
+		<string name="samplingMode" value="$leafSamplingMode:Primitive"/>
+		<!-- Valid values: Primitive, SphericalAABB -->
+		<boolean name="outputDebugCSV" value="$outputDebugCSV:false"/>
+		<boolean name="enableLightcuts" value="$enableLightcuts:false"/>
+		<float name="lightcutThreshold" value="$lightcutThreshold:0"/>
+		
+		<float name="gaussianSAThreshold" value="$gaussianSAThreshold:0.031"/> 
+		<float name="debug1" value="$useUniformBVHSampling:1"/> 
+		<!-- ^debug prop to have an equal importance mode for testing (if <= .0001f, then importance is set to 1 for all nodes) -->
+		<float name="debug2" value="$enableSpecular:0"/>
+		<float name="debug3" value="$enableFastLUT:1"/>
+		<float name="defensivePDF" value="$defensivePDF:0.000001"/>
+
+		<!-- ^ threshold for treating a gaussian as a point (0:never ... 4PI: always; .01*PI or .001*PI might be reasonable) -->
+		<!-- <float name="kappaThreshold" value="0"/> NOTE: Does nothing for now -->
+		
+		<boolean name="ablateVMF" value="$ablateVMF:false"/>
+		<boolean name="ablateGaussian" value="$ablateGaussian:false"/>
+		<boolean name="ablateCosineXs" value="$ablateCosineXs:false"/>
+		<boolean name="ablateCosineXe" value="$ablateCosineXe:false"/>
+		<boolean name="ablateDistanceXs" value="$ablateDistanceXs:false"/>
+		<boolean name="ablateDistanceXe" value="$ablateDistanceXe:false"/>	
+		<boolean name="ablateAlbedo" value="$ablateAlbedo:false"/>		
+	
+	</geometrybvh>
+	
+	<sensor type="perspective">
+		<string name="fovAxis" value="smaller"/>
+		<float name="nearClip" value="0.0001"/>
+		<float name="farClip" value="1000"/>
+		<transform name="toWorld">
+			<!-- from -x, towards the origin -->
+			<!-- <lookAt origin="-20, 0, 0" target="0, 0, 0" up="0, 0, 1"/> -->
+			<lookAt origin="0, 200, 0" target="0, 100, 0" up="0, 0, 1"/>
+		</transform>
+		<float name="fov" value="30"/>
+		<sampler type="independent">
+			<integer name="sampleCount" value="$spp:64"/>
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="$w:768"/>
+			<integer name="height" value="$h:512"/>
+		</film>
+	</sensor>
+	<emitter type="spot" name="spot_light">
+		<transform name="toWorld">
+			<!-- from +z, towards the origin -->
+			<lookAt origin="-3000, 0, 0" target="0, 100, 0" up="0, 0, 1"/>
+		</transform>
+		<rgb name="intensity" value="100000000"/>
+		<float name="cutoffAngle" value="5"/>
+	</emitter>
+	<include filename="../scene_geometries/$geometry:asteroids-3k.xml"/>
+    <!-- <include filename="../scene_geometries/quads-geometry.xml"/> -->
+
+</scene>

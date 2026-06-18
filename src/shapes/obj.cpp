@@ -30,6 +30,9 @@
 
 MTS_NAMESPACE_BEGIN
 
+// class WavefrontOBJ;
+// static std::map< std::string, ref<WavefrontOBJ> > g_objCache; // Global cache of loaded OBJ files, keyed by absolute filename.
+
 /*!\plugin{obj}{Wavefront OBJ mesh loader}
  * \order{5}
  * \parameters{
@@ -150,6 +153,14 @@ MTS_NAMESPACE_BEGIN
  * utility. Using the resulting output will significantly accelerate the scene loading time.
  * }
  */
+
+// ------------------------------------------------------------------------------------------------------------------
+ // 1- cache for obj files
+#include <memory>
+#include <mutex>
+
+
+
 class WavefrontOBJ : public Shape {
 public:
     struct OBJTriangle {
@@ -161,6 +172,34 @@ public:
             memset(this, 0, sizeof(OBJTriangle));
         }
     };
+
+        
+    // Groups triangles by name/material
+    struct CachedOBJGroup {
+        std::string name;
+        std::string materialName;
+        std::vector<OBJTriangle> triangles;
+    };
+
+    // Holds the raw, object-space data parsed from the file
+    struct CachedOBJData {
+        std::vector<Point> vertices;
+        std::vector<Normal> normals;
+        std::vector<Point2> texcoords;
+        std::vector<CachedOBJGroup> groups;
+        fs::path materialLibrary;
+    };
+
+    // Get the cache for obj files:
+    static std::map<std::string, std::shared_ptr<CachedOBJData>>& getCache() {
+        static std::map<std::string, std::shared_ptr<CachedOBJData>> cache;
+        return cache;
+    }
+
+    static std::mutex& getCacheMutex() {
+        static std::mutex mutex;
+        return mutex;
+    }
 
     bool fetch_line(std::istream &is, std::string &line) {
         /// Fetch a line from the stream, while handling line breaks with backslashes
@@ -185,167 +224,143 @@ public:
         }
         return true;
     }
-
-    WavefrontOBJ(const Properties &props) : Shape(props) {
+WavefrontOBJ(const Properties &props) : Shape(props) {
+        std::string filename = props.getString("filename");
+        
         ref<FileResolver> fileResolver = Thread::getThread()->getFileResolver()->clone();
-        fs::path path = fileResolver->resolve(props.getString("filename"));
-
+        fs::path path = fileResolver->resolve(filename);
         m_name = path.stem().string();
 
-        /* By default, any existing normals will be used for
-           rendering. If no normals are found, Mitsuba will
-           automatically generate smooth vertex normals.
-           Setting the 'faceNormals' parameter instead forces
-           the use of face normals, which will result in a faceted
-           appearance.
-        */
         m_faceNormals = props.getBoolean("faceNormals", false);
-
-        /* Causes all normals to be flipped */
         m_flipNormals = props.getBoolean("flipNormals", false);
-
-        /* Collapse all contained shapes / groups into a single object? */
-        m_collapse = props.getBoolean("collapse", false);
-
-        /* Causes all texture coordinates to be vertically flipped */
+        m_collapse    = props.getBoolean("collapse", false);
         bool flipTexCoords = props.getBoolean("flipTexCoords", true);
-
-        /// When the file contains multiple meshes, this index specifies which one to load
         int shapeIndex = props.getInteger("shapeIndex", -1);
-
-        /* Object-space -> World-space transformation */
-        Transform objectToWorld = props.getTransform("toWorld", Transform());
-
-        /* Import materials from a MTL file, if any? */
         bool loadMaterials = props.getBoolean("loadMaterials", true);
 
-        /* Load the geometry */
-        Log(EInfo, "Loading geometry from \"%s\" ..", path.filename().string().c_str());
-        fs::ifstream is(path);
-        if (is.bad() || is.fail())
-            Log(EError, "Wavefront OBJ file '%s' not found!", path.string().c_str());
+        // 1. CREATE A ROBUST CACHE KEY
+        std::string cacheKey = filename + (flipTexCoords ? "_flipUV" : "") + (m_collapse ? "_collapse" : "");
 
-        fileResolver->prependPath(fs::absolute(path).parent_path());
+        std::shared_ptr<CachedOBJData> objData;
 
-        ref<Timer> timer = new Timer();
-        std::string buf;
-        std::vector<Point> vertices;
-        std::vector<Normal> normals;
-        std::vector<Point2> texcoords;
-        std::vector<OBJTriangle> triangles;
-        std::string name = m_name, line;
-        std::set<std::string> geomNames;
-        std::vector<Vertex> vertexBuffer;
-        fs::path materialLibrary;
-        int geomIndex = 0;
-        bool nameBeforeGeometry = false;
-        std::string materialName;
-
-        while (is.good() && !is.eof() && fetch_line(is, line)) {
-            std::istringstream iss(line);
-            if (!(iss >> buf))
-                continue;
-
-            if (buf == "v") {
-                /* Parse + transform vertices */
-                Point p;
-                iss >> p.x >> p.y >> p.z;
-                vertices.push_back(p);
-            } else if (buf == "vn") {
-                Normal n;
-                iss >> n.x >> n.y >> n.z;
-                normals.push_back(n);
-            } else if (buf == "g" && !m_collapse) {
-                std::string targetName;
-                std::string newName = trim(line.substr(1, line.length()-1));
-
-                /* There appear to be two different conventions
-                   for specifying object names in OBJ file -- try
-                   to detect which one is being used */
-                if (nameBeforeGeometry)
-                    // Save geometry under the previously specified name
-                    targetName = name;
-                else
-                    targetName = newName;
-
-                if (triangles.size() > 0) {
-                    /// make sure that we have unique names
-                    if (geomNames.find(targetName) != geomNames.end())
-                        targetName = formatString("%s_%i", targetName.c_str(), geomIndex);
-                    geomIndex += 1;
-                    geomNames.insert(targetName);
-                    if (shapeIndex < 0 || geomIndex-1 == shapeIndex)
-                        createMesh(targetName, vertices, normals, texcoords,
-                            triangles, materialName, objectToWorld, vertexBuffer);
-                    triangles.clear();
-                } else {
-                    nameBeforeGeometry = true;
-                }
-                name = newName;
-            } else if (buf == "usemtl") {
-                /* Flush if necessary */
-                if (triangles.size() > 0 && !m_collapse) {
-                    /// make sure that we have unique names
-                    if (geomNames.find(name) != geomNames.end())
-                        name = formatString("%s_%i", name.c_str(), geomIndex);
-                    geomIndex += 1;
-                    geomNames.insert(name);
-                    if (shapeIndex < 0 || geomIndex-1 == shapeIndex)
-                        createMesh(name, vertices, normals, texcoords,
-                            triangles, materialName, objectToWorld, vertexBuffer);
-                    triangles.clear();
-                    name = m_name;
-                }
-
-                materialName = trim(line.substr(6, line.length()-1));
-            } else if (buf == "mtllib") {
-                materialLibrary = fileResolver->resolve(trim(line.substr(6, line.length()-1)));
-            } else if (buf == "vt") {
-                Float u, v;
-                iss >> u >> v;
-                if (flipTexCoords)
-                    v = 1-v;
-                texcoords.push_back(Point2(u, v));
-            } else if (buf == "f") {
-                std::string  tmp;
-                OBJTriangle t;
-                iss >> tmp; parse(t, 0, tmp);
-                iss >> tmp; parse(t, 1, tmp);
-                iss >> tmp; parse(t, 2, tmp);
-                triangles.push_back(t);
-                /* Handle n-gons assuming a convex shape */
-                while (iss >> tmp) {
-                    t.p[1] = t.p[2];
-                    t.uv[1] = t.uv[2];
-                    t.n[1] = t.n[2];
-                    parse(t, 2, tmp);
-                    triangles.push_back(t);
-                }
-            } else {
-                /* Ignore */
+        // Check the cache
+        {
+            std::lock_guard<std::mutex> lock(getCacheMutex());
+            auto& cache = getCache();
+            auto it = cache.find(cacheKey);
+            if (it != cache.end()) {
+                objData = it->second;
+                // Log(EInfo, "Loaded OBJ raw data from cache: %s", cacheKey.c_str());
             }
         }
-        if (geomNames.find(name) != geomNames.end())
-            /// make sure that we have unique names
-            name = formatString("%s_%i", m_name.c_str(), geomIndex);
 
-        if (shapeIndex < 0 || geomIndex-1 == shapeIndex)
-            createMesh(name, vertices, normals, texcoords,
-                triangles, materialName, objectToWorld, vertexBuffer);
+        // 2. PARSE PHASE (Only if not cached)
+        if (!objData) {
+            objData = std::make_shared<CachedOBJData>();
+            Log(EInfo, "Loading geometry from \"%s\" ..", path.filename().string().c_str());
+            fs::ifstream is(path);
+            if (is.bad() || is.fail())
+                Log(EError, "Wavefront OBJ file '%s' not found!", path.string().c_str());
 
+            fileResolver->prependPath(fs::absolute(path).parent_path());
+            ref<Timer> timer = new Timer();
+            std::string buf, line;
+            
+            std::string name = m_name;
+            std::string materialName;
+            std::vector<OBJTriangle> currentTriangles;
+            int geomIndex = 0;
+            bool nameBeforeGeometry = false;
+
+            // Robust Lambda to flush groups
+            auto flushGroup = [&](const std::string& groupName) {
+                if (!currentTriangles.empty()) {
+                    std::string targetName = groupName;
+                    if (!m_collapse) targetName = formatString("%s_%i", targetName.c_str(), geomIndex++);
+                    
+                    CachedOBJGroup group;
+                    group.name = targetName;
+                    group.materialName = materialName;
+                    group.triangles = currentTriangles;
+                    
+                    objData->groups.push_back(group);
+                    currentTriangles.clear();
+                }
+            };
+
+            while (is.good() && !is.eof() && fetch_line(is, line)) {
+                std::istringstream iss(line);
+                if (!(iss >> buf)) continue;
+
+                if (buf == "v") {
+                    Point p; iss >> p.x >> p.y >> p.z;
+                    objData->vertices.push_back(p);
+                } else if (buf == "vn") {
+                    Normal n; iss >> n.x >> n.y >> n.z;
+                    objData->normals.push_back(n);
+                } else if (buf == "vt") {
+                    Float u, v; iss >> u >> v;
+                    if (flipTexCoords) v = 1 - v;
+                    objData->texcoords.push_back(Point2(u, v));
+                } else if (buf == "g" && !m_collapse) {
+                    std::string newName = trim(line.substr(1, line.length()-1));
+                    flushGroup(nameBeforeGeometry ? name : newName);
+                    name = newName;
+                    nameBeforeGeometry = true;
+                } else if (buf == "usemtl") {
+                    if (!m_collapse) flushGroup(name);
+                    materialName = trim(line.substr(6, line.length()-1));
+                } else if (buf == "mtllib") {
+                    objData->materialLibrary = fileResolver->resolve(trim(line.substr(6, line.length()-1)));
+                } else if (buf == "f") {
+                    std::string tmp; OBJTriangle t;
+                    iss >> tmp; parse(t, 0, tmp);
+                    iss >> tmp; parse(t, 1, tmp);
+                    iss >> tmp; parse(t, 2, tmp);
+                    currentTriangles.push_back(t);
+                    while (iss >> tmp) {
+                        t.p[1] = t.p[2]; t.uv[1] = t.uv[2]; t.n[1] = t.n[2];
+                        parse(t, 2, tmp);
+                        currentTriangles.push_back(t);
+                    }
+                }
+            }
+            
+            flushGroup(name); 
+            Log(EInfo, "Parsed \"%s\" (took %i ms)", path.filename().string().c_str(), timer->getMilliseconds());
+
+            // Save to cache safely
+            {
+                std::lock_guard<std::mutex> lock(getCacheMutex());
+                getCache()[cacheKey] = objData;
+            }
+        }
+
+        // 3. INSTANTIATION PHASE
+        Transform objectToWorld = props.getTransform("toWorld", Transform());
+        std::vector<Vertex> vertexBuffer;
+        
+        int currentGeomIndex = 0;
+        for (const auto& group : objData->groups) {
+            if (shapeIndex < 0 || currentGeomIndex == shapeIndex) {
+                createMesh(group.name, objData->vertices, objData->normals, objData->texcoords,
+                           group.triangles, group.materialName, objectToWorld, vertexBuffer);
+            }
+            currentGeomIndex++;
+        }
+
+        // 4. POST-PROCESSING (Smooth angles and Materials)
         if (props.hasProperty("maxSmoothAngle")) {
             if (m_faceNormals)
-                Log(EError, "The properties 'maxSmoothAngle' and 'faceNormals' "
-                "can't be specified at the same time!");
+                Log(EError, "The properties 'maxSmoothAngle' and 'faceNormals' can't be specified at the same time!");
             Float maxSmoothAngle = props.getFloat("maxSmoothAngle");
-            for (size_t i=0; i<m_meshes.size(); ++i)
+            for (size_t i = 0; i < m_meshes.size(); ++i)
                 m_meshes[i]->rebuildTopology(maxSmoothAngle);
         }
 
-        if (!materialLibrary.empty() && loadMaterials)
-            loadMaterialLibrary(fileResolver, materialLibrary);
-
-        Log(EInfo, "Done with \"%s\" (took %i ms)", path.filename().string().c_str(), timer->getMilliseconds());
+        if (!objData->materialLibrary.empty() && loadMaterials) {
+            loadMaterialLibrary(fileResolver, objData->materialLibrary);
+        }
     }
 
     WavefrontOBJ(Stream *stream, InstanceManager *manager) : Shape(stream, manager) {
@@ -709,9 +724,9 @@ public:
         mesh->incRef();
         m_materialAssignment.push_back(materialName);
         m_meshes.push_back(mesh);
-        Log(EInfo, "%s: " SIZE_T_FMT " triangles, " SIZE_T_FMT
-            " vertices (merged " SIZE_T_FMT " vertices).", name.c_str(),
-            triangles.size(), vertexBuffer.size(), numMerged);
+        // Log(EInfo, "%s: " SIZE_T_FMT " triangles, " SIZE_T_FMT
+        //     " vertices (merged " SIZE_T_FMT " vertices).", name.c_str(),
+        //     triangles.size(), vertexBuffer.size(), numMerged);
     }
 
     virtual ~WavefrontOBJ() {

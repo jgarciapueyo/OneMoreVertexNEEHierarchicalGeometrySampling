@@ -1,0 +1,14 @@
+python scenes/experiments/5_cbox/create_geometry.py --n_tiles 1 --tile_scale 1
+python scenes/experiments/5_cbox/create_geometry.py --n_tiles 2 --tile_scale 1
+python scenes/experiments/5_cbox/create_geometry.py --n_tiles 5 --tile_scale 1
+python scenes/experiments/5_cbox/create_geometry.py --n_tiles 10 --tile_scale 1
+python scenes/experiments/5_cbox/create_geometry.py --n_tiles 20 --tile_scale 1
+python scenes/experiments/5_cbox/create_geometry.py --n_tiles 50 --tile_scale 1
+python scenes/experiments/5_cbox/create_geometry.py --n_tiles 100 --tile_scale 1
+python scenes/experiments/5_cbox/create_geometry.py --n_tiles 1 --tile_scale 0.5
+python scenes/experiments/5_cbox/create_geometry.py --n_tiles 2 --tile_scale 0.5
+python scenes/experiments/5_cbox/create_geometry.py --n_tiles 5 --tile_scale 0.5
+python scenes/experiments/5_cbox/create_geometry.py --n_tiles 10 --tile_scale 0.5
+python scenes/experiments/5_cbox/create_geometry.py --n_tiles 20 --tile_scale 0.5
+python scenes/experiments/5_cbox/create_geometry.py --n_tiles 50 --tile_scale 0.5
+python scenes/experiments/5_cbox/create_geometry.py --n_tiles 100 --tile_scale 0.5

@@ -1,0 +1,48 @@
+2026-03-04 17:42:48 INFO  main [mitsuba.cpp:283] Mitsuba version 0.6.0 (Linux, 64 bit), Copyright (c) 2017 Wenzel Jakob
+2026-03-04 17:42:48 INFO  main [mitsuba.cpp:405] Parsing scene description from "/home/mitsuba/./scenes/basic/time_complexity_increasing_quads/scene_1_quads.xml" ..
+2026-03-04 17:42:48 INFO  main [PluginManager] Loading plugin "plugins/doublestep.so" ..
+2026-03-04 17:42:48 WARN  main [scenehandler.cpp:797] In file "/home/mitsuba/scenes/basic/time_complexity_increasing_quads/scene_1_quads.xml" (near line 9): Unqueried attribute "disableNee" in element "integrator"
+2026-03-04 17:42:48 INFO  main [PluginManager] Loading plugin "plugins/geometrybvh.so" ..
+2026-03-04 17:42:48 INFO  main [bvh_build.cpp:253] GeometryBVH: Configured importance scales: sggxCrossSectionScale=1.00, solidAngleScale=0.00, variancePenaltyScale=0.00, cosinePenaltyScale=1.00
+2026-03-04 17:42:48 INFO  main [PluginManager] Loading plugin "plugins/independent.so" ..
+2026-03-04 17:42:48 INFO  main [PluginManager] Loading plugin "plugins/hdrfilm.so" ..
+2026-03-04 17:42:48 INFO  main [PluginManager] Loading plugin "plugins/gaussian.so" ..
+2026-03-04 17:42:48 INFO  main [PluginManager] Loading plugin "plugins/perspective.so" ..
+2026-03-04 17:42:48 INFO  main [PluginManager] Loading plugin "plugins/area.so" ..
+2026-03-04 17:42:48 INFO  main [PluginManager] Loading plugin "plugins/rectangle.so" ..
+2026-03-04 17:42:48 INFO  main [PluginManager] Loading plugin "plugins/diffuse.so" ..
+2026-03-04 17:42:48 INFO  main [PluginManager] Loading plugin "plugins/checkerboard.so" ..
+2026-03-04 17:42:48 INFO  main [PluginManager] Loading plugin "plugins/cube.so" ..
+2026-03-04 17:42:48 INFO  ren0 [KDTreeBase] Constructing a SAH kd-tree (15 primitives) ..
+2026-03-04 17:42:48 INFO  ren0 [KDTreeBase] Finished -- took 0 ms.
+2026-03-04 17:42:48 INFO  ren0 [Scene] Building geometry BVH with max leaf size 4
+2026-03-04 17:42:48 INFO  ren0 [bvh_build.cpp:303] GeometryBVH: Collecting 12 triangles from 1 meshes
+2026-03-04 17:42:48 INFO  ren0 [bvh_build.cpp:360] GeometryBVH built: 7 nodes, 12 primitives, maxLeafSize=4
+2026-03-04 17:42:48 INFO  ren0 [bvh_build.cpp:206] Fitted VMF to sampled normals: mean direction = (0.904, 0.116, -0.412), kappa = 3.893
+2026-03-04 17:42:48 INFO  ren0 [bvh_build.cpp:477] GeometryBVH aggregates computed for 7 nodes
+2026-03-04 17:42:48 INFO  ren0 [SamplingIntegrator] Starting render job (512x512, 256 samples, 20 cores, SSE2 enabled) ..
+Rendering: [+++                                         ] (1.1s, ETA: 14.4s)  Rendering: [++++++                                      ] (2.2s, ETA: 12.2s)  Rendering: [++++++++++++                                ] (3.2s, ETA: 8.3s)  Rendering: [+++++++++++++++++                           ] (4.2s, ETA: 6.5s)  Rendering: [++++++++++++++++++++++                      ] (5.3s, ETA: 5.0s)  Rendering: [+++++++++++++++++++++++++++++               ] (6.4s, ETA: 3.1s)  Rendering: [+++++++++++++++++++++++++++++++++++++       ] (7.4s, ETA: 1.3s)  Rendering: [++++++++++++++++++++++++++++++++++++++++++++] (8.1s, ETA: 0.0s)  
+2026-03-04 17:42:56 INFO  ren0 [RenderJob] Render time: 8.1230s
+2026-03-04 17:42:56 INFO  ren0 [HDRFilm] Writing image to "/home/mitsuba/./scenes/basic/time_complexity_increasing_quads/scene_1_quads.exr" ..
+2026-03-04 17:42:56 INFO  main [statistics.cpp:142] Statistics:
+------------------------------------------------------------
+ * Loaded plugins :
+    -  plugins/area.so [Area light]
+    -  plugins/checkerboard.so [Checkerboard texture]
+    -  plugins/cube.so [Cube intersection primitive]
+    -  plugins/diffuse.so [Smooth diffuse BRDF]
+    -  plugins/doublestep.so [Double step integrator]
+    -  plugins/gaussian.so [Gaussian reconstruction filter]
+    -  plugins/geometrybvh.so [Geometry BVH with aggregates for importance sampling]
+    -  plugins/hdrfilm.so [High dynamic range film]
+    -  plugins/independent.so [Independent sampler]
+    -  plugins/perspective.so [Perspective camera]
+    -  plugins/rectangle.so [Rectangle intersection primitive]
+
+  * General :
+    -  Normal rays traced : 117.971 M
+    -  Shadow rays traced : 142.280 M
+
+  * Path tracer :
+    -  Average path length : 1.05 (70.43 M / 67.11 M)
+------------------------------------------------------------

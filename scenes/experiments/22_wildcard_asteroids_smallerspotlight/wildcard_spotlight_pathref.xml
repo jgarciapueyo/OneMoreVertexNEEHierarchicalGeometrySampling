@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- ./build/release/mitsuba/mitsuba scenes/experiments/1_wildcard_spotlight/wildcard_spotlight_quads_pathref.xml -Dgeometry=quads-k40-instances -Dspp=2048 -->
+
+<scene version="0.6.0">
+	<integrator type="$integrator:path">
+		<integer name="maxDepth" value="3"/>
+		<integer name="rrDepth" value="5"/>
+	</integrator>
+	<sensor type="perspective">
+		<string name="fovAxis" value="smaller"/>
+		<float name="nearClip" value="0.0001"/>
+		<float name="farClip" value="1000"/>
+		<transform name="toWorld">
+			<!-- from -x, towards the origin -->
+			<!-- <lookAt origin="-20, 0, 0" target="0, 0, 0" up="0, 0, 1"/> -->
+			<lookAt origin="0, 200, 0" target="0, 100, 0" up="0, 0, 1"/>
+		</transform>
+		<float name="fov" value="30"/>
+		<sampler type="independent">
+			<integer name="sampleCount" value="$spp:64"/>
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="$w:768"/>
+			<integer name="height" value="$h:512"/>
+		</film>
+	</sensor>
+	<emitter type="spot" name="spot_light">
+		<transform name="toWorld">
+			<!-- from +z, towards the origin -->
+			<lookAt origin="-30, 100, 20" target="0, 100, 20" up="0, 0, 1"/>
+
+			<!-- <lookAt origin="-3000, 0, 0" target="0, 100, 0" up="0, 0, 1"/> -->
+		</transform>
+		<rgb name="intensity" value="1000000"/>
+		<float name="cutoffAngle" value="20"/>
+	</emitter>
+	<include filename="../scene_geometries/asteroids-3k.xml"/>
+    <!-- <include filename="../scene_geometries/quads-geometry.xml"/> -->
+
+</scene>

@@ -1,0 +1,25 @@
+services:
+  mitsuba:
+    build:
+      context: . # Build context is the current directory (where Dockerfile and mitsuba-0.6 are)
+      dockerfile: Dockerfile # Specify the Dockerfile to use
+    volumes:
+      # Mount the Mitsuba source code. This is useful if you want to
+      # make changes to the source and recompile without rebuilding the
+      # entire Docker image.
+      - ${PWD}:/home/mitsuba
+
+      # 1. Tell Bash to write history to the mounted volume
+    environment:
+      - HISTFILE=/home/mitsuba/.bash_history
+      # - ./compile.sh:/home/compile.sh # Mount the compile script
+      # Optional: Mount a directory for Mitsuba's output (e.g., rendered images)
+      # Create a 'output/' directory in your host project if you use this.
+      # - ./output:/app/output
+
+    working_dir: /home/mitsuba # Set the working directory inside the container
+    command: bash # Default command to run when the container starts. This drops you into a shell.
+    # You can change this to directly run mitsuba if you have a scene:
+    # command: /home/mitsuba/dist/mitsuba # Path to the compiled executable
+    # stdin_open: true # Keep stdin open even if not attached
+    tty: true        # Allocate a pseudo-TTY

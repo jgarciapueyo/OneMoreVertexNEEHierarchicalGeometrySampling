@@ -29,6 +29,7 @@
 #include <mitsuba/core/fresolver.h>
 #include <mitsuba/core/fstream.h>
 #include <mitsuba/core/appender.h>
+#include <mitsuba/core/plugin.h>
 #include <mitsuba/core/sshstream.h>
 #include <mitsuba/core/shvector.h>
 #include <mitsuba/core/statistics.h>
@@ -79,6 +80,7 @@ void help() {
     cout <<  "   -r sec      Write (partial) output images every 'sec' seconds" << endl << endl;
     cout <<  "   -b res      Specify the block resolution used to split images into parallel" << endl;
     cout <<  "               workloads (default: 32). Only applies to some integrators." << endl << endl;
+    cout <<  "   -S count    Override the number of samples per pixel (sampleCount)" << endl << endl;
     cout <<  "   -v          Be more verbose (can be specified twice)" << endl << endl;
     cout <<  "   -L level    Explicitly specify the log level (trace/debug/info/warn/error)" << endl << endl;
     cout <<  "   -w          Treat warnings as errors" << endl << endl;
@@ -138,6 +140,7 @@ int mitsuba_app(int argc, char **argv) {
                     networkHosts = "", destFile="";
         bool quietMode = false, progressBars = true, skipExisting = false;
         ELogLevel logLevel = EInfo;
+        int overrideSamples = -1;
         ref<FileResolver> fileResolver = Thread::getThread()->getFileResolver();
         bool treatWarningsAsErrors = false;
         std::map<std::string, std::string, SimpleStringOrdering> parameters;
@@ -151,7 +154,7 @@ int mitsuba_app(int argc, char **argv) {
 
         optind = 1;
         /* Parse command-line arguments */
-        while ((optchar = getopt(argc, argv, "a:c:D:s:j:n:o:r:b:p:L:qhzvtwx")) != -1) {
+        while ((optchar = getopt(argc, argv, "a:c:D:s:j:n:o:r:b:p:L:qhzvtwxS:")) != -1) {
             switch (optchar) {
                 case 'a': {
                         std::vector<std::string> paths = tokenize(optarg, ";");
@@ -236,6 +239,12 @@ int mitsuba_app(int argc, char **argv) {
                         SLog(EError, "Could not parse the block size!");
                     if (blockSize < 2 || blockSize > 128)
                         SLog(EError, "Invalid block size (should be in the range 2-128)");
+                    break;
+                case 'S': {
+                    overrideSamples = strtol(optarg, &end_ptr, 10);
+                    if (*end_ptr != '\0' || overrideSamples <= 0)
+                        SLog(EError, "Could not parse the sample count for '-S'!");
+                }
                     break;
                 case 'z':
                     progressBars = false;
@@ -365,19 +374,51 @@ int mitsuba_app(int argc, char **argv) {
         }
 
         int jobIdx = 0;
-        for (int i=optind; i<argc; ++i) {
-            fs::path
-                filename = fileResolver->resolve(argv[i]),
-                filePath = fs::absolute(filename).parent_path(),
-                baseName = filename.stem();
+
+        /* Build a list of scene files. If an argument resolves to a directory,
+           iterate all .xml files inside it. */
+        std::vector<fs::path> sceneFiles;
+        for (int i = optind; i < argc; ++i) {
+            fs::path resolved = fileResolver->resolve(argv[i]);
+            if (fs::exists(resolved) && fs::is_directory(resolved)) {
+                for (fs::directory_iterator it(resolved); it != fs::directory_iterator(); ++it) {
+                    try {
+                        if (it->path().extension() == ".xml")
+                            sceneFiles.push_back(fs::absolute(it->path()));
+                    } catch (...) {
+                        /* ignore unreadable entries */
+                    }
+                }
+            } else {
+                sceneFiles.push_back(resolved);
+            }
+        }
+
+        for (size_t si = 0; si < sceneFiles.size(); ++si) {
+            const fs::path &filename = sceneFiles[si];
+            fs::path filePath = fs::absolute(filename).parent_path();
+            fs::path baseName = filename.stem();
             ref<FileResolver> frClone = fileResolver->clone();
             frClone->prependPath(filePath);
             Thread::getThread()->setFileResolver(frClone);
 
-            SLog(EInfo, "Parsing scene description from \"%s\" ..", argv[i]);
+            SLog(EInfo, "Parsing scene description from \"%s\" ..", filename.c_str());
 
             parser->parse(filename.c_str());
             ref<Scene> scene = handler->getScene();
+
+            if (overrideSamples > 0) {
+                Sampler *oldSampler = scene->getSampler();
+                if (oldSampler) {
+                    Properties samplerProps(oldSampler->getProperties());
+                    samplerProps.setSize("sampleCount", (size_t) overrideSamples);
+                    Sampler *newSampler = static_cast<Sampler *>(
+                        PluginManager::getInstance()->createObject(MTS_CLASS(Sampler), samplerProps));
+                    newSampler->configure();
+                    scene->setSampler(newSampler);
+                    SLog(EInfo, "Overrode sampler sampleCount to %i", overrideSamples);
+                }
+            }
 
             scene->setSourceFile(filename);
             scene->setDestinationFile(destFile.length() > 0 ?
@@ -392,7 +433,7 @@ int mitsuba_app(int argc, char **argv) {
             thr->start();
 
             renderQueue->waitLeft(numParallelScenes-1);
-            if (i+1 < argc && numParallelScenes == 1)
+            if (si+1 < sceneFiles.size() && numParallelScenes == 1)
                 Statistics::getInstance()->resetAll();
         }
 
