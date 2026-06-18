@@ -106,8 +106,8 @@ Files that should never appear in a public repo:
 
 | Path | Reason |
 |---|---|
-| `src/librender/bvh_OLD/` | Superseded prototype BVH; all 6 files replaced by `src/librender/bvh/` |
-| `src/librender/bvh/bvh_importance-nancatching.cpp` | Debug variant, not compiled (absent from SConscript) |
+| `src/librender/bvh_OLD/` | (Done - removed) Superseded prototype BVH; all 6 files replaced by `src/librender/bvh/` |
+| `src/librender/bvh/bvh_importance-nancatching.cpp` | (Done - removed) Debug variant, not compiled (absent from SConscript) |
 | `scenes_old/` | Development scratch scenes from earlier iterations |
 | `.plans/` (this directory) | Internal implementation planning notes — move `clean.md` out, delete the rest |
 | `ppg/` | Full copy of Müller et al. 2017 PPG source — replace with a git submodule or note |
