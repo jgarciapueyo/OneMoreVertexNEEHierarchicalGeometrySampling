@@ -1,0 +1,110 @@
+
+# BVH ablation across several non-Disney geometries
+docker:
+  container: bdpt_twopoints_mitsuba-mitsuba-1
+  workdir: /home/mitsuba
+  setpath_script: /home/mitsuba/setpath.sh
+
+scene: scenes/experiments/2_wildcard_asteroids/wildcard_spotlight.xml
+output_root: scenes/experiments/2_wildcard_asteroids/results/ablation_asteroids_trueablation_selected
+
+reference:
+  inherit_config_params: false
+  pre_rendered_exr: scenes/experiments/2_wildcard_asteroids/results/ablation_asteroids/baseline_path/reference.exr
+  scene: scenes/experiments/2_wildcard_asteroids/wildcard_spotlight_pathref.xml
+  spp: 16000
+  
+
+spp_schedule: [2, 4, 8, 16, 32, 64, 128, 512] # , 16, 32, 64, 128, 512
+repetitions_per_spp: 3
+reference_spp: 16000
+
+global_defaults:
+  integrator: doublestep
+  maxDepth: 3
+  bvhMaxDepth: 20
+  rrDepth: 5
+  leafSamplingMode: Primitive
+  useBVH: true
+  disableNEE: false
+  doAdditionalVertex: true
+  outputDebugCSV: false
+  enableLightcuts: false
+  lightcutThreshold: 1.5
+  gaussianSAThreshold: 0.03141592
+  useUniformBVHSampling: 1
+  enableSpecular: 0
+  enableFastLUT: 1 # Should be 1 to precompute gaussians (>1.5 evals the lut once at the cost of variance)
+  defensivePDF: 0.000001
+
+analysis:
+  baseline_config_name: baseline_path
+  average_bbox: [0.6, 0.4, 0.7, 0.5] # delimits the area used to check unbiasedness (this box is the bottom half of the image)
+  # average_bbox: [0.2, 0.2, 0.8, 0.8] # delimits the area used to check unbiasedness (this box is the bottom half of the image)
+  figure_format: svg
+  exposure_scale: .5
+  n_top_techniques: 10
+
+named_configs:
+  - name: baseline_path
+    params:
+      __scene: scenes/experiments/2_wildcard_asteroids/wildcard_spotlight_pathref.xml
+      integrator: path
+      maxDepth: 3
+      rrDepth: 5
+
+  # - name: bdpt
+  #   params:
+  #     integrator: bdpt
+  #     __scene: scenes/experiments/2_wildcard_asteroids/wildcard_spotlight_pathref.xml
+
+  - name: nogaussian
+    params:
+      ablateGaussian: true
+
+  - name: novmf
+    params:
+      ablateVMF: true
+      
+      
+  - name: nocosinexs
+    params:
+      ablateCosineXs: true
+
+  # - name: nocosinexe
+  #   params:
+  #     ablateCosineXe: true
+
+  - name: nodistancexs
+    params:
+      ablateDistanceXs: true
+
+  # - name: nodistancexe
+  #   params:
+  #     ablateDistanceXe: true
+
+  # - name: noalbedo
+  #   params:
+  #     ablateAlbedo: true
+      
+  - name: allablation
+    params:
+      ablateGaussian: true
+      ablateVMF: true
+      ablateCosineXs: true
+      ablateCosineXe: true
+      ablateDistanceXs: true
+      ablateDistanceXe: true
+      ablateAlbedo: true
+
+  - name: ours
+    params:
+      ablateGaussian: false
+      ablateVMF: false
+      ablateCosineXs: false
+      ablateCosineXe: false
+      ablateDistanceXs: false
+      ablateDistanceXe: false
+      ablateAlbedo: false
+
+  

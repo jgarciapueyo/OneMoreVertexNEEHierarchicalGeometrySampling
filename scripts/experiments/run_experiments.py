@@ -10,6 +10,7 @@ import shutil
 import subprocess
 import time
 from pathlib import Path
+from typing import Optional
 
 import yaml
 
@@ -181,7 +182,7 @@ _PPG_INTEGRATORS = {"guided_path"}
 def _resolve_mitsuba(
     params: dict,
     setpath_script: str,
-    ppg_setpath_script: str | None,
+    ppg_setpath_script: Optional[str],
 ):
     """Return (exe_name, setpath_script) for the given config params."""
     integrator = str(params.get("integrator", ""))

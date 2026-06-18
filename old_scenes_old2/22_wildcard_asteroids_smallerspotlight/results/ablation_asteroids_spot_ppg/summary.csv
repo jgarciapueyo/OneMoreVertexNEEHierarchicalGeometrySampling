@@ -1,0 +1,5 @@
+config_name,config_dir
+baseline_path,scenes/22_wildcard_asteroids_smallerspotlight/results/ablation_asteroids_spot_ppg/baseline_path
+bdpt,scenes/22_wildcard_asteroids_smallerspotlight/results/ablation_asteroids_spot_ppg/bdpt
+ppg,scenes/22_wildcard_asteroids_smallerspotlight/results/ablation_asteroids_spot_ppg/ppg
+ours,scenes/22_wildcard_asteroids_smallerspotlight/results/ablation_asteroids_spot_ppg/ours

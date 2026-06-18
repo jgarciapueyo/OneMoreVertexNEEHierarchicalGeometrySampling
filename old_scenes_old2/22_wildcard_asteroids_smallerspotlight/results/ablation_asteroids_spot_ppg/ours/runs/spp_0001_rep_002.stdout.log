@@ -1,0 +1,62 @@
+2026-06-18 23:38:24 INFO  main [mitsuba.cpp:283] Mitsuba version 0.6.0 (Linux, 64 bit), Copyright (c) 2017 Wenzel Jakob
+2026-06-18 23:38:24 INFO  main [mitsuba.cpp:405] Parsing scene description from "/home/mitsuba/scenes/22_wildcard_asteroids_smallerspotlight/wildcard_spotlight.xml" ..
+2026-06-18 23:38:24 INFO  main [PluginManager] Loading plugin "plugins/doublestep.so" ..
+2026-06-18 23:38:24 INFO  main [PluginManager] Loading plugin "plugins/geometrybvh.so" ..
+2026-06-18 23:38:24 WARN  main [bvh_build.cpp:71] GeometryBVH: Configured debug values: debug1=1.00, debug2=0.00, debug3=1.00, debug4=1.00, debug5=1.00
+
+
+2026-06-18 23:38:24 INFO  main [bvh_build.cpp:96] GeometryBVH: Configured importance parameters: importanceMultiplier=1.00, defensivePDF=0.0000
+2026-06-18 23:38:24 INFO  main [bvh_build.cpp:119] GeometryBVH. Summary of the configuration: maxDepth=20, samplingMode=Primitive, enableLightcuts=false, lightcutThreshold=1.50, gaussianSAThreshold=0.0314, kappaThreshold=10.00, angularSAHWeight=0.000, angularSAHKappaScale=10.000, importanceMultiplier=1.00, defensivePDF=0.0000, rrStrength=0.000, outputDebugCSV=false, csvEnabledLevels=4294967295
+2026-06-18 23:38:24 INFO  main [PluginManager] Loading plugin "plugins/independent.so" ..
+2026-06-18 23:38:24 INFO  main [PluginManager] Loading plugin "plugins/hdrfilm.so" ..
+2026-06-18 23:38:24 INFO  main [PluginManager] Loading plugin "plugins/gaussian.so" ..
+2026-06-18 23:38:24 INFO  main [PluginManager] Loading plugin "plugins/perspective.so" ..
+2026-06-18 23:38:24 INFO  main [PluginManager] Loading plugin "plugins/spot.so" ..
+2026-06-18 23:38:24 INFO  main [scenehandler.cpp:738] In file "/home/mitsuba/scenes/22_wildcard_asteroids_smallerspotlight/wildcard_spotlight.xml" (near line 108): Parsing included file "asteroids-3k.xml" ..
+2026-06-18 23:38:24 INFO  main [PluginManager] Loading plugin "plugins/diffuse.so" ..
+2026-06-18 23:38:24 INFO  main [PluginManager] Loading plugin "plugins/ply.so" ..
+2026-06-18 23:38:25 INFO  ren0 [KDTreeBase] Constructing a SAH kd-tree (7856200 primitives) ..
+2026-06-18 23:38:28 INFO  ren0 [KDTreeBase] Finished -- took 3463 ms.
+2026-06-18 23:38:29 INFO  ren0 [Scene] Building geometry BVH with max depth 20
+2026-06-18 23:38:29 INFO  ren0 [bvh_build.cpp:242] GeometryBVH: Collecting 7856200 triangles from 800 meshes
+2026-06-18 23:38:29 INFO  ren0 [bvh_build.cpp:376] GeometryBVH: Building aggregates using SAH-based traversal...
+2026-06-18 23:38:32 INFO  ren0 [bvh_build.cpp:522] GeometryBVH: Built leaf sampling tables: total entries = 15712400 (prob (7856200) + alias (7856200)), total memory = 61376.56 KB
+2026-06-18 23:38:32 INFO  ren0 [bvh_build.cpp:407] GeometryBVH built: 2063283 nodes, 7856200 primitives, maxDepth=20
+2026-06-18 23:38:32 INFO  ren0 [bvh_build.cpp:649] GeometryBVH aggregates computed for 2063283 nodes
+Capacities of each substructure: 
+  Nodes: 2063283 / 2097151 (92274644B, 87MB)
+  Primitives: 7856200 / 7856200 (62849600B, 59MB)
+  NodeInfos: 2063283 / 2063283 (610731768B, 582MB)
+  LeafAliasTableOffsets: 2063283 / 2063283 (8253132B, 7MB)
+  LeafAliasProb: 7856200 / 8705960 (34823840B, 33MB)
+  LeafAliasAlias: 7856200 / 8705960 (34823840B, 33MB)
+  PrimitiveLevels: 0 / 0 (0B, 0MB)
+  MeshOffsets: 800 / 800 (3200B, 0MB)
+  TriangleToPrim: 7856200 / 7856200 (31424800B, 29MB)
+2026-06-18 23:38:32 INFO  ren0 [bvh_build.cpp:650] GeometryBVH memory footprint (approx): 834.642 MiB
+2026-06-18 23:38:32 INFO  ren0 [Scene] Geometry BVH build time: 3.8620s
+2026-06-18 23:38:32 INFO  ren0 [SamplingIntegrator] Starting render job (768x512, 1 sample, 20 cores, SSE2 enabled) ..
+
+Rendering: [++++++++++++++++++++++++++++++++++++++++++++] (0.1s, ETA: 0.0s)  
+2026-06-18 23:38:33 INFO  ren0 [RenderJob] Render time: 0.1262s
+2026-06-18 23:38:33 INFO  ren0 [HDRFilm] Writing image to "scenes/22_wildcard_asteroids_smallerspotlight/results/ablation_asteroids_spot_ppg/ours/runs/spp_0001_rep_002.exr" ..
+2026-06-18 23:38:33 INFO  main [statistics.cpp:142] Statistics:
+------------------------------------------------------------
+ * Loaded plugins :
+    -  plugins/diffuse.so [Smooth diffuse BRDF]
+    -  plugins/doublestep.so [Double step integrator]
+    -  plugins/gaussian.so [Gaussian reconstruction filter]
+    -  plugins/geometrybvh.so [Geometry BVH with aggregates for importance sampling]
+    -  plugins/hdrfilm.so [High dynamic range film]
+    -  plugins/independent.so [Independent sampler]
+    -  plugins/perspective.so [Perspective camera]
+    -  plugins/ply.so [PLY mesh loader]
+    -  plugins/spot.so [Spot light]
+
+  * General :
+    -  Normal rays traced : 500.830 K
+    -  Shadow rays traced : 309.003 K
+
+  * Path tracer :
+    -  Average path length : 1.02 (402.47 K / 393.22 K)
+------------------------------------------------------------

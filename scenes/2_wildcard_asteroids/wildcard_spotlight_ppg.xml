@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 
+Note: this file has many wildcards so that it can be used from the scripts/experiments/ script
+To run it directly you must give values to all wildcards, e.g.:
+	./build/release/mitsuba/mitsuba scenes/experiments/1_wildcard_spotlight/wildcard_spotlight_quads.xml -Dintegrator=doublestep -DmaxDepth=3 -DrrDepth=4 -DuseBVH=true -DdisableNEE=false -DmaxLeafSize=2 -DleafSamplingMode=SphericalAABB -DoutputDebugCSV=false -Dgeometry=quads -Dspp=512
+ -->
+<scene version="0.6.0">
+	<integrator type="$integrator">
+		<integer name="maxDepth" value="$maxDepth"/>
+		<integer name="rrDepth" value="$rrDepth"/>
+		<string name="nee" value="always"/>
+		<string name="budgetType" value="spp"/>
+		<float name="budget" value="$spp"/>
+	</integrator>
+	
+	<sensor type="perspective">
+		<string name="fovAxis" value="smaller"/>
+		<float name="nearClip" value="0.0001"/>
+		<float name="farClip" value="1000"/>
+		<transform name="toWorld">
+			<!-- from -x, towards the origin -->
+			<!-- <lookAt origin="-20, 0, 0" target="0, 0, 0" up="0, 0, 1"/> -->
+			<lookAt origin="0, 200, 0" target="0, 100, 0" up="0, 0, 1"/>
+		</transform>
+		<float name="fov" value="30"/>
+		<sampler type="independent">
+			<integer name="sampleCount" value="$spp"/>
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="768"/>
+			<integer name="height" value="512"/>
+		</film>
+	</sensor>
+	<emitter type="spot" name="spot_light">
+		<transform name="toWorld">
+			<!-- from +z, towards the origin -->
+			<lookAt origin="-3000, 0, 0" target="0, 100, 0" up="0, 0, 1"/>
+		</transform>
+		<rgb name="intensity" value="100000000"/>
+		<float name="cutoffAngle" value="5"/>
+	</emitter>
+	<include filename="../scene_geometries/asteroids-3k.xml"/>
+    <!-- <include filename="../scene_geometries/quads-geometry.xml"/> -->
+
+</scene>

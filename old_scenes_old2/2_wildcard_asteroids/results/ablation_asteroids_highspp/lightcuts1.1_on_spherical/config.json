@@ -1,0 +1,18 @@
+{
+  "integrator": "doublestep",
+  "maxDepth": 3,
+  "bvhMaxDepth": 16,
+  "rrDepth": 5,
+  "leafSamplingMode": "SphericalAABB",
+  "useBVH": true,
+  "disableNEE": false,
+  "doAdditionalVertex": true,
+  "outputDebugCSV": false,
+  "enableLightcuts": true,
+  "lightcutThreshold": 1.1,
+  "gaussianSAThreshold": 0.03141592,
+  "useUniformBVHSampling": 1,
+  "enableSpecular": 0,
+  "enableFastLUT": 1,
+  "defensivePDF": 1e-06
+}

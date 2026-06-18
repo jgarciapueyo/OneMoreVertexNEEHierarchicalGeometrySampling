@@ -1,0 +1,37 @@
+2026-06-18 23:37:07 INFO  main [mitsuba.cpp:283] Mitsuba version 0.6.0 (Linux, 64 bit), Copyright (c) 2017 Wenzel Jakob
+2026-06-18 23:37:07 INFO  main [mitsuba.cpp:405] Parsing scene description from "/home/mitsuba/scenes/22_wildcard_asteroids_smallerspotlight/wildcard_spotlight_pathref.xml" ..
+2026-06-18 23:37:07 INFO  main [PluginManager] Loading plugin "plugins/bdpt.so" ..
+2026-06-18 23:37:07 INFO  main [PluginManager] Loading plugin "plugins/independent.so" ..
+2026-06-18 23:37:07 INFO  main [PluginManager] Loading plugin "plugins/hdrfilm.so" ..
+2026-06-18 23:37:07 INFO  main [PluginManager] Loading plugin "plugins/gaussian.so" ..
+2026-06-18 23:37:07 INFO  main [PluginManager] Loading plugin "plugins/perspective.so" ..
+2026-06-18 23:37:07 INFO  main [PluginManager] Loading plugin "plugins/spot.so" ..
+2026-06-18 23:37:07 INFO  main [scenehandler.cpp:738] In file "/home/mitsuba/scenes/22_wildcard_asteroids_smallerspotlight/wildcard_spotlight_pathref.xml" (near line 37): Parsing included file "asteroids-3k.xml" ..
+2026-06-18 23:37:07 INFO  main [PluginManager] Loading plugin "plugins/diffuse.so" ..
+2026-06-18 23:37:07 INFO  main [PluginManager] Loading plugin "plugins/ply.so" ..
+2026-06-18 23:37:08 INFO  ren0 [KDTreeBase] Constructing a SAH kd-tree (7856200 primitives) ..
+2026-06-18 23:37:12 INFO  ren0 [KDTreeBase] Finished -- took 3466 ms.
+2026-06-18 23:37:12 INFO  ren0 [Scene] Building geometry BVH with max depth 16
+2026-06-18 23:37:12 INFO  ren0 [bvh_build.cpp:218] GeometryBVH::build: integrator 'BDPTIntegrator' (plugin 'bdpt') is not supported, disabling GeometryBVH
+2026-06-18 23:37:12 WARN  ren0 [bvh_build.cpp:632] GeometryBVH::buildAggregates: BVH not built yet
+2026-06-18 23:37:12 INFO  ren0 [Scene] Geometry BVH build time: 0.0000s
+2026-06-18 23:37:12 INFO  ren0 [BDPTIntegrator] Starting render job (768x512, 4 samples, 20 cores, SSE2 enabled) ..
+
+Rendering: [++++++++++++++++++++++++++++++++++++++++++++] (0.2s, ETA: 0.0s)  
+2026-06-18 23:37:12 INFO  ren0 [RenderJob] Render time: 0.2111s
+2026-06-18 23:37:12 INFO  ren0 [HDRFilm] Writing image to "scenes/22_wildcard_asteroids_smallerspotlight/results/ablation_asteroids_spot_ppg/bdpt/runs/spp_0004_rep_002.exr" ..
+2026-06-18 23:37:12 INFO  main [statistics.cpp:142] Statistics:
+------------------------------------------------------------
+ * Loaded plugins :
+    -  plugins/bdpt.so [Bidirectional path tracer]
+    -  plugins/diffuse.so [Smooth diffuse BRDF]
+    -  plugins/gaussian.so [Gaussian reconstruction filter]
+    -  plugins/hdrfilm.so [High dynamic range film]
+    -  plugins/independent.so [Independent sampler]
+    -  plugins/perspective.so [Perspective camera]
+    -  plugins/ply.so [PLY mesh loader]
+    -  plugins/spot.so [Spot light]
+
+  * General :
+    -  Normal rays traced : 3.677 M
+------------------------------------------------------------

@@ -1,0 +1,1652 @@
+2026-06-18 23:37:24 INFO  main [mitsuba.cpp:274] Mitsuba version 0.6.0 (Linux, 64 bit), Copyright (c) 2014 Wenzel Jakob
+2026-06-18 23:37:24 INFO  main [mitsuba.cpp:377] Parsing scene description from "scenes/22_wildcard_asteroids_smallerspotlight/wildcard_spotlight_ppg.xml" ..
+2026-06-18 23:37:24 INFO  main [PluginManager] Loading plugin "plugins/guided_path.so" ..
+2026-06-18 23:37:24 INFO  main [PluginManager] Loading plugin "plugins/independent.so" ..
+2026-06-18 23:37:24 INFO  main [PluginManager] Loading plugin "plugins/hdrfilm.so" ..
+2026-06-18 23:37:24 INFO  main [PluginManager] Loading plugin "plugins/gaussian.so" ..
+2026-06-18 23:37:24 INFO  main [PluginManager] Loading plugin "plugins/perspective.so" ..
+2026-06-18 23:37:24 INFO  main [PluginManager] Loading plugin "plugins/spot.so" ..
+2026-06-18 23:37:24 INFO  main [scenehandler.cpp:675] In file "/home/mitsuba/scenes/22_wildcard_asteroids_smallerspotlight/wildcard_spotlight_ppg.xml" (near line 45): Parsing included file "asteroids-3k.xml" ..
+2026-06-18 23:37:24 INFO  main [PluginManager] Loading plugin "plugins/diffuse.so" ..
+2026-06-18 23:37:24 INFO  main [PluginManager] Loading plugin "plugins/ply.so" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.001-Astroid.001-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.001-Astroid.001-0": Loaded 1572864 triangles, 786434 vertices (36.0 MiB in 139 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:24 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:24 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  main [PLYLoader] Loading geometry from "Astroid.002-Rock.019-0.ply" ..
+2026-06-18 23:37:25 INFO  main [PLYLoader] "Astroid.002-Rock.019-0": Loaded 7864 triangles, 3934 vertices (184.4 KiB in 0 ms).
+2026-06-18 23:37:25 INFO  ren0 [KDTreeBase] Constructing a SAH kd-tree (7856200 primitives) ..
+2026-06-18 23:37:28 INFO  ren0 [KDTreeBase] Finished -- took 3449 ms.
+2026-06-18 23:37:29 INFO  ren0 [GuidedPathTracer] Starting render job (768x512, 20 cores, SSE2 enabled) ..
+2026-06-18 23:37:29 INFO  ren0 [GuidedPathTracer] ITERATION 0, 1 passes
+2026-06-18 23:37:29 INFO  ren0 [GuidedPathTracer] Resetting distributions for sampling.
+2026-06-18 23:37:29 INFO  ren0 [GuidedPathTracer] Rendering 1 render passes.
+
+Rendering: [++++++++++++++++++++++++++++++++++++++++++++] (0.1s, ETA: 0.0s)  
+2026-06-18 23:37:29 INFO  ren0 [GuidedPathTracer] 0.14 seconds, Total passes: 1, Var: 3.429491, TTUV: 0.476699, STUV: 13.717964.
+2026-06-18 23:37:29 INFO  ren0 [GuidedPathTracer] Extrapolated var:
+  Last:    inf
+  Current: 3.429491
+
+2026-06-18 23:37:29 INFO  ren0 [GuidedPathTracer] Building distributions for sampling.
+2026-06-18 23:37:29 INFO  ren0 [GuidedPathTracer] Distribution statistics:
+  Depth         = [4, 4.000000, 4]
+  Mean radiance = [0.000000, 0.000000, 0.000000]
+  Node count    = [85, 85.000000, 85]
+  Stat. weight  = [0.000000, 0.000000, 0.000000]
+
+2026-06-18 23:37:29 INFO  ren0 [RenderJob] Render time: 4.0190s
+2026-06-18 23:37:29 INFO  ren0 [HDRFilm] Writing image to "scenes/22_wildcard_asteroids_smallerspotlight/results/ablation_asteroids_spot_ppg/ppg/runs/spp_0001_rep_001.exr" ..
+2026-06-18 23:37:29 INFO  main [statistics.cpp:142] Statistics:
+------------------------------------------------------------
+ * Loaded plugins :
+    -  plugins/diffuse.so [Smooth diffuse BRDF]
+    -  plugins/gaussian.so [Gaussian reconstruction filter]
+    -  plugins/guided_path.so [Guided path tracer]
+    -  plugins/hdrfilm.so [High dynamic range film]
+    -  plugins/independent.so [Independent sampler]
+    -  plugins/perspective.so [Perspective camera]
+    -  plugins/ply.so [PLY mesh loader]
+    -  plugins/spot.so [Spot light]
+
+  * General :
+    -  Normal rays traced : 2.004 M
+    -  Shadow rays traced : 434.742 K
+
+  * Guided path tracer :
+    -  Average path length : 1.27 (2.00 M / 1.57 M)
+------------------------------------------------------------

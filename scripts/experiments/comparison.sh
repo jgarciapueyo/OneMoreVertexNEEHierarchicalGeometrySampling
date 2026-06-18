@@ -11,17 +11,17 @@ set -euo pipefail
 #   SETPATH_SCRIPT=/home/mitsuba/setpath.sh
 
 PYTHON="${PYTHON:-python}"
-CONTAINER="${CONTAINER:-bdpt_twopoints_mitsuba-mitsuba-1}"
-WORKDIR="${WORKDIR:-/home/mitsuba}"
-SETPATH_SCRIPT="${SETPATH_SCRIPT:-/home/mitsuba/setpath.sh}"
 EXP_FILE="${1:-scripts/experiments.yaml}"
 
-echo "[1/2] Running experiments (host Python, Mitsuba in Docker container: ${CONTAINER})"
+EXTRA_ARGS=()
+if [[ -n "${CONTAINER:-}" ]]; then EXTRA_ARGS+=(--container "${CONTAINER}"); fi
+if [[ -n "${WORKDIR:-}" ]]; then EXTRA_ARGS+=(--workdir "${WORKDIR}"); fi
+if [[ -n "${SETPATH_SCRIPT:-}" ]]; then EXTRA_ARGS+=(--setpath-script "${SETPATH_SCRIPT}"); fi
+
+echo "[1/2] Running experiments (host Python, Mitsuba in Docker)"
 "${PYTHON}" scripts/experiments/run_experiments.py "${EXP_FILE}" \
   --resume \
-  --container "${CONTAINER}" \
-  --workdir "${WORKDIR}" \
-  --setpath-script "${SETPATH_SCRIPT}"
+  "${EXTRA_ARGS[@]}"
 
 echo "[2/2] Analyzing results (host Python)"
 "${PYTHON}" scripts/experiments/analyze_results.py "${EXP_FILE}"

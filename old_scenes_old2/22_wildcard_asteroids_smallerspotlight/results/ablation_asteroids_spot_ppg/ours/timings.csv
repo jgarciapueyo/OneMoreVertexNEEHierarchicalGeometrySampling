@@ -1,0 +1,10 @@
+spp,repeat,returncode,wall_time_s,mitsuba_time_s,image_path
+1,1,0,8.731158033944666,0.125,scenes/22_wildcard_asteroids_smallerspotlight/results/ablation_asteroids_spot_ppg/ours/runs/spp_0001_rep_001.exr
+1,2,0,8.727336762472987,0.1262,scenes/22_wildcard_asteroids_smallerspotlight/results/ablation_asteroids_spot_ppg/ours/runs/spp_0001_rep_002.exr
+1,3,0,8.644731109030545,0.1266,scenes/22_wildcard_asteroids_smallerspotlight/results/ablation_asteroids_spot_ppg/ours/runs/spp_0001_rep_003.exr
+2,1,0,8.809969725087285,0.2456,scenes/22_wildcard_asteroids_smallerspotlight/results/ablation_asteroids_spot_ppg/ours/runs/spp_0002_rep_001.exr
+2,2,0,8.852101102471352,0.2534,scenes/22_wildcard_asteroids_smallerspotlight/results/ablation_asteroids_spot_ppg/ours/runs/spp_0002_rep_002.exr
+2,3,0,8.802183772437274,0.244,scenes/22_wildcard_asteroids_smallerspotlight/results/ablation_asteroids_spot_ppg/ours/runs/spp_0002_rep_003.exr
+4,1,0,9.028552909381688,0.483,scenes/22_wildcard_asteroids_smallerspotlight/results/ablation_asteroids_spot_ppg/ours/runs/spp_0004_rep_001.exr
+4,2,0,9.063168788328767,0.497,scenes/22_wildcard_asteroids_smallerspotlight/results/ablation_asteroids_spot_ppg/ours/runs/spp_0004_rep_002.exr
+4,3,0,9.137206082232296,0.4738,scenes/22_wildcard_asteroids_smallerspotlight/results/ablation_asteroids_spot_ppg/ours/runs/spp_0004_rep_003.exr

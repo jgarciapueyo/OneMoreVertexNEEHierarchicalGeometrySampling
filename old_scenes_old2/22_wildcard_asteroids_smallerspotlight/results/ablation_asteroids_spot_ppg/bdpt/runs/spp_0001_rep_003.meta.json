@@ -1,0 +1,15 @@
+{
+  "cmd": [
+    "docker",
+    "exec",
+    "-w",
+    "/home/mitsuba",
+    "onemorevertexneehierarchicalgeometrysampling-mitsuba-1",
+    "bash",
+    "-lc",
+    "source /home/mitsuba/setpath.sh && mitsuba scenes/22_wildcard_asteroids_smallerspotlight/wildcard_spotlight_pathref.xml -o scenes/22_wildcard_asteroids_smallerspotlight/results/ablation_asteroids_spot_ppg/bdpt/runs/spp_0001_rep_003.exr -Dspp=1 -DbvhMaxDepth=16 -DdefensivePDF=1e-06 -DdisableNEE=false -DdoAdditionalVertex=true -DenableFastLUT=1 -DenableLightcuts=false -DenableSpecular=0 -DgaussianSAThreshold=0.03141592 -Dintegrator=bdpt -DleafSamplingMode=Primitive -DlightcutThreshold=1.5 -DmaxDepth=3 -DoutputDebugCSV=false -DrrDepth=5 -DuseBVH=true -DuseUniformBVHSampling=1"
+  ],
+  "returncode": 0,
+  "wall_time_s": 4.930117888376117,
+  "mitsuba_time_s": 0.191
+}

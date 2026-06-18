@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<scene version="0.6.0">
+	<integrator type="glinttracermis">
+        <integer name="granularity" value="2000000"/>
+	</integrator>
+	<!--
+	<integrator type="path">
+        <integer name="maxDepth" value="5"/>
+    </integrator>
+	-->
+	<geometrybvh type="geometrybvh">
+		<integer name="maxLeafSize" value="4"/>
+		<string name="samplingMode" value="Primitive"/>
+		<float name="defensivePDF" value="0.000001"/>
+		<float name="debug1" value="1"/>
+		<float name="debug2" value="0"/>
+		<float name="debug3" value="0"/>
+	</geometrybvh>
+	<sensor type="perspective">
+		<string name="fovAxis" value="smaller"/>
+		<float name="nearClip" value="0.0001"/>
+		<float name="farClip" value="100"/>
+		<transform name="toWorld">
+			<lookAt origin="5, 0, 1" target="0, 0, 0" up="0, 0, 1"/>
+		</transform>
+		<float name="fov" value="45.0"/>
+		<sampler type="independent">
+			<integer name="sampleCount" value="100"/>
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="256"/>
+			<integer name="height" value="256"/>
+		</film>
+	</sensor>
+	<emitter type="point">
+        <spectrum name="intensity" value="50"/>
+        <transform name="toWorld">
+            <translate x="0" y="0" z="3"/>
+        </transform>
+    </emitter>
+	<bsdf type="diffuse" id="bsdf_diffuse">
+		<spectrum name="reflectance" value="0.8, 0, 0"/>
+	</bsdf>
+	<bsdf type="roughconductor" id="bsdf_snowflake">
+		<float name="alpha" value="1"/>
+	</bsdf>
+	<bsdf type="basicprincipled" id="p_d_red">
+		<spectrum name="reflectance" value="0.8, 0.2, 0.2"/>
+		<float name="metallic" value="0.0"/>
+		<float name="specular" value="0.0"/>
+		<float name="roughness" value="1"/>
+	</bsdf>
+	<bsdf type="basicprincipled" id="p_m_red">
+		<spectrum name="reflectance" value="0.8, 0.2, 0.2"/>
+		<float name="metallic" value="1.0"/>
+		<float name="specular" value="0.0"/>
+		<float name="roughness" value="0.01"/>
+	</bsdf>
+	<!--
+	<emitter type="constant">
+		<spectrum name="radiance" value="0.05"/>
+	</emitter>
+	-->
+	<emitter type="spot">
+		<spectrum name="intensity" value="1000"/>
+		<float name="cutoffAngle" value="20"/>
+		<float name="beamWidth" value="20"/>
+		<transform name="toWorld">
+			<lookAt origin="0, 2, 5" target="0, 0, 0" up="0, 0, 1"/>
+		</transform>
+	</emitter>
+    <shape type="obj">
+        <string name="filename" value="../scene_geometries/quad_2tri.obj"/>
+        <transform name="toWorld">
+            <translate x="0" y="0" z="0"/>
+            <scale value="2"/>
+        </transform>
+		<ref id="p_m_red"/>
+    </shape>
+</scene>

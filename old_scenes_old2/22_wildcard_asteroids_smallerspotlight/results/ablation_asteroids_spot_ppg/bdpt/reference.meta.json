@@ -1,0 +1,15 @@
+{
+  "cmd": [
+    "docker",
+    "exec",
+    "-w",
+    "/home/mitsuba",
+    "onemorevertexneehierarchicalgeometrysampling-mitsuba-1",
+    "bash",
+    "-lc",
+    "source /home/mitsuba/setpath.sh && mitsuba scenes/22_wildcard_asteroids_smallerspotlight/wildcard_spotlight_pathref.xml -o scenes/22_wildcard_asteroids_smallerspotlight/results/ablation_asteroids_spot_ppg/bdpt/reference.exr -Dspp=100"
+  ],
+  "returncode": 0,
+  "wall_time_s": 6.720614452846348,
+  "mitsuba_time_s": 2.0499
+}

@@ -1,0 +1,15 @@
+{
+  "cmd": [
+    "docker",
+    "exec",
+    "-w",
+    "/home/mitsuba",
+    "bdpt_twopoints_mitsuba-mitsuba-1",
+    "bash",
+    "-lc",
+    "source /home/mitsuba/setpath.sh && mitsuba scenes/2_wildcard_asteroids/wildcard_spotlight_pathref.xml -o scenes/2_wildcard_asteroids/results/ablation_asteroids_highspp/lightcuts1.1_on_spherical/reference.exr -Dspp=16000"
+  ],
+  "returncode": 1,
+  "wall_time_s": 0.018474768847227097,
+  "mitsuba_time_s": null
+}

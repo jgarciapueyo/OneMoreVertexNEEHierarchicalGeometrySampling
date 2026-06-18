@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Note: uses wildcards so it can be driven from scripts/experiments/ configs.
+To run directly, supply all parameters, e.g.:
+  mitsuba scenes/experiments/6_cbox/cbox_geometry.xml \
+    -Dintegrator=doublestep -DmaxDepth=5 -DrrDepth=5 \
+    -DuseBVH=true -DdisableNEE=false -DdoAdditionalVertex=true \
+    -DmaxLeafSize=2 -DleafSamplingMode=SphericalAABB \
+    -DoutputDebugCSV=false -DuseUniformBVHSampling=1 \
+    -DdefensivePDF=0.0000001 -DlightcutThreshold=1.5 \
+    -DgaussianSAThreshold=0 -Dgeometry=cbox_geometries_10_1.0 -Dspp=64
+-->
+<scene version="0.6.0">
+	<integrator type="$integrator:doublestep">
+		<integer name="maxDepth" value="$maxDepth:3"/>
+		<integer name="rrDepth" value="$rrDepth:2"/>
+		<boolean name="useBVH" value="$useBVH:true"/>
+		<boolean name="disableNEE" value="$disableNEE:false"/>
+		<boolean name="hideEmitters" value="$hideEmitters:true"/>
+		<boolean name="disableFirstBounceNEE" value="$disableFirstBounceNEE:true"/>
+		<boolean name="doAdditionalVertex" value="$doAdditionalVertex:false"/>
+	</integrator>
+	<geometrybvh type="geometrybvh">
+		<integer name="maxLeafSize" value="$maxLeafSize:2"/>
+		<string name="samplingMode" value="$leafSamplingMode:SphericalAABB"/>
+		<boolean name="outputDebugCSV" value="$outputDebugCSV:false"/>
+		<boolean name="enableLightcuts" value="$enableLightcuts:false"/>
+		<float name="lightcutThreshold" value="$lightcutThreshold:1.5"/>
+		<float name="gaussianSAThreshold" value="$gaussianSAThreshold:0"/>
+		<float name="debug1" value="$useUniformBVHSampling:1"/>
+		<float name="debug2" value="$enableSpecular:0"/>
+		<float name="debug3" value="$enableFastLUT:0"/>
+		<float name="defensivePDF" value="$defensivePDF:0.0000001"/>
+	</geometrybvh>
+	<sensor type="perspective">
+		<string name="fovAxis" value="smaller"/>
+		<float name="nearClip" value="0.0001"/>
+		<float name="farClip" value="100"/>
+		<transform name="toWorld">
+			<lookAt origin="0, 0, -3" target="0, 0, 0" up="0, 1, 0"/>
+		</transform>
+		<float name="fov" value="45"/>
+		<sampler type="independent">
+			<integer name="sampleCount" value="$spp:64"/>
+		</sampler>
+		<film type="hdrfilm">
+			<integer name="width" value="512"/>
+			<integer name="height" value="512"/>
+		</film>
+	</sensor>
+	<include filename="$geometry:cbox_geometries/cbox_geometries_10_1.0.xml"/>
+</scene>
