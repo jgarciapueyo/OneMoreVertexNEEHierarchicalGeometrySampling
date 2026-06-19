@@ -29,14 +29,14 @@ MTS_NAMESPACE_BEGIN
 /*                         Worker implementation                        */
 /* ==================================================================== */
 
-class GlintTracerMISRenderer : public WorkProcessor {
+class ONEEEHGSPTracerMISRenderer : public WorkProcessor {
 public:
-    GlintTracerMISRenderer(const GlintTracerMISConfiguration &config) : m_config(config) { }
+    ONEEEHGSPTracerMISRenderer(const ONEEEHGSPTracerMISConfiguration &config) : m_config(config) { }
 
-    GlintTracerMISRenderer(Stream *stream, InstanceManager *manager)
+    ONEEEHGSPTracerMISRenderer(Stream *stream, InstanceManager *manager)
         : WorkProcessor(stream, manager), m_config(stream) { }
 
-    virtual ~GlintTracerMISRenderer() { }
+    virtual ~ONEEEHGSPTracerMISRenderer() { }
 
     void serialize(Stream *stream, InstanceManager *manager) const {
         m_config.serialize(stream);
@@ -47,7 +47,7 @@ public:
     }
 
     ref<WorkResult> createWorkResult() const {
-        return new GlintTracerMISWorkResult(m_config, m_rfilter.get(),
+        return new ONEEEHGSPTracerMISWorkResult(m_config, m_rfilter.get(),
             Vector2i(m_config.blockSize));
     }
 
@@ -71,7 +71,7 @@ public:
 
     void process(const WorkUnit *workUnit, WorkResult *workResult, const bool &stop) {
         const RectangularWorkUnit *rect = static_cast<const RectangularWorkUnit *>(workUnit);
-        GlintTracerMISWorkResult *result = static_cast<GlintTracerMISWorkResult *>(workResult);
+        ONEEEHGSPTracerMISWorkResult *result = static_cast<ONEEEHGSPTracerMISWorkResult *>(workResult);
 
         result->setOffset(rect->getOffset());
         result->setSize(rect->getSize());
@@ -80,7 +80,7 @@ public:
 
         GeometryBVH *bvh = m_scene->getGeometryBVH();
         if (!bvh || !bvh->isBuilt()) {
-            Log(EWarn, "GlintTracerMIS: GeometryBVH not available or not built!");
+            Log(EWarn, "ONEEEHGSPTracerMIS: GeometryBVH not available or not built!");
             return;
         }
 
@@ -98,12 +98,12 @@ public:
     }
 
     ref<WorkProcessor> clone() const {
-        return new GlintTracerMISRenderer(m_config);
+        return new ONEEEHGSPTracerMISRenderer(m_config);
     }
 
     MTS_DECLARE_CLASS()
 private:
-    void traceSample(GlintTracerMISWorkResult *result, GeometryBVH *bvh) {
+    void traceSample(ONEEEHGSPTracerMISWorkResult *result, GeometryBVH *bvh) {
         // ----------------------------------------------------------------
         // 1. Sample emitter position x_e
         // ----------------------------------------------------------------
@@ -198,7 +198,7 @@ private:
     // MIS weights for length-2 paths are computed inside pathLi (depth 0)
     // using the 3-way power heuristic against traceSample.
     // -----------------------------------------------------------------------
-    void pathTraceSample(GlintTracerMISWorkResult *result, const Point2i &pixelOffset,
+    void pathTraceSample(ONEEEHGSPTracerMISWorkResult *result, const Point2i &pixelOffset,
                          GeometryBVH *bvh) {
         Float diffScaleFactor = 1.0f /
         std::sqrt((Float) m_sampler->getSampleCount());
@@ -268,7 +268,7 @@ private:
 
 
 
-#if ENABLE_GLINTTRACER_DOUBLESTEP != 1
+#if ENABLE_ONEEHGSPTRACERMIS_DOUBLESTEP != 1
 
     Spectrum pathLi(const RayDifferential &r, RadianceQueryRecord &rRec) {
         /* Some aliases and local variables */
@@ -542,7 +542,7 @@ private:
 
         // std::cout << "Starting path with ray: " << ray.toString() << std::endl;
 #if DO_TIMING == 1
-        // Log(EInfo, "Timing enabled for DoublestepIntegrator. This may impact performance.");
+        // Log(EInfo, "Timing enabled for ONEEEHGSPath2StepIntegrator. This may impact performance.");
         ref<Timer> timer = new Timer(false);
         timer->start(); // start a single timer that accumulates total path time
 
@@ -1045,7 +1045,7 @@ private:
     ref<Sampler> m_sampler;
     ref<ReconstructionFilter> m_rfilter;
     MemoryPool m_pool;
-    GlintTracerMISConfiguration m_config;
+    ONEEEHGSPTracerMISConfiguration m_config;
     HilbertCurve2D<uint8_t> m_hilbertCurve;
     Point m_cameraOrigin;
 };
@@ -1055,17 +1055,17 @@ private:
 /*                           Parallel process                           */
 /* ==================================================================== */
 
-GlintTracerMISProcess::GlintTracerMISProcess(const RenderJob *parent, RenderQueue *queue,
-        const GlintTracerMISConfiguration &config) :
+ONEEEHGSPTracerMISProcess::ONEEEHGSPTracerMISProcess(const RenderJob *parent, RenderQueue *queue,
+        const ONEEEHGSPTracerMISConfiguration &config) :
     BlockedRenderProcess(parent, queue, config.blockSize), m_config(config) {
     m_refreshTimer = new Timer();
 }
 
-ref<WorkProcessor> GlintTracerMISProcess::createWorkProcessor() const {
-    return new GlintTracerMISRenderer(m_config);
+ref<WorkProcessor> ONEEEHGSPTracerMISProcess::createWorkProcessor() const {
+    return new ONEEEHGSPTracerMISRenderer(m_config);
 }
 
-void GlintTracerMISProcess::develop() {
+void ONEEEHGSPTracerMISProcess::develop() {
     if (!m_config.lightImage)
         return;
     LockGuard lock(m_resultMutex);
@@ -1076,10 +1076,10 @@ void GlintTracerMISProcess::develop() {
     m_queue->signalRefresh(m_parent);
 }
 
-void GlintTracerMISProcess::processResult(const WorkResult *wr, bool cancelled) {
+void ONEEEHGSPTracerMISProcess::processResult(const WorkResult *wr, bool cancelled) {
     if (cancelled)
         return;
-    const GlintTracerMISWorkResult *result = static_cast<const GlintTracerMISWorkResult *>(wr);
+    const ONEEEHGSPTracerMISWorkResult *result = static_cast<const ONEEEHGSPTracerMISWorkResult *>(wr);
     ImageBlock *block = const_cast<ImageBlock *>(result->getImageBlock());
     LockGuard lock(m_resultMutex);
     m_progress->update(++m_resultCount);
@@ -1129,15 +1129,15 @@ void GlintTracerMISProcess::processResult(const WorkResult *wr, bool cancelled) 
         develop();
 }
 
-void GlintTracerMISProcess::bindResource(const std::string &name, int id) {
+void ONEEEHGSPTracerMISProcess::bindResource(const std::string &name, int id) {
     BlockedRenderProcess::bindResource(name, id);
     if (name == "sensor" && m_config.lightImage) {
         /* If needed, allocate memory for the light image */
-        m_result = new GlintTracerMISWorkResult(m_config, NULL, m_film->getCropSize());
+        m_result = new ONEEEHGSPTracerMISWorkResult(m_config, NULL, m_film->getCropSize());
         m_result->clear();
     }
 }
 
-MTS_IMPLEMENT_CLASS_S(GlintTracerMISRenderer, false, WorkProcessor)
-MTS_IMPLEMENT_CLASS(GlintTracerMISProcess, false, BlockedRenderProcess)
+MTS_IMPLEMENT_CLASS_S(ONEEEHGSPTracerMISRenderer, false, WorkProcessor)
+MTS_IMPLEMENT_CLASS(ONEEEHGSPTracerMISProcess, false, BlockedRenderProcess)
 MTS_NAMESPACE_END

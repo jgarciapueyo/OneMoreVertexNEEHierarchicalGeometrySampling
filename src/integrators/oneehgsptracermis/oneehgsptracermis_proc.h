@@ -16,8 +16,8 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#if !defined(__GLINTTRACERMIS_PROC_H)
-#define __GLINTTRACERMIS_PROC_H
+#if !defined(__ONEEHGSPTRACERMIS_PROC_H)
+#define __ONEEHGSPTRACERMIS_PROC_H
 
 #include <mitsuba/render/renderproc.h>
 #include <mitsuba/render/renderjob.h>
@@ -32,14 +32,14 @@ MTS_NAMESPACE_BEGIN
 
 /**
  * \brief Renders work units (rectangular image regions) using
- * the GlintTracerMIS integrator
+ * the ONEEEHGSPTracerMIS integrator
  */
-class GlintTracerMISProcess : public BlockedRenderProcess {
+class ONEEEHGSPTracerMISProcess : public BlockedRenderProcess {
 public:
-    GlintTracerMISProcess(const RenderJob *parent, RenderQueue *queue,
-        const GlintTracerMISConfiguration &config);
+    ONEEEHGSPTracerMISProcess(const RenderJob *parent, RenderQueue *queue,
+        const ONEEEHGSPTracerMISConfiguration &config);
 
-    inline const GlintTracerMISWorkResult *getResult() const { return m_result.get(); }
+    inline const ONEEEHGSPTracerMISWorkResult *getResult() const { return m_result.get(); }
 
     /// Develop the image
     void develop();
@@ -52,13 +52,13 @@ public:
     MTS_DECLARE_CLASS()
 protected:
     /// Virtual destructor
-    virtual ~GlintTracerMISProcess() { }
+    virtual ~ONEEEHGSPTracerMISProcess() { }
 private:
-    ref<GlintTracerMISWorkResult> m_result;
+    ref<ONEEEHGSPTracerMISWorkResult> m_result;
     ref<Timer> m_refreshTimer;
-    GlintTracerMISConfiguration m_config;
+    ONEEEHGSPTracerMISConfiguration m_config;
 };
 
 MTS_NAMESPACE_END
 
-#endif /* __GLINTTRACERMIS_PROC_H */
+#endif /* __ONEEHGSPTRACERMIS_PROC_H */

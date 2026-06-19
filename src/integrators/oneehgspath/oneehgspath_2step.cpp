@@ -17,10 +17,10 @@ static StatsCounter avgPathLength("Path tracer", "Average path length", EAverage
 
 #define DO_TIMING 0
 
-class DoublestepIntegrator : public MonteCarloIntegrator {
+class ONEEEHGSPath2StepIntegrator : public MonteCarloIntegrator {
 public:
-    DoublestepIntegrator(const Properties &props)
-        : MonteCarloIntegrator(props) { 
+    ONEEEHGSPath2StepIntegrator(const Properties &props)
+        : MonteCarloIntegrator(props) {
         m_doAdditionalVertex = props.getBoolean("doAdditionalVertex", true);
         m_useBVH = props.getBoolean("useBVH", true);
         m_disableNee = props.getBoolean("disableNEE", false);
@@ -39,7 +39,7 @@ public:
     }
 
     /// Unserialize from a binary data stream
-    DoublestepIntegrator(Stream *stream, InstanceManager *manager)
+    ONEEEHGSPath2StepIntegrator(Stream *stream, InstanceManager *manager)
         : MonteCarloIntegrator(stream, manager) { }
             
     Spectrum Li(const RayDifferential &r, RadianceQueryRecord &rRec) const {
@@ -52,7 +52,7 @@ public:
 
         // std::cout << "Starting path with ray: " << ray.toString() << std::endl;
 #if DO_TIMING == 1
-        // Log(EInfo, "Timing enabled for DoublestepIntegrator. This may impact performance.");
+        // Log(EInfo, "Timing enabled for ONEEEHGSPath2StepIntegrator. This may impact performance.");
         ref<Timer> timer = new Timer(false);
         timer->start(); // start a single timer that accumulates total path time
 
@@ -533,7 +533,7 @@ public:
 
     std::string toString() const {
         std::ostringstream oss;
-        oss << "DoublestepIntegrator[" << endl
+        oss << "ONEEEHGSPath2StepIntegrator[" << endl
             << "  maxDepth = " << m_maxDepth << "," << endl
             << "  rrDepth = " << m_rrDepth << "," << endl
             << "  strictNormals = " << m_strictNormals << "," << endl
@@ -553,6 +553,6 @@ private:
     float m_debug1, m_debug2, m_debug3, m_debug4;
 };
 
-MTS_IMPLEMENT_CLASS_S(DoublestepIntegrator, false, SamplingIntegrator)
-MTS_EXPORT_PLUGIN(DoublestepIntegrator, "Double step integrator");
+MTS_IMPLEMENT_CLASS_S(ONEEEHGSPath2StepIntegrator, false, SamplingIntegrator)
+MTS_EXPORT_PLUGIN(ONEEEHGSPath2StepIntegrator, "One-more-vertex two-step path integrator");
 MTS_NAMESPACE_END

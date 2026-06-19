@@ -26,8 +26,8 @@ MTS_NAMESPACE_BEGIN
 /*                             Work result                              */
 /* ==================================================================== */
 
-GlintTracerMISWorkResult::GlintTracerMISWorkResult(
-        const GlintTracerMISConfiguration &conf,
+ONEEEHGSPTracerMISWorkResult::ONEEEHGSPTracerMISWorkResult(
+        const ONEEEHGSPTracerMISConfiguration &conf,
         const ReconstructionFilter *rfilter, Vector2i blockSize) {
     /* Stores the 'camera image' -- this can be blocked when
        spreading out work to multiple workers */
@@ -48,7 +48,7 @@ GlintTracerMISWorkResult::GlintTracerMISWorkResult(
         m_lightImage->setOffset(Point2i(0, 0));
     }
 
-#if GLINTTRACERMIS_DEBUG == 1
+#if ONEEHGSPTRACERMIS_DEBUG == 1
     m_debugBlocks.resize(
         conf.maxDepth*(5+conf.maxDepth)/2);
 
@@ -61,10 +61,10 @@ GlintTracerMISWorkResult::GlintTracerMISWorkResult(
 #endif
 }
 
-GlintTracerMISWorkResult::~GlintTracerMISWorkResult() { }
+ONEEEHGSPTracerMISWorkResult::~ONEEEHGSPTracerMISWorkResult() { }
 
-void GlintTracerMISWorkResult::put(const GlintTracerMISWorkResult *workResult) {
-#if GLINTTRACERMIS_DEBUG == 1
+void ONEEEHGSPTracerMISWorkResult::put(const ONEEEHGSPTracerMISWorkResult *workResult) {
+#if ONEEHGSPTRACERMIS_DEBUG == 1
     for (size_t i=0; i<m_debugBlocks.size(); ++i)
         m_debugBlocks[i]->put(workResult->m_debugBlocks[i].get());
 #endif
@@ -73,8 +73,8 @@ void GlintTracerMISWorkResult::put(const GlintTracerMISWorkResult *workResult) {
         m_lightImage->put(workResult->m_lightImage.get());
 }
 
-void GlintTracerMISWorkResult::clear() {
-#if GLINTTRACERMIS_DEBUG == 1
+void ONEEEHGSPTracerMISWorkResult::clear() {
+#if ONEEHGSPTRACERMIS_DEBUG == 1
     for (size_t i=0; i<m_debugBlocks.size(); ++i)
         m_debugBlocks[i]->clear();
 #endif
@@ -83,8 +83,8 @@ void GlintTracerMISWorkResult::clear() {
     m_block->clear();
 }
 
-#if GLINTTRACERMIS_DEBUG == 1
-void GlintTracerMISWorkResult::dump(const GlintTracerMISConfiguration &conf,
+#if ONEEHGSPTRACERMIS_DEBUG == 1
+void ONEEEHGSPTracerMISWorkResult::dump(const ONEEEHGSPTracerMISConfiguration &conf,
         const fs::path &prefix, const fs::path &stem) const {
     Float weight = (Float) 1.0f / (Float) conf.sampleCount;
     for (int k = 1; k<=conf.maxDepth; ++k) {
@@ -102,8 +102,8 @@ void GlintTracerMISWorkResult::dump(const GlintTracerMISConfiguration &conf,
 }
 #endif
 
-void GlintTracerMISWorkResult::load(Stream *stream) {
-#if GLINTTRACERMIS_DEBUG == 1
+void ONEEEHGSPTracerMISWorkResult::load(Stream *stream) {
+#if ONEEHGSPTRACERMIS_DEBUG == 1
     for (size_t i=0; i<m_debugBlocks.size(); ++i)
         m_debugBlocks[i]->load(stream);
 #endif
@@ -112,8 +112,8 @@ void GlintTracerMISWorkResult::load(Stream *stream) {
     m_block->load(stream);
 }
 
-void GlintTracerMISWorkResult::save(Stream *stream) const {
-#if GLINTTRACERMIS_DEBUG == 1
+void ONEEEHGSPTracerMISWorkResult::save(Stream *stream) const {
+#if ONEEHGSPTRACERMIS_DEBUG == 1
     for (size_t i=0; i<m_debugBlocks.size(); ++i)
         m_debugBlocks[i]->save(stream);
 #endif
@@ -122,9 +122,9 @@ void GlintTracerMISWorkResult::save(Stream *stream) const {
     m_block->save(stream);
 }
 
-std::string GlintTracerMISWorkResult::toString() const {
+std::string ONEEEHGSPTracerMISWorkResult::toString() const {
     return m_block->toString();
 }
 
-MTS_IMPLEMENT_CLASS(GlintTracerMISWorkResult, false, WorkResult)
+MTS_IMPLEMENT_CLASS(ONEEEHGSPTracerMISWorkResult, false, WorkResult)
 MTS_NAMESPACE_END

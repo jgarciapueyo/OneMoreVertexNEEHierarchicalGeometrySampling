@@ -2,9 +2,9 @@
 
 MTS_NAMESPACE_BEGIN
 
-class GlintTracer : public Integrator {
+class ONEEEHGSPTracerIntegrator : public Integrator {
 public:
-    GlintTracer(const Properties &props): Integrator(props) {
+    ONEEEHGSPTracerIntegrator(const Properties &props): Integrator(props) {
         /* Granularity of the work units used in parallelizing
         the particle tracing task (default: 200K samples).
         Should be high enough so that sending and accumulating
@@ -12,7 +12,7 @@ public:
         m_granularity = props.getSize("granularity", 200000);
     }
 
-    GlintTracer(Stream *stream, InstanceManager *manager)
+    ONEEEHGSPTracerIntegrator(Stream *stream, InstanceManager *manager)
         : Integrator(stream, manager) {
         m_granularity  = stream->readSize();
     }
@@ -51,13 +51,13 @@ public:
             sampleCount, nCores, nCores == 1 ? "core" : "cores");
 
         // Verify the BVH was built (buildBVH skips unsupported integrators,
-        // but GlintTracer is in the allow-list so this should always succeed).
+        // but ONEEEHGSPTracerIntegrator is in the allow-list so this should always succeed).
         GeometryBVH *bvh = scene->getGeometryBVH();
         if (!bvh || !bvh->isBuilt())
             Log(EError, "GeometryBVH was not built. Make sure a <geometrybvh> "
                 "block is present in the scene XML and the scene contains geometry.");
         
-        ref<ParallelProcess> process = new GlintProcess(
+        ref<ParallelProcess> process = new ONEEEHGSPTracerProcess(
             job, queue, m_sampleCount, m_granularity);
 
         process->bindResource("scene",   sceneResID);
@@ -73,7 +73,7 @@ public:
 
     std::string toString() const {
         std::ostringstream oss;
-        oss << "GlintTracer[" << endl
+        oss << "ONEEEHGSPTracerIntegrator[" << endl
             << "  granularity = " << m_granularity << endl
             << "]";
         return oss.str();
@@ -85,6 +85,6 @@ protected:
     size_t m_sampleCount, m_granularity;
 };
 
-MTS_IMPLEMENT_CLASS_S(GlintTracer, false, Integrator)
-MTS_EXPORT_PLUGIN(GlintTracer, "Glint tracer");
+MTS_IMPLEMENT_CLASS_S(ONEEEHGSPTracerIntegrator, false, Integrator)
+MTS_EXPORT_PLUGIN(ONEEEHGSPTracerIntegrator, "One-more-vertex particle tracer");
 MTS_NAMESPACE_END

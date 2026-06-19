@@ -134,6 +134,8 @@ Update `scripts/LUT/` to write there, and delete the duplicates.
 
 (Done - removed `scripts/LUT/vmf_*.h`, `scripts/LUT/feather_to_binary.py` and `scripts/LUT/load_vmf.cpp`)
 
+### Step 3 - Change src/integrators/ names by adding oneehgs prefix
+
 ### Step 3 — Write a new `README.md`
 
 Replace the stock Mitsuba README with one that:

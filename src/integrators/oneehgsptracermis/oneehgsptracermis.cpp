@@ -22,7 +22,7 @@
 
 MTS_NAMESPACE_BEGIN
 
-/*!\plugin{glinttracermis}{GlintTracerMIS integrator}
+/*!\plugin{oneehgsptracermis}{ONEEEHGSPTracerMIS integrator}
  * \order{6}
  * \parameters{
  *     \parameter{maxDepth}{\Integer}{Specifies the longest path depth
@@ -56,9 +56,9 @@ MTS_NAMESPACE_BEGIN
  * separate full-resolution light image and combined with the camera image at
  * the end of rendering, analogous to BDPT's light image handling.
  */
-class GlintTracerMISIntegrator : public Integrator {
+class ONEEEHGSPTracerMISIntegrator : public Integrator {
 public:
-    GlintTracerMISIntegrator(const Properties &props) : Integrator(props) {
+    ONEEEHGSPTracerMISIntegrator(const Properties &props) : Integrator(props) {
         /* Load the parameters / defaults */
         m_config.maxDepth = props.getInteger("maxDepth", 5);
         m_config.rrDepth = props.getInteger("rrDepth", 5);
@@ -75,7 +75,7 @@ public:
             Log(EError, "'maxDepth' must be set to -1 (infinite) or a value greater than zero!");
 
 
-        #if ENABLE_GLINTTRACER_DOUBLESTEP == 1
+        #if ENABLE_ONEEHGSPTRACERMIS_DOUBLESTEP == 1
         
         m_config.m_doAdditionalVertex = props.getBoolean("doAdditionalVertex", true);
         m_config.m_useBVH = props.getBoolean("useBVH", true);
@@ -97,9 +97,9 @@ public:
     }
 
     /// Unserialize from a binary data stream
-    GlintTracerMISIntegrator(Stream *stream, InstanceManager *manager)
+    ONEEEHGSPTracerMISIntegrator(Stream *stream, InstanceManager *manager)
      : Integrator(stream, manager) {
-        m_config = GlintTracerMISConfiguration(stream);
+        m_config = ONEEEHGSPTracerMISConfiguration(stream);
     }
 
     void serialize(Stream *stream, InstanceManager *manager) const {
@@ -115,7 +115,7 @@ public:
 
         if (scene->getSubsurfaceIntegrators().size() > 0)
             Log(EError, "Subsurface integrators are not supported "
-                "by the GlintTracerMIS integrator!");
+                "by the ONEEEHGSPTracerMIS integrator!");
 
         return true;
     }
@@ -149,7 +149,7 @@ public:
         m_config.sampleCount = sampleCount;
         m_config.dump();
 
-        ref<GlintTracerMISProcess> process = new GlintTracerMISProcess(job, queue, m_config);
+        ref<ONEEEHGSPTracerMISProcess> process = new ONEEEHGSPTracerMISProcess(job, queue, m_config);
         m_process = process;
 
         process->bindResource("scene", sceneResID);
@@ -161,7 +161,7 @@ public:
         m_process = NULL;
         process->develop();
 
-        #if GLINTTRACERMIS_DEBUG == 1
+        #if ONEEHGSPTRACERMIS_DEBUG == 1
             fs::path path = scene->getDestinationFile();
             if (m_config.lightImage)
                 process->getResult()->dump(m_config, path.parent_path(), path.stem());
@@ -173,9 +173,9 @@ public:
     MTS_DECLARE_CLASS()
 private:
     ref<ParallelProcess> m_process;
-    GlintTracerMISConfiguration m_config;
+    ONEEEHGSPTracerMISConfiguration m_config;
 };
 
-MTS_IMPLEMENT_CLASS_S(GlintTracerMISIntegrator, false, Integrator)
-MTS_EXPORT_PLUGIN(GlintTracerMISIntegrator, "GlintTracerMIS integrator");
+MTS_IMPLEMENT_CLASS_S(ONEEEHGSPTracerMISIntegrator, false, Integrator)
+MTS_EXPORT_PLUGIN(ONEEEHGSPTracerMISIntegrator, "One-more-vertex particle tracer with MIS");
 MTS_NAMESPACE_END

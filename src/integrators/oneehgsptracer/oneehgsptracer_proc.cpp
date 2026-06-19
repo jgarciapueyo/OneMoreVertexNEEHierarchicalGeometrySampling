@@ -6,14 +6,14 @@ MTS_NAMESPACE_BEGIN
 /*                           Work result impl.                          */
 /* ==================================================================== */
 
-void GlintWorkResult::load(Stream *stream) {
+void ONEEEHGSPTracerWorkResult::load(Stream *stream) {
     size_t nEntries = (size_t) m_size.x * (size_t) m_size.y;
     stream->readFloatArray(reinterpret_cast<Float *>(m_bitmap->getFloatData()),
         nEntries * SPECTRUM_SAMPLES);
     m_range->load(stream);
 }
 
-void GlintWorkResult::save(Stream *stream) const {
+void ONEEEHGSPTracerWorkResult::save(Stream *stream) const {
     size_t n = (size_t) m_size.x * (size_t) m_size.y;
     stream->writeFloatArray(reinterpret_cast<const Float *>(m_bitmap->getFloatData()),
                             n * SPECTRUM_SAMPLES);
@@ -24,14 +24,14 @@ void GlintWorkResult::save(Stream *stream) const {
 /*                         Work processor impl.                         */
 /* ==================================================================== */
 
-GlintWorker::GlintWorker(Stream *stream, InstanceManager *manager)
+ONEEEHGSPTracerWorker::ONEEEHGSPTracerWorker(Stream *stream, InstanceManager *manager)
     : WorkProcessor(stream, manager) {}
 
-void GlintWorker::serialize(Stream *stream, InstanceManager *manager) const {
+void ONEEEHGSPTracerWorker::serialize(Stream *stream, InstanceManager *manager) const {
     WorkProcessor::serialize(stream, manager);
 }
 
-void GlintWorker::prepare() {
+void ONEEEHGSPTracerWorker::prepare() {
     m_scene   = static_cast<Scene *>(getResource("scene"));
 
     Sampler *baseSampler = static_cast<Sampler *>(getResource("sampler"));
@@ -44,29 +44,29 @@ void GlintWorker::prepare() {
     m_cameraOrigin = trafo->eval(0.f)(Point(0.f, 0.f, 0.f));
 }
 
-ref<WorkProcessor> GlintWorker::clone() const {
-    return new GlintWorker();
+ref<WorkProcessor> ONEEEHGSPTracerWorker::clone() const {
+    return new ONEEEHGSPTracerWorker();
 }
 
-ref<WorkResult> GlintWorker::createWorkResult() const {
+ref<WorkResult> ONEEEHGSPTracerWorker::createWorkResult() const {
     const Film *film = m_sensor->getFilm();
-    return new GlintWorkResult(film->getCropSize(), m_rfilter.get());
+    return new ONEEEHGSPTracerWorkResult(film->getCropSize(), m_rfilter.get());
 }
 
-ref<WorkUnit> GlintWorker::createWorkUnit() const {
+ref<WorkUnit> ONEEEHGSPTracerWorker::createWorkUnit() const {
     return new RangeWorkUnit();
 }
 
-void GlintWorker::process(const WorkUnit *workUnit, WorkResult *workResult, const bool &stop) {
+void ONEEEHGSPTracerWorker::process(const WorkUnit *workUnit, WorkResult *workResult, const bool &stop) {
     const RangeWorkUnit *range = static_cast<const RangeWorkUnit *>(workUnit);
-    m_workResult = static_cast<GlintWorkResult *>(workResult);
+    m_workResult = static_cast<ONEEEHGSPTracerWorkResult *>(workResult);
     m_workResult->setRangeWorkUnit(range);
     m_workResult->clear();
 
     // Similar to ParticleTracer::process but with custom sampling strategy and no path tracing (single vertex x_n)
     GeometryBVH *bvh = m_scene->getGeometryBVH();
     if (!bvh || !bvh->isBuilt()) {
-        Log(EWarn, "GlintTracer: GeometryBVH not available or not built!");
+        Log(EWarn, "ONEEEHGSPTracer: GeometryBVH not available or not built!");
         return;
     }
     for (size_t index = range->getRangeStart(); index <= range->getRangeEnd() && !stop; ++index) {
@@ -77,14 +77,14 @@ void GlintWorker::process(const WorkUnit *workUnit, WorkResult *workResult, cons
     m_workResult = NULL;
 }
 
-void GlintWorker::traceSample(GeometryBVH *bvh) {
+void ONEEEHGSPTracerWorker::traceSample(GeometryBVH *bvh) {
     // ----------------------------------------------------------------
     // 1. Sample emitter position x_e
     // ----------------------------------------------------------------
     PositionSamplingRecord pRec_xe(0.f);
     m_scene->sampleEmitterPosition(pRec_xe, m_sampler->next2D());
     if (pRec_xe.pdf <= 0.f || !pRec_xe.object) {
-        Log(EWarn, "GlintTracer: Failed to sample emitter position!");
+        Log(EWarn, "ONEEEHGSPTracer: Failed to sample emitter position!");
         return;
     }
 
@@ -98,13 +98,13 @@ void GlintWorker::traceSample(GeometryBVH *bvh) {
     Float pdf_xn = 0.f;
     if (!bvh->sampleGeometryCamera(m_scene, m_sampler, m_cameraOrigin,
                                     m_sensor.get(), pRec_xe, its_xn, pdf_xn)) {
-        Log(EWarn, "GlintTracer: Failed to sample geometry from camera!");
+        Log(EWarn, "ONEEEHGSPTracer: Failed to sample geometry from camera!");
         return;
     }
     // Log(EWarn, "pdf_xn: %f", pdf_xn);
 
     if (pdf_xn <= 0.f || !its_xn.isValid()) {
-        Log(EWarn, "GlintTracer: Invalid intersection found!");
+        Log(EWarn, "ONEEEHGSPTracer: Invalid intersection found!");
         return;
     }
 
@@ -116,7 +116,7 @@ void GlintWorker::traceSample(GeometryBVH *bvh) {
     Spectrum W_e = m_scene->sampleSensorDirect(dRec, m_sampler->next2D(), true);
     // Log(EWarn, "W_e: %s", W_e.toString().c_str());
     if (W_e.isZero()) {
-        // Log(EWarn, "GlintTracer: Zero contribution found!");
+        // Log(EWarn, "ONEEEHGSPTracer: Zero contribution found!");
         return;
     }
 
@@ -142,7 +142,7 @@ void GlintWorker::traceSample(GeometryBVH *bvh) {
     Spectrum value = W_e * contrib / (pdf_xn * pRec_xe.pdf);
 
     if (!value.isValid()) {
-        Log(EWarn, "GlintTracer: Invalid sample value found! %s", value.toString().c_str());
+        Log(EWarn, "ONEEEHGSPTracer: Invalid sample value found! %s", value.toString().c_str());
         return;
     }
     
@@ -153,15 +153,15 @@ void GlintWorker::traceSample(GeometryBVH *bvh) {
 /*                        Parallel process impl.                        */
 /* ==================================================================== */
 
-void GlintProcess::develop() {
+void ONEEEHGSPTracerProcess::develop() {
     Float weight = (m_accum->getWidth() * m_accum->getHeight())
                     / (Float) m_receivedResultCount;
     m_film->setBitmap(m_accum->getBitmap(), weight);
     m_queue->signalRefresh(m_job);
 }
 
-void GlintProcess::processResult(const WorkResult *wr, bool cancelled) {
-    const GlintWorkResult *result = static_cast<const GlintWorkResult *>(wr);
+void ONEEEHGSPTracerProcess::processResult(const WorkResult *wr, bool cancelled) {
+    const ONEEEHGSPTracerWorkResult *result = static_cast<const ONEEEHGSPTracerWorkResult *>(wr);
     const RangeWorkUnit *range = result->getRangeWorkUnit();
     if (cancelled)
         return;
@@ -173,7 +173,7 @@ void GlintProcess::processResult(const WorkResult *wr, bool cancelled) {
         develop();
 }
 
-void GlintProcess::bindResource(const std::string &name, int id) {
+void ONEEEHGSPTracerProcess::bindResource(const std::string &name, int id) {
     if (name == "sensor") {
         Sensor *sensor = static_cast<Sensor *>(
             Scheduler::getInstance()->getResource(id));
@@ -185,11 +185,11 @@ void GlintProcess::bindResource(const std::string &name, int id) {
     ParticleProcess::bindResource(name, id);
 }
 
-ref<WorkProcessor> GlintProcess::createWorkProcessor() const {
-    return new GlintWorker();
+ref<WorkProcessor> ONEEEHGSPTracerProcess::createWorkProcessor() const {
+    return new ONEEEHGSPTracerWorker();
 }
 
-MTS_IMPLEMENT_CLASS(GlintWorker, false, WorkProcessor)
-MTS_IMPLEMENT_CLASS(GlintProcess, false, ParticleProcess)
-MTS_IMPLEMENT_CLASS(GlintWorkResult, false, WorkResult)
+MTS_IMPLEMENT_CLASS(ONEEEHGSPTracerWorker, false, WorkProcessor)
+MTS_IMPLEMENT_CLASS(ONEEEHGSPTracerProcess, false, ParticleProcess)
+MTS_IMPLEMENT_CLASS(ONEEEHGSPTracerWorkResult, false, WorkResult)
 MTS_NAMESPACE_END

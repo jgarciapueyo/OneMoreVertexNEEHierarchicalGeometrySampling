@@ -6,17 +6,17 @@ MTS_NAMESPACE_BEGIN
 
 static StatsCounter avgPathLength("Path tracer", "Average path length", EAverage);
 
-class AdditionalVertexIntegrator : public MonteCarloIntegrator {
+class ONEEEHGSPathIntegrator : public MonteCarloIntegrator {
 public:
-    AdditionalVertexIntegrator(const Properties &props)
-        : MonteCarloIntegrator(props) { 
+    ONEEEHGSPathIntegrator(const Properties &props)
+        : MonteCarloIntegrator(props) {
         m_doAdditionalVertex = props.getBoolean("doAdditionalVertex", false);
         m_useBVH = props.getBoolean("useBVH", false);
         m_disableNee = props.getBoolean("disableNEE", false);
     }
 
     /// Unserialize from a binary data stream
-    AdditionalVertexIntegrator(Stream *stream, InstanceManager *manager)
+    ONEEEHGSPathIntegrator(Stream *stream, InstanceManager *manager)
         : MonteCarloIntegrator(stream, manager) { }
 
     Spectrum Li(const RayDifferential &r, RadianceQueryRecord &rRec) const {
@@ -277,7 +277,7 @@ public:
 
     std::string toString() const {
         std::ostringstream oss;
-        oss << "AdditionalVertexIntegrator[" << endl
+        oss << "ONEEEHGSPathIntegrator[" << endl
             << "  maxDepth = " << m_maxDepth << "," << endl
             << "  rrDepth = " << m_rrDepth << "," << endl
             << "  strictNormals = " << m_strictNormals << "," << endl
@@ -295,6 +295,6 @@ private:
     bool m_disableNee; 
 };
 
-MTS_IMPLEMENT_CLASS_S(AdditionalVertexIntegrator, false, SamplingIntegrator)
-MTS_EXPORT_PLUGIN(AdditionalVertexIntegrator, "Additional vertex integrator");
+MTS_IMPLEMENT_CLASS_S(ONEEEHGSPathIntegrator, false, SamplingIntegrator)
+MTS_EXPORT_PLUGIN(ONEEEHGSPathIntegrator, "One-more-vertex path integrator");
 MTS_NAMESPACE_END

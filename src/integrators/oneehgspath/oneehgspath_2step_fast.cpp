@@ -5,14 +5,14 @@
 
 MTS_NAMESPACE_BEGIN
 
-static StatsCounter avgPathLengthFastDoubleStep("Path tracer", "Average path length", EAverage);
+static StatsCounter avgPathLengthFast2Step("Path tracer", "Average path length", EAverage);
 
 #define L2_NEE_MULT 1
 #define NEE_MULT 1
 
-class FastDoublestepIntegrator : public MonteCarloIntegrator {
+class ONEEEHGSPath2StepFastIntegrator : public MonteCarloIntegrator {
 public:
-    FastDoublestepIntegrator(const Properties &props)
+    ONEEEHGSPath2StepFastIntegrator(const Properties &props)
         : MonteCarloIntegrator(props) {
         m_doAdditionalVertex = props.getBoolean("doAdditionalVertex", true);
         m_useBVH = props.getBoolean("useBVH", true);
@@ -32,7 +32,7 @@ public:
         m_debug4 = props.getFloat("debug4", 1.f); // MIS on/off
 
 
-        SLog(EInfo, "FastDoublestepIntegrator configuration:\n");
+        SLog(EInfo, "ONEEEHGSPath2StepFastIntegrator configuration:\n");
         SLog(EInfo, "  doAdditionalVertex = %s\n", m_doAdditionalVertex ? "true" : "false");
         SLog(EInfo, "  useBVH = %s\n", m_useBVH ? "true" : "false");
         SLog(EInfo, "  disableNEE = %s\n", m_disableNee ? "true" : "false");
@@ -42,7 +42,7 @@ public:
         
     }
 
-    FastDoublestepIntegrator(Stream *stream, InstanceManager *manager)
+    ONEEEHGSPath2StepFastIntegrator(Stream *stream, InstanceManager *manager)
         : MonteCarloIntegrator(stream, manager) { }
 
     Spectrum Li(const RayDifferential &r, RadianceQueryRecord &rRec) const {
@@ -248,8 +248,8 @@ public:
             }
         }
 
-        avgPathLengthFastDoubleStep.incrementBase();
-        avgPathLengthFastDoubleStep += rRec.depth;
+        avgPathLengthFast2Step.incrementBase();
+        avgPathLengthFast2Step += rRec.depth;
         return Li;
     }
 
@@ -296,7 +296,7 @@ public:
 
     std::string toString() const {
         std::ostringstream oss;
-        oss << "FastDoublestepIntegrator[" << endl
+        oss << "ONEEEHGSPath2StepFastIntegrator[" << endl
             << "  maxDepth = " << m_maxDepth << "," << endl
             << "  rrDepth = " << m_rrDepth << "," << endl
             << "  strictNormals = " << m_strictNormals << "," << endl
@@ -323,6 +323,6 @@ private:
     float m_debug1, m_debug2, m_debug4;
 };
 
-MTS_IMPLEMENT_CLASS_S(FastDoublestepIntegrator, false, SamplingIntegrator)
-MTS_EXPORT_PLUGIN(FastDoublestepIntegrator, "Fast double step integrator");
+MTS_IMPLEMENT_CLASS_S(ONEEEHGSPath2StepFastIntegrator, false, SamplingIntegrator)
+MTS_EXPORT_PLUGIN(ONEEEHGSPath2StepFastIntegrator, "One-more-vertex two-step fast path integrator");
 MTS_NAMESPACE_END

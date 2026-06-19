@@ -16,20 +16,20 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#if !defined(__GLINTTRACERMIS_H)
-#define __GLINTTRACERMIS_H
+#if !defined(__ONEEHGSPTRACERMIS_H)
+#define __ONEEHGSPTRACERMIS_H
 
 #include <mitsuba/mitsuba.h>
 
-#define ENABLE_GLINTTRACER_DOUBLESTEP 1
+#define ENABLE_ONEEHGSPTRACERMIS_DOUBLESTEP 1
 
 /**
- * When the following is set to "1", the GlintTracerMIS integrator
+ * When the following is set to "1", the ONEEEHGSPTracerMIS integrator
  * will generate a series of debugging images that split up the final
  * rendering into the weighted contributions of the individual sampling
  * strategies.
  */
-//#define GLINTTRACERMIS_DEBUG 1
+//#define ONEEHGSPTRACERMIS_DEBUG 1
 
 MTS_NAMESPACE_BEGIN
 
@@ -39,9 +39,9 @@ MTS_NAMESPACE_BEGIN
 
 /**
  * \brief Stores all configuration parameters of the
- * GlintTracerMIS integrator
+ * ONEEEHGSPTracerMIS integrator
  */
-struct GlintTracerMISConfiguration {
+struct ONEEEHGSPTracerMISConfiguration {
     int maxDepth, blockSize, borderSize;
     bool lightImage;
     bool sampleDirect;
@@ -51,7 +51,7 @@ struct GlintTracerMISConfiguration {
     int rrDepth;
     bool hideEmitters;
     bool strictNormals;
-    #if ENABLE_GLINTTRACER_DOUBLESTEP == 1
+    #if ENABLE_ONEEHGSPTRACERMIS_DOUBLESTEP == 1
         bool m_doAdditionalVertex;
         bool m_useBVH;
         bool m_disableNee;
@@ -59,9 +59,9 @@ struct GlintTracerMISConfiguration {
         float m_debug1, m_debug2, m_debug3, m_debug4; // debug flags for bias isolation
     #endif
 
-    inline GlintTracerMISConfiguration() { }
+    inline ONEEEHGSPTracerMISConfiguration() { }
 
-    inline GlintTracerMISConfiguration(Stream *stream) {
+    inline ONEEEHGSPTracerMISConfiguration(Stream *stream) {
         maxDepth = stream->readInt();
         blockSize = stream->readInt();
         lightImage = stream->readBool();
@@ -88,7 +88,7 @@ struct GlintTracerMISConfiguration {
     }
 
     void dump() const {
-        SLog(EDebug, "GlintTracerMIS configuration:");
+        SLog(EDebug, "ONEEEHGSPTracerMIS configuration:");
         SLog(EDebug, "   Maximum path depth          : %i", maxDepth);
         SLog(EDebug, "   Image size                  : %ix%i",
             cropSize.x, cropSize.y);
@@ -99,12 +99,12 @@ struct GlintTracerMISConfiguration {
         SLog(EDebug, "   Russian roulette depth      : %i", rrDepth);
         SLog(EDebug, "   Block size                  : %i", blockSize);
         SLog(EDebug, "   Number of samples           : " SIZE_T_FMT, sampleCount);
-        #if GLINTTRACERMIS_DEBUG == 1
+        #if ONEEHGSPTRACERMIS_DEBUG == 1
             SLog(EDebug, "   Show weighted contributions : %s", showWeighted ? "yes" : "no");
         #endif
         SLog(EDebug, "   Hide emitters               : %s", hideEmitters ? "yes" : "no");
         SLog(EDebug, "   Strict normals              : %s", strictNormals ? "yes" : "no");
-        #if ENABLE_GLINTTRACER_DOUBLESTEP == 1
+        #if ENABLE_ONEEHGSPTRACERMIS_DOUBLESTEP == 1
             SLog(EDebug, "   Additional vertex           : %s", m_doAdditionalVertex ? "yes" : "no");
             SLog(EDebug, "   Use BVH for additional vert : %s", m_useBVH ? "yes" : "no");
             SLog(EDebug, "   Disable NEE for additional vert : %s", m_disableNee ? "yes" : "no");
@@ -119,4 +119,4 @@ struct GlintTracerMISConfiguration {
 
 MTS_NAMESPACE_END
 
-#endif /* __GLINTTRACERMIS_H */
+#endif /* __ONEEHGSPTRACERMIS_H */

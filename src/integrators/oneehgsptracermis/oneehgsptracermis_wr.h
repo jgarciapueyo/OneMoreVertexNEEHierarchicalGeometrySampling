@@ -16,8 +16,8 @@
     along with this program. If not, see <http://www.gnu.org/licenses/>.
 */
 
-#if !defined(__GLINTTRACERMIS_WR_H)
-#define __GLINTTRACERMIS_WR_H
+#if !defined(__ONEEHGSPTRACERMIS_WR_H)
+#define __ONEEHGSPTRACERMIS_WR_H
 
 #include <mitsuba/render/imageblock.h>
 #include <mitsuba/core/fresolver.h>
@@ -30,13 +30,13 @@ MTS_NAMESPACE_BEGIN
 /* ==================================================================== */
 
 /**
-   GlintTracerMIS needs its own WorkResult implementation,
+   ONEEEHGSPTracerMIS needs its own WorkResult implementation,
    since each rendering thread simultaneously renders to a small 'camera
    image' block and potentially a full-resolution 'light image'.
 */
-class GlintTracerMISWorkResult : public WorkResult {
+class ONEEEHGSPTracerMISWorkResult : public WorkResult {
 public:
-    GlintTracerMISWorkResult(const GlintTracerMISConfiguration &conf,
+    ONEEEHGSPTracerMISWorkResult(const ONEEEHGSPTracerMISConfiguration &conf,
             const ReconstructionFilter *filter,
             Vector2i blockSize = Vector2i(-1, -1));
 
@@ -50,12 +50,12 @@ public:
     virtual void save(Stream *stream) const;
 
     /// Accumulate another work result into this one
-    void put(const GlintTracerMISWorkResult *workResult);
+    void put(const ONEEEHGSPTracerMISWorkResult *workResult);
 
-#if GLINTTRACERMIS_DEBUG == 1
+#if ONEEHGSPTRACERMIS_DEBUG == 1
     /* In debug mode, this function allows to dump the contributions of
        the individual sampling strategies to a series of images */
-    void dump(const GlintTracerMISConfiguration &conf,
+    void dump(const ONEEEHGSPTracerMISConfiguration &conf,
             const fs::path &prefix, const fs::path &stem) const;
 
     inline void putDebugSample(int s, int t, const Point2 &sample,
@@ -94,14 +94,14 @@ public:
     MTS_DECLARE_CLASS()
 protected:
     /// Virtual destructor
-    virtual ~GlintTracerMISWorkResult();
+    virtual ~ONEEEHGSPTracerMISWorkResult();
 
     inline int strategyIndex(int s, int t) const {
         int above = s+t-2;
         return s + above*(5+above)/2;
     }
 protected:
-#if GLINTTRACERMIS_DEBUG == 1
+#if ONEEHGSPTRACERMIS_DEBUG == 1
     ref_vector<ImageBlock> m_debugBlocks;
 #endif
     ref<ImageBlock> m_block, m_lightImage;
@@ -109,4 +109,4 @@ protected:
 
 MTS_NAMESPACE_END
 
-#endif /* __GLINTTRACERMIS_WR_H */
+#endif /* __ONEEHGSPTRACERMIS_WR_H */

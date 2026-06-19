@@ -1,5 +1,5 @@
-#if !defined(__GLINTTRACER_PROC_H)
-#define __GLINTTRACER_PROC_H
+#if !defined(__ONEEHGSPTRACER_PROC_H)
+#define __ONEEHGSPTRACER_PROC_H
 
 #include <mitsuba/render/particleproc.h>
 #include <mitsuba/render/range.h>
@@ -9,13 +9,13 @@
 MTS_NAMESPACE_BEGIN
 
 /* ======================================================================== */
-/*  GlintWorkResult                                                          */
+/*  ONEEEHGSPTracerWorkResult                                                          */
 /*  Mirrors CaptureParticleWorkResult from ptracer_proc.h/.cpp              */
 /* ======================================================================== */
 
-class GlintWorkResult : public ImageBlock {
+class ONEEEHGSPTracerWorkResult : public ImageBlock {
 public:
-    inline GlintWorkResult(const Vector2i &res, const ReconstructionFilter *filter)
+    inline ONEEEHGSPTracerWorkResult(const Vector2i &res, const ReconstructionFilter *filter)
         : ImageBlock(Bitmap::ESpectrum, res, filter) {
         setOffset(Point2i(0, 0));
         setSize(res);
@@ -36,21 +36,21 @@ public:
 
     MTS_DECLARE_CLASS()
 protected:
-    virtual ~GlintWorkResult() { }
+    virtual ~ONEEEHGSPTracerWorkResult() { }
 protected:
     ref<RangeWorkUnit> m_range;
 };
 
 /* ==================================================================== */
-/*  GlintWorker                                                              */
+/*  ONEEEHGSPTracerWorker                                                              */
 /*  Custom WorkProcessor: BVH camera-origin sampling + sensor splatting.    */
 /* ==================================================================== */
 
-class GlintWorker : public WorkProcessor {
+class ONEEEHGSPTracerWorker : public WorkProcessor {
 public:
-    inline GlintWorker() : WorkProcessor() { }
+    inline ONEEEHGSPTracerWorker() : WorkProcessor() { }
 
-    GlintWorker(Stream *stream, InstanceManager *manager);
+    ONEEEHGSPTracerWorker(Stream *stream, InstanceManager *manager);
 
     void serialize(Stream *stream, InstanceManager *manager) const;
     void prepare();
@@ -63,7 +63,7 @@ public:
     MTS_DECLARE_CLASS()
 protected:
     /// Virtual destructor
-    virtual ~GlintWorker() { }
+    virtual ~ONEEEHGSPTracerWorker() { }
 private:
     void traceSample(GeometryBVH *bvh);
 
@@ -71,18 +71,18 @@ private:
     ref<Sampler>  m_sampler;
     ref<Sensor>   m_sensor;
     ref<const ReconstructionFilter> m_rfilter;
-    ref<GlintWorkResult> m_workResult;
+    ref<ONEEEHGSPTracerWorkResult> m_workResult;
     Point  m_cameraOrigin;
 };
 
 /* ======================================================================== */
-/*  GlintProcess                                                             */
+/*  ONEEEHGSPTracerProcess                                                             */
 /*  Mirrors CaptureParticleProcess from ptracer_proc.h/.cpp                 */
 /* ======================================================================== */
 
-class GlintProcess : public ParticleProcess {
+class ONEEEHGSPTracerProcess : public ParticleProcess {
 public:
-    GlintProcess(const RenderJob *job, RenderQueue *queue,
+    ONEEEHGSPTracerProcess(const RenderJob *job, RenderQueue *queue,
                  size_t sampleCount, size_t granularity)
         : ParticleProcess(ParticleProcess::ETrace, sampleCount,
                           granularity, "Rendering (glints)", job),
@@ -97,7 +97,7 @@ public:
 
     MTS_DECLARE_CLASS()
 protected:
-    virtual ~GlintProcess() { }
+    virtual ~ONEEEHGSPTracerProcess() { }
 private:
     ref<const RenderJob> m_job;
     ref<RenderQueue>     m_queue;
@@ -107,4 +107,4 @@ private:
 
 MTS_NAMESPACE_END
 
-#endif /* __GLINTTRACER_PROC_H */
+#endif /* __ONEEHGSPTRACER_PROC_H */
