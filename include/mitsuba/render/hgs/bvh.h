@@ -124,9 +124,6 @@ struct MultiTimer {
 
 MTS_NAMESPACE_BEGIN
 
-// #define USE_SGGX_AGGREGATES // Uncomment to use SGGX aggregates instead of VMF
-// #define DUMP_DEBUG_TO_CSV 0 // defined in bvh_fitting.cpp to avoid recompiling everthing when toggling this
-
 /// Computes the F_c term of the Schlick Fresnel approximation:
 ///   F_c(cos) = (1 - |cos|)^5,  where cos = dot(omega_h, omega_o)
 ///              and omega_h = normalize(omega_i + omega_o).
@@ -217,21 +214,6 @@ struct GaussianAggregate {
         sumWeightedCentroids += other.sumWeightedCentroids;
         sumSecondMoment += other.sumSecondMoment;
     }
-
-    // Extract the final 3D Gaussian parameters
-    // surfaceArea must be > 0 
-    // inline void getGaussian(double surfaceArea, Point& outMean, Matrix3x3& outCovariance) const {
-    //     // Compute in double precision
-    //     Vector3d meanVec = sumWeightedCentroids / surfaceArea;
-    //     Matrix3x3d meanOuter = outerProduct(meanVec);
-    //     Matrix3x3d covDouble = (sumSecondMoment / surfaceArea) - meanOuter;
-
-    //     // Downcast to Float for the final output
-    //     outMean = Point((Float)meanVec.x, (Float)meanVec.y, (Float)meanVec.z);
-    //     for(int i=0; i<3; ++i)
-    //         for(int j=0; j<3; ++j)
-    //             outCovariance(i,j) = (Float)covDouble(i,j);
-    // }
     
     // Extract the final 3D Gaussian parameters (Removed Float surfaceArea parameter)
     inline void getGaussian(double surfaceArea, Point& outMean, Matrix3x3& outCovariance) const {
@@ -358,51 +340,6 @@ struct BVHNodeInfo {
     std::array<WeightedPoint, 7> unscentedPoints;   // Query-independent sigma points for node Gaussian
 
     bool valid;                     // Whether this node has valid data
-
-#ifdef USE_SGGX_AGGREGATES
-    /// Normal distribution represented via first/second spherical moments.
-    /// This is a convenient parameterization to later fit an SGGX distribution
-    /// (or directly use the second moment matrix as the SGGX "S" matrix).
-    struct NormalDistributionSGGX {
-        /// First moment: E[n]
-        Vector m1;
-        /// Second moment: E[n n^T]
-        Matrix3x3 m2;
-
-        NormalDistributionSGGX() : m1(0.0f), m2(0.0f) { }
-
-        inline static Matrix3x3 outerProduct(const Vector &v) {
-            return Matrix3x3(
-                v.x * v.x, v.x * v.y, v.x * v.z,
-                v.y * v.x, v.y * v.y, v.y * v.z,
-                v.z * v.x, v.z * v.y, v.z * v.z
-            );
-        }
-
-        /// Initialize moments from a (unit) normal
-        inline void setFromNormal(const Vector &n) {
-            m1 = n;
-            m2 = outerProduct(n);
-        }
-
-        /// Return a robust mean direction (normalized m1)
-        inline Vector meanDirection() const {
-            Float len = m1.length();
-            if (len > Epsilon)
-                return m1 / len;
-            return Vector(0.0f, 0.0f, 1.0f);
-        }
-
-        /// Scalar variance proxy from moments: Var = E[||n||^2] - ||E[n]||^2.
-        /// For unit normals, E[||n||^2] ~= 1.
-        inline Float variance() const {
-            const Float trace = m2.m[0][0] + m2.m[1][1] + m2.m[2][2];
-            const Float v = trace - dot(m1, m1);
-            return std::max((Float) 0.0f, v);
-        }
-    } normalDistribution;
-#else
-#endif 
 
     BVHNodeInfo()
         : surfaceArea(0.0),
@@ -1104,8 +1041,6 @@ MTS_EXPORT_RENDER Float computeNodeImportanceGroundTruth(
     int numSamples,
     bool checkVisibility
 );
-
-
 
 MTS_NAMESPACE_END
 
