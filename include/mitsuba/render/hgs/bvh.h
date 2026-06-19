@@ -15,8 +15,7 @@ BVH with Geometric Aggregates for Importance Sampling
 #include <mitsuba/core/vmf.h>
 
 #include <mitsuba/render/hgs/spherical_aabb.h>  
-#include <mitsuba/render/hgs/intensity_grid.h> 
-// ^ VMF LUT
+#include <mitsuba/render/hgs/vmf_lut.h> 
 
 #include <array>
 
