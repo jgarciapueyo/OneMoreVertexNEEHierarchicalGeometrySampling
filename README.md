@@ -147,18 +147,35 @@ To use the one-more-vertex integrator in your own Mitsuba scene, add the followi
 
 ---
 
-### Code changes
+### Code structure
 
-This repository is based on [Mitsuba 0.6](https://github.com/mitsuba-renderer/mitsuba). The paper's contributions are self-contained in the following new components:
+This repository is based on [Mitsuba 0.6](https://github.com/mitsuba-renderer/mitsuba). All source code outside the paths listed below is unmodified Mitsuba 0.6.
 
-| Path | Description |
-|------|-------------|
-| `src/geometrybvh/` | Core hierarchical geometry sampling module: BVH construction, per-node statistics fitting, importance weight computation, and stochastic traversal sampling |
-| `src/integrators/oneehgspath/` | One-more-vertex path tracer integrator |
-| `src/integrators/oneehgsptracer/` | One-more-vertex particle tracer integrator |
-| `src/integrators/oneehgsptracermis/` | One-more-vertex particle tracer with MIS |
+#### HGS core
 
-All other code is unmodified Mitsuba 0.6.
+| Group | Description | Path |
+|-------|-------------|------|
+| Headers | `GeometryBVH` class declaration; `VMFLUT` (VMF intensity via degree-4 unrolled polynomial); spherical AABB | `include/mitsuba/render/hgs/` |
+| Implementation | BVH construction, per-node statistics fitting, importance weight computation, stochastic traversal sampling | `src/librender/hgs/` |
+| Plugin | Mitsuba plugin registration wrapper for `GeometryBVH` | `src/hgs/` |
+
+#### Integrators
+
+| Description | Path |
+|-------------|------|
+| One-more-vertex path tracer | `src/integrators/oneehgspath/` |
+| One-more-vertex particle tracer | `src/integrators/oneehgsptracer/` |
+| One-more-vertex particle tracer with MIS | `src/integrators/oneehgsptracermis/` |
+
+#### Scenes, scripts, and infrastructure
+
+| Component | Description | Path |
+|-----------|-------------|------|
+| Scenes | Mitsuba XML scene files for all paper experiments (Asteroids, Disney, Veach, Cornell box, Glints, …) | `scenes/` |
+| Experiment pipeline | Shell and Python scripts to render all technique variants, compute MSE/FLIP metrics, and produce comparison figures and LaTeX assets | `scripts/experiments/` |
+| LUT tools | Python scripts to generate the VMF intensity LUT and fit the degree-4 polynomial approximation | `scripts/LUT/` |
+| PPG baseline | Practical path guiding as a self-contained Mitsuba build used for paper comparisons | `ppg/` |
+| Docker | Containerized build and run environment; no host dependencies beyond Docker and Docker Compose | `Dockerfile`, `docker-compose.yml` |
 
 ---
 
