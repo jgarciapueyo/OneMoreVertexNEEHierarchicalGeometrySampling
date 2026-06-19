@@ -1,4 +1,4 @@
-#include <mitsuba/render/bvh/bvh.h>
+#include <mitsuba/render/hgs/bvh.h>
 #include <mitsuba/core/plugin.h>
 
 MTS_NAMESPACE_BEGIN

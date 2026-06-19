@@ -1,4 +1,4 @@
-#include <mitsuba/render/bvh/spherical_aabb.h>
+#include <mitsuba/render/hgs/spherical_aabb.h>
 
 MTS_NAMESPACE_BEGIN
 

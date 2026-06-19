@@ -25,7 +25,7 @@
 #include <mitsuba/core/aabb.h>
 #include <mitsuba/render/trimesh.h>
 #include <mitsuba/render/skdtree.h>
-#include <mitsuba/render/bvh/bvh.h>
+#include <mitsuba/render/hgs/bvh.h>
 #include <mitsuba/render/sensor.h>
 #include <mitsuba/render/integrator.h>
 #include <mitsuba/render/bsdf.h>

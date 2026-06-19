@@ -91,7 +91,7 @@ build('src/integrators/SConscript')
 # build('src/tests/SConscript')
 
 # Build the geometry BVH plugin
-build('src/geometrybvh/SConscript')
+build('src/hgs/SConscript')
 
 # ===== Move everything to its proper place =====
 SConscript('build/SConscript.install')

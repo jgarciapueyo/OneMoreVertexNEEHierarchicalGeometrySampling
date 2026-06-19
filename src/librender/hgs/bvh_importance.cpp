@@ -1,4 +1,4 @@
-#include <mitsuba/render/bvh/bvh.h>
+#include <mitsuba/render/hgs/bvh.h>
 #include <mitsuba/render/bsdf.h>
 #include <mitsuba/render/scene.h>
 #include <mitsuba/render/trimesh.h>

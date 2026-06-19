@@ -19,7 +19,7 @@
 #include <mitsuba/core/statistics.h>
 #include <mitsuba/core/sfcurve.h>
 #include <mitsuba/bidir/util.h>
-#include <mitsuba/render/bvh/bvh.h>
+#include <mitsuba/render/hgs/bvh.h>
 #include <mitsuba/render/scene.h>
 #include "oneehgsptracermis_proc.h"
 

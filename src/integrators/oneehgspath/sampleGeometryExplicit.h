@@ -1,7 +1,7 @@
 #pragma once
 
 #include <mitsuba/render/scene.h>
-#include <mitsuba/render/bvh/bvh.h>
+#include <mitsuba/render/hgs/bvh.h>
 
 MTS_NAMESPACE_BEGIN
 

@@ -21,7 +21,7 @@
 #include <mitsuba/render/medium.h>
 #include <mitsuba/hw/gpuprogram.h>
 #include <mitsuba/core/warp.h>
-#include <mitsuba/render/bvh/spherical_aabb.h>
+#include <mitsuba/render/hgs/spherical_aabb.h>
 
 // 128 bytes of temporary storage for intersection queries.. mi1 stuff
 #define INTERSECTION_TEMP 128

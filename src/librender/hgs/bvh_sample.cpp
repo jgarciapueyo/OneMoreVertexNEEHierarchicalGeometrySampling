@@ -4,8 +4,8 @@
     BVH Geometry Sampling - Importance-driven geometry sampling via BVH traversal
 */
 
-#include <mitsuba/render/bvh/bvh.h>
-#include <mitsuba/render/bvh/spherical_aabb.h>
+#include <mitsuba/render/hgs/bvh.h>
+#include <mitsuba/render/hgs/spherical_aabb.h>
 #include <mitsuba/render/scene.h>
 #include <mitsuba/render/trimesh.h>
 #include <cmath>
