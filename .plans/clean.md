@@ -114,9 +114,10 @@ Files that should never appear in a public repo:
 | `scripts/polyscope/` | BVH debug visualisation dumps (CSV, PNG, ini files); not needed by users |
 | `scripts/experiments/wip.md` | Internal work-in-progress notes |
 | `scripts/experiments/analyze_results copy.py` | Accidental duplicate file |
-| `data/vmf_lut_old.bin` | Superseded LUT |
-| `include/mitsuba/render/bvh/vmf_lut.bin` | Duplicate of `data/vmf_lut.bin` (different path) |
-| `scripts/LUT/vmf_lut.bin`, `scripts/LUT/vmf_lut.feather` | Yet more LUT copies |
+| `data/vmf_lut_old.bin` | (Done - Removed) Superseded LUT |
+| `include/mitsuba/render/bvh/vmf_lut.bin` | (Done - Removed) Duplicate of `data/vmf_lut.bin` (different path) |
+| `scripts/LUT/vmf_lut.bin`, `scripts/LUT/vmf_lut.feather` | (Done - Removed) Yet more LUT copies |
+| `scripts/LUT/old/` | (Done - removed) Old scripts to generate the LUT |
 | `implementation_plan_additional_vertex.md` | Already deleted in commit; verify it's gone |
 | `src/integrators/additionalvertex/fastdoublestep-bkbad.cpp` | "bkbad" — explicitly a broken backup |
 
