@@ -1,7 +1,7 @@
 //
 // BVH phase-3 utility test:
 // 1) Load a scene from XML
-// 2) Build GeometryBVH + aggregates
+// 2) Build SamplingBVH + aggregates
 // 3) Compute one Geometry PDF sample
 // 4) Export one CSV per BVH level containing AABB and surface area
 //
@@ -50,7 +50,7 @@ static Normal triangleNormal(const TriMesh *mesh, uint32_t triIdx) {
     return Normal(normalize(cross(e1, e2)));
 }
 
-static void exportBvhLevelsToCsv(const GeometryBVH &bvh, const std::string &csvPrefix) {
+static void exportBvhLevelsToCsv(const SamplingBVH &bvh, const std::string &csvPrefix) {
     if (bvh.getNodeCount() == 0)
         throw std::runtime_error("exportBvhLevelsToCsv(): BVH has no nodes");
 
@@ -115,7 +115,7 @@ static bool exportBvhCsvsFromXml(const fs::path &sceneXmlPath, const std::string
 
     ref<Scene> scene = loadSceneAbsolute(absXml);
 
-    GeometryBVH bvh;
+    SamplingBVH bvh;
     bvh.buildBVH(scene.get());
     bvh.buildAggregates(scene.get());
 

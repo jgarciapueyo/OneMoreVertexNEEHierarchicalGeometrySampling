@@ -76,7 +76,7 @@ bool testBasicConstruction() {
     Scene *scene = createTestScene(mesh);
     
     // Build BVH
-    GeometryBVH bvh(4); // maxLeafSize = 4
+    SamplingBVH bvh(4); // maxLeafSize = 4
     bvh.buildBVH(scene);
     
     // Verify primitives collected
@@ -139,7 +139,7 @@ static bool pointOnTriangle(const Point &P, const Point &A, const Point &B, cons
 
 /// Find the primitive index (in BVH primitive array) whose triangle contains P.
 /// Returns true and sets outPrimIdx if found.
-static bool findPrimitiveContainingPoint(const GeometryBVH &bvh, const Scene *scene, const Point &P, uint32_t &outPrimIdx) {
+static bool findPrimitiveContainingPoint(const SamplingBVH &bvh, const Scene *scene, const Point &P, uint32_t &outPrimIdx) {
     const std::vector<TriMesh*> &meshes = scene->getMeshes();
     const size_t primCount = bvh.getPrimitiveCount();
     for (size_t i = 0; i < primCount; ++i) {
@@ -162,7 +162,7 @@ static bool findPrimitiveContainingPoint(const GeometryBVH &bvh, const Scene *sc
 }
 
 /// Check whether the primitive index is contained in the subtree rooted at nodeIndex
-static bool primitiveInSubtree(const GeometryBVH &bvh, size_t nodeIndex, uint32_t primIdx) {
+static bool primitiveInSubtree(const SamplingBVH &bvh, size_t nodeIndex, uint32_t primIdx) {
     const BVHNode &node = bvh.getNode(nodeIndex);
     if (node.isLeaf()) {
         for (uint32_t i = 0; i < node.nLeafPrimitives; ++i) {
@@ -185,7 +185,7 @@ bool testSamplePDFConsistency() {
     TriMesh *mesh = createTestMesh(20);
     Scene *scene = createTestScene(mesh);
 
-    GeometryBVH bvh(4);
+    SamplingBVH bvh(4);
     bvh.buildBVH(scene);
     bvh.buildAggregates(scene);
 

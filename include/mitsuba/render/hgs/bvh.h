@@ -154,7 +154,7 @@ inline Float schlickFc(const Vector &wi, const Vector &wo) {
 }
 
 // Sampling mode enumeration for leaf node sampling
-enum class GeometryBVHSamplingMode {
+enum class SamplingBVHSamplingMode {
     Primitive,           // Sample leaf primitives uniformly (wrt. area)
     SphericalAABB,       // Sample using spherical AABB, then ray-cast to geometry
     Primitive_3_retries, // retry up to 3 times to sample a point in the surface that has both cosines positive
@@ -502,24 +502,24 @@ struct BVHPrimitive {
 
 /// Main BVH class for geometry sampling
 /// Builds a triangle-level BVH with geometric aggregates for importance-driven traversal
-class MTS_EXPORT_RENDER GeometryBVH : public ConfigurableObject {
+class MTS_EXPORT_RENDER SamplingBVH : public ConfigurableObject {
 public:
     MTS_DECLARE_CLASS()
     
     /// Constructor with configurable depth and sampling mode
     /// \param maxDepth Maximum depth of the tree (default: 16)
     /// \param samplingMode Sampling strategy for leaves (default: Primitive)
-    GeometryBVH(uint32_t maxDepth = 16, GeometryBVHSamplingMode samplingMode = GeometryBVHSamplingMode::Primitive);
+    SamplingBVH(uint32_t maxDepth = 16, SamplingBVHSamplingMode samplingMode = SamplingBVHSamplingMode::Primitive);
 
     /// Constructor from properties
     /// @param props Properties object containing configuration parameters
-    GeometryBVH(const Properties &props);
+    SamplingBVH(const Properties &props);
 
     /// Unserialize a geometrybvh instance from a binary data stream
-    GeometryBVH(Stream *stream, InstanceManager *manager);
+    SamplingBVH(Stream *stream, InstanceManager *manager);
     
     /// Destructor
-    ~GeometryBVH();
+    ~SamplingBVH();
     
     /// Build BVH from scene geometry
     /// Collects all triangles from scene->getMeshes() and builds object-partition BVH
@@ -560,7 +560,7 @@ public:
     uint32_t getMaxDepth() const { return m_maxDepth; }
     
     /// Get the sampling mode
-    GeometryBVHSamplingMode getSamplingMode() const { return m_samplingMode; }
+    SamplingBVHSamplingMode getSamplingMode() const { return m_samplingMode; }
     
     /// Get left child index (always nodeIndex + 1 for interior nodes)
     size_t getLeftChild(size_t nodeIndex) const { return nodeIndex + 1; }
@@ -797,7 +797,7 @@ protected:
     std::vector<uint32_t> m_triangleToPrim; // Flat map of global primitive indices
     
     uint32_t m_maxDepth;                    // Maximum depth of the tree
-    GeometryBVHSamplingMode m_samplingMode; // Current sampling mode
+    SamplingBVHSamplingMode m_samplingMode; // Current sampling mode
 
     // Node importance configuration (0=ignore, 1=full importance):
 public:
@@ -958,7 +958,7 @@ MTS_EXPORT_RENDER Spectrum evalGlintContribution(
 // \param pRec_xe Emitter sample (position, pdf, object)
 MTS_EXPORT_RENDER Float computeNodeImportanceGlint(
     const Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Point &x_o,
     const Sensor *sensor,
@@ -969,7 +969,7 @@ MTS_EXPORT_RENDER Float computeNodeImportanceGlint(
 // This function can be used both for importance-driven sampling and for debugging/visualization of node importance.
 MTS_EXPORT_RENDER Float computeNodeImportance(
     const Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe
@@ -979,7 +979,7 @@ MTS_EXPORT_RENDER Float computeNodeImportance(
 // This version uses MC to solve the triple integral over the node's geometry, the normals, and the albedo
 MTS_EXPORT_RENDER Float computeNodeImportance_MC(
     Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe,
@@ -989,7 +989,7 @@ MTS_EXPORT_RENDER Float computeNodeImportance_MC(
 
 Float computeNodeImportance_MC_LUT(
     Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe, 
@@ -999,7 +999,7 @@ Float computeNodeImportance_MC_LUT(
 
 MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_MC(
     Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe, 
@@ -1009,7 +1009,7 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_MC(
 
 MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT(
     const Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe,
@@ -1023,7 +1023,7 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT(
 /// both geometric normal spread (kappa_n) and microfacet NDF spread (kappa_m).
 MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT_Specular(
     const Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe,
@@ -1034,7 +1034,7 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT_Specular(
 // (based on actual path contribution by sampling random points on the node's geometry and evaluating their contribution)
 MTS_EXPORT_RENDER Float computeNodeImportanceGroundTruth(
     Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe,

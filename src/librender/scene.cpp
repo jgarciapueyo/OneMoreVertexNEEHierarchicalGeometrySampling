@@ -37,7 +37,7 @@ Scene::Scene()
     m_kdtree = new ShapeKDTree();
     m_sourceFile = new fs::path();
     m_destinationFile = new fs::path();
-    m_geometryBVH = new GeometryBVH();
+    m_geometryBVH = new SamplingBVH();
 }
 
 Scene::Scene(const Properties &props)
@@ -83,7 +83,7 @@ Scene::Scene(const Properties &props)
     m_sourceFile = new fs::path();
     m_destinationFile = new fs::path();
     // create default BVH; a <geometrybvh> child in the scene XML will override it
-    m_geometryBVH = new GeometryBVH();
+    m_geometryBVH = new SamplingBVH();
 }
 
 Scene::Scene(Scene *scene) : NetworkedObject(Properties()) {
@@ -168,7 +168,7 @@ Scene::Scene(Stream *stream, InstanceManager *manager)
     for (size_t i=0; i<count; ++i)
         m_netObjects.push_back(static_cast<NetworkedObject *>(manager->getInstance(stream)));
 
-    m_geometryBVH = new GeometryBVH();
+    m_geometryBVH = new SamplingBVH();
 
     initialize();
 }
@@ -326,7 +326,7 @@ void Scene::configure() {
 
 void Scene::invalidate() {
     m_kdtree = new ShapeKDTree();
-    m_geometryBVH = new GeometryBVH();
+    m_geometryBVH = new SamplingBVH();
 }
 
 void Scene::initialize() {
@@ -540,9 +540,9 @@ void Scene::addChild(const std::string &name, ConfigurableObject *child) {
         if (shape->isSensor()) // determine sensors as early as possible
             addSensor(shape->getSensor());
         m_shapes.push_back(shape);
-    } else if (cClass->derivesFrom(MTS_CLASS(GeometryBVH))) {
+    } else if (cClass->derivesFrom(MTS_CLASS(SamplingBVH))) {
         // Allow a <geometrybvh> element in the scene XML to configure the BVH
-        m_geometryBVH = static_cast<GeometryBVH *>(child);
+        m_geometryBVH = static_cast<SamplingBVH *>(child);
      } else if (cClass->derivesFrom(MTS_CLASS(Scene))) {
         ref<Scene> scene = static_cast<Scene *>(child);
         /* A scene from somewhere else has been included.

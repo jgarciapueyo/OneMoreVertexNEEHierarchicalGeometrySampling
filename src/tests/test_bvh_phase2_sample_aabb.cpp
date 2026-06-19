@@ -85,9 +85,9 @@ bool testSphericalAABBSamplingModeCreation() {
     Scene *scene = createTestScene(mesh);
     
     // Create BVH with SphericalAABB mode
-    GeometryBVH bvh(4, GeometryBVHSamplingMode::SphericalAABB);
+    SamplingBVH bvh(4, SamplingBVHSamplingMode::SphericalAABB);
     
-    if (bvh.getSamplingMode() != GeometryBVHSamplingMode::SphericalAABB) {
+    if (bvh.getSamplingMode() != SamplingBVHSamplingMode::SphericalAABB) {
         std::cout << "FAILED: Sampling mode not set correctly" << std::endl;
         return false;
     }
@@ -111,7 +111,7 @@ bool testSphericalAABBLeafSampling() {
     Scene *scene = createTestScene(mesh);
     
     // Create BVH with SphericalAABB mode
-    GeometryBVH bvh(4, GeometryBVHSamplingMode::SphericalAABB);
+    SamplingBVH bvh(4, SamplingBVHSamplingMode::SphericalAABB);
     bvh.buildBVH(scene);
     bvh.buildAggregates(scene);
     
@@ -160,7 +160,7 @@ bool testPrimitiveSamplingModeStillWorks() {
     Scene *scene = createTestScene(mesh);
     
     // Create BVH with Primitive mode (default)
-    GeometryBVH bvh(4, GeometryBVHSamplingMode::Primitive);
+    SamplingBVH bvh(4, SamplingBVHSamplingMode::Primitive);
     bvh.buildBVH(scene);
     bvh.buildAggregates(scene);
     
@@ -195,7 +195,7 @@ bool testSphericalAABBMultipleSamples() {
     TriMesh *mesh = createTestMesh(30);
     Scene *scene = createTestScene(mesh);
     
-    GeometryBVH bvh(4, GeometryBVHSamplingMode::SphericalAABB);
+    SamplingBVH bvh(4, SamplingBVHSamplingMode::SphericalAABB);
     bvh.buildBVH(scene);
     bvh.buildAggregates(scene);
     
@@ -252,11 +252,11 @@ bool testComparisonPrimitiveVsSphericalAABB() {
     TriMesh *mesh = createTestMesh(40);
     Scene *scene = createTestScene(mesh);
     
-    GeometryBVH bvh_primitive(4, GeometryBVHSamplingMode::Primitive);
+    SamplingBVH bvh_primitive(4, SamplingBVHSamplingMode::Primitive);
     bvh_primitive.buildBVH(scene);
     bvh_primitive.buildAggregates(scene);
     
-    GeometryBVH bvh_spherical(4, GeometryBVHSamplingMode::SphericalAABB);
+    SamplingBVH bvh_spherical(4, SamplingBVHSamplingMode::SphericalAABB);
     bvh_spherical.buildBVH(scene);
     bvh_spherical.buildAggregates(scene);
     
@@ -310,9 +310,9 @@ bool testDefaultConstructorUsesDefaultMode() {
     std::cout << "Test: Default constructor uses Primitive mode... ";
     
     // Create BVH with default parameters
-    GeometryBVH bvh(4);
+    SamplingBVH bvh(4);
     
-    if (bvh.getSamplingMode() != GeometryBVHSamplingMode::Primitive) {
+    if (bvh.getSamplingMode() != SamplingBVHSamplingMode::Primitive) {
         std::cout << "FAILED: Default mode is not Primitive" << std::endl;
         return false;
     }

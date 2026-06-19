@@ -41,13 +41,13 @@ Returns: `f_xn(wi=d_n_to_o, wo=d_n_to_e) * G_ne * Le`
 - **does NOT** divide by `pRec_xe.pdf` (caller does, consistent with `evalLength2Contribution`)
 - **does NOT** check visibility x_n → x_o (handled by `sampleAttenuatedSensorDirect`)
 
-## Component 2: `GeometryBVH::sampleGeometryCamera`
+## Component 2: `SamplingBVH::sampleGeometryCamera`
 
 **Files:** `include/mitsuba/render/bvh/bvh.h` (declaration in class body) +
            `src/librender/bvh/bvh_sample.cpp` (implementation)
 
 ```cpp
-bool GeometryBVH::sampleGeometryCamera(
+bool SamplingBVH::sampleGeometryCamera(
     const Scene *scene,
     Sampler *sampler,
     const Point &x_o,                      // camera origin (replaces its_xs.p)

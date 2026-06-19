@@ -59,7 +59,7 @@ public:
         Float eta = 1.0f;
 
         bool skip_nee_this_bounce = false;
-        const GeometryBVH *geometryBVH = scene->getGeometryBVH();
+        const SamplingBVH *geometryBVH = scene->getSamplingBVH();
 
         while (rRec.depth <= m_maxDepth || m_maxDepth < 0) {
             if (!its.isValid()) {

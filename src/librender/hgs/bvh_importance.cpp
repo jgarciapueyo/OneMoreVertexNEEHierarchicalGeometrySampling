@@ -41,7 +41,7 @@ struct WeightedReservoir {
 // forward declaration of the faster but less accurate version of the lut importance function
 Float computeNodeImportance_Unscented_LUT_fast(
     const Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe,
@@ -51,7 +51,7 @@ Float computeNodeImportance_Unscented_LUT_fast(
 // forward declaration of the original (slowest) LUT importance function
 Float computeNodeImportance_Unscented_LUT_original(
     const Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe,
@@ -60,7 +60,7 @@ Float computeNodeImportance_Unscented_LUT_original(
 
 Float computeNodeImportance(
     const Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe
@@ -88,7 +88,7 @@ Float computeNodeImportance(
 
 Float computeNodeImportance_MC(
     Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe, 
@@ -178,7 +178,7 @@ Float computeNodeImportance_MC(
 
 Float computeNodeImportance_MC_LUT(
     Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe, 
@@ -303,7 +303,7 @@ Float computeNodeImportance_MC_LUT(
 
 Float computeNodeImportanceGroundTruth(
     Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe,
@@ -356,7 +356,7 @@ Float computeNodeImportanceGroundTruth(
 
 MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_MC(
     Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe, 
@@ -497,7 +497,7 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_MC(
 // TLDR: this "fast" version, taking some stuff out of the loop, is basically just as fast as the other one
 Float computeNodeImportance_Unscented_LUT_fast(
     const Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe,
@@ -680,7 +680,7 @@ Float computeNodeImportance_Unscented_LUT_fast(
 // Original LUT version: local unscented sigma-point generation + per-point VMF LUT evaluation
 Float computeNodeImportance_Unscented_LUT_original(
     const Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe,
@@ -904,7 +904,7 @@ Float computeNodeImportance_Unscented_LUT_original(
 
 MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT(
     const Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe,
@@ -936,13 +936,13 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT(
         return 0.0f;
 
     const uint32_t ablationMask = bvh->m_ablationMask;
-    const bool ablateVMF        = (ablationMask & GeometryBVH::AblateVMF) != 0;
-    const bool ablateGaussian   = (ablationMask & GeometryBVH::AblateGaussian) != 0;
-    const bool ablateCosineXs   = (ablationMask & GeometryBVH::AblateCosineXs) != 0;
-    const bool ablateCosineXe   = (ablationMask & GeometryBVH::AblateCosineXe) != 0;
-    const bool ablateDistanceXs = (ablationMask & GeometryBVH::AblateDistanceXs) != 0;
-    const bool ablateDistanceXe = (ablationMask & GeometryBVH::AblateDistanceXe) != 0;
-    const bool ablateAlbedo     = (ablationMask & GeometryBVH::AblateAlbedo) != 0;
+    const bool ablateVMF        = (ablationMask & SamplingBVH::AblateVMF) != 0;
+    const bool ablateGaussian   = (ablationMask & SamplingBVH::AblateGaussian) != 0;
+    const bool ablateCosineXs   = (ablationMask & SamplingBVH::AblateCosineXs) != 0;
+    const bool ablateCosineXe   = (ablationMask & SamplingBVH::AblateCosineXe) != 0;
+    const bool ablateDistanceXs = (ablationMask & SamplingBVH::AblateDistanceXs) != 0;
+    const bool ablateDistanceXe = (ablationMask & SamplingBVH::AblateDistanceXe) != 0;
+    const bool ablateAlbedo     = (ablationMask & SamplingBVH::AblateAlbedo) != 0;
 
     const BVHNodeInfo &nodeInfo = bvh->getNodeInfo(nodeIndex);
     if (!nodeInfo.valid || nodeInfo.surfaceArea <= Epsilon)
@@ -1139,7 +1139,7 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT(
 
 MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT_Specular(
     const Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe,
@@ -1382,7 +1382,7 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT_Specular(
 // ---------------------------------------------------------------------------
 MTS_EXPORT_RENDER Float computeNodeImportanceGlint(
     const Scene *scene,
-    const GeometryBVH *bvh,
+    const SamplingBVH *bvh,
     int nodeIndex,
     const Point &x_o,
     const Sensor *sensor,

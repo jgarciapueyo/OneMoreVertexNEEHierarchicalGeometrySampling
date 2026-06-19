@@ -78,9 +78,9 @@ public:
         result->clear();
         m_hilbertCurve.initialize(TVector2<uint8_t>(rect->getSize()));
 
-        GeometryBVH *bvh = m_scene->getGeometryBVH();
+        SamplingBVH *bvh = m_scene->getSamplingBVH();
         if (!bvh || !bvh->isBuilt()) {
-            Log(EWarn, "ONEEEHGSPTracerMIS: GeometryBVH not available or not built!");
+            Log(EWarn, "ONEEEHGSPTracerMIS: SamplingBVH not available or not built!");
             return;
         }
 
@@ -103,7 +103,7 @@ public:
 
     MTS_DECLARE_CLASS()
 private:
-    void traceSample(ONEEEHGSPTracerMISWorkResult *result, GeometryBVH *bvh) {
+    void traceSample(ONEEEHGSPTracerMISWorkResult *result, SamplingBVH *bvh) {
         // ----------------------------------------------------------------
         // 1. Sample emitter position x_e
         // ----------------------------------------------------------------
@@ -199,7 +199,7 @@ private:
     // using the 3-way power heuristic against traceSample.
     // -----------------------------------------------------------------------
     void pathTraceSample(ONEEEHGSPTracerMISWorkResult *result, const Point2i &pixelOffset,
-                         GeometryBVH *bvh) {
+                         SamplingBVH *bvh) {
         Float diffScaleFactor = 1.0f /
         std::sqrt((Float) m_sampler->getSampleCount());
 
@@ -653,7 +653,7 @@ private:
                 // Note: We assume sampleGeometry returns PDF in Solid Angle (matching your pdfGeometry) 
                 // or we might need to convert it here if sampleGeometry returns Area measure.
                 // For this snippet, assuming consistent Solid Angle usage as per your comment.
-                bool success = scene->getGeometryBVH()->sampleGeometry(
+                bool success = scene->getSamplingBVH()->sampleGeometry(
                     scene,
                     rRec.sampler,
                     its,
@@ -800,7 +800,7 @@ private:
                             if (its_z.shape && its_z.shape->getClass()->derivesFrom(MTS_CLASS(TriMesh))) {
                                 const TriMesh *mesh = static_cast<const TriMesh *>(its_z.shape);
                                 // NOTE: pdfGeometry must return Solid Angle.
-                                pdf_2NEE_at_z = scene->getGeometryBVH()->pdfGeometry(
+                                pdf_2NEE_at_z = scene->getSamplingBVH()->pdfGeometry(
                                     scene, 
                                     its, 
                                     pRec_L2,

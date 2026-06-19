@@ -14,7 +14,7 @@ This allows BVH traversal to adapt to the specific path configuration, weighting
 **File Organization:**
 ```
 include/mitsuba/render/bvh/
-└── bvh.h                    # All structures: BVHNodeInfo, BVHNode, GeometryBVH
+└── bvh.h                    # All structures: BVHNodeInfo, BVHNode, SamplingBVH
 
 src/librender/bvh/
 ├── bvh_build.cpp            # BVH construction + aggregate propagation
@@ -66,7 +66,7 @@ struct BVHNode {
     bool isLeaf() const { return nLeafPrimitives > 0; }
 };
 
-class GeometryBVH {
+class SamplingBVH {
 public:
     void build(const Scene *scene);
     void buildAggregates(const Scene *scene);
@@ -131,8 +131,8 @@ Float computeNodeImportance(nodeInfo, nodeBounds, xs, xe) {
 
 ### 1.4 Scene Integration
 
-- `Scene` owns `ref<GeometryBVH> m_geometryBVH` with `getGeometryBVH()` accessor
-- Constructors allocate GeometryBVH with optional `maxLeafSize` property
+- `Scene` owns `ref<SamplingBVH> m_geometryBVH` with `getSamplingBVH()` accessor
+- Constructors allocate SamplingBVH with optional `maxLeafSize` property
 - Build in `Scene::initialize()` by passing a reference to the `Scene` class itself.
 
 ---
@@ -249,16 +249,16 @@ Notes on numerical robustness and edge cases:
 2. In `bvh_sample.cpp` implement a two-path leaf sampler:
     - Primitive leaf sampling (existing): choose a primitive uniformly or area-weighted and sample a point on triangle; pdf computed as traversal_pdf * (1/nPrimitives) * (1/triangle_area) or traversal_pdf * area-weighted expression if area-weighted.
     - Spherical-AABB leaf sampling (new): follow the face omega sampling → area-sample-rectangle → trace → accept/reject → compute `pdf_geom` as described above. Return lost/missed rays as pdf=0 to the caller.
-3. Store in `GeometryBVH` a lightweight face cache (AABB corners + face areas) to avoid recomputing rectangle areas every sample. Provide accessors to compute face omegas given `xs.p` efficiently (vectorized dot/cross computations).
+3. Store in `SamplingBVH` a lightweight face cache (AABB corners + face areas) to avoid recomputing rectangle areas every sample. Provide accessors to compute face omegas given `xs.p` efficiently (vectorized dot/cross computations).
 4. Provide a configuration switch at integrator level (`m_geometrySamplingMode`) so `additionalvertex` can choose between the two leaf strategies per-sample (or probabilistically mix them).
 
 #### 2.3.4. Summary of the Spherical AABB Leaf Sampling implementation
-The `GeometryBVH` class now supports two strategies for sampling geometry in leaf nodes: primitive mode where a single point in a primitive is chosen and spherical aabb mode where a ray is casted aginst the aabb of the geometry.
+The `SamplingBVH` class now supports two strategies for sampling geometry in leaf nodes: primitive mode where a single point in a primitive is chosen and spherical aabb mode where a ray is casted aginst the aabb of the geometry.
 
 To use it:
 ```cpp
-auto mode = GeometryBVHSamplingMode::SphericalAABB; // or GeometryBVHSamplingMode::Primitive
-GeometryBVH bvh(4, mode);
+auto mode = SamplingBVHSamplingMode::SphericalAABB; // or SamplingBVHSamplingMode::Primitive
+SamplingBVH bvh(4, mode);
 bvh.build(scene);
 bvh.buildAggregates(scene);
 
@@ -288,8 +288,8 @@ These tests will live under `src/tests/` as `test_bvh_phase2_sampletraversal_wit
 Phase 2 implements geometry sampling and spherical-AABB integration. Concrete tasks and file targets:
 
 1. Implement sampling primitives and spherical-AABB in `src/librender/bvh/bvh_sample.cpp`:
-    - `sampleGeometry(const GeometryBVH &bvh, const Scene *scene, const SurfaceSample &xs, const EmitterSample &xe, Point2 &s1, Point2 &s2, Mode mode, GeometrySample &out) -> bool` — returns whether a valid geometry sample was produced and sets `out.pdf`.
-    - `pdfGeometry(const GeometryBVH &bvh, const Scene *scene, const SurfaceSample &xs, const EmitterSample &xe, meshIndex, triangleIndex, const Point &p_hit, Mode mode) -> Float` — reverse-PDF. Implement exact reverse-PDF for `Mode::Primitive` and deterministic reconstruction for `Mode::SphericalAABB`.
+    - `sampleGeometry(const SamplingBVH &bvh, const Scene *scene, const SurfaceSample &xs, const EmitterSample &xe, Point2 &s1, Point2 &s2, Mode mode, GeometrySample &out) -> bool` — returns whether a valid geometry sample was produced and sets `out.pdf`.
+    - `pdfGeometry(const SamplingBVH &bvh, const Scene *scene, const SurfaceSample &xs, const EmitterSample &xe, meshIndex, triangleIndex, const Point &p_hit, Mode mode) -> Float` — reverse-PDF. Implement exact reverse-PDF for `Mode::Primitive` and deterministic reconstruction for `Mode::SphericalAABB`.
 
 2. Add spherical-AABB utilities in `include/mitsuba/render/bvh/spherical_aabb.h` and implement math helpers (face solid-angle, triangle solid-angle, rectangle sampling) in `src/librender/bvh/spherical_aabb.h`.
 
@@ -375,7 +375,7 @@ Spectrum Li(const RayDifferential &r, RadianceQueryRecord &rRec) const {
                 EmitterSample xe{dRec.p, dRec.n, Le};
                 
                 useGeometrySampling = m_geometrySampler.sampleGeometry(
-                    scene->getGeometryBVH(), scene, xs, xe,
+                    scene->getSamplingBVH(), scene, xs, xe,
                     rRec.nextSample2D(), geomPosition, geomNormal, geomPdf);
             }
         }
@@ -489,4 +489,4 @@ This is SGGX-ready for future anisotropic normal statistics.
 
 ## Appendix: Deprecated Design Notes
 
-Earlier versions contained "`ShapeBVH` with SAH + per-shape aggregates" design. Current implementation uses **triangle-level `GeometryBVH`** with object-median split. SAH sections removed; can be reintroduced if needed for future optimization.
+Earlier versions contained "`ShapeBVH` with SAH + per-shape aggregates" design. Current implementation uses **triangle-level `SamplingBVH`** with object-median split. SAH sections removed; can be reintroduced if needed for future optimization.

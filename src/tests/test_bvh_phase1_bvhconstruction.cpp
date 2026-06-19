@@ -112,7 +112,7 @@ bool testBasicConstruction() {
     Scene *scene = createTestScene(mesh);
     
     // Build BVH
-    GeometryBVH bvh(4); // maxLeafSize = 4
+    SamplingBVH bvh(4); // maxLeafSize = 4
     bvh.buildBVH(scene);
     
     // Verify primitives collected
@@ -145,7 +145,7 @@ bool testTreeStructure() {
     TriMesh *mesh = createTestMesh(16);
     Scene *scene = createTestScene(mesh);
     
-    GeometryBVH bvh(4);
+    SamplingBVH bvh(4);
     bvh.buildBVH(scene);
     
     // Count leaf and interior nodes
@@ -195,7 +195,7 @@ bool testBoundsCorrectness() {
     TriMesh *mesh = createTestMesh(8);
     Scene *scene = createTestScene(mesh);
     
-    GeometryBVH bvh(2);
+    SamplingBVH bvh(2);
     bvh.buildBVH(scene);
     
     // Check root bounds contain all primitives
@@ -238,7 +238,7 @@ bool testPrimitiveOrdering() {
     TriMesh *mesh = createTestMesh(12);
     Scene *scene = createTestScene(mesh);
     
-    GeometryBVH bvh(3);
+    SamplingBVH bvh(3);
     bvh.buildBVH(scene);
     
     // Verify each leaf's primitives are within the leaf's bounds
@@ -266,7 +266,7 @@ bool testAggregateComputation() {
     TriMesh *mesh = createTestMesh(8, 0.5f);
     Scene *scene = createTestScene(mesh);
     
-    GeometryBVH bvh(4);
+    SamplingBVH bvh(4);
     bvh.buildBVH(scene);
     bvh.buildAggregates(scene);
     
@@ -317,7 +317,7 @@ bool testSingleTriangle() {
     TriMesh *mesh = createTestMesh(1);
     Scene *scene = createTestScene(mesh);
     
-    GeometryBVH bvh(4);
+    SamplingBVH bvh(4);
     bvh.buildBVH(scene);
     bvh.buildAggregates(scene);
     
@@ -349,7 +349,7 @@ bool testLargeLeafSize() {
     Scene *scene = createTestScene(mesh);
     
     // maxLeafSize larger than primitive count
-    GeometryBVH bvh(100);
+    SamplingBVH bvh(100);
     bvh.buildBVH(scene);
     
     // Should have exactly 1 node
@@ -379,7 +379,7 @@ bool testMaxLeafSizeParameter() {
     TriMesh *mesh = createTestMesh(32);
     Scene *scene = createTestScene(mesh);
     
-    GeometryBVH bvh(4);
+    SamplingBVH bvh(4);
     bvh.buildBVH(scene);
     
     // Check that no leaf has more than maxLeafSize primitives

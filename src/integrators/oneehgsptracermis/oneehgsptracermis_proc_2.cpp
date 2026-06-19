@@ -78,9 +78,9 @@ public:
         result->clear();
         m_hilbertCurve.initialize(TVector2<uint8_t>(rect->getSize()));
 
-        GeometryBVH *bvh = m_scene->getGeometryBVH();
+        SamplingBVH *bvh = m_scene->getSamplingBVH();
         if (!bvh || !bvh->isBuilt()) {
-            Log(EWarn, "ONEEEHGSPTracerMIS: GeometryBVH not available or not built!");
+            Log(EWarn, "ONEEEHGSPTracerMIS: SamplingBVH not available or not built!");
             return;
         }
         m_bvh = bvh;
@@ -127,7 +127,7 @@ private:
         return W_e.isZero() ? 0.f : dRec.pdf;
     }
 
-    void traceSample(ONEEEHGSPTracerMISWorkResult *result, GeometryBVH *bvh) {
+    void traceSample(ONEEEHGSPTracerMISWorkResult *result, SamplingBVH *bvh) {
         std::cout << "Tracing sample " << std::endl;
         // ----------------------------------------------------------------
         // 1. Sample emitter position x_e
@@ -384,7 +384,7 @@ private:
     ONEEEHGSPTracerMISConfiguration m_config;
     HilbertCurve2D<uint8_t> m_hilbertCurve;
     Point m_cameraOrigin;
-    GeometryBVH *m_bvh;
+    SamplingBVH *m_bvh;
 };
 
 

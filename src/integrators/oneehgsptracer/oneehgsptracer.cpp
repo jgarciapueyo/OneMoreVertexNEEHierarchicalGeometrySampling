@@ -52,9 +52,9 @@ public:
 
         // Verify the BVH was built (buildBVH skips unsupported integrators,
         // but ONEEEHGSPTracerIntegrator is in the allow-list so this should always succeed).
-        GeometryBVH *bvh = scene->getGeometryBVH();
+        SamplingBVH *bvh = scene->getSamplingBVH();
         if (!bvh || !bvh->isBuilt())
-            Log(EError, "GeometryBVH was not built. Make sure a <geometrybvh> "
+            Log(EError, "SamplingBVH was not built. Make sure a <geometrybvh> "
                 "block is present in the scene XML and the scene contains geometry.");
         
         ref<ParallelProcess> process = new ONEEEHGSPTracerProcess(

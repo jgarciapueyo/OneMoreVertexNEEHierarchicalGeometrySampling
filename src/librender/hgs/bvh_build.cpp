@@ -16,7 +16,7 @@
 
 MTS_NAMESPACE_BEGIN
 
-GeometryBVH::GeometryBVH(uint32_t maxDepth, GeometryBVHSamplingMode samplingMode)
+SamplingBVH::SamplingBVH(uint32_t maxDepth, SamplingBVHSamplingMode samplingMode)
     : ConfigurableObject(Properties()), m_maxDepth(maxDepth), m_samplingMode(samplingMode), m_ablationMask(AblateNone) {
     if (m_maxDepth < 1) {
         m_maxDepth = 1;
@@ -24,10 +24,10 @@ GeometryBVH::GeometryBVH(uint32_t maxDepth, GeometryBVHSamplingMode samplingMode
     m_rrStrength = 1.0f;
 }
 
-GeometryBVH::GeometryBVH(const Properties &props)
+SamplingBVH::SamplingBVH(const Properties &props)
     : ConfigurableObject(props),
       m_maxDepth(props.getInteger("maxDepth", 16)), // Default to depth 16 if not provided
-      m_samplingMode(GeometryBVHSamplingMode::Primitive),
+      m_samplingMode(SamplingBVHSamplingMode::Primitive),
     m_vmfLUT(), // Load VMF LUT during construction
     m_ablationMask(AblateNone)
 {
@@ -37,18 +37,18 @@ GeometryBVH::GeometryBVH(const Properties &props)
     
     std::string samplingModeStr = props.getString("samplingMode", "Primitive");
     if (samplingModeStr == "SphericalAABB") {
-        m_samplingMode = GeometryBVHSamplingMode::SphericalAABB;
+        m_samplingMode = SamplingBVHSamplingMode::SphericalAABB;
     } else if (samplingModeStr == "Primitive") {
-        m_samplingMode = GeometryBVHSamplingMode::Primitive;
+        m_samplingMode = SamplingBVHSamplingMode::Primitive;
     } else if (samplingModeStr == "Primitive_3_retries") {
-        m_samplingMode = GeometryBVHSamplingMode::Primitive_3_retries;
+        m_samplingMode = SamplingBVHSamplingMode::Primitive_3_retries;
     } else if (samplingModeStr == "Primitive_5_retries") {
-        m_samplingMode = GeometryBVHSamplingMode::Primitive_5_retries;
+        m_samplingMode = SamplingBVHSamplingMode::Primitive_5_retries;
     } else if (samplingModeStr == "SphericalAABB_anyNode") {
-        m_samplingMode = GeometryBVHSamplingMode::SphericalAABB_anyNode;
+        m_samplingMode = SamplingBVHSamplingMode::SphericalAABB_anyNode;
     }
     else {
-        SLog(EWarn, "GeometryBVH: Unknown sampling mode '%s', defaulting to 'Primitive'", 
+        SLog(EWarn, "SamplingBVH: Unknown sampling mode '%s', defaulting to 'Primitive'", 
             samplingModeStr.c_str());
     }
 
@@ -68,7 +68,7 @@ GeometryBVH::GeometryBVH(const Properties &props)
     m_debug5 = props.getFloat("debug5", 1.0f);
 
     if (m_debug1 < .99f || m_debug2 < .99f || m_debug3 < .99f || m_debug4 < .99f || m_debug5 < .99f) {
-        SLog(EWarn, "GeometryBVH: Configured debug values: debug1=%.2f, debug2=%.2f, debug3=%.2f, debug4=%.2f, debug5=%.2f\n\n",
+        SLog(EWarn, "SamplingBVH: Configured debug values: debug1=%.2f, debug2=%.2f, debug3=%.2f, debug4=%.2f, debug5=%.2f\n\n",
             m_debug1, m_debug2, m_debug3, m_debug4, m_debug5);
     }
 
@@ -93,13 +93,13 @@ GeometryBVH::GeometryBVH(const Properties &props)
     enableAblation("ablateAlbedo", AblateAlbedo);
 
     if (m_probmult != 1.0f || m_defensive_pdf != 1e-16f) {
-        SLog(EInfo, "GeometryBVH: Configured importance parameters: importanceMultiplier=%.2f, defensivePDF=%.4f",
+        SLog(EInfo, "SamplingBVH: Configured importance parameters: importanceMultiplier=%.2f, defensivePDF=%.4f",
             m_probmult, m_defensive_pdf);
     }
 
     if (m_ablationMask != AblateNone) {
         SLog(EWarn,
-            "GeometryBVH: Ablation enabled: mask=%u [VMF=%s, Gaussian=%s, CosineXs=%s, CosineXe=%s, DistanceXs=%s, DistanceXe=%s, Albedo=%s]",
+            "SamplingBVH: Ablation enabled: mask=%u [VMF=%s, Gaussian=%s, CosineXs=%s, CosineXe=%s, DistanceXs=%s, DistanceXe=%s, Albedo=%s]",
             m_ablationMask,
             (m_ablationMask & AblateVMF) ? "true" : "false",
             (m_ablationMask & AblateGaussian) ? "true" : "false",
@@ -116,13 +116,13 @@ GeometryBVH::GeometryBVH(const Properties &props)
 
     m_csvEnabledLevels = props.getInteger("csvEnabledLevels", defaultEnabledLevels);
 
-    SLog(EInfo, "GeometryBVH. Summary of the configuration: maxDepth=%u, samplingMode=%s, enableLightcuts=%s, lightcutThreshold=%.2f, gaussianSAThreshold=%.4f, kappaThreshold=%.2f, angularSAHWeight=%.3f, angularSAHKappaScale=%.3f, importanceMultiplier=%.2f, defensivePDF=%.4f, rrStrength=%.3f, outputDebugCSV=%s, csvEnabledLevels=%u",
+    SLog(EInfo, "SamplingBVH. Summary of the configuration: maxDepth=%u, samplingMode=%s, enableLightcuts=%s, lightcutThreshold=%.2f, gaussianSAThreshold=%.4f, kappaThreshold=%.2f, angularSAHWeight=%.3f, angularSAHKappaScale=%.3f, importanceMultiplier=%.2f, defensivePDF=%.4f, rrStrength=%.3f, outputDebugCSV=%s, csvEnabledLevels=%u",
         m_maxDepth,
-        (m_samplingMode == GeometryBVHSamplingMode::Primitive) ? "Primitive" : 
-        (m_samplingMode == GeometryBVHSamplingMode::SphericalAABB) ? "SphericalAABB" :
-        (m_samplingMode == GeometryBVHSamplingMode::Primitive_3_retries) ? "Primitive_3_retries" :
-        (m_samplingMode == GeometryBVHSamplingMode::Primitive_5_retries) ? "Primitive_5_retries" :
-        (m_samplingMode == GeometryBVHSamplingMode::SphericalAABB_anyNode) ? "SphericalAABB_anyNode" : "Unknown",
+        (m_samplingMode == SamplingBVHSamplingMode::Primitive) ? "Primitive" : 
+        (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB) ? "SphericalAABB" :
+        (m_samplingMode == SamplingBVHSamplingMode::Primitive_3_retries) ? "Primitive_3_retries" :
+        (m_samplingMode == SamplingBVHSamplingMode::Primitive_5_retries) ? "Primitive_5_retries" :
+        (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB_anyNode) ? "SphericalAABB_anyNode" : "Unknown",
         m_enableLightcuts ? "true" : "false",
         m_lightcutThreshold,
         m_gaussianSAThreshold,
@@ -137,12 +137,12 @@ GeometryBVH::GeometryBVH(const Properties &props)
     );
 }
 
-GeometryBVH::~GeometryBVH() {
+SamplingBVH::~SamplingBVH() {
     // vectors clean up automatically
 }
 
-size_t GeometryBVH::getMemoryUsageBytes() const {
-    size_t totalBytes = sizeof(GeometryBVH);
+size_t SamplingBVH::getMemoryUsageBytes() const {
+    size_t totalBytes = sizeof(SamplingBVH);
 
     totalBytes += m_nodes.capacity() * sizeof(BVHNode);
     totalBytes += m_primitives.capacity() * sizeof(BVHPrimitive);
@@ -170,12 +170,12 @@ size_t GeometryBVH::getMemoryUsageBytes() const {
     return totalBytes;
 }
 
-GeometryBVH::GeometryBVH(Stream *stream, InstanceManager *manager)
+SamplingBVH::SamplingBVH(Stream *stream, InstanceManager *manager)
     : ConfigurableObject(stream, manager) 
 {
     m_maxDepth = stream->readUInt();
     uint32_t samplingModeInt = stream->readUInt();
-    m_samplingMode = static_cast<GeometryBVHSamplingMode>(samplingModeInt);
+    m_samplingMode = static_cast<SamplingBVHSamplingMode>(samplingModeInt);
     m_ablationMask = AblateNone;
     m_rrStrength = 1.0f;
     
@@ -183,9 +183,9 @@ GeometryBVH::GeometryBVH(Stream *stream, InstanceManager *manager)
     // They should be rebuilt using buildBVH() after deserialization.
 }
 
-void GeometryBVH::buildBVH(Scene *scene) {
+void SamplingBVH::buildBVH(Scene *scene) {
     if (!scene) {
-        SLog(EWarn, "GeometryBVH::build: scene is NULL");
+        SLog(EWarn, "SamplingBVH::build: scene is NULL");
         return;
     }
     const Integrator *integrator = scene->getIntegrator();
@@ -216,7 +216,7 @@ void GeometryBVH::buildBVH(Scene *scene) {
 
         if (!supportedIntegrator) {
             SLog(EInfo,
-                "GeometryBVH::build: integrator '%s' (plugin '%s') is not supported, disabling GeometryBVH",
+                "SamplingBVH::build: integrator '%s' (plugin '%s') is not supported, disabling SamplingBVH",
                 integrator->getClass()->getName().c_str(),
                 integrator->getProperties().getPluginName().c_str());
             return;
@@ -239,7 +239,7 @@ void GeometryBVH::buildBVH(Scene *scene) {
     std::vector<std::vector<BVHBuildPrimitive> > meshPrims(meshes.size());
     std::vector<size_t> meshSkipped(meshes.size(), 0);
     
-    SLog(EInfo, "GeometryBVH: Collecting %zu triangles from %zu meshes", 
+    SLog(EInfo, "SamplingBVH: Collecting %zu triangles from %zu meshes", 
          totalTriangles, meshes.size());
     
     auto collectMeshPrimitives = [&](size_t meshIdx) {
@@ -312,7 +312,7 @@ void GeometryBVH::buildBVH(Scene *scene) {
     }
 
     if (parallelCollectionFailed) {
-        SLog(EError, "GeometryBVH: parallel triangle collection failed: %s",
+        SLog(EError, "SamplingBVH: parallel triangle collection failed: %s",
              parallelCollectionError.c_str());
         return;
     }
@@ -329,13 +329,13 @@ void GeometryBVH::buildBVH(Scene *scene) {
     }
 
     if (skippedDegenerateTriangles > 0) {
-        SLog(EWarn, "GeometryBVH: skipped %zu degenerate/non-finite-area triangles during build",
+        SLog(EWarn, "SamplingBVH: skipped %zu degenerate/non-finite-area triangles during build",
              skippedDegenerateTriangles);
     }
 
     
     if (buildPrims.empty()) {
-        SLog(EWarn, "GeometryBVH::build: No valid triangles in scene after filtering degenerate triangles");
+        SLog(EWarn, "SamplingBVH::build: No valid triangles in scene after filtering degenerate triangles");
         return;
     }
     
@@ -373,11 +373,11 @@ void GeometryBVH::buildBVH(Scene *scene) {
     
     // Pass initial depth of 0
     if (m_enableSAH) {
-        SLog(EInfo, "GeometryBVH: Building aggregates using SAH-based traversal...");
+        SLog(EInfo, "SamplingBVH: Building aggregates using SAH-based traversal...");
         buildBVHRecursiveSAH(buildPrims, 0, buildPrims.size(), orderedPrims, orderedAreas, 0);
     }
     else {
-        SLog(EInfo, "GeometryBVH: Building aggregates using old traversal...");
+        SLog(EInfo, "SamplingBVH: Building aggregates using old traversal...");
         buildBVHRecursive(buildPrims, 0, buildPrims.size(), orderedPrims, orderedAreas, 0);
     }
     
@@ -404,7 +404,7 @@ void GeometryBVH::buildBVH(Scene *scene) {
     // Step 6: Precompute per-leaf alias tables for O(1) primitive sampling by area
     buildLeafSamplingTables(scene, orderedAreas);
     
-    SLog(EInfo, "GeometryBVH built: %zu nodes, %zu primitives, maxDepth=%u", 
+    SLog(EInfo, "SamplingBVH built: %zu nodes, %zu primitives, maxDepth=%u", 
          m_nodes.size(), m_primitives.size(), m_maxDepth);
 
     if (m_logAngularSAHStats && m_enableSAH && m_angularSAHWeight > 0.0f) {
@@ -413,7 +413,7 @@ void GeometryBVH::buildBVH(Scene *scene) {
             const double avgAngularPenalty = m_buildAngularPenaltySum * invCount;
             const double avgWeightedAngularPenalty = m_buildWeightedAngularPenaltySum * invCount;
             SLog(EInfo,
-                 "GeometryBVH angular SAH stats: selectedSplits=%llu, avgAngularPenalty=%.6f, avgWeightedAngularPenalty=%.6f, angularSAHWeight=%.3f, angularSAHKappaScale=%.3f",
+                 "SamplingBVH angular SAH stats: selectedSplits=%llu, avgAngularPenalty=%.6f, avgWeightedAngularPenalty=%.6f, angularSAHWeight=%.3f, angularSAHKappaScale=%.3f",
                  (unsigned long long) m_buildAngularSplitCount,
                  avgAngularPenalty,
                  avgWeightedAngularPenalty,
@@ -421,7 +421,7 @@ void GeometryBVH::buildBVH(Scene *scene) {
                  m_angularSAHKappaScale);
         } else {
             SLog(EInfo,
-                 "GeometryBVH angular SAH stats: no selected splits contributed (selectedSplits=0, angularSAHWeight=%.3f, angularSAHKappaScale=%.3f)",
+                 "SamplingBVH angular SAH stats: no selected splits contributed (selectedSplits=0, angularSAHWeight=%.3f, angularSAHKappaScale=%.3f)",
                  m_angularSAHWeight,
                  m_angularSAHKappaScale);
         }
@@ -429,7 +429,7 @@ void GeometryBVH::buildBVH(Scene *scene) {
 
 }
 
-void GeometryBVH::buildLeafSamplingTables(const Scene *scene, const std::vector<Float> &primitiveAreas) {
+void SamplingBVH::buildLeafSamplingTables(const Scene *scene, const std::vector<Float> &primitiveAreas) {
     m_leafAliasTableOffsets.assign(m_nodes.size(), 0xFFFFFFFFu);
     m_leafAliasProb.clear();
     m_leafAliasAlias.clear();
@@ -519,14 +519,14 @@ void GeometryBVH::buildLeafSamplingTables(const Scene *scene, const std::vector<
         }
     }
     // Print the total size of the alias tables for debugging
-    SLog(EInfo, "GeometryBVH: Built leaf sampling tables: total entries = %zu (prob (%zu) + alias (%zu)), total memory = %.2f KB", 
+    SLog(EInfo, "SamplingBVH: Built leaf sampling tables: total entries = %zu (prob (%zu) + alias (%zu)), total memory = %.2f KB", 
          m_leafAliasProb.size() + m_leafAliasAlias.size(), 
          m_leafAliasProb.size(),
          m_leafAliasAlias.size(),
          (m_leafAliasProb.size() + m_leafAliasAlias.size()) * sizeof(float) / 1024.f);
 }
 
-size_t GeometryBVH::buildBVHRecursive(
+size_t SamplingBVH::buildBVHRecursive(
     std::vector<BVHBuildPrimitive> &buildPrims,
     size_t start, size_t end,
     std::vector<BVHPrimitive> &orderedPrims,
@@ -627,14 +627,14 @@ size_t GeometryBVH::buildBVHRecursive(
     return nodeIndex;
 }
 
-void GeometryBVH::buildAggregates(const Scene *scene) {
+void SamplingBVH::buildAggregates(const Scene *scene) {
     if (m_nodes.empty()) {
-        SLog(EWarn, "GeometryBVH::buildAggregates: BVH not built yet");
+        SLog(EWarn, "SamplingBVH::buildAggregates: BVH not built yet");
         return;
     }
     
     if (!scene) {
-        SLog(EWarn, "GeometryBVH::buildAggregates: scene is NULL");
+        SLog(EWarn, "SamplingBVH::buildAggregates: scene is NULL");
         return;
     }
     
@@ -642,15 +642,15 @@ void GeometryBVH::buildAggregates(const Scene *scene) {
     buildAggregatesRecursive(0, scene);
     
     if (m_outputDebugCSV)  {
-        SLog(EInfo, "GeometryBVH: Generating debug CSV output for node aggregates...");
+        SLog(EInfo, "SamplingBVH: Generating debug CSV output for node aggregates...");
         print();
     }
 
-    SLog(EInfo, "GeometryBVH aggregates computed for %zu nodes", m_nodes.size());
-    SLog(EInfo, "GeometryBVH memory footprint (approx): %.3f MiB", (double) getMemoryUsageMB());
+    SLog(EInfo, "SamplingBVH aggregates computed for %zu nodes", m_nodes.size());
+    SLog(EInfo, "SamplingBVH memory footprint (approx): %.3f MiB", (double) getMemoryUsageMB());
 }
 
-size_t GeometryBVH::buildBVHRecursiveSAH(
+size_t SamplingBVH::buildBVHRecursiveSAH(
     std::vector<BVHBuildPrimitive> &buildPrims,
     size_t start, size_t end,
     std::vector<BVHPrimitive> &orderedPrims,
@@ -845,7 +845,7 @@ size_t GeometryBVH::buildBVHRecursiveSAH(
     return nodeIndex;
 }
 
-void GeometryBVH::buildAggregatesRecursive(size_t nodeIndex, const Scene *scene) {
+void SamplingBVH::buildAggregatesRecursive(size_t nodeIndex, const Scene *scene) {
     const BVHNode &node = m_nodes[nodeIndex];
     BVHNodeInfo &info = m_nodeInfos[nodeIndex];
     
@@ -1024,7 +1024,7 @@ void BVHNodeInfo::accumulate(const BVHNodeInfo &other) {
     valid = true;
 }
 
-MTS_IMPLEMENT_CLASS_S(GeometryBVH, false, ConfigurableObject)
+MTS_IMPLEMENT_CLASS_S(SamplingBVH, false, ConfigurableObject)
 
 // Note: plugin export lives in src/geometrybvh/geometrybvh.cpp
 

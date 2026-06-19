@@ -81,8 +81,8 @@ SceneHandler::SceneHandler(const ParameterMap &params,
     m_tags["phase"]      = TagEntry(EPhase,      MTS_CLASS(PhaseFunction));
     m_tags["bsdf"]       = TagEntry(EBSDF,       MTS_CLASS(BSDF));
     m_tags["rfilter"]    = TagEntry(ERFilter,    MTS_CLASS(ReconstructionFilter));
-    // new: GeometryBVH
-    m_tags["geometrybvh"] = TagEntry(EGeometryBVH, MTS_CLASS(GeometryBVH));
+    // new: SamplingBVH
+    m_tags["geometrybvh"] = TagEntry(ESamplingBVH, MTS_CLASS(SamplingBVH));
     m_tags["null"]       = TagEntry(ENull,       (Class *) NULL);
     m_tags["ref"]        = TagEntry(EReference,  (Class *) NULL);
     m_tags["integer"]    = TagEntry(EInteger,    (Class *) NULL);

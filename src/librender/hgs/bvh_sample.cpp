@@ -74,7 +74,7 @@ static Stats g_stats;
 
 #endif
 
-bool GeometryBVH::sampleGeometry(
+bool SamplingBVH::sampleGeometry(
     const Scene *scene,
     Sampler *sampler,
     const Intersection &its_xs,
@@ -194,13 +194,13 @@ bool GeometryBVH::sampleGeometry(
     if (node.isLeaf()) {
         if (node.nLeafPrimitives == 0) return false;
 
-        if (m_samplingMode == GeometryBVHSamplingMode::SphericalAABB) {
+        if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB) {
             success = sampleLeafSphericalAABB(scene, node, nodeIndex, sampler->next2D(), its_xs.p, its_xp, pdf_leaf);
         } else {
             success = sampleLeafPrimitive(scene, node, nodeIndex, sampler->next1D(), sampler->next2D(), its_xs.p, its_xp, pdf_leaf);
         }
     } // the node is not a leaf (because of pruning/lightcuts)
-    else if (m_samplingMode == GeometryBVHSamplingMode::SphericalAABB_anyNode) {
+    else if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB_anyNode) {
         // This strategy can be used directly on non-leaf nodes
         success = sampleLeafSphericalAABB(scene, node, nodeIndex, sampler->next2D(), its_xs.p, its_xp, pdf_leaf);
     }   
@@ -253,7 +253,7 @@ bool GeometryBVH::sampleGeometry(
 }
 
 // Updated: Samples primitives proportionally by area, then converts Area->SolidAngle
-bool GeometryBVH::sampleLeafPrimitive(
+bool SamplingBVH::sampleLeafPrimitive(
     const Scene *scene,
     const BVHNode &leafNode,
     size_t leafNodeIndex,
@@ -287,7 +287,7 @@ bool GeometryBVH::sampleLeafPrimitive(
         // Correctness fallback: preserve area-proportional sampling even if alias data is missing.
         Float total_leaf_area = 0.0f;
         for (uint32_t i = 0; i < leafNode.nLeafPrimitives; ++i) {
-            const BVHPrimitive &p = scene->getGeometryBVH()->getPrimitive(leafNode.primitivesOffset + i);
+            const BVHPrimitive &p = scene->getSamplingBVH()->getPrimitive(leafNode.primitivesOffset + i);
             const TriMesh *m = scene->getMeshes()[p.meshIndex];
             const Triangle &t = m->getTriangles()[p.triangleIndex];
             total_leaf_area += t.surfaceArea(m->getVertexPositions());
@@ -301,7 +301,7 @@ bool GeometryBVH::sampleLeafPrimitive(
         localPrimIdx = leafNode.nLeafPrimitives - 1;
 
         for (uint32_t i = 0; i < leafNode.nLeafPrimitives; ++i) {
-            const BVHPrimitive &p = scene->getGeometryBVH()->getPrimitive(leafNode.primitivesOffset + i);
+            const BVHPrimitive &p = scene->getSamplingBVH()->getPrimitive(leafNode.primitivesOffset + i);
             const TriMesh *m = scene->getMeshes()[p.meshIndex];
             const Triangle &t = m->getTriangles()[p.triangleIndex];
 
@@ -314,7 +314,7 @@ bool GeometryBVH::sampleLeafPrimitive(
     }
     
     // 3. Fetch the specifically chosen primitive
-    const BVHPrimitive &prim = scene->getGeometryBVH()->getPrimitive(leafNode.primitivesOffset + localPrimIdx);
+    const BVHPrimitive &prim = scene->getSamplingBVH()->getPrimitive(leafNode.primitivesOffset + localPrimIdx);
     const std::vector<TriMesh*> &meshes = scene->getMeshes();
     const TriMesh *mesh = meshes[prim.meshIndex];
     const Triangle& tri = mesh->getTriangles()[prim.triangleIndex];
@@ -407,7 +407,7 @@ bool GeometryBVH::sampleLeafPrimitive(
 }
 
 // Samples uniformly in the primitives inside of the node and returns the pdf in Solid Angle
-bool GeometryBVH::sampleNodePrimitive(
+bool SamplingBVH::sampleNodePrimitive(
     const Scene *scene, 
     size_t nodeIdx,
     Sampler* sampler,
@@ -469,7 +469,7 @@ bool GeometryBVH::sampleNodePrimitive(
 #endif
     }
     bool success;
-    if (m_samplingMode == GeometryBVHSamplingMode::SphericalAABB) {
+    if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB) {
         success = sampleLeafSphericalAABB(scene, m_nodes[nodeIdx], nodeIdx, sampler->next2D(), xs, its_xp, pdf_xp);
     } else {
         success = sampleLeafPrimitive(scene, m_nodes[nodeIdx], nodeIdx, sampler->next1D(), sampler->next2D(), xs, its_xp, pdf_xp, return_solidangle_pdf);
@@ -492,7 +492,7 @@ bool GeometryBVH::sampleNodePrimitive(
     return success; 
 }
 
-bool GeometryBVH::intersectionInNode(
+bool SamplingBVH::intersectionInNode(
     const Scene *scene,
     const Intersection &its,
     size_t targetNodeIndex) const
@@ -577,7 +577,7 @@ bool GeometryBVH::intersectionInNode(
     return false;
 }
 
-bool GeometryBVH::sampleLeafSphericalAABB(
+bool SamplingBVH::sampleLeafSphericalAABB(
     const Scene *scene,
     const BVHNode &leafNode,
     size_t leafNodeIndex,
@@ -586,7 +586,7 @@ bool GeometryBVH::sampleLeafSphericalAABB(
     Intersection &its_xp,
     Float &pdf_xp) const
 {
-    if (m_samplingMode != GeometryBVHSamplingMode::SphericalAABB_anyNode && leafNode.nLeafPrimitives == 0) return false;
+    if (m_samplingMode != SamplingBVHSamplingMode::SphericalAABB_anyNode && leafNode.nLeafPrimitives == 0) return false;
 
     Vector wo;
     Float pdf_aabb_solid_angle;
@@ -601,7 +601,7 @@ bool GeometryBVH::sampleLeafSphericalAABB(
     Ray ray(xs, wo, Epsilon, std::numeric_limits<Float>::infinity(), 0.f);
     if (!scene->rayIntersect(ray, its_xp)) return false;
 
-    if (m_samplingMode == GeometryBVHSamplingMode::SphericalAABB_anyNode) {
+    if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB_anyNode) {
         // In this mode, the "leafNode" may not necessarily be a leaf!
         if (!intersectionInNode(scene, its_xp, leafNodeIndex)) return false;
     }
@@ -616,7 +616,7 @@ bool GeometryBVH::sampleLeafSphericalAABB(
 }
 
 
-bool GeometryBVH::intersectionInLeafNode(
+bool SamplingBVH::intersectionInLeafNode(
     const Scene *scene,
     const Intersection &its,
     size_t leafNodeIndex) const
@@ -681,7 +681,7 @@ bool GeometryBVH::intersectionInLeafNode(
 
 
 // Just like pdfGeometry, but finds the indices from the intersection directly
-Float GeometryBVH::pdfGeometry(
+Float SamplingBVH::pdfGeometry(
     const Scene *scene,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe,
@@ -727,7 +727,7 @@ Float GeometryBVH::pdfGeometry(
     );  
 }
 
-Float GeometryBVH::pdfGeometry(
+Float SamplingBVH::pdfGeometry(
     const Scene *scene,
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe,
@@ -819,7 +819,7 @@ Float GeometryBVH::pdfGeometry(
 
     Float pdf_leaf_sa = 0.0f;
 
-    if (m_samplingMode == GeometryBVHSamplingMode::SphericalAABB) {
+    if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB) {
         // --- LIGHTCUTS FIX: Mimic the area-based descent of sampleNodePrimitive ---
         Float descent_prob = 1.0f;
         size_t currentIdx = nodeIndex;
@@ -913,7 +913,7 @@ Float GeometryBVH::pdfGeometry(
         }
 
     } 
-    else if (m_samplingMode == GeometryBVHSamplingMode::SphericalAABB_anyNode) {
+    else if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB_anyNode) {
         Float pdf_solid_angle = 0.0f;
         Vector d = position - its_xs.p;
         Float dist_sq = d.lengthSquared();
@@ -1059,7 +1059,7 @@ Float GeometryBVH::pdfGeometry(
 // full overload below.  Mirrors the shortcut pdfGeometry overload exactly,
 // but passes (x_o, sensor) instead of its_xs.
 // ---------------------------------------------------------------------------
-Float GeometryBVH::pdfGeometryCamera(
+Float SamplingBVH::pdfGeometryCamera(
     const Scene *scene,
     const Point &x_o,
     const Sensor *sensor,
@@ -1105,7 +1105,7 @@ Float GeometryBVH::pdfGeometryCamera(
 // Everything else (primitive lookup, nodeStart tracking, lightcuts, the three
 // sampling-mode branches) is identical.
 // ---------------------------------------------------------------------------
-Float GeometryBVH::pdfGeometryCamera(
+Float SamplingBVH::pdfGeometryCamera(
     const Scene *scene,
     const Point &x_o,
     const Sensor *sensor,
@@ -1163,7 +1163,7 @@ Float GeometryBVH::pdfGeometryCamera(
     const BVHNodeInfo &nodeInfo = m_nodeInfos[nodeIndex];
     Float pdf_leaf_sa = 0.0f;
 
-    if (m_samplingMode == GeometryBVHSamplingMode::SphericalAABB) {
+    if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB) {
         // Descend by area to find the actual leaf that held our primitive,
         // accumulating the area-proportional descent probability.
         Float descent_prob = 1.0f;
@@ -1203,7 +1203,7 @@ Float GeometryBVH::pdfGeometryCamera(
         AABBSphPdf(actualLeaf.bounds, x_o, wo, pdf_solid_angle);
         pdf_leaf_sa = descent_prob * pdf_solid_angle;
 
-    } else if (m_samplingMode == GeometryBVHSamplingMode::SphericalAABB_anyNode) {
+    } else if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB_anyNode) {
         const Vector d = position - x_o;
         if (d.lengthSquared() <= Epsilon * Epsilon) return 0.0f;
         Float pdf_solid_angle = 0.0f;
@@ -1441,7 +1441,7 @@ Spectrum evalGlintContribution(
 //   • Geometry terms G(x_n,x_o) and G(x_n,x_e)
 // Leaf sampling uses x_o as the "from" point (not the surface intersection).
 // ---------------------------------------------------------------------------
-bool GeometryBVH::sampleGeometryCamera(
+bool SamplingBVH::sampleGeometryCamera(
     const Scene *scene,
     Sampler *sampler,
     const Point &x_o,
@@ -1488,7 +1488,7 @@ bool GeometryBVH::sampleGeometryCamera(
 
     if (node.isLeaf()) {
         if (node.nLeafPrimitives == 0) return false;
-        if (m_samplingMode == GeometryBVHSamplingMode::SphericalAABB) {
+        if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB) {
             success = sampleLeafSphericalAABB(scene, node, nodeIndex,
                                               sampler->next2D(), x_o, its_xn, pdf_leaf);
         } else {
@@ -1496,7 +1496,7 @@ bool GeometryBVH::sampleGeometryCamera(
                                           sampler->next1D(), sampler->next2D(),
                                           x_o, its_xn, pdf_leaf, false);
         }
-    } else if (m_samplingMode == GeometryBVHSamplingMode::SphericalAABB_anyNode) {
+    } else if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB_anyNode) {
         success = sampleLeafSphericalAABB(scene, node, nodeIndex,
                                           sampler->next2D(), x_o, its_xn, pdf_leaf);
     } else {

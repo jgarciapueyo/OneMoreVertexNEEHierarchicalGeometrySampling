@@ -163,7 +163,7 @@ public:
                 // Note: We assume sampleGeometry returns PDF in Solid Angle (matching your pdfGeometry) 
                 // or we might need to convert it here if sampleGeometry returns Area measure.
                 // For this snippet, assuming consistent Solid Angle usage as per your comment.
-                bool success = scene->getGeometryBVH()->sampleGeometry(
+                bool success = scene->getSamplingBVH()->sampleGeometry(
                     scene,
                     rRec.sampler,
                     its,
@@ -310,7 +310,7 @@ public:
                             if (its_z.shape && its_z.shape->getClass()->derivesFrom(MTS_CLASS(TriMesh))) {
                                 const TriMesh *mesh = static_cast<const TriMesh *>(its_z.shape);
                                 // NOTE: pdfGeometry must return Solid Angle.
-                                pdf_2NEE_at_z = scene->getGeometryBVH()->pdfGeometry(
+                                pdf_2NEE_at_z = scene->getSamplingBVH()->pdfGeometry(
                                     scene, 
                                     its, 
                                     pRec_L2,

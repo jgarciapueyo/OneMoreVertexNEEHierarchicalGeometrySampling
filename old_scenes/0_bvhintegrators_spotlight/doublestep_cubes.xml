@@ -11,7 +11,7 @@
 		<!-- Note: Now the geometrybvh is a separate plugin, so it can have its own props here: -->
 		<integer name="maxLeafSize" value="2"/>
 		<!-- <string name="samplingMode" value="SphericalAABB"/>  -->
-		<!-- ^uncomment for spherical (needs fixing GeometryBVH::sampleLeafSphericalAABB) -->
+		<!-- ^uncomment for spherical (needs fixing SamplingBVH::sampleLeafSphericalAABB) -->
 		
 	</geometrybvh>
 	<sensor type="perspective">

@@ -164,7 +164,7 @@ Gaussian3D fitWeightedGaussian(const std::vector<Point3f>& points, const std::ve
 
 #ifndef USE_SGGX_AGGREGATES
 // New print, after switching to VMF instead of SGGX in the BVH build process
-void GeometryBVH::print() {
+void SamplingBVH::print() {
     const int N_SAMPLES = 2000; // Number of random samples to draw for each leaf node
     const bool RECOMPUTE_VMF_AND_GAUSSIAN = false; // if set to true, these are recomputed from random samples
                                                     // otherwise, the BVHNodeInfo data is printed 
@@ -346,7 +346,7 @@ void GeometryBVH::print() {
 }
 #else 
 // This print is for testing the old importance function, w/sggx
-void GeometryBVH::print() {
+void SamplingBVH::print() {
     
     std::ofstream out(BVH_DEBUG_FILE.c_str());
     if (!out) {

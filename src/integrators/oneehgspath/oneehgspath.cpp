@@ -247,7 +247,7 @@ public:
 
         // 2. Sample intermediate geometry p using brute-force stochastic logic
         if (m_useBVH) {
-            if (!scene->getGeometryBVH()->sampleGeometry(scene, sampler, its_xs, pRec_xe, its_xp, xp_pdf))
+            if (!scene->getSamplingBVH()->sampleGeometry(scene, sampler, its_xs, pRec_xe, its_xp, xp_pdf))
                 return Spectrum(0.0f);
         } else {
             if (!sampleGeometryExplicit(scene, sampler, its_xs, pRec_xe, its_xp, xp_pdf))

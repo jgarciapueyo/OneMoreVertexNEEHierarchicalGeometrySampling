@@ -375,8 +375,8 @@ def _parse_run_stdout_for_timing(stdout_log_path: Path):
 
     primitive_patterns = [
         r"Constructing a SAH kd-tree \((\d+) primitives\)",
-        r"GeometryBVH:\s+Collecting\s+(\d+)\s+triangles",
-        r"GeometryBVH built:\s+\d+ nodes,\s+(\d+) primitives",
+        r"SamplingBVH:\s+Collecting\s+(\d+)\s+triangles",
+        r"SamplingBVH built:\s+\d+ nodes,\s+(\d+) primitives",
     ]
     for pat in primitive_patterns:
         m = re.search(pat, text)

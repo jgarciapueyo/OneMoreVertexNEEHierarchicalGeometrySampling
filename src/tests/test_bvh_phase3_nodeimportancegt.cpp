@@ -101,7 +101,7 @@ static Scene *createTestSceneWithOccluder(TriMesh *targetMesh, TriMesh *occluder
     return scene;
 }
 
-static void collectSubtreePrims(const GeometryBVH *bvh, int nodeIndex, std::vector<uint32_t> &primitiveIndices)
+static void collectSubtreePrims(const SamplingBVH *bvh, int nodeIndex, std::vector<uint32_t> &primitiveIndices)
 {
     const BVHNode &node = bvh->getNode(nodeIndex);
     if (node.isLeaf())
@@ -166,7 +166,7 @@ static Float evalContributionProxy(
            / (distXsP * distXsP * distPXe * distPXe);
 }
 
-static Float estimateImportanceExplicitOverPrims(const GeometryBVH &bvh,
+static Float estimateImportanceExplicitOverPrims(const SamplingBVH &bvh,
     const Scene *scene, const std::vector<uint32_t> &primIndices,
     const BVHNodeInfo &nodeInfo, const SurfaceSample &xs, const EmitterSample &xe,
     int numSamples, bool checkVisibility) {
@@ -222,14 +222,14 @@ static Float estimateImportanceExplicitOverPrims(const GeometryBVH &bvh,
     return totalArea * (contributionSum / (Float) numSamples);
 }
 
-static size_t findFirstLeaf(const GeometryBVH &bvh) {
+static size_t findFirstLeaf(const SamplingBVH &bvh) {
     for (size_t i = 0; i < bvh.getNodeCount(); ++i)
         if (bvh.getNode(i).isLeaf())
             return i;
     return std::numeric_limits<size_t>::max();
 }
 
-static size_t findFirstInteriorNonRoot(const GeometryBVH &bvh) {
+static size_t findFirstInteriorNonRoot(const SamplingBVH &bvh) {
     for (size_t i = 1; i < bvh.getNodeCount(); ++i)
         if (bvh.getNode(i).isInterior())
             return i;
@@ -242,7 +242,7 @@ static bool testLeafAndInteriorSmoke() {
     TriMesh *mesh = createTestMesh(24, 0.7f);
     Scene *scene = createTestScene(mesh);
 
-    GeometryBVH bvh(2);
+    SamplingBVH bvh(2);
     bvh.buildBVH(scene);
     bvh.buildAggregates(scene);
 
@@ -284,7 +284,7 @@ static bool testRootSimilarToExplicitWholeScene() {
     TriMesh *mesh = createTestMesh(28, 0.75f);
     Scene *scene = createTestScene(mesh);
 
-    GeometryBVH bvh(2);
+    SamplingBVH bvh(2);
     bvh.buildBVH(scene);
     bvh.buildAggregates(scene);
 
@@ -333,7 +333,7 @@ static bool testVisibilityOcclusionEffect() {
     TriMesh *occluderMesh = createOccluderQuad(0.0f, 2.0f, 0.5f);
     Scene *scene = createTestSceneWithOccluder(targetMesh, occluderMesh);
 
-    GeometryBVH bvh(2);
+    SamplingBVH bvh(2);
     bvh.buildBVH(scene);
     bvh.buildAggregates(scene);
 

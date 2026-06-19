@@ -155,9 +155,9 @@ This repository is based on [Mitsuba 0.6](https://github.com/mitsuba-renderer/mi
 
 | Group | Description | Path |
 |-------|-------------|------|
-| Headers | `GeometryBVH` class declaration; `VMFLUT` (VMF intensity via degree-4 unrolled polynomial); spherical AABB | `include/mitsuba/render/hgs/` |
+| Headers | `SamplingBVH` class declaration; `VMFLUT` (VMF intensity via degree-4 unrolled polynomial); spherical AABB | `include/mitsuba/render/hgs/` |
 | Implementation | BVH construction, per-node statistics fitting, importance weight computation, stochastic traversal sampling | `src/librender/hgs/` |
-| Plugin | Mitsuba plugin registration wrapper for `GeometryBVH` | `src/hgs/` |
+| Plugin | Mitsuba plugin registration wrapper for `SamplingBVH` | `src/hgs/` |
 
 #### Integrators
 

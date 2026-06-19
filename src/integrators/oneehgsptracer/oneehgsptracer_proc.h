@@ -65,7 +65,7 @@ protected:
     /// Virtual destructor
     virtual ~ONEEEHGSPTracerWorker() { }
 private:
-    void traceSample(GeometryBVH *bvh);
+    void traceSample(SamplingBVH *bvh);
 
     ref<Scene>    m_scene;
     ref<Sampler>  m_sampler;

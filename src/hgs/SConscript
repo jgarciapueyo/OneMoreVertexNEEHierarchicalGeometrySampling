@@ -2,6 +2,6 @@
 Import('env', 'plugins')
 
 # pattern copied from emitters/
-plugins += env.SharedLibrary('geometrybvh', ['geometrybvh.cpp'])
+plugins += env.SharedLibrary('samplingbvh', ['samplingbvh.cpp'])
 
 Export('plugins')

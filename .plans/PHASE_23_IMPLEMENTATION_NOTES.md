@@ -2,7 +2,7 @@
 
 ## Overview
 
-Phase 2.3 extends the GeometryBVH (built in Phases 1-2) with a flexible, mode-based sampling strategy for BVH leaf nodes. Users can now choose between two leaf sampling approaches:
+Phase 2.3 extends the SamplingBVH (built in Phases 1-2) with a flexible, mode-based sampling strategy for BVH leaf nodes. Users can now choose between two leaf sampling approaches:
 
 1. **Primitive Mode** (default): Uniform random selection of primitives within a leaf, then sampling on chosen triangle
 2. **SphericalAABB Mode**: Sample directions toward the leaf AABB using solid-angle-based weighting, then ray-cast to find actual geometry
@@ -23,28 +23,28 @@ Phase 2.3 extends the GeometryBVH (built in Phases 1-2) with a flexible, mode-ba
 **File**: [include/mitsuba/render/bvh/bvh.h](include/mitsuba/render/bvh/bvh.h)
 
 ```cpp
-enum class GeometryBVHSamplingMode {
+enum class SamplingBVHSamplingMode {
     Primitive,          // Uniform primitive selection (Phase 2 baseline)
     SphericalAABB       // Solid-angle weighted AABB sampling (Phase 2.3)
 };
 ```
 
-### 2. GeometryBVH Constructor Extension
+### 2. SamplingBVH Constructor Extension
 
 **Files**: 
 - [include/mitsuba/render/bvh/bvh.h](include/mitsuba/render/bvh/bvh.h)
 - [src/librender/bvh/bvh_build.cpp](src/librender/bvh/bvh_build.cpp)
 
 ```cpp
-GeometryBVH(uint32_t maxLeafSize = 4, 
-            GeometryBVHSamplingMode samplingMode = GeometryBVHSamplingMode::Primitive);
+SamplingBVH(uint32_t maxLeafSize = 4, 
+            SamplingBVHSamplingMode samplingMode = SamplingBVHSamplingMode::Primitive);
 ```
 
 **Default behavior**: Existing code continues to work unchanged (defaults to Primitive mode)
 
 **New accessor**:
 ```cpp
-GeometryBVHSamplingMode getSamplingMode() const { return m_samplingMode; }
+SamplingBVHSamplingMode getSamplingMode() const { return m_samplingMode; }
 ```
 
 ### 3. Sampling Dispatch Logic
@@ -60,7 +60,7 @@ The refactored `sampleGeometry()` method now:
 3. **Combines PDFs**: `pdf = pdf_traversal * pdf_leaf`
 
 ```cpp
-if (m_samplingMode == GeometryBVHSamplingMode::SphericalAABB) {
+if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB) {
     success = sampleLeafSphericalAABB(leafNode, nodeIdx, scene, xs.p, sample2, 
                                      position, normal, pdf_leaf);
 } else {
@@ -73,7 +73,7 @@ if (m_samplingMode == GeometryBVHSamplingMode::SphericalAABB) {
 
 **File**: [src/librender/bvh/bvh_sample.cpp](src/librender/bvh/bvh_sample.cpp)
 
-**New method**: `bool GeometryBVH::sampleLeafSphericalAABB(...)`
+**New method**: `bool SamplingBVH::sampleLeafSphericalAABB(...)`
 
 **Algorithm**:
 
@@ -124,7 +124,7 @@ This preserves the exact behavior from Phase 2.
 ### Modified Files
 
 1. **[include/mitsuba/render/bvh/bvh.h](include/mitsuba/render/bvh/bvh.h)**
-   - Added `GeometryBVHSamplingMode` enum
+   - Added `SamplingBVHSamplingMode` enum
    - Extended constructor signature with mode parameter
    - Added `getSamplingMode()` accessor
    - Added `sampleLeafSphericalAABB()` private method declaration
@@ -150,12 +150,12 @@ This preserves the exact behavior from Phase 2.
 ### Using SphericalAABB Mode
 
 ```cpp
-GeometryBVH bvh(4, GeometryBVHSamplingMode::SphericalAABB);
+SamplingBVH bvh(4, SamplingBVHSamplingMode::SphericalAABB);
 bvh.build(scene);
 bvh.buildAggregates(scene);
 
 // Check mode at runtime
-if (bvh.getSamplingMode() == GeometryBVHSamplingMode::SphericalAABB) {
+if (bvh.getSamplingMode() == SamplingBVHSamplingMode::SphericalAABB) {
     std::cout << "Using solid-angle weighted AABB sampling\n";
 }
 

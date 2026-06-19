@@ -82,7 +82,7 @@ static uint32_t findMeshIndex(const Scene *scene, const TriMesh *mesh) {
     return 0xFFFFFFFF;
 }
 
-static uint32_t findPrimitiveIndex(const GeometryBVH &bvh, uint32_t meshIndex, uint32_t triangleIndex) {
+static uint32_t findPrimitiveIndex(const SamplingBVH &bvh, uint32_t meshIndex, uint32_t triangleIndex) {
     const size_t primCount = bvh.getPrimitiveCount();
     for (size_t i = 0; i < primCount; ++i) {
         const BVHPrimitive &prim = bvh.getPrimitive(i);
@@ -93,7 +93,7 @@ static uint32_t findPrimitiveIndex(const GeometryBVH &bvh, uint32_t meshIndex, u
     return 0xFFFFFFFF;
 }
 
-static size_t findLeafForPrimitive(const GeometryBVH &bvh, uint32_t primIdx) {
+static size_t findLeafForPrimitive(const SamplingBVH &bvh, uint32_t primIdx) {
     const size_t nodeCount = bvh.getNodeCount();
     for (size_t i = 0; i < nodeCount; ++i) {
         const BVHNode &node = bvh.getNode(i);
@@ -109,7 +109,7 @@ static size_t findLeafForPrimitive(const GeometryBVH &bvh, uint32_t primIdx) {
     return std::numeric_limits<size_t>::max();
 }
 
-static std::vector<size_t> getLeafNodes(const GeometryBVH &bvh) {
+static std::vector<size_t> getLeafNodes(const SamplingBVH &bvh) {
     std::vector<size_t> leaves;
     const size_t nodeCount = bvh.getNodeCount();
     for (size_t i = 0; i < nodeCount; ++i) {
@@ -150,7 +150,7 @@ static bool testNoOverlapSinglePrimitiveLeaf() {
     TriMesh *mesh = createMeshFromTriangles(tris);
     Scene *scene = createTestScene(mesh);
 
-    GeometryBVH bvh(1, GeometryBVHSamplingMode::SphericalAABB);
+    SamplingBVH bvh(1, SamplingBVHSamplingMode::SphericalAABB);
     bvh.buildBVH(scene);
     bvh.buildAggregates(scene);
 
@@ -215,7 +215,7 @@ static bool testNoOverlapMultiPrimitiveLeaf() {
     TriMesh *mesh = createMeshFromTriangles(tris);
     Scene *scene = createTestScene(mesh);
 
-    GeometryBVH bvh(2, GeometryBVHSamplingMode::SphericalAABB);
+    SamplingBVH bvh(2, SamplingBVHSamplingMode::SphericalAABB);
     bvh.buildBVH(scene);
     bvh.buildAggregates(scene);
 
@@ -278,7 +278,7 @@ static bool testOverlapSinglePrimitiveLeaf() {
     TriMesh *mesh = createMeshFromTriangles(tris);
     Scene *scene = createTestScene(mesh);
 
-    GeometryBVH bvh(1, GeometryBVHSamplingMode::SphericalAABB);
+    SamplingBVH bvh(1, SamplingBVHSamplingMode::SphericalAABB);
     bvh.buildBVH(scene);
     bvh.buildAggregates(scene);
 
@@ -342,7 +342,7 @@ static bool testOverlapMultiPrimitiveLeaf() {
     TriMesh *mesh = createMeshFromTriangles(tris);
     Scene *scene = createTestScene(mesh);
 
-    GeometryBVH bvh(2, GeometryBVHSamplingMode::SphericalAABB);
+    SamplingBVH bvh(2, SamplingBVHSamplingMode::SphericalAABB);
     bvh.buildBVH(scene);
     bvh.buildAggregates(scene);
 
@@ -406,11 +406,11 @@ static bool testCompareSphericalAABBVsPrimitiveSampling() {
     TriMesh *mesh = createMeshFromTriangles(tris);
     Scene *scene = createTestScene(mesh);
 
-    GeometryBVH bvhPrimitive(4, GeometryBVHSamplingMode::Primitive);
+    SamplingBVH bvhPrimitive(4, SamplingBVHSamplingMode::Primitive);
     bvhPrimitive.buildBVH(scene);
     bvhPrimitive.buildAggregates(scene);
 
-    GeometryBVH bvhSpherical(4, GeometryBVHSamplingMode::SphericalAABB);
+    SamplingBVH bvhSpherical(4, SamplingBVHSamplingMode::SphericalAABB);
     bvhSpherical.buildBVH(scene);
     bvhSpherical.buildAggregates(scene);
 
