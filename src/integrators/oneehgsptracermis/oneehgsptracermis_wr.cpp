@@ -18,7 +18,7 @@
 
 #include <mitsuba/core/bitmap.h>
 #include <mitsuba/core/fstream.h>
-#include "glinttracermis_wr.h"
+#include "oneehgsptracermis_wr.h"
 
 MTS_NAMESPACE_BEGIN
 

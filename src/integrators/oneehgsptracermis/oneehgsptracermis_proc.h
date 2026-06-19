@@ -22,7 +22,7 @@
 #include <mitsuba/render/renderproc.h>
 #include <mitsuba/render/renderjob.h>
 #include <mitsuba/core/bitmap.h>
-#include "glinttracermis_wr.h"
+#include "oneehgsptracermis_wr.h"
 
 MTS_NAMESPACE_BEGIN
 

@@ -21,7 +21,7 @@
 #include <mitsuba/bidir/util.h>
 #include <mitsuba/render/bvh/bvh.h>
 #include <mitsuba/render/scene.h>
-#include "glinttracermis_proc.h"
+#include "oneehgsptracermis_proc.h"
 
 MTS_NAMESPACE_BEGIN
 

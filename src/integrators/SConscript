@@ -19,10 +19,10 @@ plugins += env.SharedLibrary('irrcache', ['misc/irrcache.cpp', 'misc/irrcache_pr
 plugins += env.SharedLibrary('multichannel', ['misc/multichannel.cpp'])
 plugins += env.SharedLibrary('field', ['misc/field.cpp'])
 plugins += env.SharedLibrary('motion', ['misc/motion.cpp'])
-plugins += env.SharedLibrary('additionalvertex', ['additionalvertex/additionalvertex.cpp', 'additionalvertex/sampleGeometryExplicit.cpp'])
-plugins += env.SharedLibrary('doublestep', ['additionalvertex/doublestep.cpp'])
-plugins += env.SharedLibrary('fastdoublestep', ['additionalvertex/fastdoublestep.cpp'])
-plugins += env.SharedLibrary('glinttracer', ['glinttracer/glinttracer.cpp', 'glinttracer/glinttracer_proc.cpp'])
+plugins += env.SharedLibrary('oneehgspath', ['oneehgspath/oneehgspath.cpp', 'oneehgspath/sampleGeometryExplicit.cpp'])
+plugins += env.SharedLibrary('oneehgspath_2step', ['oneehgspath/oneehgspath_2step.cpp'])
+plugins += env.SharedLibrary('oneehgspath_2step_fast', ['oneehgspath/oneehgspath_2step_fast.cpp'])
+plugins += env.SharedLibrary('oneehgsptracer', ['oneehgsptracer/oneehgsptracer.cpp', 'oneehgsptracer/oneehgsptracer_proc.cpp'])
 plugins += env.SharedLibrary('pathindirect', ['path/pathindirect.cpp'])
 
 # Bidirectional techniques
@@ -33,9 +33,9 @@ bidirEnv.Append(LIBPATH=['#src/libbidir'])
 plugins += bidirEnv.SharedLibrary('bdpt',
         ['bdpt/bdpt.cpp', 'bdpt/bdpt_wr.cpp', 'bdpt/bdpt_proc.cpp'])
 
-plugins += bidirEnv.SharedLibrary('glinttracermis',
-        ['glinttracermis/glinttracermis.cpp', 'glinttracermis/glinttracermis_wr.cpp',
-         'glinttracermis/glinttracermis_proc.cpp'])
+plugins += bidirEnv.SharedLibrary('oneehgsptracermis',
+        ['oneehgsptracermis/oneehgsptracermis.cpp', 'oneehgsptracermis/oneehgsptracermis_wr.cpp',
+         'oneehgsptracermis/oneehgsptracermis_proc.cpp'])
 
 plugins += bidirEnv.SharedLibrary('pssmlt',
         ['pssmlt/pssmlt.cpp', 'pssmlt/pssmlt_sampler.cpp',

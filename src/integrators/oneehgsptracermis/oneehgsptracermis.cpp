@@ -18,7 +18,7 @@
 
 #include <mitsuba/bidir/vertex.h>
 #include <mitsuba/bidir/edge.h>
-#include "glinttracermis_proc.h"
+#include "oneehgsptracermis_proc.h"
 
 MTS_NAMESPACE_BEGIN
 

@@ -21,7 +21,7 @@
 
 #include <mitsuba/render/imageblock.h>
 #include <mitsuba/core/fresolver.h>
-#include "glinttracermis.h"
+#include "oneehgsptracermis.h"
 
 MTS_NAMESPACE_BEGIN
 
