@@ -33,12 +33,15 @@
   </p>
 </p>
 
+---
 
 ### Overview
 
 Robust next-event estimation (NEE) remains a challenge in scenes characterized by **sparse or small-scale geometry** where indirect illumination is the primary transport mechanism. In these scenes, traditional path construction, which relies on local directional sampling, often fails to find intersections with the sparse geometry, and standard NEE also struggles as it typically connects vertices directly to emitters, failing when those connections are occluded or require intermediate bounces.
 
 We propose a novel approach that constructs paths via **direct geometry sampling**. Instead of relying on stochastic ray casting, we repurpose the scene's bounding volume hierarchy (BVH) as a **hierarchical sampling structure**. By performing a stochastic top-down traversal, we transform the selection of the next path vertex into a hierarchical problem. To prioritize high-throughput connections, the traversal is guided by a **proxy contribution function** evaluated at each internal node, which leverages aggregated statistics of the geometry to efficiently estimate contribution during traversal. We demonstrate orders of magnitude improvements in complex scenarios such as indirect illumination from sparse geometry or rendering discrete scattering media.
+
+---
 
 ### Method
 <p align="center">
@@ -63,6 +66,8 @@ $$p\left(\mathcal{N}_j^{d+1} \mid \mathcal{N}_i^d\right) = \frac{w\left(\mathcal
 
 > **Hierarchical One-more-vertex Sampling Overview**. (a) We wish to importance-sample high-throughput three-vertex subpaths between vertices $\mathbf{x}_s$, $\mathbf{x}_e$. Our method is based on a hierarchical structure of the scene primitives that (b) aggregates its directional, spatial, and material statistics (represented by the gray sectors) at each node bottom-up. (c) These statistics enable guiding the hierarchical sampling of the intermediate vertex $\mathbf{x}_n$ by evaluating the approximated per-node importance weight (yellow bars) for each node's children and choosing one proportionally to its weight.
 
+---
+
 ### Results
 
 <p align="center">
@@ -70,6 +75,8 @@ $$p\left(\mathcal{N}_j^{d+1} \mid \mathcal{N}_i^d\right) = \frac{w\left(\mathcal
 </p>
 
 Comparison against path tracing (PT), bidirectional path tracing (BDPT), and practical path guiding (PPG) on the Asteroids scene. At equal samples (16 SPP) our method produces visibly cleaner results at a fraction of the time. At equal time (2 s) the gap is even more pronounced, with our method achieving orders-of-magnitude lower MSE on both the SPP and time convergence curves.
+
+---
 
 ### Quickstart
 
@@ -122,7 +129,7 @@ bash scripts/experiments/comparison.sh scripts/experiments/ablation_asteroids4_s
 
 This will render all technique variants, compute metrics (MSE, FLIP), and produce comparison figures and LaTeX assets under the output directory specified in the YAML. See [`scripts/experiments/README.md`](scripts/experiments/README.md) for the full pipeline documentation and config format.
 
-#### 3 Create your own scene and run it
+#### 3. Create your own scene and run it
 
 Inside the container (after compiling and sourcing `setpath.sh`), render any scene XML directly:
 
@@ -138,6 +145,8 @@ To use the one-more-vertex integrator in your own Mitsuba scene, add the followi
 </integrator>
 ```
 
+---
+
 ### Code changes
 
 This repository is based on [Mitsuba 0.6](https://github.com/mitsuba-renderer/mitsuba). The paper's contributions are self-contained in the following new components:
@@ -151,7 +160,9 @@ This repository is based on [Mitsuba 0.6](https://github.com/mitsuba-renderer/mi
 
 All other code is unmodified Mitsuba 0.6.
 
-## 6. Citation
+---
+
+### Citation
 
 ```bibtex
 Coming soon.
