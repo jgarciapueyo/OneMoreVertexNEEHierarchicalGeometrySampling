@@ -122,7 +122,7 @@ Files that should never appear in a public repo:
 | `implementation_plan_additional_vertex.md` | (Done) Already deleted in commit; verify it's gone |
 | `src/integrators/additionalvertex/fastdoublestep-bkbad.cpp` | (Done - removed) "bkbad" — explicitly a broken backup |
 
-Also audit:
+Also audit (done - moved for now to `old_scripts`):
 - `scripts/experiments/config-v0.yaml` through `config-v9.*` — many are historical dev sweeps;
   decide which ones (if any) correspond to paper results and keep only those.
 
@@ -131,6 +131,8 @@ Also audit:
 There are at least three copies of `vmf_lut.bin`. Decide on a single location
 (`data/vmf_lut.bin` is the natural home) and make the code load from there.
 Update `scripts/LUT/` to write there, and delete the duplicates.
+
+(Done - removed `scripts/LUT/vmf_*.h`, `scripts/LUT/feather_to_binary.py` and `scripts/LUT/load_vmf.cpp`)
 
 ### Step 3 — Write a new `README.md`
 
