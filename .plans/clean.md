@@ -109,17 +109,18 @@ Files that should never appear in a public repo:
 | `src/librender/bvh_OLD/` | (Done - removed) Superseded prototype BVH; all 6 files replaced by `src/librender/bvh/` |
 | `src/librender/bvh/bvh_importance-nancatching.cpp` | (Done - removed) Debug variant, not compiled (absent from SConscript) |
 | `scenes_old/` | (Done - removed but now they were in old_scenes_old) Development scratch scenes from earlier iterations |
-| `.plans/` (this directory) | Internal implementation planning notes — move `clean.md` out, delete the rest |
-| `ppg/` | Full copy of Müller et al. 2017 PPG source — replace with a git submodule or note |
-| `scripts/polyscope/` | BVH debug visualisation dumps (CSV, PNG, ini files); not needed by users |
-| `scripts/experiments/wip.md` | Internal work-in-progress notes |
-| `scripts/experiments/analyze_results copy.py` | Accidental duplicate file |
 | `data/vmf_lut_old.bin` | (Done - Removed) Superseded LUT |
 | `include/mitsuba/render/bvh/vmf_lut.bin` | (Done - Removed) Duplicate of `data/vmf_lut.bin` (different path) |
 | `scripts/LUT/vmf_lut.bin`, `scripts/LUT/vmf_lut.feather` | (Done - Removed) Yet more LUT copies |
 | `scripts/LUT/old/` | (Done - removed) Old scripts to generate the LUT |
-| `implementation_plan_additional_vertex.md` | Already deleted in commit; verify it's gone |
-| `src/integrators/additionalvertex/fastdoublestep-bkbad.cpp` | "bkbad" — explicitly a broken backup |
+| `scripts/polyscope/` | (Don't remove yet) BVH debug visualisation dumps (CSV, PNG, ini files); not needed by users |
+| `.plans/` (this directory) | (Don't remove yet) Internal implementation planning notes — move `clean.md` out, delete the rest |
+| `ppg/` | (Don't remove) Full copy of Müller et al. 2017 PPG source — replace with a git submodule or note |
+| `scripts/experiments/wip.md` | (Done - moved for now into `old_scripts`) Internal work-in-progress notes |
+| `scripts/experiments/analyze_results copy.py` | (Done - moved for now into `old_scripts`) Accidental duplicate file |
+
+| `implementation_plan_additional_vertex.md` | (Done) Already deleted in commit; verify it's gone |
+| `src/integrators/additionalvertex/fastdoublestep-bkbad.cpp` | (Done - removed) "bkbad" — explicitly a broken backup |
 
 Also audit:
 - `scripts/experiments/config-v0.yaml` through `config-v9.*` — many are historical dev sweeps;
