@@ -182,5 +182,13 @@ This repository is based on [Mitsuba 0.6](https://github.com/mitsuba-renderer/mi
 ### Citation
 
 ```bibtex
-Coming soon.
+@article{onemorevertex26,
+  journal = {Computer Graphics Forum},
+  title = {{One-more-vertex Next-Event Estimation with Hierarchical Geometry Sampling}},
+  author = {Garcia-Pueyo, Jorge and Monzon, Nestor and Jarabo, Adrian and Muñoz, Adolfo},
+  year = {2026},
+  publisher = {The Eurographics Association and John Wiley & Sons Ltd.},
+  ISSN = {1467-8659},
+  DOI = {10.1111/cgf.70539}
+}
 ```
