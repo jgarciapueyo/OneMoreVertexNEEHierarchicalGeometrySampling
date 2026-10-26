@@ -7,21 +7,24 @@ This folder contains the experiment runner and analyzer used to sweep Mitsuba pa
 - `run_experiments.py`: runs renders for all generated configs.
 - `analyze_results.py`: computes metrics and generates comparison outputs.
 - `comparison.sh`: convenience wrapper to run both steps.
-- `config-v*.yaml`: immutable experiment configs.
+- `*.yaml`: experiment configs used for the paper figures (see the table in the top-level `README.md`).
+- `requirements.txt`: host-side Python dependencies (`pip install -r scripts/experiments/requirements.txt`).
+
+All commands are run **on the host**, from the repository root, while the Docker container is running (`docker compose up -d`). The scripts call `mitsuba` inside the container through `docker exec`.
 
 ## Quick Usage
 
 ### 1) Run + analyze (recommended)
 
 ```bash
-bash scripts/experiments/comparison.sh scripts/experiments/config-v2.yaml
+bash scripts/experiments/comparison.sh scripts/experiments/ablation_asteroids4_smallerspotlight_ppg.yaml
 ```
 
 ### 2) Run manually
 
 ```bash
-python3 scripts/experiments/run_experiments.py scripts/experiments/config-v2.yaml --resume
-python3 scripts/experiments/analyze_results.py scripts/experiments/config-v2.yaml
+python3 scripts/experiments/run_experiments.py scripts/experiments/ablation_asteroids4_smallerspotlight_ppg.yaml --resume
+python3 scripts/experiments/analyze_results.py scripts/experiments/ablation_asteroids4_smallerspotlight_ppg.yaml
 ```
 
 Use `--container`, `--workdir`, and `--setpath-script` on the runner to override YAML docker settings if needed.
@@ -32,9 +35,11 @@ Top-level structure:
 
 ```yaml
 docker:
-  container: <docker-container-name>
-  workdir: <path-inside-container>
+  container: onemorevertexneehierarchicalgeometrysampling-mitsuba-1
+  workdir: /home/mitsuba
   setpath_script: /home/mitsuba/setpath.sh
+  # only needed if a config uses the PPG baseline (integrator: guided_path)
+  ppg_setpath_script: /home/mitsuba/ppg/mitsuba/setpath.sh
 
 scene: <scene-path-visible-in-container>
 output_root: <results-output-folder>
@@ -56,7 +61,7 @@ spp_schedule: [1, 2, 4, 8, 16, 32, 64]
 repetitions_per_spp: 3
 
 global_defaults:
-  integrator: doublestep
+  integrator: oneehgspath_2step
   maxDepth: 3
 
 named_configs:
@@ -103,6 +108,7 @@ The generated LaTeX includes default quantitative plots for:
 - `container`: target running Mitsuba container.
 - `workdir`: working directory inside container.
 - `setpath_script`: sourced before invoking `mitsuba`.
+- `ppg_setpath_script`: sourced before invoking `mitsuba-ppg` for configs with `integrator: guided_path` (requires the PPG build, see the top-level `README.md`).
 
 ### `scene` and `output_root`
 
@@ -143,6 +149,8 @@ Reserved runner key:
 - `top_k_configs`: number of top configs highlighted in summary plots.
 - `time_grid_points`: number of synthetic equal-time points when baseline times are unavailable.
 - `inset_bbox`: normalized inset box `[x0, y0, x1, y1]` used in rendered summary figures.
+- `average_bbox`: normalized box `[x0, y0, x1, y1]` used for the per-region metrics.
+- `metrics_in_bbox`: if `true`, the error metrics are computed only inside `average_bbox` (used for the comparison figures in the paper).
 - `summary_equal_spp`: optional explicit SPP target for rendered equal-samples summary.
 - `summary_equal_time_s`: optional explicit time target (seconds) for rendered equal-time summary.
 
@@ -178,5 +186,4 @@ Grouped summaries:
 
 ## Notes
 
-- Prefer creating a new config file (`config-v3.yaml`, `config-v4.yaml`, ...) instead of mutating historical configs.
 - Avoid `docker exec -it ...` in scripts; non-interactive execution is required for reliable capture.
