@@ -1,17 +1,17 @@
 
 # BVH ablation across several non-Disney geometries
 docker:
-  container: bdpt_twopoints_mitsuba-mitsuba-1
+  container: onemorevertexneehierarchicalgeometrysampling-mitsuba-1
   workdir: /home/mitsuba
   setpath_script: /home/mitsuba/setpath.sh
 
-scene: scenes/experiments/4_wildcard_veach/wildcard_veach.xml
-output_root: scenes/experiments/4_wildcard_veach/results/ablation_veach
+scene: scenes/4_wildcard_veach/wildcard_veach.xml
+output_root: scenes/4_wildcard_veach/results/ablation_veach
 
 reference:
   inherit_config_params: false
-  pre_rendered_exr: /home/nestor/bdpt_twopoints_mitsuba/scenes/experiments/4_wildcard_veach/results/10_veach/baseline_path/reference.exr
-  scene: scenes/experiments/4_wildcard_veach/wildcard_veach_pathref.xml
+  # pre_rendered_exr: <path/to/reference.exr>
+  scene: scenes/4_wildcard_veach/wildcard_veach_pathref.xml
   spp: 16000
   
 
@@ -20,7 +20,7 @@ repetitions_per_spp: 3
 reference_spp: 16000
 
 global_defaults:
-  integrator: doublestep
+  integrator: oneehgspath_2step
   maxDepth: 3
   bvhMaxDepth: 16
   rrDepth: 5
@@ -48,7 +48,7 @@ analysis:
 named_configs:
   - name: baseline_path
     params:
-      __scene: scenes/experiments/4_wildcard_veach/wildcard_veach_pathref.xml
+      __scene: scenes/4_wildcard_veach/wildcard_veach_pathref.xml
       integrator: path
       maxDepth: 3
       rrDepth: 5
@@ -57,7 +57,7 @@ named_configs:
   - name: bdpt
     params:
       integrator: bdpt
-      __scene: scenes/experiments/4_wildcard_veach/wildcard_veach_pathref.xml
+      __scene: scenes/4_wildcard_veach/wildcard_veach_pathref.xml
       geometry: geometry=quads-disney-spec1.0-rough0.05-k40.xml
 
   - name: spherical

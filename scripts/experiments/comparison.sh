@@ -1,17 +1,21 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Usage:
-#   ./scripts/comparison.sh [experiments.yaml]
+# Usage (from the repository root, on the host):
+#   bash scripts/experiments/comparison.sh <experiment.yaml>
 #
-# Env overrides:
-#   PYTHON=python
-#   CONTAINER=bdpt_twopoints_mitsuba-mitsuba-1
-#   WORKDIR=/workspace/bdpt_twopoints_mitsuba
+# Env overrides (otherwise taken from the `docker:` section of the YAML):
+#   PYTHON=python3
+#   CONTAINER=onemorevertexneehierarchicalgeometrysampling-mitsuba-1
+#   WORKDIR=/home/mitsuba
 #   SETPATH_SCRIPT=/home/mitsuba/setpath.sh
 
-PYTHON="${PYTHON:-python}"
-EXP_FILE="${1:-scripts/experiments.yaml}"
+PYTHON="${PYTHON:-python3}"
+if [[ $# -lt 1 ]]; then
+  echo "Usage: bash scripts/experiments/comparison.sh <experiment.yaml>" >&2
+  exit 1
+fi
+EXP_FILE="$1"
 
 EXTRA_ARGS=()
 if [[ -n "${CONTAINER:-}" ]]; then EXTRA_ARGS+=(--container "${CONTAINER}"); fi
@@ -25,12 +29,6 @@ echo "[1/2] Running experiments (host Python, Mitsuba in Docker)"
 
 echo "[2/2] Analyzing results (host Python)"
 "${PYTHON}" scripts/experiments/analyze_results.py "${EXP_FILE}"
-
-# if --older-metrics or -o is set, also run the older analysis for comparison
-if [[ "${2:-}" == "--older-metrics" || "${2:-}" == "-o" ]]; then
-  echo "[3/3] Analyzing results (host Python, older version of analysis for comparison)"
-  "${PYTHON}" scripts/experiments/analyze_results_older.py "${EXP_FILE}"
-fi
 
 echo "Done."
 

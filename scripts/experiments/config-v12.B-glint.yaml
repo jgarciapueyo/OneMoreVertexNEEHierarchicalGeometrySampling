@@ -2,16 +2,16 @@
 # Compares baseline path tracer vs our additionalvertex (doublestep) method.
 
 docker:
-  container: bdpt_twopoints_mitsuba-mitsuba-1
+  container: onemorevertexneehierarchicalgeometrysampling-mitsuba-1
   workdir: /home/mitsuba
   setpath_script: /home/mitsuba/setpath.sh
 
-scene: scenes/experiments/7_glints/glints_path_N100000_size0000100_mm00_ss00_r001_spp256.xml
-output_root: scenes/experiments/7_glints/B
+scene: scenes/7_glints/glints_path_N100000_size0000100_mm00_ss00_r001_spp256.xml
+output_root: scenes/7_glints/B
 
 reference:
   inherit_config_params: false
-  scene: scenes/experiments/7_glints/glints_path_N100000_size0000100_mm00_ss00_r001_spp256.xml
+  scene: scenes/7_glints/glints_path_N100000_size0000100_mm00_ss00_r001_spp256.xml
   spp: 16184
   geometry: done
 
@@ -19,7 +19,7 @@ spp_schedule: [4, 8, 16, 32, 64, 128, 256]
 repetitions_per_spp: 3
 
 global_defaults:
-  integrator: glinttracer
+  integrator: oneehgsptracer
   maxDepth: 1
   useBVH: true
 
@@ -30,11 +30,11 @@ analysis:
 named_configs:
   - name: baseline_path
     params:
-      __scene: scenes/experiments/7_glints/glints_path_N100000_size0000100_mm00_ss00_r001_spp256.xml
+      __scene: scenes/7_glints/glints_path_N100000_size0000100_mm00_ss00_r001_spp256.xml
       integrator: path
       maxDepth: 1
       rrDepth: 1
   - name: ours
     params:
-      __scene: scenes/experiments/7_glints/glints_glinttracer_N100000_size0000100_mm00_ss00_r001_spp256.xml
-      integrator: glinttracer
+      __scene: scenes/7_glints/glints_glinttracer_N100000_size0000100_mm00_ss00_r001_spp256.xml
+      integrator: oneehgsptracer

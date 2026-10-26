@@ -5,7 +5,7 @@
 		<integer name="maxDepth" value="2"/>
 		<boolean name="hideEmitters" value="false"/>
 	</integrator>
-	<geometrybvh type="geometrybvh">
+	<geometrybvh type="samplingbvh">
 		<integer name="maxLeafSize" value="4"/>
 		<string name="samplingMode" value="Primitive"/>
 		<float name="defensivePDF" value="0.000001"/>

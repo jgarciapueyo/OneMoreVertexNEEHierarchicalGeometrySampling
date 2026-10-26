@@ -38,7 +38,7 @@ def add_integrator(scene, integrator_type="additionalvertex"):
     integrator = SubElement(scene, "integrator", type=integrator_type)
     if integrator_type in ("additionalvertex", "path", "bdpt"):
         SubElement(integrator, "integer", name="maxDepth", value="5")
-    elif integrator_type == "doublestep":
+    elif integrator_type == "oneehgspath_2step":
         SubElement(integrator, "integer", name="maxDepth", value="5")
         SubElement(integrator, "integer", name="rrDepth", value="5")
         SubElement(integrator, "boolean", name="doAdditionalVertex", value="true")
@@ -47,7 +47,7 @@ def add_integrator(scene, integrator_type="additionalvertex"):
 
 
 def add_geometry_bvh(scene):
-    gbvh = SubElement(scene, "geometrybvh", type="geometrybvh")
+    gbvh = SubElement(scene, "geometrybvh", type="samplingbvh")
     SubElement(gbvh, "integer", name="maxLeafSize", value="4")
     SubElement(gbvh, "string", name="samplingMode", value="Primitive")
     SubElement(gbvh, "float", name="sggxCrossSectionScale", value="1.0")
@@ -252,7 +252,7 @@ def main():
     parser.add_argument("--tile_scale", type=float, default=0.2,
                         help="Scale factor for tile size (default: 0.2)")
     parser.add_argument("--integrator", default="path",
-                        choices=["additionalvertex", "path", "bdpt", "doublestep"],
+                        choices=["additionalvertex", "path", "bdpt", "oneehgspath_2step"],
                         help="Integrator type (default: additionalvertex)")
     parser.add_argument("--resx", type=int, default=512)
     parser.add_argument("--resy", type=int, default=512)

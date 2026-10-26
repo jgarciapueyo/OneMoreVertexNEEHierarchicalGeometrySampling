@@ -1,17 +1,17 @@
 
 # BVH ablation across several non-Disney geometries
 docker:
-  container: bdpt_twopoints_mitsuba-mitsuba-1
+  container: onemorevertexneehierarchicalgeometrysampling-mitsuba-1
   workdir: /home/mitsuba
   setpath_script: /home/mitsuba/setpath.sh
 
-scene: scenes/experiments/2_wildcard_asteroids/wildcard_spotlight.xml
-output_root: scenes/experiments/2_wildcard_asteroids/results/ablation_asteroids_trueablation_selected
+scene: scenes/2_wildcard_asteroids/wildcard_spotlight.xml
+output_root: scenes/2_wildcard_asteroids/results/ablation_asteroids_trueablation_selected
 
 reference:
   inherit_config_params: false
-  pre_rendered_exr: scenes/experiments/2_wildcard_asteroids/results/ablation_asteroids/baseline_path/reference.exr
-  scene: scenes/experiments/2_wildcard_asteroids/wildcard_spotlight_pathref.xml
+  # pre_rendered_exr: scenes/2_wildcard_asteroids/results/ablation_asteroids/baseline_path/reference.exr
+  scene: scenes/2_wildcard_asteroids/wildcard_spotlight_pathref.xml
   spp: 16000
   
 
@@ -20,7 +20,7 @@ repetitions_per_spp: 3
 reference_spp: 16000
 
 global_defaults:
-  integrator: doublestep
+  integrator: oneehgspath_2step
   maxDepth: 3
   bvhMaxDepth: 20
   rrDepth: 5
@@ -48,7 +48,7 @@ analysis:
 named_configs:
   - name: baseline_path
     params:
-      __scene: scenes/experiments/2_wildcard_asteroids/wildcard_spotlight_pathref.xml
+      __scene: scenes/2_wildcard_asteroids/wildcard_spotlight_pathref.xml
       integrator: path
       maxDepth: 3
       rrDepth: 5
@@ -56,7 +56,7 @@ named_configs:
   # - name: bdpt
   #   params:
   #     integrator: bdpt
-  #     __scene: scenes/experiments/2_wildcard_asteroids/wildcard_spotlight_pathref.xml
+  #     __scene: scenes/2_wildcard_asteroids/wildcard_spotlight_pathref.xml
 
   - name: nogaussian
     params:

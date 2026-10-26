@@ -2,7 +2,7 @@
 <!--
 Note: uses wildcards so it can be driven from scripts/experiments/ configs.
 To run directly, supply all parameters, e.g.:
-  mitsuba scenes/experiments/6_cbox/cbox_geometry.xml \
+  mitsuba scenes/6_cbox/cbox_geometry.xml \
     -Dintegrator=doublestep -DmaxDepth=5 -DrrDepth=5 \
     -DuseBVH=true -DdisableNEE=false -DdoAdditionalVertex=true \
     -DmaxLeafSize=2 -DleafSamplingMode=SphericalAABB \
@@ -11,7 +11,7 @@ To run directly, supply all parameters, e.g.:
     -DgaussianSAThreshold=0 -Dgeometry=cbox_geometries_10_1.0 -Dspp=64
 -->
 <scene version="0.6.0">
-	<integrator type="$integrator:doublestep">
+	<integrator type="$integrator:oneehgspath_2step">
 		<integer name="maxDepth" value="$maxDepth:3"/>
 		<integer name="rrDepth" value="$rrDepth:2"/>
 		<boolean name="useBVH" value="$useBVH:true"/>
@@ -20,7 +20,7 @@ To run directly, supply all parameters, e.g.:
 		<boolean name="disableFirstBounceNEE" value="$disableFirstBounceNEE:true"/>
 		<boolean name="doAdditionalVertex" value="$doAdditionalVertex:false"/>
 	</integrator>
-	<geometrybvh type="geometrybvh">
+	<geometrybvh type="samplingbvh">
 		<integer name="maxLeafSize" value="$maxLeafSize:2"/>
 		<string name="samplingMode" value="$leafSamplingMode:SphericalAABB"/>
 		<boolean name="outputDebugCSV" value="$outputDebugCSV:false"/>

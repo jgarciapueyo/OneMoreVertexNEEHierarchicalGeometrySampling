@@ -2,16 +2,16 @@
 <!--
 Note: this file has many wildcards so that it can be used from the scripts/experiments/ script.
 To run it directly you must give values to all wildcards, e.g.:
-	./build/release/mitsuba/mitsuba scenes/experiments/3_wildcard_disney/wildcard_disney_quads.xml -Dintegrator=doublestep -DmaxDepth=3 -DrrDepth=4 -DuseBVH=true -DdisableNEE=false -DmaxLeafSize=2 -DleafSamplingMode=SphericalAABB -DoutputDebugCSV=false -DenableSpecular=1 -Dgeometry=quads-disney-rough0.3-k40.xml -Dspp=512
+	./build/release/mitsuba/mitsuba scenes/3_wildcard_disney/wildcard_disney_quads.xml -Dintegrator=doublestep -DmaxDepth=3 -DrrDepth=4 -DuseBVH=true -DdisableNEE=false -DmaxLeafSize=2 -DleafSamplingMode=SphericalAABB -DoutputDebugCSV=false -DenableSpecular=1 -Dgeometry=quads-disney-rough0.3-k40.xml -Dspp=512
  -->
 <scene version="0.6.0">
-	<integrator type="$integrator:doublestep">
+	<integrator type="$integrator:oneehgspath_2step">
 		<integer name="maxDepth" value="$maxDepth:3"/>
 		<integer name="rrDepth" value="$rrDepth:5"/>
 		<boolean name="useBVH" value="$useBVH:true"/>
 		<boolean name="disableNEE" value="$disableNEE:false"/>
 	</integrator>
-	<geometrybvh type="geometrybvh">
+	<geometrybvh type="samplingbvh">
 		<!-- Note: Now the geometrybvh is a separate plugin, so it can have its own props here: -->
 		<!-- <integer name="maxLeafSize" value="$maxLeafSize:1"/> -->
 		<!--  ^disabled in favor of maxDepth:-->

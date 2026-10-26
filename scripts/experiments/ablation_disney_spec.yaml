@@ -1,15 +1,15 @@
 # Disney-spec focused ablation with specular toggle + geometry variants
 docker:
-  container: bdpt_twopoints_mitsuba-mitsuba-1
+  container: onemorevertexneehierarchicalgeometrysampling-mitsuba-1
   workdir: /home/mitsuba
   setpath_script: /home/mitsuba/setpath.sh
 
-scene: scenes/experiments/3_wildcard_disney/wildcard_disney_quads.xml
-output_root: scenes/experiments/3_wildcard_disney/results/ablation_disney_spec
+scene: scenes/3_wildcard_disney/wildcard_disney_quads.xml
+output_root: scenes/3_wildcard_disney/results/ablation_disney_spec
 
 reference:
   inherit_config_params: true
-  scene: scenes/experiments/3_wildcard_disney/wildcard_disney_quads_pathref.xml
+  scene: scenes/3_wildcard_disney/wildcard_disney_quads_pathref.xml
   spp: 8192
   exclude_params:
     - integrator
@@ -30,7 +30,7 @@ spp_schedule: [4, 8, 16, 32, 64]
 repetitions_per_spp: 3
 
 global_defaults:
-  integrator: doublestep
+  integrator: oneehgspath_2step
   maxDepth: 3
   bvhMaxDepth: 4
   rrDepth: 5
@@ -56,7 +56,7 @@ analysis:
 named_configs:
   - name: baseline_path
     params:
-      __scene: scenes/experiments/3_wildcard_disney/wildcard_disney_quads_pathref.xml
+      __scene: scenes/3_wildcard_disney/wildcard_disney_quads_pathref.xml
       integrator: path
       maxDepth: 3
       rrDepth: 5

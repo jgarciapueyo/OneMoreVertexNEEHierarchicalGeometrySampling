@@ -2,12 +2,12 @@
 <!-- lighthouse_glints_path_N50000_size0001000_mm00_ss00_r001_spp256 -->
 <scene version="0.6.0">
 
-	<integrator type="glinttracermis">
+	<integrator type="oneehgsptracermis">
 		<integer name="granularity" value="200000"/>
 		<integer name="maxDepth" value="2"/>
 		<boolean name="hideEmitters" value="false"/>
 	</integrator>
-	<geometrybvh type="geometrybvh">
+	<geometrybvh type="samplingbvh">
 		<!-- Note: Now the geometrybvh is a separate plugin, so it can have its own props here: -->
 		<!-- <integer name="maxLeafSize" value="$maxLeafSize:1"/> -->
 		<!--  ^disabled in favor of maxDepth:-->

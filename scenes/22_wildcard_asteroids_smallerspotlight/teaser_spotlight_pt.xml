@@ -2,7 +2,7 @@
 <!-- 
 Note: this file has many wildcards so that it can be used from the scripts/experiments/ script
 To run it directly you must give values to all wildcards, e.g.:
-	./build/release/mitsuba/mitsuba scenes/experiments/1_wildcard_spotlight/wildcard_spotlight_quads.xml -Dintegrator=doublestep -DmaxDepth=3 -DrrDepth=4 -DuseBVH=true -DdisableNEE=false -DmaxLeafSize=2 -DleafSamplingMode=SphericalAABB -DoutputDebugCSV=false -Dgeometry=quads -Dspp=512
+	./build/release/mitsuba/mitsuba scenes/1_wildcard_spotlight/wildcard_spotlight_quads.xml -Dintegrator=doublestep -DmaxDepth=3 -DrrDepth=4 -DuseBVH=true -DdisableNEE=false -DmaxLeafSize=2 -DleafSamplingMode=SphericalAABB -DoutputDebugCSV=false -Dgeometry=quads -Dspp=512
  -->
 <scene version="0.6.0">
 

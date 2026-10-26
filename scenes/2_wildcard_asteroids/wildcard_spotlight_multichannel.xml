@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- ./build/release/mitsuba/mitsuba scenes/experiments/1_wildcard_spotlight/wildcard_spotlight_quads_pathref.xml -Dgeometry=quads-k40-instances -Dspp=2048 -->
+<!-- ./build/release/mitsuba/mitsuba scenes/1_wildcard_spotlight/wildcard_spotlight_quads_pathref.xml -Dgeometry=quads-k40-instances -Dspp=2048 -->
 
 <scene version="0.6.0">
 	<integrator type="multichannel">

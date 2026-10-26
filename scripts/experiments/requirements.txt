@@ -1,0 +1,12 @@
+# Host-side Python dependencies for scripts/experiments/ and the scene helper scripts
+pyyaml
+numpy
+opencv-python<5  # OpenCV 5 cannot read the EXR outputs
+matplotlib
+tqdm
+flip-evaluator
+# only needed by scenes/9_rebuttal_sphere/*.py and scenes/7_glints_lighthouse/add_file.py
+pandas
+seaborn
+regex
+OpenEXR

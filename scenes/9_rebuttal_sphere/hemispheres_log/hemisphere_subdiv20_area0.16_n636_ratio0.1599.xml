@@ -3,7 +3,7 @@
 
     <!-- Hemisphere mesh -->
     <shape type="obj">
-        <string name="filename" value="scenes/experiments/9_rebuttal_sphere/hemispheres_log/hemisphere_subdiv20_area0.16_n636_ratio0.1599.obj"/>
+        <string name="filename" value="scenes/9_rebuttal_sphere/hemispheres_log/hemisphere_subdiv20_area0.16_n636_ratio0.1599.obj"/>
         <bsdf type="diffuse">
             <rgb name="reflectance" value="0.8"/>
         </bsdf>

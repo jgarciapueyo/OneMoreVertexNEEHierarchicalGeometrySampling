@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <scene version="0.6.0">
-	<integrator type="glinttracermis">
+	<integrator type="oneehgsptracermis">
         <integer name="granularity" value="2000000"/>
 	</integrator>
 	<!--
@@ -8,7 +8,7 @@
         <integer name="maxDepth" value="5"/>
     </integrator>
 	-->
-	<geometrybvh type="geometrybvh">
+	<geometrybvh type="samplingbvh">
 		<integer name="maxLeafSize" value="4"/>
 		<string name="samplingMode" value="Primitive"/>
 		<float name="defensivePDF" value="0.000001"/>

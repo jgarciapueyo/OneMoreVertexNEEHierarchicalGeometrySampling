@@ -12,17 +12,17 @@ output_root: scenes/22_wildcard_asteroids_smallerspotlight/results/ablation_aste
 
 reference:
   inherit_config_params: false
-  # pre_rendered_exr: /home/spinda/Documents/gilab/projects/bdpt/bdpt_twopoints_mitsuba/scenes/experiments/22_wildcard_asteroids_smallerspotlight/results/ablation_asteroids_spot_ppg/baseline_path/reference.exr
+  # pre_rendered_exr: <path/to/reference.exr>
   scene: scenes/22_wildcard_asteroids_smallerspotlight/wildcard_spotlight_pathref.xml
-  spp: 100
+  spp: 16184
   
 
-spp_schedule: [1, 2, 4] #, 8, 16, 32, 64, 128, 512, 1024] #, 4, 8, 16, 32, 64, 128, 512] # , 16, 32, 64, 128, 512
+spp_schedule: [1, 2, 4, 8, 16, 32, 64, 128, 512, 1024, 2048]
 repetitions_per_spp: 3
-reference_spp: 100
+reference_spp: 16184
 
 global_defaults:
-  integrator: doublestep
+  integrator: oneehgspath_2step
   maxDepth: 3
   bvhMaxDepth: 16
   rrDepth: 5
@@ -45,6 +45,7 @@ analysis:
   figure_format: svg
   exposure_scale: .5
   n_top_techniques: 4
+  metrics_in_bbox: true
 
 named_configs:
   - name: baseline_path

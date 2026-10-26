@@ -23,16 +23,16 @@ Coordinate convention: y-up.
 Usage examples
 --------------
 # Glinttracer scene (default):
-python scenes/experiments/7_glints/create_scene.py
+python scenes/7_glints/create_scene.py
 
 # Path-tracer reference (same scene, different integrator):
-python scenes/experiments/7_glints/create_scene.py --integrator path --samples 4096
+python scenes/7_glints/create_scene.py --integrator path --samples 4096
 
 # Dense snowstorm, lower roughness:
-python scenes/experiments/7_glints/create_scene.py --n_snowflakes 2000 --alpha 0.02
+python scenes/7_glints/create_scene.py --n_snowflakes 2000 --alpha 0.02
 
 # Ptracer reference (time-reverse of glinttracer, should match in expectation):
-python scenes/experiments/7_glints/create_scene.py --integrator ptracer --samples 4096
+python scenes/7_glints/create_scene.py --integrator ptracer --samples 4096
 """
 
 import argparse
@@ -121,12 +121,12 @@ def sample_vmf(mean_dir: Vec3, kappa: float, rng: random.Random) -> Vec3:
 
 def add_integrator(scene, integrator_type: str):
     """Add the chosen integrator block (no sampleCount here — lives in sampler)."""
-    if integrator_type == "glinttracer":
-        integ = SubElement(scene, "integrator", type="glinttracer")
+    if integrator_type == "oneehgsptracer":
+        integ = SubElement(scene, "integrator", type="oneehgsptracer")
         SubElement(integ, "integer", name="granularity", value="200000")
 
-    elif integrator_type == "glinttracermis":
-        integ = SubElement(scene, "integrator", type="glinttracermis")
+    elif integrator_type == "oneehgsptracermis":
+        integ = SubElement(scene, "integrator", type="oneehgsptracermis")
         SubElement(integ, "integer", name="granularity", value="200000")
         SubElement(integ, "integer", name="maxDepth", value="2")
         SubElement(integ, "boolean", name="hideEmitters", value="false")  # no direct sampling
@@ -144,8 +144,8 @@ def add_integrator(scene, integrator_type: str):
         integ = SubElement(scene, "integrator", type="ptracer")
         SubElement(integ, "integer", name="maxDepth", value="2")
 
-    elif integrator_type == "doublestep":
-        integ = SubElement(scene, "integrator", type="doublestep")
+    elif integrator_type == "oneehgspath_2step":
+        integ = SubElement(scene, "integrator", type="oneehgspath_2step")
         SubElement(integ, "integer", name="maxDepth", value="3")
         SubElement(integ, "integer", name="rrDepth", value="5")
         SubElement(integ, "boolean", name="doAdditionalVertex", value="true")
@@ -159,7 +159,7 @@ def add_integrator(scene, integrator_type: str):
 def add_geometry_bvh(scene, max_leaf_size: int = 4,
                      sampling_mode: str = "Primitive"):
     """Add the BVH plugin (required by glinttracer and doublestep)."""
-    gbvh = SubElement(scene, "geometrybvh", type="geometrybvh")
+    gbvh = SubElement(scene, "geometrybvh", type="samplingbvh")
     SubElement(gbvh, "integer", name="maxLeafSize",   value=str(max_leaf_size))
     SubElement(gbvh, "string",  name="samplingMode",  value=sampling_mode)
     SubElement(gbvh, "float",   name="defensivePDF",  value="0.000001")
@@ -322,7 +322,7 @@ def add_lighthouse(scene):
 # ---------------------------------------------------------------------------
 
 def create_scene(
-    integrator:       str   = "glinttracer",
+    integrator:       str   = "oneehgsptracer",
     n_snowflakes:     int   = 500,
     snowflake_size:   float = 0.06,
     # Disney BSDF parameters for the snowflakes
@@ -432,8 +432,8 @@ def main():
         description="Generate a glints test scene for Mitsuba 0.6.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
-    parser.add_argument("--integrator", default="glinttracer",
-                        choices=["glinttracer", "glinttracermis", "path", "ptracer", "doublestep"],
+    parser.add_argument("--integrator", default="oneehgsptracer",
+                        choices=["oneehgsptracer", "oneehgsptracermis", "path", "ptracer", "oneehgspath_2step"],
                         help="Integrator to embed in the scene XML.")
     parser.add_argument("--n_snowflakes", type=int, default=50000,
                         help="Number of snowflake quads.")
