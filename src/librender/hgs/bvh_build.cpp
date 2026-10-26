@@ -199,14 +199,11 @@ void SamplingBVH::buildBVH(Scene *scene) {
             const std::string className  = it->getClass()->getName();
             const std::string pluginName = it->getProperties().getPluginName();
 
-            if (className == "DoublestepIntegrator" ||
-                className == "AdditionalVertexIntegrator" ||
-                className == "GlintTracer" ||
-                pluginName == "doublestep" ||
-                pluginName == "additionalvertex" ||
-                pluginName == "fastdoublestep" ||
-                pluginName == "glinttracer" ||
-                pluginName == "glinttracermis" ) {
+            if (pluginName == "oneehgspath" ||
+                pluginName == "oneehgspath_2step" ||
+                pluginName == "oneehgspath_2step_fast" ||
+                pluginName == "oneehgsptracer" ||
+                pluginName == "oneehgsptracermis" ) {
                 supportedIntegrator = true;
                 break;
             }
