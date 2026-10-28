@@ -27,11 +27,10 @@
 #include <mitsuba/render/sensor.h>
 #include <mitsuba/hw/basicshader.h>
 #include <set>
+#include <memory>
+#include <mutex>
 
 MTS_NAMESPACE_BEGIN
-
-// class WavefrontOBJ;
-// static std::map< std::string, ref<WavefrontOBJ> > g_objCache; // Global cache of loaded OBJ files, keyed by absolute filename.
 
 /*!\plugin{obj}{Wavefront OBJ mesh loader}
  * \order{5}
@@ -154,13 +153,10 @@ MTS_NAMESPACE_BEGIN
  * }
  */
 
-// ------------------------------------------------------------------------------------------------------------------
- // 1- cache for obj files
-#include <memory>
-#include <mutex>
-
-
-
+/* Note: unlike upstream Mitsuba, the parsed object-space data of every OBJ
+   file is cached for the lifetime of the process, so that scenes instancing
+   the same OBJ file thousands of times (snowflakes, quads) only parse it once.
+   The cache key is the absolute path plus the options that affect parsing. */
 class WavefrontOBJ : public Shape {
 public:
     struct OBJTriangle {
@@ -173,7 +169,6 @@ public:
         }
     };
 
-        
     // Groups triangles by name/material
     struct CachedOBJGroup {
         std::string name;
@@ -190,7 +185,7 @@ public:
         fs::path materialLibrary;
     };
 
-    // Get the cache for obj files:
+    // Process-wide cache of parsed OBJ files
     static std::map<std::string, std::shared_ptr<CachedOBJData>>& getCache() {
         static std::map<std::string, std::shared_ptr<CachedOBJData>> cache;
         return cache;
@@ -224,22 +219,40 @@ public:
         }
         return true;
     }
-WavefrontOBJ(const Properties &props) : Shape(props) {
-        std::string filename = props.getString("filename");
-        
+    WavefrontOBJ(const Properties &props) : Shape(props) {
         ref<FileResolver> fileResolver = Thread::getThread()->getFileResolver()->clone();
-        fs::path path = fileResolver->resolve(filename);
+        fs::path path = fileResolver->resolve(props.getString("filename"));
         m_name = path.stem().string();
 
+        /* By default, any existing normals will be used for
+           rendering. If no normals are found, Mitsuba will
+           automatically generate smooth vertex normals.
+           Setting the 'faceNormals' parameter instead forces
+           the use of face normals, which will result in a faceted
+           appearance.
+        */
         m_faceNormals = props.getBoolean("faceNormals", false);
+
+        /* Causes all normals to be flipped */
         m_flipNormals = props.getBoolean("flipNormals", false);
-        m_collapse    = props.getBoolean("collapse", false);
+
+        /* Collapse all contained shapes / groups into a single object? */
+        m_collapse = props.getBoolean("collapse", false);
+
+        /* Causes all texture coordinates to be vertically flipped */
         bool flipTexCoords = props.getBoolean("flipTexCoords", true);
+
+        /// When the file contains multiple meshes, this index specifies which one to load
         int shapeIndex = props.getInteger("shapeIndex", -1);
+
+        /* Import materials from a MTL file, if any? */
         bool loadMaterials = props.getBoolean("loadMaterials", true);
 
-        // 1. CREATE A ROBUST CACHE KEY
-        std::string cacheKey = filename + (flipTexCoords ? "_flipUV" : "") + (m_collapse ? "_collapse" : "");
+        /* Material libraries and textures are resolved relative to the OBJ file */
+        fileResolver->prependPath(fs::absolute(path).parent_path());
+
+        /* 1. Look up the parsed file in the cache */
+        std::string cacheKey = fs::absolute(path).string() + (flipTexCoords ? "|flipUV" : "") + (m_collapse ? "|collapse" : "");
 
         std::shared_ptr<CachedOBJData> objData;
 
@@ -248,13 +261,11 @@ WavefrontOBJ(const Properties &props) : Shape(props) {
             std::lock_guard<std::mutex> lock(getCacheMutex());
             auto& cache = getCache();
             auto it = cache.find(cacheKey);
-            if (it != cache.end()) {
+            if (it != cache.end())
                 objData = it->second;
-                // Log(EInfo, "Loaded OBJ raw data from cache: %s", cacheKey.c_str());
-            }
         }
 
-        // 2. PARSE PHASE (Only if not cached)
+        /* 2. Parse the file (object space) if it is not cached */
         if (!objData) {
             objData = std::make_shared<CachedOBJData>();
             Log(EInfo, "Loading geometry from \"%s\" ..", path.filename().string().c_str());
@@ -262,17 +273,16 @@ WavefrontOBJ(const Properties &props) : Shape(props) {
             if (is.bad() || is.fail())
                 Log(EError, "Wavefront OBJ file '%s' not found!", path.string().c_str());
 
-            fileResolver->prependPath(fs::absolute(path).parent_path());
             ref<Timer> timer = new Timer();
             std::string buf, line;
-            
+
             std::string name = m_name;
             std::string materialName;
             std::vector<OBJTriangle> currentTriangles;
             int geomIndex = 0;
             bool nameBeforeGeometry = false;
 
-            // Robust Lambda to flush groups
+            /* Store the triangles of the current group (a separate mesh unless 'collapse') */
             auto flushGroup = [&](const std::string& groupName) {
                 if (!currentTriangles.empty()) {
                     std::string targetName = groupName;
@@ -326,17 +336,16 @@ WavefrontOBJ(const Properties &props) : Shape(props) {
                 }
             }
             
-            flushGroup(name); 
+            flushGroup(name);
             Log(EInfo, "Parsed \"%s\" (took %i ms)", path.filename().string().c_str(), timer->getMilliseconds());
 
-            // Save to cache safely
             {
                 std::lock_guard<std::mutex> lock(getCacheMutex());
                 getCache()[cacheKey] = objData;
             }
         }
 
-        // 3. INSTANTIATION PHASE
+        /* 3. Create the meshes in world space */
         Transform objectToWorld = props.getTransform("toWorld", Transform());
         std::vector<Vertex> vertexBuffer;
         
@@ -349,7 +358,7 @@ WavefrontOBJ(const Properties &props) : Shape(props) {
             currentGeomIndex++;
         }
 
-        // 4. POST-PROCESSING (Smooth angles and Materials)
+        /* 4. Normal smoothing and materials */
         if (props.hasProperty("maxSmoothAngle")) {
             if (m_faceNormals)
                 Log(EError, "The properties 'maxSmoothAngle' and 'faceNormals' can't be specified at the same time!");

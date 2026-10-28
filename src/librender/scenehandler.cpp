@@ -81,7 +81,6 @@ SceneHandler::SceneHandler(const ParameterMap &params,
     m_tags["phase"]      = TagEntry(EPhase,      MTS_CLASS(PhaseFunction));
     m_tags["bsdf"]       = TagEntry(EBSDF,       MTS_CLASS(BSDF));
     m_tags["rfilter"]    = TagEntry(ERFilter,    MTS_CLASS(ReconstructionFilter));
-    // new: SamplingBVH
     m_tags["geometrybvh"] = TagEntry(ESamplingBVH, MTS_CLASS(SamplingBVH));
     m_tags["null"]       = TagEntry(ENull,       (Class *) NULL);
     m_tags["ref"]        = TagEntry(EReference,  (Class *) NULL);
@@ -209,8 +208,8 @@ void SceneHandler::startElement(const XMLCh* const xmlName,
 
     for (size_t i=0; i<xmlAttributes.getLength(); i++) {
         std::string attrValue = transcode(xmlAttributes.getValue(i));
-        
-        // --- UPDATED PARAMETER PARSING BLOCK ---
+        /* Replace parameters ($name, or $name:default when no value is given
+           on the command line). Mitsuba expressions ($[...]) are left untouched */
         if (attrValue.length() > 0 && attrValue.find('$') != attrValue.npos) {
             size_t pos = 0;
             while ((pos = attrValue.find('$', pos)) != std::string::npos) {
@@ -281,7 +280,6 @@ void SceneHandler::startElement(const XMLCh* const xmlName,
                 XMLLog(EError, "The scene referenced an undefined parameter: \"%s\"", attrValue.c_str());
             }
         }
-        // --- END UPDATED BLOCK ---
 
         context.attributes[transcode(xmlAttributes.getName(i))] = attrValue;
     }

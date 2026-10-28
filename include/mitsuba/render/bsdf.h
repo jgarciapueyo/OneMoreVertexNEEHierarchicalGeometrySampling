@@ -460,13 +460,14 @@ public:
 
     /**
      * \brief For principled BSDFs: return the metallic factor at the given intersection.
-     * The default implementation returns 0 (fully dielectric).
+     * The default implementation returns 0 (fully dielectric). Used by the
+     * node statistics of the SamplingBVH.
      */
     virtual Float getMetallic(const Intersection &its) const;
 
     /**
      * \brief For principled BSDFs: return the dielectric F0 specular value at the given intersection.
-     * The default implementation returns 0.5 (BasicPrincipled default).
+     * The default implementation returns 0.
      */
     virtual Float getSpecularF0(const Intersection &its) const;
 

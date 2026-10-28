@@ -85,8 +85,7 @@ public:
         m_objectToWorld = props.getTransform("toWorld", Transform());
 
         /* Load the geometry */
-        if (false) // quiet 
-            Log(EInfo, "Loading geometry from \"%s\" ..", filePath.filename().string().c_str());
+        Log(EDebug, "Loading geometry from \"%s\" ..", filePath.filename().string().c_str());
         if (!fs::exists(filePath))
             Log(EError, "PLY file \"%s\" could not be found!", filePath.string().c_str());
 
@@ -487,8 +486,7 @@ void PLYLoader::loadPLY(const fs::path &path) {
     if (m_texcoords)
         vertexSize += sizeof(Point2);
 
-    if (false) // quiet
-        Log(EInfo, "\"%s\": Loaded " SIZE_T_FMT " triangles, " SIZE_T_FMT
+    Log(EDebug, "\"%s\": Loaded " SIZE_T_FMT " triangles, " SIZE_T_FMT
             " vertices (%s in %i ms).", m_name.c_str(), m_triangleCount, m_vertexCount,
             memString(sizeof(uint32_t) * m_triangleCount * 3 + vertexSize * m_vertexCount).c_str(),
             timer->getMilliseconds());

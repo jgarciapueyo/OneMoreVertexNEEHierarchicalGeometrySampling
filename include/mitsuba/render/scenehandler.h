@@ -149,7 +149,7 @@ private:
         EVector, ERGB, ESRGB, EBlackBody,
         ESpectrum, ETransform, EAnimation,
         EInclude, EAlias, EDefault,
-        ESamplingBVH // new
+        ESamplingBVH
     };
 
     struct ParseContext {
