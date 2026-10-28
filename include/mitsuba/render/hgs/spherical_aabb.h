@@ -51,10 +51,18 @@ struct SphQuad {
         Vector3 v10 = {x1, y0, z0};
         Vector3 v11 = {x1, y1, z0};
         // compute normals to edges
-        Vector3 n0 = normalize(cross(v00, v10));
-        Vector3 n1 = normalize(cross(v10, v11));
-        Vector3 n2 = normalize(cross(v11, v01));
-        Vector3 n3 = normalize(cross(v01, v00));
+        Vector3 c0 = cross(v00, v10), c1 = cross(v10, v11),
+                c2 = cross(v11, v01), c3 = cross(v01, v00);
+        // a face seen exactly edge-on subtends no solid angle
+        if (c0.lengthSquared() == 0 || c1.lengthSquared() == 0 ||
+            c2.lengthSquared() == 0 || c3.lengthSquared() == 0) {
+            S = 0.f;
+            return;
+        }
+        Vector3 n0 = normalize(c0);
+        Vector3 n1 = normalize(c1);
+        Vector3 n2 = normalize(c2);
+        Vector3 n3 = normalize(c3);
 
         // compute internal angles (gamma_i)
         float g0 = acos(-dot(n0,n1));

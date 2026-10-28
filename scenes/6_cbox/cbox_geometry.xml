@@ -22,7 +22,7 @@ To run directly, supply all parameters, e.g.:
 	</integrator>
 	<geometrybvh type="samplingbvh">
 		<integer name="maxDepth" value="$bvhMaxDepth:16"/>
-		<string name="samplingMode" value="$leafSamplingMode:SphericalAABB"/>
+		<string name="samplingMode" value="$leafSamplingMode:Primitive"/>
 		<boolean name="outputDebugCSV" value="$outputDebugCSV:false"/>
 		<boolean name="enableLightcuts" value="$enableLightcuts:false"/>
 		<float name="lightcutThreshold" value="$lightcutThreshold:1.5"/>
