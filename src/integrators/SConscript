@@ -19,9 +19,7 @@ plugins += env.SharedLibrary('irrcache', ['misc/irrcache.cpp', 'misc/irrcache_pr
 plugins += env.SharedLibrary('multichannel', ['misc/multichannel.cpp'])
 plugins += env.SharedLibrary('field', ['misc/field.cpp'])
 plugins += env.SharedLibrary('motion', ['misc/motion.cpp'])
-plugins += env.SharedLibrary('oneehgspath', ['oneehgspath/oneehgspath.cpp', 'oneehgspath/sampleGeometryExplicit.cpp'])
 plugins += env.SharedLibrary('oneehgspath_2step', ['oneehgspath/oneehgspath_2step.cpp'])
-plugins += env.SharedLibrary('oneehgspath_2step_fast', ['oneehgspath/oneehgspath_2step_fast.cpp'])
 plugins += env.SharedLibrary('oneehgsptracer', ['oneehgsptracer/oneehgsptracer.cpp', 'oneehgsptracer/oneehgsptracer_proc.cpp'])
 plugins += env.SharedLibrary('pathindirect', ['path/pathindirect.cpp'])
 

@@ -88,9 +88,9 @@ build('src/textures/SConscript')
 # Integrators
 build('src/integrators/SConscript')
 # Testcases
-# build('src/tests/SConscript')
+build('src/tests/SConscript')
 
-# Build the geometry BVH plugin
+# Hierarchical geometry sampling (SamplingBVH plugin)
 build('src/hgs/SConscript')
 
 # ===== Move everything to its proper place =====
