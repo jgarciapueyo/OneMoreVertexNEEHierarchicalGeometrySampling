@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- High-SPP path tracer reference for the Disney BSDF experiment.
-     ./build/release/mitsuba/mitsuba scenes/3_wildcard_disney/wildcard_disney_quads_pathref.xml -Dgeometry=quads-disney-rough0.3-k40.xml -Dspp=8192 -->
-
+<!--
+Parameters written as $name:default can be overridden on the command line,
+e.g. mitsuba scenes/4_wildcard_veach/wildcard_veach_pathref.xml -Dspp=64
+The experiment configs in scripts/experiments/ set them in the same way.
+-->
 <scene version="0.6.0">
 	<integrator type="$integrator:path">
 		<integer name="maxDepth" value="3"/>

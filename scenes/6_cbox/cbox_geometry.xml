@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-Note: uses wildcards so it can be driven from scripts/experiments/ configs.
-To run directly, supply all parameters, e.g.:
-  mitsuba scenes/6_cbox/cbox_geometry.xml \
-    -Dintegrator=doublestep -DmaxDepth=5 -DrrDepth=5 \
-    -DuseBVH=true -DdisableNEE=false -DdoAdditionalVertex=true \
-    -DmaxLeafSize=2 -DleafSamplingMode=SphericalAABB \
-    -DoutputDebugCSV=false -DuseUniformBVHSampling=1 \
-    -DdefensivePDF=0.0000001 -DlightcutThreshold=1.5 \
-    -DgaussianSAThreshold=0 -Dgeometry=cbox_geometries_10_1.0 -Dspp=64
+Parameters written as $name:default can be overridden on the command line,
+e.g. mitsuba scenes/6_cbox/cbox_geometry.xml -Dspp=64
+The experiment configs in scripts/experiments/ set them in the same way.
 -->
 <scene version="0.6.0">
 	<integrator type="$integrator:oneehgspath_2step">

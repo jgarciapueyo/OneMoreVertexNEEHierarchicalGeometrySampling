@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- ./build/release/mitsuba/mitsuba scenes/1_wildcard_spotlight/wildcard_spotlight_quads_pathref.xml -Dgeometry=quads-k40-instances -Dspp=2048 -->
-
+<!--
+Parameters written as $name:default can be overridden on the command line,
+e.g. mitsuba scenes/2_wildcard_asteroids/wildcard_spotlight_pathref.xml -Dspp=64
+The experiment configs in scripts/experiments/ set them in the same way.
+-->
 <scene version="0.6.0">
 	<integrator type="$integrator:path">
 		<integer name="maxDepth" value="3"/>

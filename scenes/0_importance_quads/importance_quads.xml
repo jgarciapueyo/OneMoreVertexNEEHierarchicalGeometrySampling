@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+Parameters written as $name:default can be overridden on the command line,
+e.g. mitsuba scenes/0_importance_quads/importance_quads.xml -Dspp=64
+The experiment configs in scripts/experiments/ set them in the same way.
+-->
 <scene version="0.6.0">
 	<integrator type="oneehgspath_2step">
 		<integer name="maxDepth" value="3"/>
@@ -7,12 +12,8 @@
 		<boolean name="useBVH" value="true"/>
 		<boolean name="disableNEE" value="false"/>
 	</integrator>
-	<geometrybvh type="samplingbvh"> 
-		<!-- Note: Now the geometrybvh is a separate plugin, so it can have its own props here: -->
+	<geometrybvh type="samplingbvh">
 		<integer name="maxDepth" value="$bvhMaxDepth:10"/>
-		<!-- <string name="samplingMode" value="SphericalAABB"/>  -->
-		<!-- ^uncomment for spherical (needs fixing SamplingBVH::sampleLeafSphericalAABB) -->
-		
 	</geometrybvh>
 	<sensor type="perspective">
 		<string name="fovAxis" value="smaller"/>

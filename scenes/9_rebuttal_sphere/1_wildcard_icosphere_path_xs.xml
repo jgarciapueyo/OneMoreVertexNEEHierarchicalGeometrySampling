@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 
-Note: this file has many wildcards so that it can be used from the scripts/experiments/ script
-To run it directly you must give values to all wildcards, e.g.:
-	./build/release/mitsuba/mitsuba scenes/1_wildcard_spotlight/wildcard_spotlight_quads.xml -Dintegrator=doublestep -DmaxDepth=3 -DrrDepth=4 -DuseBVH=true -DdisableNEE=false -DmaxLeafSize=2 -DleafSamplingMode=SphericalAABB -DoutputDebugCSV=false -Dgeometry=quads -Dspp=512
- -->
+<!--
+Parameters written as $name:default can be overridden on the command line,
+e.g. mitsuba scenes/9_rebuttal_sphere/1_wildcard_icosphere_path_xs.xml -Dspp=64
+The experiment configs in scripts/experiments/ set them in the same way.
+-->
 <scene version="0.6.0">
 	<integrator type="$integrator:path">
 		<integer name="maxDepth" value="$maxDepth:3"/>
@@ -14,13 +14,12 @@ To run it directly you must give values to all wildcards, e.g.:
 	
     <!-- Camera. This version looks at the hemisphere from outside -->
     <!-- <sensor type="perspective">
-        <string name="fov_axis" value="x"/>
         <float name="fov" value="40"/>
         <transform name="toWorld">
             <lookAt origin="0, -35, 5" target="0, 0, 4" up="0, 0, 1"/>
         </transform>
         <sampler type="independent">
-            <integer name="sample_count" value="64"/>
+            <integer name="sampleCount" value="$spp:4"/>
         </sampler>
         <film type="hdrfilm">
             <integer name="width" value="800"/>
@@ -29,13 +28,11 @@ To run it directly you must give values to all wildcards, e.g.:
     </sensor>  -->
     <!-- Camera. This version looks at the center of the hemisphere from inside -->
     <sensor type="orthographic">
-        <string name="fov_axis" value="x"/>
-        <float name="fov" value="40"/>
         <transform name="toWorld">
             <lookAt origin="0, 0, 0.1" target="0, 0, 0" up="0, 1, 0"/>
         </transform>
         <sampler type="independent">
-            <integer name="sample_count" value="64"/>
+            <integer name="sampleCount" value="$spp:4"/>
         </sampler>
         <film type="hdrfilm">
             <integer name="width" value="64"/>

@@ -1,78 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- 
-Note: this file has many wildcards so that it can be used from the scripts/experiments/ script
-To run it directly you must give values to all wildcards, e.g.:
-	./build/release/mitsuba/mitsuba scenes/1_wildcard_spotlight/wildcard_spotlight_quads.xml -Dintegrator=doublestep -DmaxDepth=3 -DrrDepth=4 -DuseBVH=true -DdisableNEE=false -DmaxLeafSize=2 -DleafSamplingMode=SphericalAABB -DoutputDebugCSV=false -Dgeometry=quads -Dspp=512
- -->
+<!--
+Parameters written as $name:default can be overridden on the command line,
+e.g. mitsuba scenes/22_wildcard_asteroids_smallerspotlight/wildcard_spotlight.xml -Dspp=64
+The experiment configs in scripts/experiments/ set them in the same way.
+-->
 <scene version="0.6.0">
 	<integrator type="$integrator:oneehgspath_2step">
 		<integer name="maxDepth" value="$maxDepth:3"/>
 		<integer name="rrDepth" value="$rrDepth:5"/>
 		<boolean name="useBVH" value="$useBVH:true"/>
 		<boolean name="disableNEE" value="$disableNEE:false"/>
-<!-- 
-        <float name="l2Probability" value="$l2Probability:1.0"/>
-		<float name="l2MinThroughput" value="$l2MinThroughput:0.0"/>
-		<integer name="l2MaxDepth" value="$l2MaxDepth:-1"/> -->
-
-		<!-- <boolean name="enableStrategyB " value="$enableStrategyB:true"/>
-		<float name="bvhPdfEvalProbability" value="$bvhPdfEvalProbability:1"/> -->
-
-
-		<!-- Properties for the fastdoublestep integrator -->
-        <!-- <float name="l2Probability" value="$l2Probability:1.0"/>
-		<float name="l2MinThroughput" value="$l2MinThroughput:0.0"/>
-		<integer name="l2MaxDepth" value="$l2MaxDepth:-1"/>
-		<float name="debug1" value="$debug1:0"/> 
-		<float name="debug2" value="$debug2:0"/> 
-		<float name="debug4" value="$debug4:1"/>  -->
-		<!-- m_l2Probability = props.getFloat("l2Probability", 1.0f);
-        m_l2MinThroughput = props.getFloat("l2MinThroughput", 0.0f);
-        m_l2MaxDepth = props.getInteger("l2MaxDepth", -1);
-
-        // Compatibility with the original debug toggles.
-        m_debug1 = props.getFloat("debug1", 1.f); // gate entire L2 block
-        m_debug2 = props.getFloat("debug2", 1.f); // gate strategy A contribution
-        m_debug4 = props.getFloat("debug4", 1.f); // MIS on/off -->
 	</integrator>
-	<geometrybvh type="samplingbvh"> 
-		<!-- Note: Now the geometrybvh is a separate plugin, so it can have its own props here: -->
-		<!-- <integer name="maxDepth" value="$bvhMaxDepth:16"/> NOTE: Removed in favor of maxDepth -->
+	<geometrybvh type="samplingbvh">
 		<integer name="maxDepth" value="$bvhMaxDepth:16"/>
 		<string name="samplingMode" value="$leafSamplingMode:SphericalAABB"/>
-		<!-- Valid values: Primitive, SphericalAABB -->
 		<boolean name="outputDebugCSV" value="$outputDebugCSV:false"/>
 		<boolean name="enableLightcuts" value="$enableLightcuts:false"/>
 		<float name="lightcutThreshold" value="$lightcutThreshold:0"/>
-		
-		<float name="gaussianSAThreshold" value="$gaussianSAThreshold:0.031"/> 
-		<!-- ^ threshold for treating a gaussian as a point (0:never ... 4PI: always; .01*PI or .001*PI might be reasonable) -->
-		<boolean name="uniformImportance" value="$uniformImportance:false"/> 
+		<float name="gaussianSAThreshold" value="$gaussianSAThreshold:0.031"/>
+		<boolean name="uniformImportance" value="$uniformImportance:false"/>
 		<boolean name="specularImportance" value="$specularImportance:false"/>
 		<string name="sigmaPoints" value="$sigmaPoints:precomputed"/>
 		<float name="defensivePDF" value="$defensivePDF:0.000001"/>
-
-
-		<!-- ABLATION SETTINGS 
-            enableAblation("ablateVMF", AblateVMF);
-			enableAblation("ablateGaussian", AblateGaussian);
-			enableAblation("ablateCosineXs", AblateCosineXs);
-			enableAblation("ablateCosineXe", AblateCosineXe);
-			enableAblation("ablateDistanceXs", AblateDistanceXs);
-			enableAblation("ablateDistanceXe", AblateDistanceXe);
-			enableAblation("ablateAlbedo", AblateAlbedo);
-		-->
 		<boolean name="ablateVMF" value="$ablateVMF:false"/>
 		<boolean name="ablateGaussian" value="$ablateGaussian:false"/>
 		<boolean name="ablateCosineXs" value="$ablateCosineXs:false"/>
 		<boolean name="ablateCosineXe" value="$ablateCosineXe:false"/>
 		<boolean name="ablateDistanceXs" value="$ablateDistanceXs:false"/>
-		<boolean name="ablateDistanceXe" value="$ablateDistanceXe:false"/>	
-		<boolean name="ablateAlbedo" value="$ablateAlbedo:false"/>		
-
-
-
-		<!-- <float name="kappaThreshold" value="0"/> NOTE: Does nothing for now -->
+		<boolean name="ablateDistanceXe" value="$ablateDistanceXe:false"/>
+		<boolean name="ablateAlbedo" value="$ablateAlbedo:false"/>
 	</geometrybvh>
 	
 	<sensor type="perspective">
