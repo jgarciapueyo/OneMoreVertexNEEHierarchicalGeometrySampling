@@ -163,28 +163,15 @@ def create_exr_vector_split(exr_paths, output_path="output.pdf", exposure=2.5, s
     plt.close(fig)
     print(f"Success! Vector PDF saved to {output_path}")
 
-# ==========================================
-# Example Usage
-# ==========================================
 if __name__ == "__main__":
-    my_exr_images = [
-        # "thinlens_lighthouse_path_2_100kspp_36min.exr",
-        # "thinlens_lighthouse_glinttracermis_2_2kspp_105s.exr",
-        "lighthouse_path_2_4500spp_90s.exr",
-        "lighthouse_glinttracermis_2_2kspp_90s.exr",
-        
-    ]
-    
-    # my_texts = [
-    #     "PT, thinlens",
-    #     "PT, glinttracer",
-    #     "PT, glinttracer",
-    #     "PT, glinttracer"
-
-    # ]
-    
-    # Run the function, applying +2.5 EV
-    create_exr_vector_split(my_exr_images, "comparison_figure.pdf", exposure=2.5, horizontal_split=True, slant_offset=-70)
-# ==========================================
-# Example Usage
-# ==========================================
+    import argparse
+    ap = argparse.ArgumentParser(description="Split two or more renders of the Lighthouse scene into slanted "
+                                             "slices and save them as a vector PDF (Figs. 1 and 11).")
+    ap.add_argument("images", nargs="+", help="EXR renders, e.g. results/fig11/pt.exr results/fig11/ours.exr")
+    ap.add_argument("-o", "--output", default="comparison_figure.pdf")
+    ap.add_argument("--exposure", type=float, default=2.5, help="exposure in EV")
+    ap.add_argument("--slant-offset", type=int, default=-70)
+    ap.add_argument("--vertical", action="store_true", help="vertical instead of horizontal split")
+    args = ap.parse_args()
+    create_exr_vector_split(args.images, args.output, exposure=args.exposure,
+                            horizontal_split=not args.vertical, slant_offset=args.slant_offset)

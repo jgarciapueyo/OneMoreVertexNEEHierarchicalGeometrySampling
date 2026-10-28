@@ -1,4 +1,4 @@
-# Host-side Python dependencies for scripts/experiments/ and the scene helper scripts
+# Python dependencies of scripts/ and of the scene helper scripts (installed in the Docker image)
 pyyaml
 numpy
 opencv-python<5  # OpenCV 5 cannot read the EXR outputs

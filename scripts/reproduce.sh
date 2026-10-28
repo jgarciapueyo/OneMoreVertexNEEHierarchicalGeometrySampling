@@ -45,11 +45,13 @@ case "$FIG" in
     fig1)   # Lighthouse, thin-lens camera: ours 2k spp vs PT 100k spp
         if [ "$QUICK" = 1 ]; then OURS=16; PT=128; else OURS=2048; PT=100000; fi
         render scenes/7_glints_lighthouse/lighthouse_thinlens_oneehgsptracermis.xml $OURS results/fig1/ours.exr
-        render scenes/7_glints_lighthouse/lighthouse_thinlens_path.xml $PT results/fig1/pt.exr ;;
+        render scenes/7_glints_lighthouse/lighthouse_thinlens_path.xml $PT results/fig1/pt.exr
+        python3 scripts/figures/split_lighthouse.py results/fig1/pt.exr results/fig1/ours.exr -o results/fig1/fig1.pdf ;;
     fig11)  # Lighthouse, perspective camera, equal time: ours 2k spp vs PT 4500 spp
         if [ "$QUICK" = 1 ]; then OURS=16; PT=32; else OURS=2048; PT=4500; fi
         render scenes/7_glints_lighthouse/lighthouse_oneehgsptracermis.xml $OURS results/fig11/ours.exr
-        render scenes/7_glints_lighthouse/lighthouse_path.xml $PT results/fig11/pt.exr ;;
+        render scenes/7_glints_lighthouse/lighthouse_path.xml $PT results/fig11/pt.exr
+        python3 scripts/figures/split_lighthouse.py results/fig11/pt.exr results/fig11/ours.exr -o results/fig11/fig11.pdf ;;
     fig4)   # Importance visualization: per-node CSV and total variation distance
         mkdir -p results/fig4
         mitsuba -z scenes/0_importance_quads/importance_quads.xml -DoutputDebugCSV=true -Dspp=1 \
