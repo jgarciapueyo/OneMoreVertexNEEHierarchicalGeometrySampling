@@ -287,7 +287,7 @@ bool SamplingBVH::sampleLeafPrimitive(
         // Correctness fallback: preserve area-proportional sampling even if alias data is missing.
         Float total_leaf_area = 0.0f;
         for (uint32_t i = 0; i < leafNode.nLeafPrimitives; ++i) {
-            const BVHPrimitive &p = scene->getSamplingBVH()->getPrimitive(leafNode.primitivesOffset + i);
+            const BVHPrimitive &p = getPrimitive(leafNode.primitivesOffset + i);
             const TriMesh *m = scene->getMeshes()[p.meshIndex];
             const Triangle &t = m->getTriangles()[p.triangleIndex];
             total_leaf_area += t.surfaceArea(m->getVertexPositions());
@@ -301,7 +301,7 @@ bool SamplingBVH::sampleLeafPrimitive(
         localPrimIdx = leafNode.nLeafPrimitives - 1;
 
         for (uint32_t i = 0; i < leafNode.nLeafPrimitives; ++i) {
-            const BVHPrimitive &p = scene->getSamplingBVH()->getPrimitive(leafNode.primitivesOffset + i);
+            const BVHPrimitive &p = getPrimitive(leafNode.primitivesOffset + i);
             const TriMesh *m = scene->getMeshes()[p.meshIndex];
             const Triangle &t = m->getTriangles()[p.triangleIndex];
 
@@ -314,7 +314,7 @@ bool SamplingBVH::sampleLeafPrimitive(
     }
     
     // 3. Fetch the specifically chosen primitive
-    const BVHPrimitive &prim = scene->getSamplingBVH()->getPrimitive(leafNode.primitivesOffset + localPrimIdx);
+    const BVHPrimitive &prim = getPrimitive(leafNode.primitivesOffset + localPrimIdx);
     const std::vector<TriMesh*> &meshes = scene->getMeshes();
     const TriMesh *mesh = meshes[prim.meshIndex];
     const Triangle& tri = mesh->getTriangles()[prim.triangleIndex];
@@ -510,14 +510,7 @@ bool SamplingBVH::intersectionInNode(
         return false;
     }
 
-    const std::vector<TriMesh*> &meshes = scene->getMeshes();
-    uint32_t meshIndex = 0xFFFFFFFF;
-    for (uint32_t i = 0; i < meshes.size(); ++i) {
-        if (meshes[i] == hitMesh) {
-            meshIndex = i;
-            break;
-        }
-    }
+    uint32_t meshIndex = getMeshIndex(hitMesh);
 
     if (meshIndex == 0xFFFFFFFF) {
         return false;
@@ -643,14 +636,7 @@ bool SamplingBVH::intersectionInLeafNode(
     }
 
     // Find the mesh index in the scene's mesh list
-    const std::vector<TriMesh*> &meshes = scene->getMeshes();
-    uint32_t meshIndex = 0xFFFFFFFF;
-    for (uint32_t i = 0; i < meshes.size(); ++i) {
-        if (meshes[i] == hitMesh) {
-            meshIndex = i;
-            break;
-        }
-    }
+    uint32_t meshIndex = getMeshIndex(hitMesh);
 
     if (meshIndex == 0xFFFFFFFF) {
         return false;
@@ -698,14 +684,7 @@ Float SamplingBVH::pdfGeometry(
         return 0.0f;
     }
 
-    const std::vector<TriMesh*> &meshes = scene->getMeshes();
-    uint32_t meshIndex = 0xFFFFFFFF;
-    for (uint32_t i = 0; i < meshes.size(); ++i) {
-        if (meshes[i] == hitMesh) {
-            meshIndex = i;
-            break;
-        }
-    }
+    uint32_t meshIndex = getMeshIndex(hitMesh);
 
     if (meshIndex == 0xFFFFFFFF) {
         return 0.0f;
@@ -1077,14 +1056,7 @@ Float SamplingBVH::pdfGeometryCamera(
         return 0.0f;
     }
 
-    const std::vector<TriMesh *> &meshes = scene->getMeshes();
-    uint32_t meshIndex = 0xFFFFFFFF;
-    for (uint32_t i = 0; i < meshes.size(); ++i) {
-        if (meshes[i] == hitMesh) {
-            meshIndex = i;
-            break;
-        }
-    }
+    uint32_t meshIndex = getMeshIndex(hitMesh);
 
     if (meshIndex == 0xFFFFFFFF)
         return 0.0f;
@@ -1448,7 +1420,7 @@ bool SamplingBVH::sampleGeometryCamera(
     const Sensor *sensor,
     const PositionSamplingRecord &pRec_xe,
     Intersection &its_xn,
-    Float &pdf)
+    Float &pdf) const
 {
     if (m_nodes.empty() || m_primitives.empty()) return false;
 

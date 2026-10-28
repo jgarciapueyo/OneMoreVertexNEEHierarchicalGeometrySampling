@@ -1072,10 +1072,10 @@ public:
     /// Return the scene's kd-tree accelerator
     inline const ShapeKDTree *getKDTree() const { return m_kdtree.get(); }
 
-    /// Return the scene's geometry BVH accelerator
-    inline SamplingBVH *getSamplingBVH() { return m_geometryBVH; }
-    /// Return the scene's geometry BVH accelerator
-    inline SamplingBVH *getSamplingBVH() const { return m_geometryBVH.get(); }
+    /// Return the scene's hierarchical geometry sampling structure
+    inline SamplingBVH *getSamplingBVH() { return m_samplingBVH.get(); }
+    /// Return the scene's hierarchical geometry sampling structure
+    inline const SamplingBVH *getSamplingBVH() const { return m_samplingBVH.get(); }
 
     /// Return the a list of all subsurface integrators
     inline ref_vector<Subsurface> &getSubsurfaceIntegrators() { return m_ssIntegrators; }
@@ -1151,7 +1151,7 @@ protected:
     /// \endcond
 private:
     ref<ShapeKDTree> m_kdtree;
-    mutable ref<SamplingBVH> m_geometryBVH;
+    ref<SamplingBVH> m_samplingBVH;
     ref<Sensor> m_sensor;
     ref<Integrator> m_integrator;
     ref<Sampler> m_sampler;

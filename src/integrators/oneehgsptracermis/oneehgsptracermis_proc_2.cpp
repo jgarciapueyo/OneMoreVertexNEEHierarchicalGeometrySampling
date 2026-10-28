@@ -78,7 +78,7 @@ public:
         result->clear();
         m_hilbertCurve.initialize(TVector2<uint8_t>(rect->getSize()));
 
-        SamplingBVH *bvh = m_scene->getSamplingBVH();
+        const SamplingBVH *bvh = m_scene->getSamplingBVH();
         if (!bvh || !bvh->isBuilt()) {
             Log(EWarn, "ONEEEHGSPTracerMIS: SamplingBVH not available or not built!");
             return;
@@ -127,7 +127,7 @@ private:
         return W_e.isZero() ? 0.f : dRec.pdf;
     }
 
-    void traceSample(ONEEEHGSPTracerMISWorkResult *result, SamplingBVH *bvh) {
+    void traceSample(ONEEEHGSPTracerMISWorkResult *result, const SamplingBVH *bvh) {
         std::cout << "Tracing sample " << std::endl;
         // ----------------------------------------------------------------
         // 1. Sample emitter position x_e

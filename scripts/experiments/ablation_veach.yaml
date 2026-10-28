@@ -32,10 +32,10 @@ global_defaults:
   enableLightcuts: false
   lightcutThreshold: 1.5
   gaussianSAThreshold: 0.03141592
-  useUniformBVHSampling: 1
+  uniformImportance: false
   geometry: geometry=quads-disney-spec1.0-rough0.05-k40.xml
-  enableSpecular: 1
-  enableFastLUT: 1 # Should be 1 to precompute gaussians (>1.5 evals the lut once at the cost of variance)
+  specularImportance: true
+  sigmaPoints: precomputed
   defensivePDF: 0.000001
 
 analysis:
@@ -86,5 +86,5 @@ named_configs:
 
   - name: nospec
     params:
-      enableSpecular: 0
+      specularImportance: false
 

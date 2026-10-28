@@ -37,7 +37,7 @@ Scene::Scene()
     m_kdtree = new ShapeKDTree();
     m_sourceFile = new fs::path();
     m_destinationFile = new fs::path();
-    m_geometryBVH = new SamplingBVH();
+    m_samplingBVH = new SamplingBVH();
 }
 
 Scene::Scene(const Properties &props)
@@ -83,7 +83,7 @@ Scene::Scene(const Properties &props)
     m_sourceFile = new fs::path();
     m_destinationFile = new fs::path();
     // create default BVH; a <geometrybvh> child in the scene XML will override it
-    m_geometryBVH = new SamplingBVH();
+    m_samplingBVH = new SamplingBVH();
 }
 
 Scene::Scene(Scene *scene) : NetworkedObject(Properties()) {
@@ -107,7 +107,7 @@ Scene::Scene(Scene *scene) : NetworkedObject(Properties()) {
     m_specialShapes = scene->m_specialShapes;
     m_degenerateSensor = scene->m_degenerateSensor;
     m_degenerateEmitters = scene->m_degenerateEmitters;
-    m_geometryBVH = scene->m_geometryBVH;
+    m_samplingBVH = scene->m_samplingBVH;
 }
 
 Scene::Scene(Stream *stream, InstanceManager *manager)
@@ -168,7 +168,7 @@ Scene::Scene(Stream *stream, InstanceManager *manager)
     for (size_t i=0; i<count; ++i)
         m_netObjects.push_back(static_cast<NetworkedObject *>(manager->getInstance(stream)));
 
-    m_geometryBVH = new SamplingBVH();
+    m_samplingBVH = new SamplingBVH();
 
     initialize();
 }
@@ -326,7 +326,7 @@ void Scene::configure() {
 
 void Scene::invalidate() {
     m_kdtree = new ShapeKDTree();
-    m_geometryBVH = new SamplingBVH();
+    m_samplingBVH = new SamplingBVH();
 }
 
 void Scene::initialize() {
@@ -357,14 +357,17 @@ void Scene::initialize() {
         m_aabb = m_kdtree->getAABB();
     }
 
-    if (!m_geometryBVH->isBuilt()) {
-        Log(EInfo, "Building geometry BVH with max depth %d", m_geometryBVH->getMaxDepth());
-        ref<Timer> bvhTimer = new Timer();
-        m_geometryBVH->buildBVH(this);
-        m_geometryBVH->buildAggregates(this);
-        Log(EInfo, "Geometry BVH build time: %s", timeString(bvhTimer->getSeconds(), true).c_str());
-    }
+    /* Build the hierarchical geometry sampling structure if the integrator uses it */
+    bool needsSamplingBVH = false;
+    for (const Integrator *it = m_integrator.get(); it; it = it->getSubIntegrator(0))
+        needsSamplingBVH |= it->needsSamplingBVH();
 
+    if (needsSamplingBVH && !m_samplingBVH->isBuilt()) {
+        ref<Timer> bvhTimer = new Timer();
+        m_samplingBVH->buildBVH(this);
+        m_samplingBVH->buildAggregates(this);
+        Log(EInfo, "SamplingBVH build time: %s", timeString(bvhTimer->getSeconds(), true).c_str());
+    }
 
     /* Make sure that there are no duplicates */
     m_emitters.ensureUnique();
@@ -542,7 +545,7 @@ void Scene::addChild(const std::string &name, ConfigurableObject *child) {
         m_shapes.push_back(shape);
     } else if (cClass->derivesFrom(MTS_CLASS(SamplingBVH))) {
         // Allow a <geometrybvh> element in the scene XML to configure the BVH
-        m_geometryBVH = static_cast<SamplingBVH *>(child);
+        m_samplingBVH = static_cast<SamplingBVH *>(child);
      } else if (cClass->derivesFrom(MTS_CLASS(Scene))) {
         ref<Scene> scene = static_cast<Scene *>(child);
         /* A scene from somewhere else has been included.

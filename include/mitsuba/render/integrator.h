@@ -114,6 +114,15 @@ public:
      */
     virtual const Integrator *getSubIntegrator(int index) const;
 
+    /**
+     * \brief Does this integrator sample path vertices from the scene's
+     * \ref SamplingBVH (hierarchical geometry sampling)?
+     *
+     * The scene only builds the SamplingBVH when the integrator (or one of
+     * its nested integrators) returns \c true here.
+     */
+    virtual bool needsSamplingBVH() const { return false; }
+
     /// Serialize this integrator to a binary data stream
     void serialize(Stream *stream, InstanceManager *manager) const;
 

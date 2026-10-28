@@ -177,28 +177,32 @@ void SamplingBVH::print() {
     }
     ref<Sampler> sampler = m_scene->getSampler();
 
-    // 1- Instance the reference xe and xs - emitter and floor samples for importance computation
+    // 1. Fixed query vertices: x_s is "debugQueryPoint" (an upward-facing
+    //    surface point that uses the BSDF of shape "debugQueryShape"), and x_e
+    //    is a sample on the first emitter of the scene.
     const ref_vector<Shape> &shapes = m_scene->getShapes();
-    auto shape = shapes[2];
     const ref_vector<Emitter> &emitters = m_scene->getEmitters();
-    auto emitter = emitters[0];
-    std::cout << "There are " << shapes.size() << " shapes and " << emitters.size() << " emitters in the scene.\n";
-    std::cout << "Using shape: " << shape->toString() << " and emitter: " << emitter->toString() << " for importance debugging.\n";
+    if (m_debugQueryShape < 0 || (size_t) m_debugQueryShape >= shapes.size() || emitters.empty()) {
+        Log(EError, "outputDebugCSV: debugQueryShape=%i is out of range (%i shapes) or the scene "
+            "has no emitter", m_debugQueryShape, (int) shapes.size());
+        return;
+    }
+    const Shape *shape = shapes[m_debugQueryShape].get();
+    const Emitter *emitter = emitters[0].get();
 
     Intersection its_xs;
-    its_xs.p = Point(2.43008, -0.0490401, 0); // Dummy surface sample at origin facing up
-    its_xs.shFrame = Frame(Normal(0, 0, 1)); // Normal facing up
+    its_xs.p = m_debugQueryPoint;
+    its_xs.shFrame = Frame(Normal(0, 0, 1));
     its_xs.geoFrame = Frame(Normal(0, 0, 1));
-    its_xs.wi = Vector(0.f, 0.f, 1.f);       
+    its_xs.wi = Vector(0.f, 0.f, 1.f);
     its_xs.shape = shape;
-    
-    std::cout << "Shape: " << shape->toString() << std::endl;
 
     PositionSamplingRecord pRec_xe;
     emitter->samplePosition(pRec_xe, sampler->next2D());
-    pRec_xe.object = emitter.get();
+    pRec_xe.object = emitter;
 
-    std::cout << "Sampled emitter position: " << pRec_xe.p.toString() << ", normal: " << pRec_xe.n.toString() << ", pdf: " << pRec_xe.pdf << std::endl;
+    Log(EInfo, "Writing %s: x_s = %s on shape %i, x_e = %s", BVH_DEBUG_FILE.c_str(),
+        its_xs.p.toString().c_str(), m_debugQueryShape, pRec_xe.p.toString().c_str());
 
     out << "node_index,level,aabb_min_x,aabb_min_y,aabb_min_z,aabb_max_x,aabb_max_y,aabb_max_z,"
            "n_subtree_primitives,n_leaf_primitives,node_type,valid,surface_area,"
@@ -212,7 +216,6 @@ void SamplingBVH::print() {
         if ((DO_ONLY_LEAVES && !m_nodes[i].isLeaf()) || !levelEnabled) {
             continue; // Only do this for leaf nodes for now
         }
-        if (i%100 == 0) std::cout << "Processing node " << i << " / " << m_nodes.size() << std::endl;
         std::vector<Normal> sampledNormals(N_SAMPLES);
         std::vector<Point3f> sampledPoints(N_SAMPLES);
         std::vector<Float> sampleWeights(N_SAMPLES);
@@ -339,7 +342,6 @@ void SamplingBVH::print() {
             std::exit(EXIT_FAILURE);
         }
     }
-    std::cout << "Finished processing all nodes. Output written to " << BVH_DEBUG_FILE << std::endl;
     out.close();
     
 

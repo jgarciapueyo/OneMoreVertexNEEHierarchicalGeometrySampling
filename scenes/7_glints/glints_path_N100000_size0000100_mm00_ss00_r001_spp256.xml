@@ -4,12 +4,10 @@
 		<integer name="maxDepth" value="2"/>
 	</integrator>
 	<geometrybvh type="samplingbvh">
-		<integer name="maxLeafSize" value="4"/>
 		<string name="samplingMode" value="Primitive"/>
 		<float name="defensivePDF" value="0.000001"/>
-		<float name="debug1" value="1"/>
-		<float name="debug2" value="0"/>
-		<float name="debug3" value="0"/>
+		<boolean name="specularImportance" value="false"/>
+		<string name="sigmaPoints" value="perCall"/>
 	</geometrybvh>
 	<sensor type="perspective">
 		<string name="fovAxis" value="smaller"/>

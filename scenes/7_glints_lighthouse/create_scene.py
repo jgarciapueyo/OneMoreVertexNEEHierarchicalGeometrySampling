@@ -156,16 +156,15 @@ def add_integrator(scene, integrator_type: str):
         raise ValueError(f"Unknown integrator: {integrator_type}")
 
 
-def add_geometry_bvh(scene, max_leaf_size: int = 4,
+def add_geometry_bvh(scene, bvh_max_depth: int = 16,
                      sampling_mode: str = "Primitive"):
-    """Add the BVH plugin (required by glinttracer and doublestep)."""
+    """Add the SamplingBVH plugin used by the oneehgs* integrators."""
     gbvh = SubElement(scene, "geometrybvh", type="samplingbvh")
-    SubElement(gbvh, "integer", name="maxLeafSize",   value=str(max_leaf_size))
-    SubElement(gbvh, "string",  name="samplingMode",  value=sampling_mode)
-    SubElement(gbvh, "float",   name="defensivePDF",  value="0.000001")
-    SubElement(gbvh, "float",   name="debug1",        value="1")   # full importance
-    SubElement(gbvh, "float",   name="debug2",        value="0")   # diffuse importance
-    SubElement(gbvh, "float",   name="debug3",        value="0")   # standard LUT
+    SubElement(gbvh, "integer", name="maxDepth",           value=str(bvh_max_depth))
+    SubElement(gbvh, "string",  name="samplingMode",       value=sampling_mode)
+    SubElement(gbvh, "float",   name="defensivePDF",       value="0.000001")
+    SubElement(gbvh, "boolean", name="specularImportance", value="false")
+    SubElement(gbvh, "string",  name="sigmaPoints",        value="perCall")
 
 
 def add_sensor(scene, resx: int, resy: int, samples: int, fov: float = 45.0):
@@ -344,7 +343,7 @@ def create_scene(
     resy:             int   = 512,
     samples:          int   = 256,
     fov:              float = 45.0,
-    max_leaf_size:    int   = 4,
+    bvh_max_depth:    int   = 16,
     sampling_mode:    str   = "Primitive",
     obj_path:         str   = QUAD_OBJ,
     seed:             int   = 42,
@@ -354,7 +353,7 @@ def create_scene(
     add_integrator(scene, integrator)
 
     # BVH is required by glinttracer and doublestep; harmless for others
-    add_geometry_bvh(scene, max_leaf_size=max_leaf_size,
+    add_geometry_bvh(scene, bvh_max_depth=bvh_max_depth,
                      sampling_mode=sampling_mode)
 
     add_sensor(scene, resx=resx, resy=resy, samples=samples, fov=fov)
@@ -468,7 +467,7 @@ def main():
     parser.add_argument("--resx", type=int, default=700)
     parser.add_argument("--resy", type=int, default=512)
     parser.add_argument("--fov", type=float, default=45.0)
-    parser.add_argument("--max_leaf_size", type=int, default=4)
+    parser.add_argument("--bvh_max_depth", type=int, default=16)
     parser.add_argument("--sampling_mode", default="Primitive",
                         choices=["Primitive", "SphericalAABB"])
     parser.add_argument("--seed", type=int, default=42,
@@ -504,7 +503,7 @@ def main():
         resx=args.resx,
         resy=args.resy,
         fov=args.fov,
-        max_leaf_size=args.max_leaf_size,
+        bvh_max_depth=args.bvh_max_depth,
         sampling_mode=args.sampling_mode,
         obj_path=args.obj_path,
         seed=args.seed,

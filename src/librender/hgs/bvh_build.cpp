@@ -16,74 +16,50 @@
 
 MTS_NAMESPACE_BEGIN
 
-SamplingBVH::SamplingBVH(uint32_t maxDepth, SamplingBVHSamplingMode samplingMode)
-    : ConfigurableObject(Properties()), m_maxDepth(maxDepth), m_samplingMode(samplingMode), m_ablationMask(AblateNone) {
-    if (m_maxDepth < 1) {
-        m_maxDepth = 1;
-    }
-    m_rrStrength = 1.0f;
-}
-
 SamplingBVH::SamplingBVH(const Properties &props)
-    : ConfigurableObject(props),
-      m_maxDepth(props.getInteger("maxDepth", 16)), // Default to depth 16 if not provided
-      m_samplingMode(SamplingBVHSamplingMode::Primitive),
-    m_vmfLUT(), // Load VMF LUT during construction
-    m_ablationMask(AblateNone)
-{
-    if (m_maxDepth < 1) {
-        m_maxDepth = 1;
-    }
-    
+    : ConfigurableObject(props) {
+    m_maxDepth = (uint32_t) std::max(1, props.getInteger("maxDepth", 16));
+
     std::string samplingModeStr = props.getString("samplingMode", "Primitive");
-    if (samplingModeStr == "SphericalAABB") {
-        m_samplingMode = SamplingBVHSamplingMode::SphericalAABB;
-    } else if (samplingModeStr == "Primitive") {
+    if (samplingModeStr == "Primitive")
         m_samplingMode = SamplingBVHSamplingMode::Primitive;
-    } else if (samplingModeStr == "Primitive_3_retries") {
-        m_samplingMode = SamplingBVHSamplingMode::Primitive_3_retries;
-    } else if (samplingModeStr == "Primitive_5_retries") {
-        m_samplingMode = SamplingBVHSamplingMode::Primitive_5_retries;
-    } else if (samplingModeStr == "SphericalAABB_anyNode") {
+    else if (samplingModeStr == "SphericalAABB")
+        m_samplingMode = SamplingBVHSamplingMode::SphericalAABB;
+    else if (samplingModeStr == "SphericalAABB_anyNode")
         m_samplingMode = SamplingBVHSamplingMode::SphericalAABB_anyNode;
-    }
-    else {
-        SLog(EWarn, "SamplingBVH: Unknown sampling mode '%s', defaulting to 'Primitive'", 
-            samplingModeStr.c_str());
-    }
+    else
+        Log(EError, "Unknown samplingMode \"%s\" (valid: Primitive, SphericalAABB, "
+            "SphericalAABB_anyNode)", samplingModeStr.c_str());
 
     m_enableLightcuts = props.getBoolean("enableLightcuts", false);
     m_lightcutThreshold = props.getFloat("lightcutThreshold", 2.f);
-    m_gaussianSAThreshold = props.getFloat("gaussianSAThreshold", M_PI * 1e-2f);
-    m_kappaThreshold = props.getFloat("kappaThreshold", 10.f);
-    m_angularSAHWeight = std::max(0.0f, props.getFloat("angularSAHWeight", 0.0f));
-    m_angularSAHKappaScale = std::max(1e-4f, props.getFloat("angularSAHKappaScale", 10.0f));
+    m_gaussianSAThreshold = props.getFloat("gaussianSAThreshold", (Float) (M_PI * 1e-2));
+    m_angularSAHWeight = std::max((Float) 0.0f, props.getFloat("angularSAHWeight", 0.0f));
+    m_angularSAHKappaScale = std::max((Float) 1e-4f, props.getFloat("angularSAHKappaScale", 10.0f));
     m_logAngularSAHStats = props.getBoolean("logAngularSAHStats", true);
 
-    // Read BVH importance parameters (default: 1.0 = full importance, 0.0 = ignore): 
-    m_debug1 = props.getFloat("debug1", 1.0f);
-    m_debug2 = props.getFloat("debug2", 1.0f);
-    m_debug3 = props.getFloat("debug3", 1.0f);
-    m_debug4 = props.getFloat("debug4", 1.0f);
-    m_debug5 = props.getFloat("debug5", 1.0f);
+    /* Node importance weight */
+    m_uniformImportance = props.getBoolean("uniformImportance", false);
+    m_specularImportance = props.getBoolean("specularImportance", true);
+    std::string sigmaPoints = props.getString("sigmaPoints", "precomputed");
+    if (sigmaPoints == "precomputed")
+        m_sigmaPoints = EPrecomputedSigmaPoints;
+    else if (sigmaPoints == "perCall")
+        m_sigmaPoints = EPerCallSigmaPoints;
+    else if (sigmaPoints == "directionAtMean")
+        m_sigmaPoints = EDirectionAtMean;
+    else
+        Log(EError, "Unknown sigmaPoints \"%s\" (valid: precomputed, perCall, "
+            "directionAtMean)", sigmaPoints.c_str());
 
-    if (m_debug1 < .99f || m_debug2 < .99f || m_debug3 < .99f || m_debug4 < .99f || m_debug5 < .99f) {
-        SLog(EWarn, "SamplingBVH: Configured debug values: debug1=%.2f, debug2=%.2f, debug3=%.2f, debug4=%.2f, debug5=%.2f\n\n",
-            m_debug1, m_debug2, m_debug3, m_debug4, m_debug5);
-    }
-
-    // more importance params:
-    m_probmult = props.getFloat("importanceMultiplier", 1.0f);
+    m_probmult = std::max((Float) 0.f, props.getFloat("importanceMultiplier", 1.0f));
     m_defensive_pdf = props.getFloat("defensivePDF", 1e-16f);
-    m_probmult = std::max(0.f, m_probmult);
-    m_rrStrength = std::max(0.f, props.getFloat("rrStrength", 0.0f));
 
-    // Intuitive ablation controls: each component can be toggled independently.
+    /* Ablation of the factors of the node importance weight (Fig. 5) */
     auto enableAblation = [&](const char *propertyName, Ablation flag) {
         if (props.getBoolean(propertyName, false))
             m_ablationMask |= static_cast<uint32_t>(flag);
     };
-
     enableAblation("ablateVMF", AblateVMF);
     enableAblation("ablateGaussian", AblateGaussian);
     enableAblation("ablateCosineXs", AblateCosineXs);
@@ -92,95 +68,74 @@ SamplingBVH::SamplingBVH(const Properties &props)
     enableAblation("ablateDistanceXe", AblateDistanceXe);
     enableAblation("ablateAlbedo", AblateAlbedo);
 
-    if (m_probmult != 1.0f || m_defensive_pdf != 1e-16f) {
-        SLog(EInfo, "SamplingBVH: Configured importance parameters: importanceMultiplier=%.2f, defensivePDF=%.4f",
-            m_probmult, m_defensive_pdf);
-    }
-
-    if (m_ablationMask != AblateNone) {
-        SLog(EWarn,
-            "SamplingBVH: Ablation enabled: mask=%u [VMF=%s, Gaussian=%s, CosineXs=%s, CosineXe=%s, DistanceXs=%s, DistanceXe=%s, Albedo=%s]",
-            m_ablationMask,
-            (m_ablationMask & AblateVMF) ? "true" : "false",
-            (m_ablationMask & AblateGaussian) ? "true" : "false",
-            (m_ablationMask & AblateCosineXs) ? "true" : "false",
-            (m_ablationMask & AblateCosineXe) ? "true" : "false",
-            (m_ablationMask & AblateDistanceXs) ? "true" : "false",
-            (m_ablationMask & AblateDistanceXe) ? "true" : "false",
-            (m_ablationMask & AblateAlbedo) ? "true" : "false");
-    }
-
+    /* Debug CSV used for the importance visualization of Fig. 4 */
     m_outputDebugCSV = props.getBoolean("outputDebugCSV", false);
-
-    const uint32_t defaultEnabledLevels = 0xffffffff; // 1<<3 | 1<<5; // | 1<<4 | 1<<5; // by default enable levels 3, 4 and 5 (but not deeper levels to avoid huge CSV files)
-
-    m_csvEnabledLevels = props.getInteger("csvEnabledLevels", defaultEnabledLevels);
-
-    SLog(EInfo, "SamplingBVH. Summary of the configuration: maxDepth=%u, samplingMode=%s, enableLightcuts=%s, lightcutThreshold=%.2f, gaussianSAThreshold=%.4f, kappaThreshold=%.2f, angularSAHWeight=%.3f, angularSAHKappaScale=%.3f, importanceMultiplier=%.2f, defensivePDF=%.4f, rrStrength=%.3f, outputDebugCSV=%s, csvEnabledLevels=%u",
-        m_maxDepth,
-        (m_samplingMode == SamplingBVHSamplingMode::Primitive) ? "Primitive" : 
-        (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB) ? "SphericalAABB" :
-        (m_samplingMode == SamplingBVHSamplingMode::Primitive_3_retries) ? "Primitive_3_retries" :
-        (m_samplingMode == SamplingBVHSamplingMode::Primitive_5_retries) ? "Primitive_5_retries" :
-        (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB_anyNode) ? "SphericalAABB_anyNode" : "Unknown",
-        m_enableLightcuts ? "true" : "false",
-        m_lightcutThreshold,
-        m_gaussianSAThreshold,
-        m_kappaThreshold,
-        m_angularSAHWeight,
-        m_angularSAHKappaScale,
-        m_probmult,
-        m_defensive_pdf,
-        m_rrStrength,
-        m_outputDebugCSV ? "true" : "false",
-        m_csvEnabledLevels
-    );
+    m_csvEnabledLevels = (uint32_t) props.getLong("csvEnabledLevels", 0xFFFFFFFFLL);
+    m_debugQueryPoint = props.getPoint("debugQueryPoint", m_debugQueryPoint);
+    m_debugQueryShape = props.getInteger("debugQueryShape", m_debugQueryShape);
 }
 
-SamplingBVH::~SamplingBVH() {
-    // vectors clean up automatically
+SamplingBVH::SamplingBVH(Stream *stream, InstanceManager *manager)
+    : ConfigurableObject(stream, manager) {
+    m_maxDepth = stream->readUInt();
+    m_samplingMode = static_cast<SamplingBVHSamplingMode>(stream->readUInt());
+    // Note: the remaining configuration and the BVH data are not serialized;
+    // the BVH has to be rebuilt with buildBVH() after deserialization.
+}
+
+SamplingBVH::~SamplingBVH() { }
+
+std::string SamplingBVH::toString() const {
+    const char *samplingMode =
+        m_samplingMode == SamplingBVHSamplingMode::Primitive ? "Primitive" :
+        m_samplingMode == SamplingBVHSamplingMode::SphericalAABB ? "SphericalAABB" :
+        "SphericalAABB_anyNode";
+    const char *sigmaPoints =
+        m_sigmaPoints == EPrecomputedSigmaPoints ? "precomputed" :
+        m_sigmaPoints == EPerCallSigmaPoints ? "perCall" : "directionAtMean";
+
+    std::ostringstream oss;
+    oss << "SamplingBVH[" << endl
+        << "  maxDepth = " << m_maxDepth << "," << endl
+        << "  samplingMode = " << samplingMode << "," << endl
+        << "  uniformImportance = " << (m_uniformImportance ? "true" : "false") << "," << endl
+        << "  specularImportance = " << (m_specularImportance ? "true" : "false") << "," << endl
+        << "  sigmaPoints = " << sigmaPoints << "," << endl
+        << "  gaussianSAThreshold = " << m_gaussianSAThreshold << "," << endl
+        << "  defensivePDF = " << m_defensive_pdf << "," << endl
+        << "  importanceMultiplier = " << m_probmult << "," << endl
+        << "  ablationMask = " << m_ablationMask << " [VMF=" << ((m_ablationMask & AblateVMF) != 0)
+        << ", Gaussian=" << ((m_ablationMask & AblateGaussian) != 0)
+        << ", CosineXs=" << ((m_ablationMask & AblateCosineXs) != 0)
+        << ", CosineXe=" << ((m_ablationMask & AblateCosineXe) != 0)
+        << ", DistanceXs=" << ((m_ablationMask & AblateDistanceXs) != 0)
+        << ", DistanceXe=" << ((m_ablationMask & AblateDistanceXe) != 0)
+        << ", Albedo=" << ((m_ablationMask & AblateAlbedo) != 0) << "]," << endl
+        << "  enableLightcuts = " << (m_enableLightcuts ? "true" : "false")
+        << " (threshold " << m_lightcutThreshold << ")," << endl
+        << "  angularSAHWeight = " << m_angularSAHWeight
+        << " (kappa scale " << m_angularSAHKappaScale << ")," << endl
+        << "  outputDebugCSV = " << (m_outputDebugCSV ? "true" : "false") << endl
+        << "]";
+    return oss.str();
 }
 
 size_t SamplingBVH::getMemoryUsageBytes() const {
     size_t totalBytes = sizeof(SamplingBVH);
-
     totalBytes += m_nodes.capacity() * sizeof(BVHNode);
     totalBytes += m_primitives.capacity() * sizeof(BVHPrimitive);
     totalBytes += m_nodeInfos.capacity() * sizeof(BVHNodeInfo);
-
     totalBytes += m_leafAliasTableOffsets.capacity() * sizeof(uint32_t);
     totalBytes += m_leafAliasProb.capacity() * sizeof(Float);
     totalBytes += m_leafAliasAlias.capacity() * sizeof(uint32_t);
-
-    totalBytes += m_primitiveLevels.capacity() * sizeof(uint32_t);
     totalBytes += m_meshOffsets.capacity() * sizeof(uint32_t);
     totalBytes += m_triangleToPrim.capacity() * sizeof(uint32_t);
-
-    std::cout << "Capacities of each substructure: " << std::endl;
-    std::cout << "  Nodes: " << m_nodes.size() << " / " << m_nodes.capacity() << " (" << m_nodes.capacity() * sizeof(BVHNode) << "B, "<< (m_nodes.capacity() * sizeof(BVHNode)) / (1024 * 1024) << "MB)" << std::endl;
-    std::cout << "  Primitives: " << m_primitives.size() << " / " << m_primitives.capacity() << " (" << m_primitives.capacity() * sizeof(BVHPrimitive) << "B, "<< (m_primitives.capacity() * sizeof(BVHPrimitive)) / (1024 * 1024) << "MB)" << std::endl;
-    std::cout << "  NodeInfos: " << m_nodeInfos.size() << " / " << m_nodeInfos.capacity() << " (" << m_nodeInfos.capacity() * sizeof(BVHNodeInfo) << "B, "<< (m_nodeInfos.capacity() * sizeof(BVHNodeInfo)) / (1024 * 1024) << "MB)" << std::endl;
-    std::cout << "  LeafAliasTableOffsets: " << m_leafAliasTableOffsets.size() << " / " << m_leafAliasTableOffsets.capacity() << " (" << m_leafAliasTableOffsets.capacity() * sizeof(uint32_t) << "B, "<< (m_leafAliasTableOffsets.capacity() * sizeof(uint32_t)) / (1024 * 1024) << "MB)" << std::endl;
-    std::cout << "  LeafAliasProb: " << m_leafAliasProb.size() << " / " << m_leafAliasProb.capacity() << " (" << m_leafAliasProb.capacity() * sizeof(Float   ) << "B, "<< (m_leafAliasProb.capacity() * sizeof(Float   )) / (1024 * 1024) << "MB)" << std::endl;
-    std::cout << "  LeafAliasAlias: " << m_leafAliasAlias.size() << " / " << m_leafAliasAlias.capacity() << " (" << m_leafAliasAlias.capacity() * sizeof(uint32_t) << "B, "<< (m_leafAliasAlias.capacity() * sizeof(uint32_t)) / (1024 * 1024) << "MB)" << std::endl;
-    std::cout << "  PrimitiveLevels: " << m_primitiveLevels.size() << " / " << m_primitiveLevels.capacity() << " (" << m_primitiveLevels.capacity() * sizeof(uint32_t) << "B, "<< (m_primitiveLevels.capacity() * sizeof(uint32_t)) / (1024 * 1024) << "MB)" << std::endl;
-    std::cout << "  MeshOffsets: " << m_meshOffsets.size() << " / " << m_meshOffsets.capacity() << " (" << m_meshOffsets.capacity() * sizeof(uint32_t) << "B, "<< (m_meshOffsets.capacity() * sizeof(uint32_t)) / (1024 * 1024) << "MB)" << std::endl;
-    std::cout << "  TriangleToPrim: " << m_triangleToPrim.size() << " / " << m_triangleToPrim.capacity() << " (" << m_triangleToPrim.capacity() * sizeof(uint32_t) << "B, "<< (m_triangleToPrim.capacity() * sizeof(uint32_t)) / (1024 * 1024) << "MB)" << std::endl;
-
     return totalBytes;
 }
 
-SamplingBVH::SamplingBVH(Stream *stream, InstanceManager *manager)
-    : ConfigurableObject(stream, manager) 
-{
-    m_maxDepth = stream->readUInt();
-    uint32_t samplingModeInt = stream->readUInt();
-    m_samplingMode = static_cast<SamplingBVHSamplingMode>(samplingModeInt);
-    m_ablationMask = AblateNone;
-    m_rrStrength = 1.0f;
-    
-    // Note: BVH data (nodes, primitives, etc.) are not serialized here.
-    // They should be rebuilt using buildBVH() after deserialization.
+uint32_t SamplingBVH::getMeshIndex(const Shape *shape) const {
+    std::map<const Shape *, uint32_t>::const_iterator it = m_meshIndices.find(shape);
+    return it != m_meshIndices.end() ? it->second : 0xFFFFFFFFu;
 }
 
 void SamplingBVH::buildBVH(Scene *scene) {
@@ -188,44 +143,17 @@ void SamplingBVH::buildBVH(Scene *scene) {
         SLog(EWarn, "SamplingBVH::build: scene is NULL");
         return;
     }
-    const Integrator *integrator = scene->getIntegrator();
-
-    if (integrator) {
-        bool supportedIntegrator = false;
-        const Integrator *it = integrator;
-
-        // Walk through potential wrapper chains (e.g., adaptive -> subintegrator)
-        while (it) {
-            const std::string className  = it->getClass()->getName();
-            const std::string pluginName = it->getProperties().getPluginName();
-
-            if (pluginName == "oneehgspath" ||
-                pluginName == "oneehgspath_2step" ||
-                pluginName == "oneehgspath_2step_fast" ||
-                pluginName == "oneehgsptracer" ||
-                pluginName == "oneehgsptracermis" ) {
-                supportedIntegrator = true;
-                break;
-            }
-
-            it = it->getSubIntegrator(0);
-        }
-
-        if (!supportedIntegrator) {
-            SLog(EInfo,
-                "SamplingBVH::build: integrator '%s' (plugin '%s') is not supported, disabling SamplingBVH",
-                integrator->getClass()->getName().c_str(),
-                integrator->getProperties().getPluginName().c_str());
-            return;
-        }
-    }
-    m_scene = scene; // Get root scene in case this is a sub-scene
+    Log(EInfo, "Building %s", toString().c_str());
+    m_scene = scene;
     
     // Step 1: Collect all triangles from all meshes
     std::vector<BVHBuildPrimitive> buildPrims;
     
     const std::vector<TriMesh*> &meshes = scene->getMeshes();
-    
+    m_meshIndices.clear();
+    for (size_t i = 0; i < meshes.size(); ++i)
+        m_meshIndices[meshes[i]] = (uint32_t) i;
+
     // Count total triangles for reserve
     size_t totalTriangles = 0;
     for (size_t i = 0; i < meshes.size(); ++i) {
@@ -248,7 +176,7 @@ void SamplingBVH::buildBVH(Scene *scene) {
 
         localPrims.reserve(mesh->getTriangleCount());
         
-        const bool needAngularSAH = m_enableSAH && (m_angularSAHWeight > 0.0f);
+        const bool needAngularSAH = m_angularSAHWeight > 0.0f;
         for (size_t triIdx = 0; triIdx < mesh->getTriangleCount(); ++triIdx) {
             const Float area = triangles[triIdx].surfaceArea(positions);
             if (!std::isfinite(area) || area <= 0.0f) {
@@ -368,17 +296,8 @@ void SamplingBVH::buildBVH(Scene *scene) {
 
     m_nodes.reserve(computeNodeReserve(buildPrims.size()));
     
-    // Pass initial depth of 0
-    if (m_enableSAH) {
-        SLog(EInfo, "SamplingBVH: Building aggregates using SAH-based traversal...");
-        buildBVHRecursiveSAH(buildPrims, 0, buildPrims.size(), orderedPrims, orderedAreas, 0);
-    }
-    else {
-        SLog(EInfo, "SamplingBVH: Building aggregates using old traversal...");
-        buildBVHRecursive(buildPrims, 0, buildPrims.size(), orderedPrims, orderedAreas, 0);
-    }
-    
-    
+    buildBVHRecursiveSAH(buildPrims, 0, buildPrims.size(), orderedPrims, orderedAreas, 0);
+
     // Step 3: Store ordered primitives
     m_primitives = std::move(orderedPrims);
     
@@ -399,12 +318,12 @@ void SamplingBVH::buildBVH(Scene *scene) {
     m_nodeInfos.resize(m_nodes.size());
 
     // Step 6: Precompute per-leaf alias tables for O(1) primitive sampling by area
-    buildLeafSamplingTables(scene, orderedAreas);
+    buildLeafSamplingTables(orderedAreas);
     
     SLog(EInfo, "SamplingBVH built: %zu nodes, %zu primitives, maxDepth=%u", 
          m_nodes.size(), m_primitives.size(), m_maxDepth);
 
-    if (m_logAngularSAHStats && m_enableSAH && m_angularSAHWeight > 0.0f) {
+    if (m_logAngularSAHStats && m_angularSAHWeight > 0.0f) {
         if (m_buildAngularSplitCount > 0) {
             const double invCount = 1.0 / (double) m_buildAngularSplitCount;
             const double avgAngularPenalty = m_buildAngularPenaltySum * invCount;
@@ -426,13 +345,10 @@ void SamplingBVH::buildBVH(Scene *scene) {
 
 }
 
-void SamplingBVH::buildLeafSamplingTables(const Scene *scene, const std::vector<Float> &primitiveAreas) {
+void SamplingBVH::buildLeafSamplingTables(const std::vector<Float> &primitiveAreas) {
     m_leafAliasTableOffsets.assign(m_nodes.size(), 0xFFFFFFFFu);
     m_leafAliasProb.clear();
     m_leafAliasAlias.clear();
-
-    if (!scene)
-        return;
 
     for (size_t nodeIdx = 0; nodeIdx < m_nodes.size(); ++nodeIdx) {
         const BVHNode &node = m_nodes[nodeIdx];
@@ -515,113 +431,8 @@ void SamplingBVH::buildLeafSamplingTables(const Scene *scene, const std::vector<
             m_leafAliasAlias[offset + s] = s;
         }
     }
-    // Print the total size of the alias tables for debugging
-    SLog(EInfo, "SamplingBVH: Built leaf sampling tables: total entries = %zu (prob (%zu) + alias (%zu)), total memory = %.2f KB", 
-         m_leafAliasProb.size() + m_leafAliasAlias.size(), 
-         m_leafAliasProb.size(),
-         m_leafAliasAlias.size(),
-         (m_leafAliasProb.size() + m_leafAliasAlias.size()) * sizeof(float) / 1024.f);
-}
-
-size_t SamplingBVH::buildBVHRecursive(
-    std::vector<BVHBuildPrimitive> &buildPrims,
-    size_t start, size_t end,
-    std::vector<BVHPrimitive> &orderedPrims,
-    std::vector<Float> &orderedAreas,
-    uint32_t depth) // Added depth parameter
-{
-    // Compute bounds of all primitives in range [start, end)
-    AABB bounds;
-    for (size_t i = start; i < end; ++i) {
-        bounds.expandBy(buildPrims[i].bounds);
-    }
-    
-    size_t nPrims = end - start;
-
-    // Create leaf if max depth is reached OR if only 1 primitive remains
-    if (depth >= m_maxDepth || nPrims <= 1) {
-        size_t primOffset = orderedPrims.size();
-        for (size_t i = start; i < end; ++i) {
-            orderedPrims.push_back(BVHPrimitive(
-                buildPrims[i].meshIndex,
-                buildPrims[i].triangleIndex));
-            orderedAreas.push_back(buildPrims[i].surfaceArea);
-        }
-        
-        size_t nodeIndex = m_nodes.size();
-        BVHNode node;
-        node.bounds = bounds;
-        node.primitivesOffset = static_cast<uint32_t>(primOffset);
-        node.nSubtreePrimitives = static_cast<uint32_t>(nPrims);
-        node.nLeafPrimitives = static_cast<uint32_t>(nPrims); // NOTE: Ensure this doesn't overflow if maxDepth is very low!
-        node.splitAxis = 0;
-        m_nodes.push_back(node);
-        return nodeIndex;
-    }
-    
-    // Compute centroid bounds for split decision
-    AABB centroidBounds;
-    for (size_t i = start; i < end; ++i) {
-        centroidBounds.expandBy(buildPrims[i].centroid);
-    }
-    
-    // Choose split axis (longest dimension of centroid bounds)
-    Vector diag = centroidBounds.max - centroidBounds.min;
-    int splitAxis = 0;
-    if (diag.y > diag.x) splitAxis = 1;
-    if (diag.z > diag[splitAxis]) splitAxis = 2;
-    
-    // Check for degenerate case: all centroids at same position
-    if (centroidBounds.max[splitAxis] == centroidBounds.min[splitAxis]) {
-        // Can't split meaningfully - create leaf
-        size_t primOffset = orderedPrims.size();
-        for (size_t i = start; i < end; ++i) {
-            orderedPrims.push_back(BVHPrimitive(
-                buildPrims[i].meshIndex,
-                buildPrims[i].triangleIndex));
-            orderedAreas.push_back(buildPrims[i].surfaceArea);
-        }
-        
-        size_t nodeIndex = m_nodes.size();
-        BVHNode node;
-        node.bounds = bounds;
-        node.primitivesOffset = static_cast<uint32_t>(primOffset);
-        node.nSubtreePrimitives = static_cast<uint32_t>(nPrims);
-        node.nLeafPrimitives = static_cast<uint32_t>(nPrims);
-        node.splitAxis = static_cast<uint8_t>(splitAxis);
-        m_nodes.push_back(node);
-        return nodeIndex;
-    }
-    
-    // Object median split: partition primitives at the median centroid
-    size_t mid = (start + end) / 2;
-    std::nth_element(
-        buildPrims.begin() + start,
-        buildPrims.begin() + mid,
-        buildPrims.begin() + end,
-        [splitAxis](const BVHBuildPrimitive &a, const BVHBuildPrimitive &b) {
-            return a.centroid[splitAxis] < b.centroid[splitAxis];
-        }
-    );
-    
-    // Create interior node
-    size_t nodeIndex = m_nodes.size();
-    BVHNode node;
-    node.bounds = bounds;
-    node.nLeafPrimitives = 0;  // Interior node marker
-    node.nSubtreePrimitives = static_cast<uint32_t>(nPrims);
-    node.splitAxis = static_cast<uint8_t>(splitAxis);
-    m_nodes.push_back(node);
-    
-    // Build left child (will be at nodeIndex + 1 due to depth-first order)
-    buildBVHRecursive(buildPrims, start, mid, orderedPrims, orderedAreas, depth + 1);
-    
-    // Build right child and store its index
-    m_nodes[nodeIndex].secondChildOffset = static_cast<uint32_t>(
-        buildBVHRecursive(buildPrims, mid, end, orderedPrims, orderedAreas, depth + 1)
-    );
-    
-    return nodeIndex;
+    Log(EDebug, "Leaf alias tables: %zu entries (%s)", m_leafAliasProb.size(),
+        memString(m_leafAliasProb.size() * (sizeof(Float) + sizeof(uint32_t))).c_str());
 }
 
 void SamplingBVH::buildAggregates(const Scene *scene) {

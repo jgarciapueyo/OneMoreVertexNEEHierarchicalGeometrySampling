@@ -52,7 +52,7 @@ public:
 
         // Verify the BVH was built (buildBVH skips unsupported integrators,
         // but ONEEEHGSPTracerIntegrator is in the allow-list so this should always succeed).
-        SamplingBVH *bvh = scene->getSamplingBVH();
+        const SamplingBVH *bvh = scene->getSamplingBVH();
         if (!bvh || !bvh->isBuilt())
             Log(EError, "SamplingBVH was not built. Make sure a <geometrybvh> "
                 "block is present in the scene XML and the scene contains geometry.");
@@ -78,6 +78,9 @@ public:
             << "]";
         return oss.str();
     }
+
+    /// Intermediate vertices are sampled from the scene's SamplingBVH
+    bool needsSamplingBVH() const { return true; }
 
     MTS_DECLARE_CLASS()
 protected:

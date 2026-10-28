@@ -32,9 +32,9 @@ global_defaults:
   enableLightcuts: false
   lightcutThreshold: 1.5
   gaussianSAThreshold: 0.03141592
-  useUniformBVHSampling: 1
-  enableSpecular: 0
-  enableFastLUT: 1 # Should be 1 to precompute gaussians (>1.5 evals the lut once at the cost of variance)
+  uniformImportance: false
+  specularImportance: false
+  sigmaPoints: precomputed
   defensivePDF: 0.000001
 
 analysis:

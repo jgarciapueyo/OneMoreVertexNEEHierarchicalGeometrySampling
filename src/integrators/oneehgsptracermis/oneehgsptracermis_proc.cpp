@@ -78,7 +78,7 @@ public:
         result->clear();
         m_hilbertCurve.initialize(TVector2<uint8_t>(rect->getSize()));
 
-        SamplingBVH *bvh = m_scene->getSamplingBVH();
+        const SamplingBVH *bvh = m_scene->getSamplingBVH();
         if (!bvh || !bvh->isBuilt()) {
             Log(EWarn, "ONEEEHGSPTracerMIS: SamplingBVH not available or not built!");
             return;
@@ -103,7 +103,7 @@ public:
 
     MTS_DECLARE_CLASS()
 private:
-    void traceSample(ONEEEHGSPTracerMISWorkResult *result, SamplingBVH *bvh) {
+    void traceSample(ONEEEHGSPTracerMISWorkResult *result, const SamplingBVH *bvh) {
         // ----------------------------------------------------------------
         // 1. Sample emitter position x_e
         // ----------------------------------------------------------------
@@ -199,7 +199,7 @@ private:
     // using the 3-way power heuristic against traceSample.
     // -----------------------------------------------------------------------
     void pathTraceSample(ONEEEHGSPTracerMISWorkResult *result, const Point2i &pixelOffset,
-                         SamplingBVH *bvh) {
+                         const SamplingBVH *bvh) {
         Float diffScaleFactor = 1.0f /
         std::sqrt((Float) m_sampler->getSampleCount());
 

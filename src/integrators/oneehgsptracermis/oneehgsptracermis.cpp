@@ -170,6 +170,9 @@ public:
         return process->getReturnStatus() == ParallelProcess::ESuccess;
     }
 
+    /// Intermediate vertices are sampled from the scene's SamplingBVH
+    bool needsSamplingBVH() const { return true; }
+
     MTS_DECLARE_CLASS()
 private:
     ref<ParallelProcess> m_process;

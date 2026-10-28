@@ -18,6 +18,7 @@ BVH with Geometric Aggregates for Importance Sampling
 #include <mitsuba/render/hgs/vmf_lut.h> 
 
 #include <array>
+#include <map>
 
 // #define DO_TIMING_IMPORTANCE dock
 // ^ Enable the timer for importance computation
@@ -153,15 +154,19 @@ inline Float schlickFc(const Vector &wi, const Vector &wo) {
     return schlickFc(dot(H, wo));
 }
 
-// Sampling mode enumeration for leaf node sampling
+/// Strategy used to sample a point once the traversal has selected a node
+/// (property "samplingMode" of the SamplingBVH plugin).
 enum class SamplingBVHSamplingMode {
-    Primitive,           // Sample leaf primitives uniformly (wrt. area)
-    SphericalAABB,       // Sample using spherical AABB, then ray-cast to geometry
-    Primitive_3_retries, // retry up to 3 times to sample a point in the surface that has both cosines positive
-    Primitive_5_retries,  // retry up to 5 times to sample a point in the surface that has both cosines positive
-    SphericalAABB_anyNode, // Sample using spherical AABB for any node, not just leaves (only different from SphericalAABB if pruning/lightcuts is enabled. )
-                           // in that case: SphericalAABB first goes down to a leaf by uniform area, then samples its SphericalAABB; SphericalAABB_anyNode directly samples the SphericalAABB of the interior node
-    // SphericalAABB_anyNode_3_retries, // Same as ^, with 3 retries for a valid point
+    /// Pick a primitive of the leaf proportionally to its area (alias table,
+    /// Sec. 5 of the paper), then a uniform point on it.
+    Primitive,
+    /// Sample a direction in the solid angle subtended by the leaf's AABB and
+    /// ray-cast it; the hit must belong to the leaf.
+    SphericalAABB,
+    /// Like SphericalAABB, but applied directly to the node where the
+    /// traversal stopped. Only differs from SphericalAABB when lightcuts stop
+    /// the traversal at an interior node.
+    SphericalAABB_anyNode
 };
 
 struct Gaussian3D {
@@ -500,34 +505,60 @@ struct BVHPrimitive {
     BVHPrimitive(uint32_t mIdx, uint32_t tIdx) : meshIndex(mIdx), triangleIndex(tIdx) {}
 };
 
-/// Main BVH class for geometry sampling
-/// Builds a triangle-level BVH with geometric aggregates for importance-driven traversal
+/**
+ * \brief Bounding volume hierarchy over all scene triangles, with per-node
+ * aggregated statistics used to sample intermediate path vertices
+ * (hierarchical geometry sampling, Sec. 4-5 of the paper).
+ *
+ * The scene creates one instance; a <geometrybvh type="samplingbvh"> element
+ * in the scene XML replaces it with a configured one. It is only built when
+ * the integrator reports \ref Integrator::needsSamplingBVH().
+ */
 class MTS_EXPORT_RENDER SamplingBVH : public ConfigurableObject {
 public:
     MTS_DECLARE_CLASS()
-    
-    /// Constructor with configurable depth and sampling mode
-    /// \param maxDepth Maximum depth of the tree (default: 16)
-    /// \param samplingMode Sampling strategy for leaves (default: Primitive)
-    SamplingBVH(uint32_t maxDepth = 16, SamplingBVHSamplingMode samplingMode = SamplingBVHSamplingMode::Primitive);
 
-    /// Constructor from properties
-    /// @param props Properties object containing configuration parameters
-    SamplingBVH(const Properties &props);
+    /// Selects how the per-node weight evaluates the node's spatial Gaussian
+    /// (property "sigmaPoints").
+    enum ESigmaPoints {
+        /// Seven unscented-transform points precomputed at build time (default)
+        EPrecomputedSigmaPoints,
+        /// Same points, recomputed from the node Gaussian at every evaluation
+        EPerCallSigmaPoints,
+        /// BSDF, VMF and emitter terms evaluated once at the Gaussian mean,
+        /// only the distance falloff is evaluated at the sigma points
+        EDirectionAtMean
+    };
 
-    /// Unserialize a geometrybvh instance from a binary data stream
+    /// Bits of \ref getAblationMask(): each disables one factor of the node
+    /// importance weight (Eq. 22 of the paper, Fig. 5).
+    enum Ablation {
+        AblateNone = 0,
+        AblateVMF = 1,          ///< no_vmf: normal-distribution (VMF) integral set to 1
+        AblateGaussian = 2,     ///< no_gaussian: single point at the AABB center
+        AblateCosineXs = 4,     ///< no_bsdf: BSDF at x_s set to 1
+        AblateCosineXe = 8,     ///< no_Le: directional emission at x_e set to 1
+        AblateDistanceXs = 16,  ///< inverse squared distance to x_s set to 1
+        AblateDistanceXe = 32,  ///< inverse squared distance to x_e set to 1
+        AblateAlbedo = 64       ///< node albedo set to 1
+    };
+
+    /// Create the BVH from its plugin properties (all optional)
+    SamplingBVH(const Properties &props = Properties());
+
+    /// Unserialize a SamplingBVH instance from a binary data stream
     SamplingBVH(Stream *stream, InstanceManager *manager);
     
     /// Destructor
     ~SamplingBVH();
     
     /// Build BVH from scene geometry
-    /// Collects all triangles from scene->getMeshes() and builds object-partition BVH
+    /// Collects all triangles from scene->getMeshes() and builds a binned-SAH BVH
     /// \param scene The scene containing triangle meshes
     void buildBVH(Scene *scene);
     
-    /// Build geometric aggregates for all nodes (call after build())
-    /// Computes albedo, area, normal distribution for each node bottom-up
+    /// Build geometric aggregates for all nodes (call after buildBVH())
+    /// Computes the raw statistics of Table 1 for each node bottom-up
     /// \param scene The scene (needed to access mesh data for triangle aggregates)
     void buildAggregates(const Scene *scene);
 
@@ -573,25 +604,13 @@ public:
     /// Returns the maximum distance from the given node to any leaf in its subtree (in terms of number of edges)
     /// A leaf is distance 0, parent distance 1, ... 
     size_t getMaxDistToLeaf(size_t nodeIndex) const {
-        if (m_nodes[nodeIndex].isLeaf()) return 0.f; // end recursion at leaf
-        int left = getMaxDistToLeaf(getLeftChild(nodeIndex));
-        int right = getMaxDistToLeaf(getRightChild(nodeIndex));
-        return 1 + std::max(left, right);
-    }   
+        if (m_nodes[nodeIndex].isLeaf())
+            return 0;
+        return 1 + std::max(getMaxDistToLeaf(getLeftChild(nodeIndex)),
+                            getMaxDistToLeaf(getRightChild(nodeIndex)));
+    }
 
-    /// Returns the minimum distance from the given node to any leaf in its subtree (in terms of number of edges)
-    /// A leaf is distance 0, parent distance 1, ... 
-    /// ((I don't think this will be useful but just in case.))
-    size_t getMinDistToLeaf(size_t nodeIndex) const {
-        if (m_nodes[nodeIndex].isLeaf()) return 0.f;
-        int left = getMinDistToLeaf(getLeftChild(nodeIndex));
-        int right = getMinDistToLeaf(getRightChild(nodeIndex));
-        return 1 + std::min(left, right);
-    }   
 
-    size_t getLevel(size_t nodeIndex) const { return getMinDistToLeaf(nodeIndex); } // Level is the same as min distance to leaf
-    
-    
     /// Check if BVH has been built
     bool isBuilt() const { return !m_nodes.empty(); }
 
@@ -631,7 +650,7 @@ public:
         const PositionSamplingRecord &pRec_xe,
         Intersection &its_xn,
         Float &pdf
-    );
+    ) const;
 
     /// Compute the PDF for sampling an intersection using the BVH sampling strategy
     /// \param scene Scene for accessing mesh data
@@ -772,103 +791,89 @@ public:
         bool return_solidangle_pdf=true
     ) const;
 
-    float getGaussianSAThreshold() const { return m_gaussianSAThreshold; }
-    float getKappaThreshold() const { return m_kappaThreshold; }
-    
+    /// Threshold below which a node's Gaussian is evaluated at its mean only
+    Float getGaussianSAThreshold() const { return m_gaussianSAThreshold; }
+
+    /// All nodes get the same weight (traversal by uniform child selection)
+    bool usesUniformImportance() const { return m_uniformImportance; }
+    /// Include the specular lobe of Eq. (20) in the node weight
+    bool usesSpecularImportance() const { return m_specularImportance; }
+    /// How the node's spatial Gaussian is evaluated
+    ESigmaPoints getSigmaPointMode() const { return m_sigmaPoints; }
+    /// Disabled factors of the node weight (see \ref Ablation)
+    uint32_t getAblationMask() const { return m_ablationMask; }
+
+    /// Return a human-readable summary of the configuration
+    std::string toString() const;
+
 protected:
-    Scene *m_scene; // Non-owning pointer to the scene (for accessing mesh data during sampling and aggregate computation
-    
-    VMFLUT m_vmfLUT; // Precomputed VMF intensity lookup table for importance evaluation
+    /// Index of a mesh in scene->getMeshes(), or 0xFFFFFFFF if unknown
+    uint32_t getMeshIndex(const Shape *shape) const;
 
-    std::vector<BVHNode> m_nodes;           // Tree nodes (depth-first order)
-    std::vector<BVHPrimitive> m_primitives; // Leaf-ordered primitives (compact indices only)
-    std::vector<BVHNodeInfo> m_nodeInfos;   // Parallel array of aggregates
+    Scene *m_scene = NULL; ///< Scene the BVH was built for (non-owning)
 
-    // Per-leaf alias tables for O(1) area-proportional primitive sampling.
-    // For leaf node i: table starts at m_leafAliasTableOffsets[i] and has nLeafPrimitives entries.
+    VMFLUT m_vmfLUT; ///< Fitted VMF cosine integral (diffuse term, Eq. 14)
+
+    std::vector<BVHNode> m_nodes;           ///< Tree nodes (depth-first order)
+    std::vector<BVHPrimitive> m_primitives; ///< Leaf-ordered primitives (compact indices only)
+    std::vector<BVHNodeInfo> m_nodeInfos;   ///< Aggregated statistics, parallel to m_nodes
+
+    /// Per-leaf alias tables for O(1) area-proportional primitive sampling.
+    /// For leaf node i: table starts at m_leafAliasTableOffsets[i] and has nLeafPrimitives entries.
     std::vector<uint32_t> m_leafAliasTableOffsets;
     std::vector<Float> m_leafAliasProb;
     std::vector<uint32_t> m_leafAliasAlias;
 
-    std::vector<uint32_t> m_primitiveLevels; // Level of each primitive in the tree (for debugging)
-     
-    // Triangle to global primitive index mapping
-    std::vector<uint32_t> m_meshOffsets;    // Offset for each mesh in m_triangleToPrim
-    std::vector<uint32_t> m_triangleToPrim; // Flat map of global primitive indices
-    
-    uint32_t m_maxDepth;                    // Maximum depth of the tree
-    SamplingBVHSamplingMode m_samplingMode; // Current sampling mode
+    /// Triangle to leaf-ordered primitive index mapping
+    std::vector<uint32_t> m_meshOffsets;    ///< Offset of each mesh in m_triangleToPrim
+    std::vector<uint32_t> m_triangleToPrim; ///< Flat map of global primitive indices
+    std::map<const Shape *, uint32_t> m_meshIndices; ///< TriMesh -> index in scene->getMeshes()
 
-    // Node importance configuration (0=ignore, 1=full importance):
-public:
-    float m_debug1, m_debug2, m_debug3, m_debug4, m_debug5; // to quickly hack different things 
+    // ---- Construction ----
+    uint32_t m_maxDepth = 16;                ///< Maximum depth of the tree
+    float m_angularSAHWeight = 0.0f;         ///< Extra SAH cost weight for angular dispersion (0 disables angular SAH)
+    float m_angularSAHKappaScale = 10.0f;    ///< Scale to map VMF kappa to [0,1] coherence in angular SAH
+    bool m_logAngularSAHStats = true;        ///< Emit build-time summary of angular SAH penalties
+    double m_buildAngularPenaltySum = 0.0;          ///< Sum of unweighted angular penalties for selected splits
+    double m_buildWeightedAngularPenaltySum = 0.0;  ///< Sum of weighted angular additions for selected splits
+    uint32_t m_buildAngularSplitCount = 0;          ///< Number of selected splits contributing to angular stats
 
-    enum Ablation {
-        AblateNone = 0,
-        AblateVMF = 1, 
-        AblateGaussian = 2,
-        AblateCosineXs = 4, 
-        AblateCosineXe = 8, 
-        AblateDistanceXs = 16,
-        AblateDistanceXe = 32,
-        AblateAlbedo = 64
-    };
+    // ---- Sampling ----
+    SamplingBVHSamplingMode m_samplingMode = SamplingBVHSamplingMode::Primitive;
+    float m_probmult = 1.0f;          ///< Scale applied to every node weight before adding the defensive term
+    float m_defensive_pdf = 1e-16f;   ///< Defensive value added to every node weight (Sec. 4.3)
+    bool m_enableLightcuts = false;   ///< Experimental: stop the traversal when both children have negligible weight
+    float m_lightcutThreshold = 2.f;  ///< Lightcut threshold, in multiples of 2 * m_defensive_pdf
 
-    uint32_t m_ablationMask; // Bitmask to disable certain importance components for ablation studies
+    // ---- Node importance weight ----
+    bool m_uniformImportance = false;
+    bool m_specularImportance = true;
+    ESigmaPoints m_sigmaPoints = EPrecomputedSigmaPoints;
+    uint32_t m_ablationMask = AblateNone;
+    /// Nodes whose Gaussian is small w.r.t. the distance to x_s/x_e
+    /// (trace(Sigma) < threshold * min distance^2) are evaluated at their
+    /// mean only. 0 never collapses, larger values collapse more often.
+    float m_gaussianSAThreshold = (float) (M_PI * 1e-2);
 
-    
+    // ---- Debug output for the importance visualization (Fig. 4) ----
+    bool m_outputDebugCSV = false;          ///< Write bvh_debug.csv after building the aggregates
+    uint32_t m_csvEnabledLevels = 0xFFFFFFFFu; ///< Bit mask of node levels written to the CSV
+    Point m_debugQueryPoint = Point(2.43008f, -0.0490401f, 0.0f); ///< x_s used for the CSV
+    int m_debugQueryShape = 2;              ///< Shape whose BSDF is used at x_s for the CSV
+
 #if defined(DO_TIMING_IMPORTANCE) || defined(DO_TIMING_SAMPLING)
+public:
     mutable MultiTimer importanceTimer;
-
     MultiTimer& getImportanceTimer() const { return importanceTimer; }
+protected:
 #endif
 
-protected:
-    float m_probmult; // Multiplier for importance to control its influence on sampling
-    float m_defensive_pdf; // Small constant added to importance to avoid zero probabilities
-    float m_rrStrength; // Russian roulette strength for BVH traversal (0 disables RR)
-
-    bool m_enableLightcuts; // Whether to enable lightcut-like behavior by treating low-importance nodes as leaves during sampling
-    float m_lightcutThreshold; // threshold for lightcuts
-
-    float m_gaussianSAThreshold; // Solid angle threshold for treating a gaussian as a point during importance evaluation (to avoid expensive integrals for small/far nodes)
-                                 // value should be 0.f for NEVER treating them as points, >=4PI for ALWAYS treating them as points. 
-                                 // .01*PI or .001*PI might be reasonable
-    float m_kappaThreshold; // Concentration threshold for treating a VMF as a spherical distribution. Currently does nothing!
- 
-    bool m_outputDebugCSV; // Whether to output debug info for each node to CSV (for visualization/debugging)
-    uint32_t m_csvEnabledLevels; // Only output debug CSV for nodes up to this level (to avoid huge files)
-
-    bool m_enableSAH = true; // Whether to use SAH for BVH construction (instead of median split)
-    float m_angularSAHWeight = 0.0f;      // Extra cost weight for angular dispersion term (0 disables angular SAH)
-    float m_angularSAHKappaScale = 10.0f; // Scale to map VMF kappa to [0,1] coherence in angular SAH
-    bool m_logAngularSAHStats = true;      // Emit build-time summary of angular SAH penalties
-
-    float m_buildAngularPenaltySum = 0.0;         // Sum of unweighted angular penalties for selected splits
-    float m_buildWeightedAngularPenaltySum = 0.0; // Sum of weighted angular additions for selected splits
-    uint32_t m_buildAngularSplitCount = 0;         // Number of selected splits contributing to angular stats
-    
-    /// Recursive build function using object median split
+    /// Recursive build function using a binned Surface Area Heuristic (SAH)
     /// \param buildPrims Working array of primitives (will be partially sorted)
     /// \param start Start index in buildPrims
     /// \param end End index in buildPrims (exclusive)
     /// \param orderedPrims Output array for leaf-ordered primitives
-    /// \param depth Current depth of the recursion
-    /// \return Index of the created node
-    size_t buildBVHRecursive(
-        std::vector<BVHBuildPrimitive> &buildPrims,
-        size_t start, size_t end,
-        std::vector<BVHPrimitive> &orderedPrims,
-        std::vector<Float> &orderedAreas,
-        uint32_t depth
-    );
-
-        
-    /// Recursive build function using Surface Area Heuristic (SAH) for splitting
-    /// \param buildPrims Working array of primitives (will be partially sorted)
-    /// \param start Start index in buildPrims
-    /// \param end End index in buildPrims (exclusive)
-    /// \param orderedPrims Output array for leaf-ordered primitives
+    /// \param orderedAreas Output array with the area of each ordered primitive
     /// \param depth Current depth of the recursion
     /// \return Index of the created node
     size_t buildBVHRecursiveSAH(
@@ -885,8 +890,7 @@ protected:
     void buildAggregatesRecursive(size_t nodeIndex, const Scene *scene);
 
     /// Build per-leaf alias tables for O(1) area-proportional primitive sampling.
-    void buildLeafSamplingTables(const Scene *scene, const std::vector<Float> &primitiveAreas);
-
+    void buildLeafSamplingTables(const std::vector<Float> &primitiveAreas);
 };
 
 // Export functions for external linkage

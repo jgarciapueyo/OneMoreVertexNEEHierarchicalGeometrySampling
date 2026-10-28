@@ -58,6 +58,12 @@ Float computeNodeImportance_Unscented_LUT_original(
     bool checkVisibility=false
 );
 
+// Node importance weight used by the traversal (Eqs. 8 and 21). The variant
+// is selected by the SamplingBVH properties:
+//   uniformImportance=true   -> every node gets weight 1 (uniform traversal)
+//   specularImportance=true  -> diffuse + specular lobes (Eq. 21 with Eq. 20)
+//   otherwise, diffuse lobe only, with the node Gaussian evaluated as given by
+//   sigmaPoints: precomputed (default) | perCall | directionAtMean
 Float computeNodeImportance(
     const Scene *scene,
     const SamplingBVH *bvh,
@@ -65,24 +71,20 @@ Float computeNodeImportance(
     const Intersection &its_xs,
     const PositionSamplingRecord &pRec_xe
 ) {
-    if (bvh->m_debug1 <= .0001f) return 1.f; // hack to have an equal importance mode for testing
+    if (bvh->usesUniformImportance())
+        return 1.f;
 
-    // debug2 > 0.5: use specular-aware importance (diffuse + specular lobes)
-    // debug2 <= 0.5 (default): use diffuse-only importance
-    if (bvh->m_debug2 > 0.5f)
+    if (bvh->usesSpecularImportance())
         return computeNodeImportance_Unscented_LUT_Specular(scene, bvh, nodeIndex, its_xs, pRec_xe);
 
-    // debug3 mode selector:
-    //   < 0.5   : original slowest version (local gaussian sigma-point generation + per-point LUT eval)
-    //   [0.5,1.5): precomputed gaussian sigma points + per-point LUT eval
-    //   >= 1.5  : fastest (precomputed gaussian sigma points + single LUT eval at mean)
-    if (bvh->m_debug3 < 0.5f)
-        return computeNodeImportance_Unscented_LUT_original(scene, bvh, nodeIndex, its_xs, pRec_xe);
-
-    if (bvh->m_debug3 >= 1.5f) {
-        return computeNodeImportance_Unscented_LUT_fast(scene, bvh, nodeIndex, its_xs, pRec_xe);
+    switch (bvh->getSigmaPointMode()) {
+        case SamplingBVH::EPerCallSigmaPoints:
+            return computeNodeImportance_Unscented_LUT_original(scene, bvh, nodeIndex, its_xs, pRec_xe);
+        case SamplingBVH::EDirectionAtMean:
+            return computeNodeImportance_Unscented_LUT_fast(scene, bvh, nodeIndex, its_xs, pRec_xe);
+        default:
+            return computeNodeImportance_Unscented_LUT(scene, bvh, nodeIndex, its_xs, pRec_xe);
     }
-    return computeNodeImportance_Unscented_LUT(scene, bvh, nodeIndex, its_xs, pRec_xe);
 }
 
 
@@ -935,7 +937,7 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT(
     if (nodeIndex < 0 || (size_t) nodeIndex >= bvh->getNodeCount())
         return 0.0f;
 
-    const uint32_t ablationMask = bvh->m_ablationMask;
+    const uint32_t ablationMask = bvh->getAblationMask();
     const bool ablateVMF        = (ablationMask & SamplingBVH::AblateVMF) != 0;
     const bool ablateGaussian   = (ablationMask & SamplingBVH::AblateGaussian) != 0;
     const bool ablateCosineXs   = (ablationMask & SamplingBVH::AblateCosineXs) != 0;

@@ -64,7 +64,7 @@ void ONEEEHGSPTracerWorker::process(const WorkUnit *workUnit, WorkResult *workRe
     m_workResult->clear();
 
     // Similar to ParticleTracer::process but with custom sampling strategy and no path tracing (single vertex x_n)
-    SamplingBVH *bvh = m_scene->getSamplingBVH();
+    const SamplingBVH *bvh = m_scene->getSamplingBVH();
     if (!bvh || !bvh->isBuilt()) {
         Log(EWarn, "ONEEEHGSPTracer: SamplingBVH not available or not built!");
         return;
@@ -77,7 +77,7 @@ void ONEEEHGSPTracerWorker::process(const WorkUnit *workUnit, WorkResult *workRe
     m_workResult = NULL;
 }
 
-void ONEEEHGSPTracerWorker::traceSample(SamplingBVH *bvh) {
+void ONEEEHGSPTracerWorker::traceSample(const SamplingBVH *bvh) {
     // ----------------------------------------------------------------
     // 1. Sample emitter position x_e
     // ----------------------------------------------------------------

@@ -288,6 +288,9 @@ public:
         return oss.str();
     }
 
+    /// Intermediate vertices are sampled from the scene's SamplingBVH
+    bool needsSamplingBVH() const { return true; }
+
     MTS_DECLARE_CLASS()
 private:
     bool m_doAdditionalVertex;

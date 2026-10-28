@@ -34,26 +34,20 @@ def _f(v):
     return f"{v:.6g}"
 
 
-def add_integrator(scene, integrator_type="additionalvertex"):
+def add_integrator(scene, integrator_type="oneehgspath_2step"):
     integrator = SubElement(scene, "integrator", type=integrator_type)
-    if integrator_type in ("additionalvertex", "path", "bdpt"):
-        SubElement(integrator, "integer", name="maxDepth", value="5")
-    elif integrator_type == "oneehgspath_2step":
-        SubElement(integrator, "integer", name="maxDepth", value="5")
+    SubElement(integrator, "integer", name="maxDepth", value="5")
+    if integrator_type == "oneehgspath_2step":
         SubElement(integrator, "integer", name="rrDepth", value="5")
         SubElement(integrator, "boolean", name="doAdditionalVertex", value="true")
         SubElement(integrator, "boolean", name="useBVH", value="true")
-        SubElement(integrator, "boolean", name="disableNee", value="false")
+        SubElement(integrator, "boolean", name="disableNEE", value="false")
 
 
 def add_geometry_bvh(scene):
     gbvh = SubElement(scene, "geometrybvh", type="samplingbvh")
-    SubElement(gbvh, "integer", name="maxLeafSize", value="4")
+    SubElement(gbvh, "integer", name="maxDepth", value="16")
     SubElement(gbvh, "string", name="samplingMode", value="Primitive")
-    SubElement(gbvh, "float", name="sggxCrossSectionScale", value="1.0")
-    SubElement(gbvh, "float", name="solidAngleScale", value="0.0")
-    SubElement(gbvh, "float", name="variancePenaltyScale", value="0.0")
-    SubElement(gbvh, "float", name="cosinePenaltyScale", value="1.0")
 
 
 def add_sensor(scene, resx=512, resy=512, samples=64, fov=45):
@@ -217,7 +211,7 @@ def add_cube(scene, x=0.0, y=0.0, z=0.0, scale_y=1.0, rot_y=0.0,
         SubElement(bsdf, "rgb", name="reflectance", value=color_str)
 
 
-def create_scene(n_tiles=10, tile_scale=0.2, integrator="additionalvertex",
+def create_scene(n_tiles=10, tile_scale=0.2, integrator="oneehgspath_2step",
                  resx=512, resy=512, samples=64, obj_path=OBJ_PATH
                  , complete=False):
     scene = Element("scene", version="0.6.0")
@@ -252,8 +246,8 @@ def main():
     parser.add_argument("--tile_scale", type=float, default=0.2,
                         help="Scale factor for tile size (default: 0.2)")
     parser.add_argument("--integrator", default="path",
-                        choices=["additionalvertex", "path", "bdpt", "oneehgspath_2step"],
-                        help="Integrator type (default: additionalvertex)")
+                        choices=["path", "bdpt", "oneehgspath_2step"],
+                        help="Integrator type (only used with --complete)")
     parser.add_argument("--resx", type=int, default=512)
     parser.add_argument("--resy", type=int, default=512)
     parser.add_argument("--samples", type=int, default=64)
