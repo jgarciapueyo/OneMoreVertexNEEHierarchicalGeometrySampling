@@ -211,6 +211,9 @@ def build_docker_mitsuba_cmd(
         mitsuba_cmd.append(f"-D{k}={_norm(v)}")
 
     shell_cmd = f"source {shlex.quote(setpath_script)} && {' '.join(shlex.quote(x) for x in mitsuba_cmd)}"
+    if container is None:
+        # Local mode (inside the container): run in the repository root
+        return ["bash", "-lc", shell_cmd]
     return [docker_bin, "exec", "-w", workdir, container, "bash", "-lc", shell_cmd]
 
 
@@ -229,7 +232,8 @@ def run_render(
 
     t0 = time.perf_counter()
     try:
-        p = subprocess.run(cmd, capture_output=True, text=True)
+        p = subprocess.run(cmd, capture_output=True, text=True,
+                           cwd=workdir if container is None else None)
         wall_s = time.perf_counter() - t0
         mitsuba_s = parse_mitsuba_time(p.stdout or "")
 
@@ -323,7 +327,11 @@ def main():
     ap.add_argument("--workdir", default=None)
     ap.add_argument("--setpath-script", default=None)
     ap.add_argument("--docker-bin", default="docker")
+    ap.add_argument("--local", action="store_true",
+                    help="Run Mitsuba directly instead of through 'docker exec' "
+                         "(default inside the container, where ONEEHGS_IN_CONTAINER=1)")
     args = ap.parse_args()
+    local = args.local or os.environ.get("ONEEHGS_IN_CONTAINER") == "1"
 
     exp_file_path = Path(args.exp_file).resolve()
     exp = yaml.safe_load(exp_file_path.read_text(encoding="utf-8"))
@@ -331,12 +339,13 @@ def main():
     # Extract and validate config parameters
     # Docker
     docker_cfg = exp.get("docker", {})
-    container = args.container or docker_cfg.get("container")
-    workdir = args.workdir or docker_cfg.get("workdir")
+    container = None if local else (args.container or docker_cfg.get("container"))
+    workdir = args.workdir or (os.getcwd() if local else docker_cfg.get("workdir"))
     setpath_script = args.setpath_script or docker_cfg.get("setpath_script") or "/home/mitsuba/setpath.sh"
     ppg_setpath_script = docker_cfg.get("ppg_setpath_script")
-    if not container or not workdir:
-        raise ValueError("Missing Docker config. Provide --container/--workdir or set 'docker.container' and 'docker.workdir' in YAML.")
+    if not local and (not container or not workdir):
+        raise ValueError("Missing Docker config. Provide --container/--workdir or set 'docker.container' and "
+                         "'docker.workdir' in YAML, or run inside the container (--local).")
 
     # Scene and output
     scene = exp["scene"]  # container-relative (or absolute in container)

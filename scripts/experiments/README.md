@@ -7,17 +7,21 @@ This folder contains the experiment runner and analyzer used to sweep Mitsuba pa
 - `run_experiments.py`: runs renders for all generated configs.
 - `analyze_results.py`: computes metrics and generates comparison outputs.
 - `comparison.sh`: convenience wrapper to run both steps.
-- `*.yaml`: experiment configs used for the paper figures (see the table in the top-level `README.md`).
-- `requirements.txt`: host-side Python dependencies (`pip install -r scripts/experiments/requirements.txt`).
+- `make_quick_config.py`: writes a reduced copy of a config (short spp schedule, one repetition, low-spp reference) for a fast test.
+- `*.yaml`: experiment configs of the paper figures (see the table in the top-level `README.md`); `supplementary/` holds experiments that are not in the paper.
+- `requirements.txt`: Python dependencies (installed in the Docker image).
 
-All commands are run **on the host**, from the repository root, while the Docker container is running (`docker compose up -d`). The scripts call `mitsuba` inside the container through `docker exec`.
+The simplest way to run a figure is `scripts/reproduce.sh <figure> [--quick]` inside the container, which calls these scripts. Inside the container (`ONEEHGS_IN_CONTAINER=1` is set by the image) the runner calls `mitsuba` directly. Run on the host instead, it calls `mitsuba` inside a running container through `docker exec`, using the `docker:` section of the YAML (requires the host packages of `requirements.txt` and `docker compose up -d`).
 
 ## Quick Usage
 
 ### 1) Run + analyze (recommended)
 
 ```bash
+# inside the container
 bash scripts/experiments/comparison.sh scripts/experiments/ablation_asteroids4_smallerspotlight_ppg.yaml
+# quick test of the same experiment
+bash scripts/experiments/comparison.sh $(python3 scripts/experiments/make_quick_config.py scripts/experiments/ablation_asteroids4_smallerspotlight_ppg.yaml)
 ```
 
 ### 2) Run manually
@@ -27,7 +31,7 @@ python3 scripts/experiments/run_experiments.py scripts/experiments/ablation_aste
 python3 scripts/experiments/analyze_results.py scripts/experiments/ablation_asteroids4_smallerspotlight_ppg.yaml
 ```
 
-Use `--container`, `--workdir`, and `--setpath-script` on the runner to override YAML docker settings if needed.
+Use `--container`, `--workdir`, and `--setpath-script` on the runner to override YAML docker settings if needed, and `--local` to force direct execution.
 
 ## Config Format (YAML)
 
@@ -39,7 +43,7 @@ docker:
   workdir: /home/mitsuba
   setpath_script: /home/mitsuba/setpath.sh
   # only needed if a config uses the PPG baseline (integrator: guided_path)
-  ppg_setpath_script: /home/mitsuba/ppg/mitsuba/setpath.sh
+  ppg_setpath_script: /opt/ppg/mitsuba/setpath.sh
 
 scene: <scene-path-visible-in-container>
 output_root: <results-output-folder>
@@ -72,7 +76,7 @@ named_configs:
 
 sweep:
   leafSamplingMode: [Primitive, SphericalAABB]
-  maxLeafSize: [1, 2, 4, 8]
+  bvhMaxDepth: [12, 16, 20]
 
 analysis:
   baseline_config_name: baseline_path
@@ -105,10 +109,10 @@ The generated LaTeX includes default quantitative plots for:
 
 ### `docker`
 
-- `container`: target running Mitsuba container.
+- `container`: target running Mitsuba container (only used when running on the host).
 - `workdir`: working directory inside container.
 - `setpath_script`: sourced before invoking `mitsuba`.
-- `ppg_setpath_script`: sourced before invoking `mitsuba-ppg` for configs with `integrator: guided_path` (requires the PPG build, see the top-level `README.md`).
+- `ppg_setpath_script`: sourced before invoking `mitsuba-ppg` for configs with `integrator: guided_path` (the Docker image builds PPG in `/opt/ppg`).
 
 ### `scene` and `output_root`
 
@@ -183,6 +187,21 @@ Grouped summaries:
 - `render_summary_equal_spp.png`
 - `render_summary_equal_time.png`
 - plots for PSNR/MSE/variance/pareto summaries
+
+## Parameters of the scenes
+
+The parameters of `global_defaults`, `named_configs` and `sweep` are passed to Mitsuba as `-Dname=value` and fill the `$name:default` placeholders of the scenes. The SamplingBVH options used by the paper configs:
+
+| Parameter | Values | Meaning |
+|---|---|---|
+| `bvhMaxDepth` | integer | maximum BVH depth (Fig. 7 top) |
+| `leafSamplingMode` | `Primitive`, `SphericalAABB`, `SphericalAABB_anyNode` | how a point is sampled in the selected leaf |
+| `gaussianSAThreshold` | float | nodes with trace(cov) < threshold x distance^2 are evaluated at their mean only (Fig. 7 bottom) |
+| `uniformImportance` | `true`, `false` | every node gets the same weight |
+| `specularImportance` | `true`, `false` | include the specular lobe of the node weight |
+| `sigmaPoints` | `precomputed`, `perCall`, `directionAtMean` | how the node Gaussian is evaluated |
+| `ablate{Gaussian,VMF,CosineXs,CosineXe,DistanceXs,DistanceXe,Albedo}` | `true`, `false` | remove one factor of the node weight (Fig. 5) |
+| `defensivePDF` | float | defensive value added to every node weight |
 
 ## Notes
 

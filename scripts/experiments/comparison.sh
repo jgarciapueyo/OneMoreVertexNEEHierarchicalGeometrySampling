@@ -1,10 +1,12 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Usage (from the repository root, on the host):
+# Usage (from the repository root):
 #   bash scripts/experiments/comparison.sh <experiment.yaml>
 #
-# Env overrides (otherwise taken from the `docker:` section of the YAML):
+# Inside the container Mitsuba is called directly. On the host it is called
+# through `docker exec` in the running container; env overrides (otherwise
+# taken from the `docker:` section of the YAML):
 #   PYTHON=python3
 #   CONTAINER=onemorevertexneehierarchicalgeometrysampling-mitsuba-1
 #   WORKDIR=/home/mitsuba
@@ -22,12 +24,12 @@ if [[ -n "${CONTAINER:-}" ]]; then EXTRA_ARGS+=(--container "${CONTAINER}"); fi
 if [[ -n "${WORKDIR:-}" ]]; then EXTRA_ARGS+=(--workdir "${WORKDIR}"); fi
 if [[ -n "${SETPATH_SCRIPT:-}" ]]; then EXTRA_ARGS+=(--setpath-script "${SETPATH_SCRIPT}"); fi
 
-echo "[1/2] Running experiments (host Python, Mitsuba in Docker)"
+echo "[1/2] Running experiments"
 "${PYTHON}" scripts/experiments/run_experiments.py "${EXP_FILE}" \
   --resume \
   "${EXTRA_ARGS[@]}"
 
-echo "[2/2] Analyzing results (host Python)"
+echo "[2/2] Analyzing results"
 "${PYTHON}" scripts/experiments/analyze_results.py "${EXP_FILE}"
 
 echo "Done."

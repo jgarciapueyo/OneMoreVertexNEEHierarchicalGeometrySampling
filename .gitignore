@@ -74,3 +74,10 @@ scenes/scene_geometries/quads-k5.xml
 scenes/9_rebuttal_sphere/**/hemisphere_*.obj
 scenes/9_rebuttal_sphere/hemisphere_*.obj
 *.mip
+
+# Local build of the PPG baseline (the image builds it in /opt/ppg from patches/ppg.patch)
+/ppg/
+
+# Outputs of scripts/reproduce.sh
+/results/
+/bvh_debug.csv

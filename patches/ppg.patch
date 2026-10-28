@@ -1,0 +1,55 @@
+Practical Path Guiding baseline (Mueller et al. 2017) used in Figs. 9 and 10.
+Applied by the Dockerfile on top of https://github.com/Tom94/practical-path-guiding
+at commit effbd1934a87bd7c471bb6981eea758fc4b72854:
+- the renderer is installed as mitsuba-ppg, so that it does not clash with
+  the mitsuba binary of this repository,
+- the version is set to 0.6.0, so that it reads the scene files of this
+  repository without trying to upgrade them.
+
+diff --git a/mitsuba/build/SConscript.install b/mitsuba/build/SConscript.install
+index df549a3..6323ed9 100644
+--- a/mitsuba/build/SConscript.install
++++ b/mitsuba/build/SConscript.install
+@@ -50,7 +50,7 @@ if 'linux' in sys.platform:
+ 			'librender/libmitsuba-render.so', 'libbidir/libmitsuba-bidir.so'])
+ 	for ver in hasPython:
+ 		installAs(os.path.join(distDir, 'python/'+ver+'/mitsuba.so'), 'libpython/mitsuba_python' + ver + '.so')
+-	install(distDir, ['mitsuba/mitsuba', 'mitsuba/mtssrv', 'mitsuba/mtsutil'])
++	install(distDir, ['mitsuba/mitsuba-ppg', 'mitsuba/mtssrv', 'mitsuba/mtsutil'])
+ 	if hasQt:
+ 		install(distDir, ['mtsgui/mtsgui'])
+ 	if hasCollada:
+@@ -112,7 +112,7 @@ elif sys.platform == 'darwin':
+ 		includeDir = entry[0][len(basePath)+1:]
+ 		installTargets += env.Install(os.path.join(os.path.join(distDir, 'Headers'), includeDir),
+ 			[ ('#' + os.path.join(includeDir, fname)) for fname in entry[2] ])
+-	install(os.path.join(distDir, 'Contents/MacOS'), ['mitsuba/mitsuba', 'mitsuba/mtssrv', 'mitsuba/mtsutil'])
++	install(os.path.join(distDir, 'Contents/MacOS'), ['mitsuba/mitsuba-ppg', 'mitsuba/mtssrv', 'mitsuba/mtsutil'])
+ 	if hasCollada:
+ 		install(os.path.join(distDir, 'Contents/MacOS'), ['converter/mtsimport'])
+ 	plist = env.Install(os.path.join(distDir, 'Contents'), '#data/darwin/Info.plist')
+diff --git a/mitsuba/include/mitsuba/core/version.h b/mitsuba/include/mitsuba/core/version.h
+index 4cb0fe7..c729d72 100644
+--- a/mitsuba/include/mitsuba/core/version.h
++++ b/mitsuba/include/mitsuba/core/version.h
+@@ -26,7 +26,7 @@ MTS_NAMESPACE_BEGIN
+  * \brief Current release of Mitsuba
+  * \ingroup libcore
+  */
+-#define MTS_VERSION "0.5.0"
++#define MTS_VERSION "0.6.0"
+ 
+ /**
+  * \brief Year of the current release
+diff --git a/mitsuba/src/mitsuba/SConscript b/mitsuba/src/mitsuba/SConscript
+index 82bffc2..c67dd16 100644
+--- a/mitsuba/src/mitsuba/SConscript
++++ b/mitsuba/src/mitsuba/SConscript
+@@ -28,6 +28,6 @@ mainEnv.Program('mtsutil', stubs + winstubs + ['mtsutil.cpp'])
+ 
+ # Build the command-line+GUI interface
+ mainEnv.Program('mtssrv',  winstubs + ['mtssrv.cpp'])
+-mainEnv.Program('mitsuba', winstubs + ['mitsuba.cpp'])
++mainEnv.Program('mitsuba-ppg', winstubs + ['mitsuba.cpp'])
+ 
+ Return('mainEnv')

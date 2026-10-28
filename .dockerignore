@@ -1,0 +1,5 @@
+# Only these files are needed to build the image; the repository itself is
+# mounted at run time
+*
+!patches/
+!scripts/experiments/requirements.txt

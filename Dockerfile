@@ -1,26 +1,18 @@
-FROM ubuntu:20.04
+# Build and run environment for One-more-vertex NEE with Hierarchical Geometry
+# Sampling (Mitsuba 0.6). The repository is mounted at /home/mitsuba (see
+# docker-compose.yml) and compiled inside the container with
+# scripts/build_mitsuba.sh; the PPG baseline is built into the image.
+FROM ubuntu:20.04@sha256:8feb4d8ca5354def3d8fce243717141ce31e2c428701f6682bd2fafe15388214
 
-# Set environment variables to prevent interactive prompts during apt installs
 ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=Europe/Madrid
+ENV TZ=Etc/UTC
 
-# Install essential build tools and libraries for Mitsuba 0.6
-# This includes:
-# - build-essential: For compilers (g++, make, etc.)
-# - python2.7-dev: Python 2.7 development headers and libraries
-# - scons: The build system used by Mitsuba
-# - libpng-dev, libjpeg-dev, libopenexr-dev, zlib1g-dev, libilmbase-dev, : Image format libraries
-# - libboost-all-dev: General Boost C++ libraries
-# - libxerces-c-dev: XML parser often used by Mitsuba
-# - libglewmx-dev, libglu1-mesa-dev, mesa-common-dev: OpenGL and GLUT libraries
-# - libxxf86vm-dev: X11 video mode extension library
-# - libpcrecpp0v5: Perl-compatible regular expressions library
-# - libeigen3-dev: C++ template library for linear algebra
-# - libfftw3-dev: Fast Fourier Transform library
-# - git: Useful if you need to clone repositories within the container
-
-RUN apt-get update && apt-get install -y \
+# Mitsuba 0.6 build dependencies (SCons runs on Python 2.7), Python 3 for the
+# experiment scripts
+RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
+    ca-certificates \
+    git \
     python2.7 \
     python2.7-dev \
     python3 \
@@ -29,8 +21,8 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
     libopenexr-dev \
-    zlib1g-dev \
     libilmbase-dev \
+    zlib1g-dev \
     libboost-all-dev \
     libxerces-c-dev \
     libglewmx-dev \
@@ -40,12 +32,35 @@ RUN apt-get update && apt-get install -y \
     libpcrecpp0v5 \
     libeigen3-dev \
     libfftw3-dev \
-    git \
     && rm -rf /var/lib/apt/lists/*
 
-# Create a directory for the Mitsuba source code inside the container
-WORKDIR /home
+# Python dependencies of scripts/ and of the scene generators
+COPY scripts/experiments/requirements.txt /tmp/requirements.txt
+RUN python3 -m pip install --no-cache-dir --upgrade pip && \
+    python3 -m pip install --no-cache-dir -r /tmp/requirements.txt
 
-# Append the source command to the root user's .bashrc file
-# This ensures it runs every time you open a new shell via docker exec
-RUN echo "source /home/mitsuba/setpath.sh" >> /root/.bashrc
+# Practical Path Guiding baseline (Mueller et al. 2017) for Figs. 9 and 10,
+# pinned and patched (binary renamed to mitsuba-ppg)
+ARG PPG_COMMIT=effbd1934a87bd7c471bb6981eea758fc4b72854
+COPY patches/ppg.patch /tmp/ppg.patch
+RUN git clone https://github.com/Tom94/practical-path-guiding.git /opt/ppg && \
+    cd /opt/ppg && git checkout ${PPG_COMMIT} && git apply /tmp/ppg.patch && \
+    cd mitsuba && cp build/config-linux-gcc.py config.py && \
+    python2.7 $(which scons) -j"$(nproc)" && \
+    rm -rf build/release .sconf_temp .sconsign.dblite
+
+# Unprivileged user with the host's UID/GID, so that files written to the
+# mounted repository (build/, dist/, results) belong to the host user
+ARG UID=1000
+ARG GID=1000
+RUN groupadd -o -g ${GID} mitsuba && \
+    useradd -o -m -d /home/user -u ${UID} -g ${GID} -s /bin/bash mitsuba && \
+    echo '[ -f /home/mitsuba/setpath.sh ] && source /home/mitsuba/setpath.sh' >> /home/user/.bashrc && \
+    git config --system --add safe.directory /home/mitsuba
+
+# Tells scripts/experiments/run_experiments.py to call Mitsuba directly
+ENV ONEEHGS_IN_CONTAINER=1
+
+USER mitsuba
+WORKDIR /home/mitsuba
+CMD ["bash"]

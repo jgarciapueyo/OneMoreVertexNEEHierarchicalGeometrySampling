@@ -4,7 +4,7 @@ docker:
   container: onemorevertexneehierarchicalgeometrysampling-mitsuba-1
   workdir: /home/mitsuba
   setpath_script: /home/mitsuba/setpath.sh
-  ppg_setpath_script: /home/mitsuba/ppg/mitsuba/setpath.sh
+  ppg_setpath_script: /opt/ppg/mitsuba/setpath.sh
 
 
 scene: scenes/2_wildcard_asteroids/wildcard_spotlight.xml
