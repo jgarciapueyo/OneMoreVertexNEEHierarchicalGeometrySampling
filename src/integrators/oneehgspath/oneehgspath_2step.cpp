@@ -82,6 +82,10 @@ public:
             /* Direct illumination can be disabled at the first vertex */
             bool do_nee = m_disableFirstBounceNEE ? (rRec.depth > 1) : true;
 
+            /* Direct illumination of this vertex was already estimated by the
+               length-2 strategies of the previous vertex */
+            const bool direct_covered_by_l2 = prev_evaluated_l2;
+
             /* Emission (Le) from current intersection */
             if (its.isEmitter() && (rRec.type & RadianceQueryRecord::EEmittedRadiance) && (!m_hideEmitters || scattered) && do_nee)
                 Li += throughput * its.Le(-ray.d);
@@ -95,7 +99,7 @@ public:
             /* ==================================================================== */
             /*  Standard next-event estimation (length-1 connection)                */
             /* ==================================================================== */
-            bool run_standard_nee = !m_disableNee && !prev_evaluated_l2;
+            bool run_standard_nee = !m_disableNee && !direct_covered_by_l2;
             DirectSamplingRecord dRec(its);
             if (run_standard_nee && (rRec.type & RadianceQueryRecord::EDirectSurfaceRadiance) && (bsdf->getType() & BSDF::ESmooth) && do_nee) {
                 Spectrum value = scene->sampleEmitterDirect(dRec, rRec.nextSample2D());
@@ -121,7 +125,6 @@ public:
             Spectrum xe_val = scene->sampleEmitterPosition(pRec_L2, rRec.nextSample2D());
 
             bool l2_possible = !xe_val.isZero() && m_doAdditionalVertex && (rRec.depth + 1 < m_maxDepth);
-            prev_evaluated_l2 = l2_possible;
 
             /* Strategy A: sample x_n (here 'y') from the SamplingBVH */
             Intersection its_y;
@@ -171,6 +174,11 @@ public:
 
             if (m_strictNormals && dot(its.geoFrame.n, wo) * Frame::cosTheta(bRec.wo) <= 0) break;
 
+            /* The length-2 strategies only cover non-delta scattering at x_s:
+               after a delta lobe, the next vertex keeps its standard NEE */
+            const bool sampled_delta = (bRec.sampledType & BSDF::EDelta) != 0;
+            prev_evaluated_l2 = l2_possible && !sampled_delta;
+
             /* Trace the ray x_s -> z */
             ray = Ray(its.p, wo, ray.time);
             Intersection its_z;
@@ -186,15 +194,16 @@ public:
                 }
 
                 /* Strategy B: connect the BSDF-sampled vertex z to x_e */
-                if (hit_z && its_z.isValid() && !its_z.isEmitter()) {
+                if (hit_z && its_z.isValid() && !its_z.isEmitter() && !sampled_delta) {
                     Ray shadowRay(its_z.p, normalize(pRec_L2.p - its_z.p), Epsilon, distance(pRec_L2.p, its_z.p)-Epsilon, ray.time);
                     if (!scene->rayIntersect(shadowRay)) {
                         Spectrum contrib_BSDF_NEE = evaluatePathContribution(scene, its, its_z, pRec_L2, throughput, bsdf) / bsdfPdf;
 
                         if (!contrib_BSDF_NEE.isZero()) {
-                            /* Density with which strategy A would have generated z (solid angle) */
+                            /* Density with which strategy A would have generated z
+                               (solid angle); zero when strategy A is disabled */
                             Float pdf_2NEE_at_z = 0.0f;
-                            if (its_z.shape && its_z.shape->getClass()->derivesFrom(MTS_CLASS(TriMesh)))
+                            if (m_useBVH && its_z.shape && its_z.shape->getClass()->derivesFrom(MTS_CLASS(TriMesh)))
                                 pdf_2NEE_at_z = scene->getSamplingBVH()->pdfGeometry(scene, its, pRec_L2, its_z);
 
                             Li += miWeight(bsdfPdf, pdf_2NEE_at_z) * contrib_BSDF_NEE;
@@ -212,11 +221,16 @@ public:
                     Li += throughput * scene->evalEnvironment(ray);
                 break;
             } else if (its_z.isEmitter()) {
-                /* Emitter hit by BSDF sampling, weighted against emitter sampling */
-                dRec.setQuery(ray, its_z);
-                Spectrum value = its_z.Le(-ray.d);
-                Float lumPdf = (!(bRec.sampledType & BSDF::EDelta)) ? scene->pdfEmitterDirect(dRec) : 0;
-                Li += throughput * value * miWeight(bsdfPdf, lumPdf);
+                /* Emitter hit by BSDF sampling. Its weight complements the
+                   technique that estimates the same direct illumination: the
+                   length-2 estimate of the previous vertex (weight 0), standard
+                   NEE (power heuristic), or none when NEE is disabled (weight 1) */
+                if (!direct_covered_by_l2 && do_nee) {
+                    dRec.setQuery(ray, its_z);
+                    Spectrum value = its_z.Le(-ray.d);
+                    Float lumPdf = (!m_disableNee && !sampled_delta) ? scene->pdfEmitterDirect(dRec) : 0;
+                    Li += throughput * value * miWeight(bsdfPdf, lumPdf);
+                }
                 break;
             }
 
