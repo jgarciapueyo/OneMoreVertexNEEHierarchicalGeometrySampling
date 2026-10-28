@@ -96,8 +96,8 @@ The repository is mounted at `/home/mitsuba` inside the container, and the conta
 Quick sanity check: render the *AsteroidsCloseLight* scene with our method at 16 spp:
 
 ```bash
-docker compose run --rm mitsuba bash -lc \
-    "mitsuba scenes/22_wildcard_asteroids_smallerspotlight/wildcard_spotlight.xml -Dspp=16 -DleafSamplingMode=Primitive -o asteroids_ours.exr"
+docker compose run --rm mitsuba mitsuba scenes/22_wildcard_asteroids_smallerspotlight/wildcard_spotlight.xml \
+    -Dspp=16 -DleafSamplingMode=Primitive -o asteroids_ours.exr
 ```
 
 For interactive work, open a shell with `docker compose run --rm mitsuba` (`mitsuba` is on the `PATH`).

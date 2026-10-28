@@ -21,7 +21,6 @@ if [ -z "$FIG" ]; then
     exit 1
 fi
 
-source setpath.sh
 bash scripts/prepare_scenes.sh
 
 EXP=scripts/experiments

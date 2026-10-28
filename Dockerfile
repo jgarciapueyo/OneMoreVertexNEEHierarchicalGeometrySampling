@@ -55,8 +55,13 @@ ARG UID=1000
 ARG GID=1000
 RUN groupadd -o -g ${GID} mitsuba && \
     useradd -o -m -d /home/user -u ${UID} -g ${GID} -s /bin/bash mitsuba && \
-    echo '[ -f /home/mitsuba/setpath.sh ] && source /home/mitsuba/setpath.sh' >> /home/user/.bashrc && \
     git config --system --add safe.directory /home/mitsuba
+
+# What setpath.sh sets for the build in the mounted repository, so that
+# mitsuba is available in every shell
+ENV MITSUBA_DIR=/home/mitsuba
+ENV PATH=/home/mitsuba/dist:${PATH}
+ENV LD_LIBRARY_PATH=/home/mitsuba/dist
 
 # Tells scripts/experiments/run_experiments.py to call Mitsuba directly
 ENV ONEEHGS_IN_CONTAINER=1
