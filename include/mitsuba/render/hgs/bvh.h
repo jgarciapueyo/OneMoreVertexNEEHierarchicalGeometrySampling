@@ -249,9 +249,8 @@ struct BVHNode {
     uint16_t depth;              // Depth of this node in the tree (root=0)
     uint8_t pad;                 // Padding for alignment
     
-    BVHNode() : nSubtreePrimitives(0), nLeafPrimitives(0), splitAxis(0) {
+    BVHNode() : nSubtreePrimitives(0), nLeafPrimitives(0), splitAxis(0), depth(0), pad(0) {
         primitivesOffset = 0;
-        pad = 0;
     }
     
     bool isLeaf() const { return nLeafPrimitives > 0; }

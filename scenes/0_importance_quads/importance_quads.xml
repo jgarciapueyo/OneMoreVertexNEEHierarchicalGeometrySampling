@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-Parameters written as $name:default can be overridden on the command line,
-e.g. mitsuba scenes/0_importance_quads/importance_quads.xml -Dspp=64
-The experiment configs in scripts/experiments/ set them in the same way.
+Floating, directly lit quads used for the importance visualization of Fig. 4.
+With outputDebugCSV=true the SamplingBVH writes bvh_debug.csv (one row per node,
+for the fixed query point debugQueryPoint and the first emitter) when the scene
+is loaded:
+    mitsuba scenes/0_importance_quads/importance_quads.xml -DoutputDebugCSV=true -Dspp=1
+Then visualize it with scripts/polyscope/view_bvh.py bvh_debug.csv and compute the
+per-level total variation distance with scripts/figures/fig4_importance_tvd.py.
 -->
 <scene version="0.6.0">
 	<integrator type="oneehgspath_2step">
@@ -14,6 +18,10 @@ The experiment configs in scripts/experiments/ set them in the same way.
 	</integrator>
 	<geometrybvh type="samplingbvh">
 		<integer name="maxDepth" value="$bvhMaxDepth:10"/>
+		<boolean name="specularImportance" value="$specularImportance:false"/>
+		<boolean name="outputDebugCSV" value="$outputDebugCSV:false"/>
+		<point name="debugQueryPoint" x="2.43008" y="-0.0490401" z="0"/>
+		<integer name="debugQueryShape" value="2"/>
 	</geometrybvh>
 	<sensor type="perspective">
 		<string name="fovAxis" value="smaller"/>
@@ -24,7 +32,7 @@ The experiment configs in scripts/experiments/ set them in the same way.
 		</transform>
 		<float name="fov" value="45"/>
 		<sampler type="independent">
-			<integer name="sampleCount" value="2048"/>
+			<integer name="sampleCount" value="$spp:2048"/>
 		</sampler>
 		<film type="hdrfilm">
 			<integer name="width" value="256"/>

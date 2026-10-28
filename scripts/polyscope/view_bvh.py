@@ -42,6 +42,12 @@ AABB_DIFF_TONEMAP_OPTIONS = [
 def load_bvh_dataframe(csv_path):
     df = pd.read_csv(csv_path)
 
+    # The node's center of mass is the mean of its spatial Gaussian (area-weighted
+    # centroid); older CSV files had separate center_of_mass_* columns.
+    for c in "xyz":
+        if f"center_of_mass_{c}" not in df.columns and f"gaussian_mu_{c}" in df.columns:
+            df[f"center_of_mass_{c}"] = df[f"gaussian_mu_{c}"]
+
     required_columns = [
         'node_index','level',
         'aabb_min_x', 'aabb_min_y', 'aabb_min_z',
