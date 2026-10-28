@@ -52,6 +52,10 @@ def main():
 
     input_dir = Path(args.input_dir)
     for xml in sorted(input_dir.glob("*.xml")):
+        # Very sparse, coarse hemispheres can end up without any triangle
+        if re.search(r"_n0_", xml.stem):
+            print(f"{xml.stem}: no triangles, skipped")
+            continue
         # The scenes include the geometry relative to their own folder
         geometry = os.path.relpath(xml, HERE)
         run_dir = Path(args.runs_dir) / xml.stem
