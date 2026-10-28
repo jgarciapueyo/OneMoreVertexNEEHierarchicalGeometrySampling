@@ -109,7 +109,8 @@ bool SamplingBVH::sampleFromNode(const Scene *scene, Sampler *sampler, size_t no
     if (node.isLeaf()) {
         if (node.nLeafPrimitives == 0)
             return false;
-        if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB)
+        if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB ||
+            m_samplingMode == SamplingBVHSamplingMode::SphericalAABB_anyNode)
             return sampleLeafSphericalAABB(scene, node, nodeIndex, sampler->next2D(), from, its, pdf_sa);
         return sampleLeafPrimitive(scene, node, nodeIndex, sampler->next1D(), sampler->next2D(), from, its, pdf_sa);
     } else if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB_anyNode) {
