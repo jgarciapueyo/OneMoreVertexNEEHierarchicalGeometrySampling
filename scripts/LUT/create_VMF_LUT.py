@@ -1,6 +1,9 @@
 """
+Tabulate the VMF cosine integral by Monte Carlo and store it as
+scripts/LUT/vmf_lut.feather, the input of fit_LUT.py (several hours).
+
 Requirements:
-    pip install pandas pyarrow polyscope scipy tqdm numpy
+    pip install -r scripts/LUT/requirements.txt
 
 Given the integral:
     I(kappa, w1, w2) = int_{Omega} VMF(kappa) * cos(th1) * cos(th2) dOmega
@@ -20,6 +23,7 @@ where:
 """
 
 import sys
+from pathlib import Path
 
 import scipy
 from scipy.stats import vonmises_fisher
@@ -257,19 +261,22 @@ def plot_2D_slice(df, kappa_idx=0, dphi_idx=0):
     plt.show()
 
 
+LUT_PATH = Path(__file__).parent / "vmf_lut.feather"
+
+
 if __name__ == "__main__":
     if len(sys.argv) > 1 and sys.argv[1] in ["--visualize", "-viz"]:
-        df = pd.read_feather("vmf_lut.feather")
+        df = pd.read_feather(LUT_PATH)
         visualize_lut(df)
         exit(0)
 
     elif len(sys.argv) > 1 and sys.argv[1] in ["--view_integrals", "-view"]:
-        df = pd.read_feather("vmf_lut.feather")
+        df = pd.read_feather(LUT_PATH)
         view_example_integrals(df)
         exit(0)
 
     elif len(sys.argv) > 1 and sys.argv[1] in ["--plot_slice", "-slice"]:
-        df = pd.read_feather("vmf_lut.feather")
+        df = pd.read_feather(LUT_PATH)
         plot_2D_slice(df, kappa_idx=0, dphi_idx=0)
         exit(0)
 
@@ -290,4 +297,4 @@ if __name__ == "__main__":
     print(df.describe())
     # df = lut_to_packed_dataframe(lut, kappa_values, theta1, dphi_values, packed=True)
     # print(df.describe())
-    df.to_feather("vmf_lut.feather")
+    df.to_feather(LUT_PATH)

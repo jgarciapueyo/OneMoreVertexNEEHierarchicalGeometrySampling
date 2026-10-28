@@ -25,7 +25,7 @@ struct KappaQuery {
  * degree-4 polynomial in (exp(-kappa/10), cos theta_1, cos theta_2, cos dphi)
  * (scripts/LUT/fit_LUT.py), which is evaluated instead of a lookup table.
  * The directions are given in the local frame of the VMF (z = mean direction).
- * The fit is not clamped and can be slightly negative for grazing directions.
+ * The fitted polynomial is clamped to non-negative values.
  */
 class VMFLUT {
 public:
