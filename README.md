@@ -162,6 +162,7 @@ This repository is [Mitsuba 0.6](https://github.com/mitsuba-renderer/mitsuba) (c
 | [`src/librender/hgs/bvh_sample.cpp`](src/librender/hgs/bvh_sample.cpp) | Stochastic traversal (Eqs. 8-9), leaf sampling, densities, three-vertex contributions |
 | [`src/librender/hgs/bvh_debug.cpp`](src/librender/hgs/bvh_debug.cpp) | Per-node CSV dump of Fig. 4 |
 | [`src/hgs/samplingbvh.cpp`](src/hgs/samplingbvh.cpp) | Plugin registration (`<geometrybvh type="samplingbvh">`) |
+| [`src/tests/test_hgs.cpp`](src/tests/test_hgs.cpp) | Tests: sampling and PDF evaluation agree for every leaf mode, and the densities are normalized (`docker compose run --rm mitsuba mtsutil test_hgs`) |
 
 #### Plugins
 
