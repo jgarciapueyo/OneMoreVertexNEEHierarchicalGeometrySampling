@@ -2,9 +2,21 @@
 
 MTS_NAMESPACE_BEGIN
 
-class ONEEEHGSPTracerIntegrator : public Integrator {
+/*!\plugin{oneehgsptracer}{One-more-vertex NEE from the camera}
+ * \parameters{
+ *     \parameter{granularity}{\Integer}{Number of samples per work unit
+ *         \default{200000}}
+ * }
+ * Particle-tracer counterpart of the camera technique of
+ * \pluginref{oneehgsptracermis}: an emitter position x_e is sampled, the
+ * intermediate vertex x_n is sampled from the SamplingBVH as seen from the
+ * camera and connected to the sensor. It only renders this direct
+ * illumination of the visible geometry (no camera paths, no MIS), and is
+ * used by the scenes in scenes/7_glints.
+ */
+class OneMoreVertexPTracerIntegrator : public Integrator {
 public:
-    ONEEEHGSPTracerIntegrator(const Properties &props): Integrator(props) {
+    OneMoreVertexPTracerIntegrator(const Properties &props): Integrator(props) {
         /* Granularity of the work units used in parallelizing
         the particle tracing task (default: 200K samples).
         Should be high enough so that sending and accumulating
@@ -12,7 +24,7 @@ public:
         m_granularity = props.getSize("granularity", 200000);
     }
 
-    ONEEEHGSPTracerIntegrator(Stream *stream, InstanceManager *manager)
+    OneMoreVertexPTracerIntegrator(Stream *stream, InstanceManager *manager)
         : Integrator(stream, manager) {
         m_granularity  = stream->readSize();
     }
@@ -50,14 +62,13 @@ public:
             " %s, " SSE_STR ") ..", film->getCropSize().x, film->getCropSize().y,
             sampleCount, nCores, nCores == 1 ? "core" : "cores");
 
-        // Verify the BVH was built (buildBVH skips unsupported integrators,
-        // but ONEEEHGSPTracerIntegrator is in the allow-list so this should always succeed).
+        // The scene builds the SamplingBVH because needsSamplingBVH() returns true
         const SamplingBVH *bvh = scene->getSamplingBVH();
         if (!bvh || !bvh->isBuilt())
             Log(EError, "SamplingBVH was not built. Make sure a <geometrybvh> "
                 "block is present in the scene XML and the scene contains geometry.");
         
-        ref<ParallelProcess> process = new ONEEEHGSPTracerProcess(
+        ref<ParallelProcess> process = new OneMoreVertexPTracerProcess(
             job, queue, m_sampleCount, m_granularity);
 
         process->bindResource("scene",   sceneResID);
@@ -73,7 +84,7 @@ public:
 
     std::string toString() const {
         std::ostringstream oss;
-        oss << "ONEEEHGSPTracerIntegrator[" << endl
+        oss << "OneMoreVertexPTracerIntegrator[" << endl
             << "  granularity = " << m_granularity << endl
             << "]";
         return oss.str();
@@ -88,6 +99,6 @@ protected:
     size_t m_sampleCount, m_granularity;
 };
 
-MTS_IMPLEMENT_CLASS_S(ONEEEHGSPTracerIntegrator, false, Integrator)
-MTS_EXPORT_PLUGIN(ONEEEHGSPTracerIntegrator, "One-more-vertex particle tracer");
+MTS_IMPLEMENT_CLASS_S(OneMoreVertexPTracerIntegrator, false, Integrator)
+MTS_EXPORT_PLUGIN(OneMoreVertexPTracerIntegrator, "One-more-vertex particle tracer");
 MTS_NAMESPACE_END

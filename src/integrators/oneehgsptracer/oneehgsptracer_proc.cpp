@@ -6,14 +6,14 @@ MTS_NAMESPACE_BEGIN
 /*                           Work result impl.                          */
 /* ==================================================================== */
 
-void ONEEEHGSPTracerWorkResult::load(Stream *stream) {
+void OneMoreVertexPTracerWorkResult::load(Stream *stream) {
     size_t nEntries = (size_t) m_size.x * (size_t) m_size.y;
     stream->readFloatArray(reinterpret_cast<Float *>(m_bitmap->getFloatData()),
         nEntries * SPECTRUM_SAMPLES);
     m_range->load(stream);
 }
 
-void ONEEEHGSPTracerWorkResult::save(Stream *stream) const {
+void OneMoreVertexPTracerWorkResult::save(Stream *stream) const {
     size_t n = (size_t) m_size.x * (size_t) m_size.y;
     stream->writeFloatArray(reinterpret_cast<const Float *>(m_bitmap->getFloatData()),
                             n * SPECTRUM_SAMPLES);
@@ -24,14 +24,14 @@ void ONEEEHGSPTracerWorkResult::save(Stream *stream) const {
 /*                         Work processor impl.                         */
 /* ==================================================================== */
 
-ONEEEHGSPTracerWorker::ONEEEHGSPTracerWorker(Stream *stream, InstanceManager *manager)
+OneMoreVertexPTracerWorker::OneMoreVertexPTracerWorker(Stream *stream, InstanceManager *manager)
     : WorkProcessor(stream, manager) {}
 
-void ONEEEHGSPTracerWorker::serialize(Stream *stream, InstanceManager *manager) const {
+void OneMoreVertexPTracerWorker::serialize(Stream *stream, InstanceManager *manager) const {
     WorkProcessor::serialize(stream, manager);
 }
 
-void ONEEEHGSPTracerWorker::prepare() {
+void OneMoreVertexPTracerWorker::prepare() {
     m_scene   = static_cast<Scene *>(getResource("scene"));
 
     Sampler *baseSampler = static_cast<Sampler *>(getResource("sampler"));
@@ -44,29 +44,29 @@ void ONEEEHGSPTracerWorker::prepare() {
     m_cameraOrigin = trafo->eval(0.f)(Point(0.f, 0.f, 0.f));
 }
 
-ref<WorkProcessor> ONEEEHGSPTracerWorker::clone() const {
-    return new ONEEEHGSPTracerWorker();
+ref<WorkProcessor> OneMoreVertexPTracerWorker::clone() const {
+    return new OneMoreVertexPTracerWorker();
 }
 
-ref<WorkResult> ONEEEHGSPTracerWorker::createWorkResult() const {
+ref<WorkResult> OneMoreVertexPTracerWorker::createWorkResult() const {
     const Film *film = m_sensor->getFilm();
-    return new ONEEEHGSPTracerWorkResult(film->getCropSize(), m_rfilter.get());
+    return new OneMoreVertexPTracerWorkResult(film->getCropSize(), m_rfilter.get());
 }
 
-ref<WorkUnit> ONEEEHGSPTracerWorker::createWorkUnit() const {
+ref<WorkUnit> OneMoreVertexPTracerWorker::createWorkUnit() const {
     return new RangeWorkUnit();
 }
 
-void ONEEEHGSPTracerWorker::process(const WorkUnit *workUnit, WorkResult *workResult, const bool &stop) {
+void OneMoreVertexPTracerWorker::process(const WorkUnit *workUnit, WorkResult *workResult, const bool &stop) {
     const RangeWorkUnit *range = static_cast<const RangeWorkUnit *>(workUnit);
-    m_workResult = static_cast<ONEEEHGSPTracerWorkResult *>(workResult);
+    m_workResult = static_cast<OneMoreVertexPTracerWorkResult *>(workResult);
     m_workResult->setRangeWorkUnit(range);
     m_workResult->clear();
 
     // Similar to ParticleTracer::process but with custom sampling strategy and no path tracing (single vertex x_n)
     const SamplingBVH *bvh = m_scene->getSamplingBVH();
     if (!bvh || !bvh->isBuilt()) {
-        Log(EWarn, "ONEEEHGSPTracer: SamplingBVH not available or not built!");
+        Log(EWarn, "OneMoreVertexPTracer: SamplingBVH not available or not built!");
         return;
     }
     for (size_t index = range->getRangeStart(); index <= range->getRangeEnd() && !stop; ++index) {
@@ -77,34 +77,30 @@ void ONEEEHGSPTracerWorker::process(const WorkUnit *workUnit, WorkResult *workRe
     m_workResult = NULL;
 }
 
-void ONEEEHGSPTracerWorker::traceSample(const SamplingBVH *bvh) {
+void OneMoreVertexPTracerWorker::traceSample(const SamplingBVH *bvh) {
     // ----------------------------------------------------------------
     // 1. Sample emitter position x_e
     // ----------------------------------------------------------------
     PositionSamplingRecord pRec_xe(0.f);
     m_scene->sampleEmitterPosition(pRec_xe, m_sampler->next2D());
     if (pRec_xe.pdf <= 0.f || !pRec_xe.object) {
-        Log(EWarn, "ONEEEHGSPTracer: Failed to sample emitter position!");
         return;
     }
 
-    // std::cout << "Sampled emitter position: " << pRec_xe.p.toString() << ", pdf: " << pRec_xe.pdf << std::endl;
 
     // ----------------------------------------------------------------
     // 2. BVH camera sampling: find intermediate vertex x_n
-    //    Uses area-proportional importance stub (no camera guidance yet).
+    //    The traversal uses computeNodeImportanceGlint (camera field of view,
+    //    emitter and diffuse VMF term at x_n).
     // ----------------------------------------------------------------
     Intersection its_xn;
     Float pdf_xn = 0.f;
     if (!bvh->sampleGeometryCamera(m_scene, m_sampler, m_cameraOrigin,
                                     m_sensor.get(), pRec_xe, its_xn, pdf_xn)) {
-        Log(EWarn, "ONEEEHGSPTracer: Failed to sample geometry from camera!");
         return;
     }
-    // Log(EWarn, "pdf_xn: %f", pdf_xn);
 
     if (pdf_xn <= 0.f || !its_xn.isValid()) {
-        Log(EWarn, "ONEEEHGSPTracer: Invalid intersection found!");
         return;
     }
 
@@ -114,9 +110,7 @@ void ONEEEHGSPTracerWorker::traceSample(const SamplingBVH *bvh) {
     // ----------------------------------------------------------------
     DirectSamplingRecord dRec(its_xn);
     Spectrum W_e = m_scene->sampleSensorDirect(dRec, m_sampler->next2D(), true);
-    // Log(EWarn, "W_e: %s", W_e.toString().c_str());
     if (W_e.isZero()) {
-        // Log(EWarn, "ONEEEHGSPTracer: Zero contribution found!");
         return;
     }
 
@@ -142,7 +136,7 @@ void ONEEEHGSPTracerWorker::traceSample(const SamplingBVH *bvh) {
     Spectrum value = W_e * contrib / (pdf_xn * pRec_xe.pdf);
 
     if (!value.isValid()) {
-        Log(EWarn, "ONEEEHGSPTracer: Invalid sample value found! %s", value.toString().c_str());
+        Log(EWarn, "OneMoreVertexPTracer: Invalid sample value found! %s", value.toString().c_str());
         return;
     }
     
@@ -153,15 +147,15 @@ void ONEEEHGSPTracerWorker::traceSample(const SamplingBVH *bvh) {
 /*                        Parallel process impl.                        */
 /* ==================================================================== */
 
-void ONEEEHGSPTracerProcess::develop() {
+void OneMoreVertexPTracerProcess::develop() {
     Float weight = (m_accum->getWidth() * m_accum->getHeight())
                     / (Float) m_receivedResultCount;
     m_film->setBitmap(m_accum->getBitmap(), weight);
     m_queue->signalRefresh(m_job);
 }
 
-void ONEEEHGSPTracerProcess::processResult(const WorkResult *wr, bool cancelled) {
-    const ONEEEHGSPTracerWorkResult *result = static_cast<const ONEEEHGSPTracerWorkResult *>(wr);
+void OneMoreVertexPTracerProcess::processResult(const WorkResult *wr, bool cancelled) {
+    const OneMoreVertexPTracerWorkResult *result = static_cast<const OneMoreVertexPTracerWorkResult *>(wr);
     const RangeWorkUnit *range = result->getRangeWorkUnit();
     if (cancelled)
         return;
@@ -173,7 +167,7 @@ void ONEEEHGSPTracerProcess::processResult(const WorkResult *wr, bool cancelled)
         develop();
 }
 
-void ONEEEHGSPTracerProcess::bindResource(const std::string &name, int id) {
+void OneMoreVertexPTracerProcess::bindResource(const std::string &name, int id) {
     if (name == "sensor") {
         Sensor *sensor = static_cast<Sensor *>(
             Scheduler::getInstance()->getResource(id));
@@ -185,11 +179,11 @@ void ONEEEHGSPTracerProcess::bindResource(const std::string &name, int id) {
     ParticleProcess::bindResource(name, id);
 }
 
-ref<WorkProcessor> ONEEEHGSPTracerProcess::createWorkProcessor() const {
-    return new ONEEEHGSPTracerWorker();
+ref<WorkProcessor> OneMoreVertexPTracerProcess::createWorkProcessor() const {
+    return new OneMoreVertexPTracerWorker();
 }
 
-MTS_IMPLEMENT_CLASS(ONEEEHGSPTracerWorker, false, WorkProcessor)
-MTS_IMPLEMENT_CLASS(ONEEEHGSPTracerProcess, false, ParticleProcess)
-MTS_IMPLEMENT_CLASS(ONEEEHGSPTracerWorkResult, false, WorkResult)
+MTS_IMPLEMENT_CLASS(OneMoreVertexPTracerWorker, false, WorkProcessor)
+MTS_IMPLEMENT_CLASS(OneMoreVertexPTracerProcess, false, ParticleProcess)
+MTS_IMPLEMENT_CLASS(OneMoreVertexPTracerWorkResult, false, WorkResult)
 MTS_NAMESPACE_END

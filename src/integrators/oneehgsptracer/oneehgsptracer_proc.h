@@ -9,13 +9,13 @@
 MTS_NAMESPACE_BEGIN
 
 /* ======================================================================== */
-/*  ONEEEHGSPTracerWorkResult                                                          */
+/*  OneMoreVertexPTracerWorkResult                                                          */
 /*  Mirrors CaptureParticleWorkResult from ptracer_proc.h/.cpp              */
 /* ======================================================================== */
 
-class ONEEEHGSPTracerWorkResult : public ImageBlock {
+class OneMoreVertexPTracerWorkResult : public ImageBlock {
 public:
-    inline ONEEEHGSPTracerWorkResult(const Vector2i &res, const ReconstructionFilter *filter)
+    inline OneMoreVertexPTracerWorkResult(const Vector2i &res, const ReconstructionFilter *filter)
         : ImageBlock(Bitmap::ESpectrum, res, filter) {
         setOffset(Point2i(0, 0));
         setSize(res);
@@ -36,21 +36,21 @@ public:
 
     MTS_DECLARE_CLASS()
 protected:
-    virtual ~ONEEEHGSPTracerWorkResult() { }
+    virtual ~OneMoreVertexPTracerWorkResult() { }
 protected:
     ref<RangeWorkUnit> m_range;
 };
 
 /* ==================================================================== */
-/*  ONEEEHGSPTracerWorker                                                              */
+/*  OneMoreVertexPTracerWorker                                                              */
 /*  Custom WorkProcessor: BVH camera-origin sampling + sensor splatting.    */
 /* ==================================================================== */
 
-class ONEEEHGSPTracerWorker : public WorkProcessor {
+class OneMoreVertexPTracerWorker : public WorkProcessor {
 public:
-    inline ONEEEHGSPTracerWorker() : WorkProcessor() { }
+    inline OneMoreVertexPTracerWorker() : WorkProcessor() { }
 
-    ONEEEHGSPTracerWorker(Stream *stream, InstanceManager *manager);
+    OneMoreVertexPTracerWorker(Stream *stream, InstanceManager *manager);
 
     void serialize(Stream *stream, InstanceManager *manager) const;
     void prepare();
@@ -63,7 +63,7 @@ public:
     MTS_DECLARE_CLASS()
 protected:
     /// Virtual destructor
-    virtual ~ONEEEHGSPTracerWorker() { }
+    virtual ~OneMoreVertexPTracerWorker() { }
 private:
     void traceSample(const SamplingBVH *bvh);
 
@@ -71,18 +71,18 @@ private:
     ref<Sampler>  m_sampler;
     ref<Sensor>   m_sensor;
     ref<const ReconstructionFilter> m_rfilter;
-    ref<ONEEEHGSPTracerWorkResult> m_workResult;
+    ref<OneMoreVertexPTracerWorkResult> m_workResult;
     Point  m_cameraOrigin;
 };
 
 /* ======================================================================== */
-/*  ONEEEHGSPTracerProcess                                                             */
+/*  OneMoreVertexPTracerProcess                                                             */
 /*  Mirrors CaptureParticleProcess from ptracer_proc.h/.cpp                 */
 /* ======================================================================== */
 
-class ONEEEHGSPTracerProcess : public ParticleProcess {
+class OneMoreVertexPTracerProcess : public ParticleProcess {
 public:
-    ONEEEHGSPTracerProcess(const RenderJob *job, RenderQueue *queue,
+    OneMoreVertexPTracerProcess(const RenderJob *job, RenderQueue *queue,
                  size_t sampleCount, size_t granularity)
         : ParticleProcess(ParticleProcess::ETrace, sampleCount,
                           granularity, "Rendering (glints)", job),
@@ -97,7 +97,7 @@ public:
 
     MTS_DECLARE_CLASS()
 protected:
-    virtual ~ONEEEHGSPTracerProcess() { }
+    virtual ~OneMoreVertexPTracerProcess() { }
 private:
     ref<const RenderJob> m_job;
     ref<RenderQueue>     m_queue;

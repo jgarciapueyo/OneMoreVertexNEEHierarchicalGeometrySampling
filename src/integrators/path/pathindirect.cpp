@@ -23,6 +23,14 @@ MTS_NAMESPACE_BEGIN
 
 static StatsCounter avgPathLength("Path tracer indirect", "Average path length", EAverage);
 
+/*
+    pathindirect: copy of the upstream \pluginref{path} plugin that only
+    accounts for indirect illumination: emitted radiance and next-event
+    estimation are skipped at the first vertex (rRec.depth == 1). It is the
+    path-tracing baseline of the Cornell box comparison (Fig. 12). The rest of
+    this documentation is the one of the original plugin.
+*/
+
 /*! \plugin{path}{Path tracer}
  * \order{2}
  * \parameters{
