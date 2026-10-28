@@ -9,6 +9,8 @@ python scenes/scene_geometries/create_geometry.py -n=30000 -f=scenes/scene_geome
 
 """
 
+from __future__ import annotations
+
 
 import argparse
 import math
