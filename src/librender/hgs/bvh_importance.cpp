@@ -698,8 +698,8 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT(
     const uint32_t ablationMask = bvh->getAblationMask();
     const bool ablateVMF        = (ablationMask & SamplingBVH::AblateVMF) != 0;
     const bool ablateGaussian   = (ablationMask & SamplingBVH::AblateGaussian) != 0;
-    const bool ablateCosineXs   = (ablationMask & SamplingBVH::AblateCosineXs) != 0;
-    const bool ablateCosineXe   = (ablationMask & SamplingBVH::AblateCosineXe) != 0;
+    const bool ablateBSDF       = (ablationMask & SamplingBVH::AblateBSDF) != 0;
+    const bool ablateEmission   = (ablationMask & SamplingBVH::AblateEmission) != 0;
     const bool ablateDistanceXs = (ablationMask & SamplingBVH::AblateDistanceXs) != 0;
     const bool ablateDistanceXe = (ablationMask & SamplingBVH::AblateDistanceXe) != 0;
     const bool ablateAlbedo     = (ablationMask & SamplingBVH::AblateAlbedo) != 0;
@@ -792,7 +792,7 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT(
         
 
         Spectrum f_xs(1.0f);
-        if (!ablateCosineXs) {
+        if (!ablateBSDF) {
             Vector l_xs_to_xp = its_xs.toLocal(d_sp);
             BSDFSamplingRecord bRec_xs(its_xs, l_xs_to_xp);
             const BSDF *bsdf_xs = its_xs.getBSDF();
@@ -819,7 +819,7 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT(
             continue;
 
         Spectrum Le = emitter->evalPosition(pRec_xe);
-        if (!ablateCosineXe) {
+        if (!ablateEmission) {
             DirectionSamplingRecord dRec_xe(-d_pe);
             dRec_xe.measure = emitter->needsDirectionSample() ? ESolidAngle : EDiscrete;
             Le *= emitter->evalDirection(dRec_xe, pRec_xe);

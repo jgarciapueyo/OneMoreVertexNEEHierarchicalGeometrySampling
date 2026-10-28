@@ -26,8 +26,8 @@ The experiment configs in scripts/experiments/ set them in the same way.
 		<float name="angularSAHKappaScale" value="$angularSAHKappaScale:10"/>
 		<boolean name="ablateVMF" value="$ablateVMF:false"/>
 		<boolean name="ablateGaussian" value="$ablateGaussian:false"/>
-		<boolean name="ablateCosineXs" value="$ablateCosineXs:false"/>
-		<boolean name="ablateCosineXe" value="$ablateCosineXe:false"/>
+		<boolean name="ablateBSDF" value="$ablateBSDF:false"/>
+		<boolean name="ablateEmission" value="$ablateEmission:false"/>
 		<boolean name="ablateDistanceXs" value="$ablateDistanceXs:false"/>
 		<boolean name="ablateDistanceXe" value="$ablateDistanceXe:false"/>
 		<boolean name="ablateAlbedo" value="$ablateAlbedo:false"/>

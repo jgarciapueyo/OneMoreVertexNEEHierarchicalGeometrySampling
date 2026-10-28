@@ -66,11 +66,11 @@ named_configs:
       
   - name: no_bsdf
     params:
-      ablateCosineXs: true
+      ablateBSDF: true
 
   - name: no_Le
     params:
-      ablateCosineXe: true
+      ablateEmission: true
 
   # - name: nodistancexs
   #   params:
@@ -88,15 +88,15 @@ named_configs:
     params:
       ablateGaussian: true
       ablateVMF: true
-      ablateCosineXs: true
-      ablateCosineXe: true
+      ablateBSDF: true
+      ablateEmission: true
   
   - name: ours
     params:
       ablateGaussian: false
       ablateVMF: false
-      ablateCosineXs: false
-      ablateCosineXe: false
+      ablateBSDF: false
+      ablateEmission: false
       ablateDistanceXs: false
       ablateDistanceXe: false
       ablateAlbedo: false

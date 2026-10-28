@@ -446,8 +446,8 @@ public:
         AblateNone = 0,
         AblateVMF = 1,          ///< no_vmf: normal-distribution (VMF) integral set to 1
         AblateGaussian = 2,     ///< no_gaussian: single point at the AABB center
-        AblateCosineXs = 4,     ///< no_bsdf: BSDF at x_s set to 1
-        AblateCosineXe = 8,     ///< no_Le: directional emission at x_e set to 1
+        AblateBSDF = 4,         ///< no_bsdf: BSDF at x_s set to 1
+        AblateEmission = 8,     ///< no_Le: directional emission at x_e set to 1
         AblateDistanceXs = 16,  ///< inverse squared distance to x_s set to 1
         AblateDistanceXe = 32,  ///< inverse squared distance to x_e set to 1
         AblateAlbedo = 64       ///< node albedo set to 1

@@ -71,11 +71,11 @@ named_configs:
       
   - name: nocosinexs
     params:
-      ablateCosineXs: true
+      ablateBSDF: true
 
   - name: nocosinexe
     params:
-      ablateCosineXe: true
+      ablateEmission: true
 
   - name: specularon
     params:
@@ -86,8 +86,8 @@ named_configs:
     params:
       ablateGaussian: true
       ablateVMF: true
-      ablateCosineXs: true
-      ablateCosineXe: true
+      ablateBSDF: true
+      ablateEmission: true
       ablateDistanceXs: true
       ablateDistanceXe: true
       ablateAlbedo: true
@@ -96,8 +96,8 @@ named_configs:
     params:
       ablateGaussian: false
       ablateVMF: false
-      ablateCosineXs: false
-      ablateCosineXe: false
+      ablateBSDF: false
+      ablateEmission: false
       ablateDistanceXs: false
       ablateDistanceXe: false
       ablateAlbedo: false

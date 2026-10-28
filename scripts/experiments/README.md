@@ -200,7 +200,7 @@ The parameters of `global_defaults`, `named_configs` and `sweep` are passed to M
 | `uniformImportance` | `true`, `false` | every node gets the same weight |
 | `specularImportance` | `true`, `false` | include the specular lobe of the node weight |
 | `sigmaPoints` | `precomputed`, `perCall`, `directionAtMean` | how the node Gaussian is evaluated |
-| `ablate{Gaussian,VMF,CosineXs,CosineXe,DistanceXs,DistanceXe,Albedo}` | `true`, `false` | remove one factor of the node weight (Fig. 5) |
+| `ablate{Gaussian,VMF,BSDF,Emission,DistanceXs,DistanceXe,Albedo}` | `true`, `false` | remove one factor of the node weight (Fig. 5) |
 | `defensivePDF` | float | defensive value added to every node weight |
 
 ## Notes

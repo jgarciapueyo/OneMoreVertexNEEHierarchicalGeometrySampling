@@ -68,8 +68,8 @@ SamplingBVH::SamplingBVH(const Properties &props)
     };
     enableAblation("ablateVMF", AblateVMF);
     enableAblation("ablateGaussian", AblateGaussian);
-    enableAblation("ablateCosineXs", AblateCosineXs);
-    enableAblation("ablateCosineXe", AblateCosineXe);
+    enableAblation("ablateBSDF", AblateBSDF);
+    enableAblation("ablateEmission", AblateEmission);
     enableAblation("ablateDistanceXs", AblateDistanceXs);
     enableAblation("ablateDistanceXe", AblateDistanceXe);
     enableAblation("ablateAlbedo", AblateAlbedo);
@@ -112,8 +112,8 @@ std::string SamplingBVH::toString() const {
         << "  importanceMultiplier = " << m_probmult << "," << endl
         << "  ablationMask = " << m_ablationMask << " [VMF=" << ((m_ablationMask & AblateVMF) != 0)
         << ", Gaussian=" << ((m_ablationMask & AblateGaussian) != 0)
-        << ", CosineXs=" << ((m_ablationMask & AblateCosineXs) != 0)
-        << ", CosineXe=" << ((m_ablationMask & AblateCosineXe) != 0)
+        << ", BSDF=" << ((m_ablationMask & AblateBSDF) != 0)
+        << ", Emission=" << ((m_ablationMask & AblateEmission) != 0)
         << ", DistanceXs=" << ((m_ablationMask & AblateDistanceXs) != 0)
         << ", DistanceXe=" << ((m_ablationMask & AblateDistanceXe) != 0)
         << ", Albedo=" << ((m_ablationMask & AblateAlbedo) != 0) << "]," << endl
