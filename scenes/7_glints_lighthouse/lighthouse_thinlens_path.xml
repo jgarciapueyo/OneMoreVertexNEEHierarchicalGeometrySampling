@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- lighthouse_glints_path_N50000_size0001000_mm00_ss00_r001_spp256 -->
+<!--
+Parameters written as $name:default can be overridden on the command line,
+e.g. mitsuba scenes/7_glints_lighthouse/lighthouse_thinlens_path.xml -Dspp=64
+The experiment configs in scripts/experiments/ set them in the same way.
+-->
 <scene version="0.6.0">
+
 	<integrator type="path">
 		<integer name="maxDepth" value="2"/>
 		<boolean name="hideEmitters" value="false"/>
 	</integrator>
-	<geometrybvh type="samplingbvh">
-		<string name="samplingMode" value="Primitive"/>
-		<float name="defensivePDF" value="0.000001"/>
-		<boolean name="specularImportance" value="false"/>
-		<string name="sigmaPoints" value="perCall"/>
-	</geometrybvh>
-	<sensor type="perspective">
+	
+    <sensor type="thinlens">
+        <string name="fovAxis" value="smaller"/>
+        <float name="nearClip" value="0.1000"/>
+        <float name="apertureRadius" value="0.1"/>
+        <float name="focusDistance" value="6.0"/>
+	<!-- <sensor type="perspective">
 		<string name="fovAxis" value="smaller"/>
 		<float name="nearClip" value="0.0001"/>
-		<float name="farClip" value="100"/>
+		<float name="farClip" value="100"/> -->
 		<transform name="toWorld">
 			<lookAt origin="8, -1, 2" target="0, -.5, 3" up="0, 0, 1"/>
 		</transform>
@@ -104,11 +109,12 @@
 	</shape>
 	
 
+	<!-- Plane.003 is a mesh exported from Blender that is not distributed with
+	     this repository; uncomment if you have scene_geometries/Plane.003.obj.
     <shape type="obj" id="Plane.003">
         <string name="filename" value="scene_geometries/Plane.003.obj"/>
 
 		<transform name="toWorld">
-			<!-- move up a few meters -->
 			<translate x="0" y="18" z="1"/>
 			<scale x="0.15" y="0.15" z="0.23"/>
 		</transform>
@@ -116,7 +122,11 @@
             <rgb name="reflectance" value="0.8, 0.8, 0.8"/>
         </bsdf>
     </shape>
+	-->
 	
-	<include filename="50ksnowflakes.0001.xml"/>
-	<!-- <include filename="50k_snowflakes.xml"/> -->
+	<!-- Snowflakes. The paper used a particle system exported from Blender
+	     (50ksnowflakes.0001.xml, not distributed); scripts/prepare_scenes.sh
+	     generates 50k_snowflakes.xml with create_scene.py (snowflakes-only mode).
+	     Use -Dsnowflakes=50ksnowflakes.0001.xml to render with the original. -->
+	<include filename="$snowflakes:50k_snowflakes.xml"/>
 </scene>

@@ -22,6 +22,9 @@ Coordinate convention: y-up.
 
 Usage examples
 --------------
+# Snowflakes included by the lighthouse scenes (run from the repository root):
+python scenes/7_glints_lighthouse/create_scene.py --snowflakes_only --output scenes/7_glints_lighthouse/50k_snowflakes.xml
+
 # Glinttracer scene (default):
 python scenes/7_glints/create_scene.py
 
@@ -49,6 +52,9 @@ from xml.dom import minidom
 Vec3 = tuple  # (float, float, float)
 
 QUAD_OBJ = "quad_2tri.obj"
+# Volume that contains the snowflakes
+SNOW_VOL_MIN = (-5.0, -6.0, 0.0)
+SNOW_VOL_MAX = (3.0, 5.0, 8.0)
 SNOWFLAKE_OBJ = "snowflake.obj"
 
 def prettify(elem):
@@ -331,8 +337,8 @@ def create_scene(
     metallic:         float = 1.0,
     normal_kappa:     float = 0.0,     # 0 = fully random orientations
     normal_mean_dir:  Vec3  = (0.0, 1.0, 0.0),
-    vol_min:          Vec3  = (-5.0, -6.0, 0.0),
-    vol_max:          Vec3  = (3.0, 5.0, 8.0),
+    vol_min:          Vec3  = SNOW_VOL_MIN,
+    vol_max:          Vec3  = SNOW_VOL_MAX,
     spot_origin:      Vec3  = (0.0,  0.0,  7.0),
     spot_target:      Vec3  = (0.0,  0.0,  7.0),
     spot_intensity:   float = 50.0,
@@ -474,6 +480,9 @@ def main():
                         help="Random seed for snowflake placement.")
     parser.add_argument("--obj_path", default=QUAD_OBJ,
                         help="Path to snowflake OBJ (relative to Mitsuba working dir).")
+    parser.add_argument("--snowflakes_only", action="store_true",
+                        help="Only write the snowflake shapes, as a file to be "
+                             "<include>d by the lighthouse scenes (e.g. 50k_snowflakes.xml).")
     parser.add_argument("--output", default=None,
                         help="Output XML path.  Default: "
                              "7_glints/glints_<integrator>_N<n>_a<alpha>.xml")
@@ -485,6 +494,24 @@ def main():
     n = math.sqrt(sum(x*x for x in normal_mean))
     if n > 1e-9:
         normal_mean = tuple(x/n for x in normal_mean)
+
+    if args.snowflakes_only:
+        if not args.output:
+            parser.error("--snowflakes_only requires --output")
+        scene = Element("scene", version="0.6.0")
+        add_snowflakes(scene, n=args.n_snowflakes, size=args.snowflake_size,
+                       vol_min=SNOW_VOL_MIN, vol_max=SNOW_VOL_MAX,
+                       normal_kappa=args.normal_kappa, normal_mean_dir=normal_mean,
+                       obj_path=args.obj_path, seed=args.seed,
+                       base_color=tuple(args.base_color), roughness=args.roughness,
+                       specular=args.specular, metallic=args.metallic)
+        xml_bytes = prettify(scene)
+        if isinstance(xml_bytes, str):
+            xml_bytes = xml_bytes.encode("utf-8")
+        with open(args.output, "wb") as f:
+            f.write(xml_bytes)
+        print(f"Wrote {args.output} ({args.n_snowflakes} snowflakes)")
+        return
 
     scene = create_scene(
         integrator=args.integrator,
