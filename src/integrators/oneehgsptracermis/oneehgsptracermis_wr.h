@@ -30,13 +30,13 @@ MTS_NAMESPACE_BEGIN
 /* ==================================================================== */
 
 /**
-   ONEEEHGSPTracerMIS needs its own WorkResult implementation,
+   OneMoreVertexPTracerMIS needs its own WorkResult implementation,
    since each rendering thread simultaneously renders to a small 'camera
    image' block and potentially a full-resolution 'light image'.
 */
-class ONEEEHGSPTracerMISWorkResult : public WorkResult {
+class OneMoreVertexPTracerMISWorkResult : public WorkResult {
 public:
-    ONEEEHGSPTracerMISWorkResult(const ONEEEHGSPTracerMISConfiguration &conf,
+    OneMoreVertexPTracerMISWorkResult(const OneMoreVertexPTracerMISConfiguration &conf,
             const ReconstructionFilter *filter,
             Vector2i blockSize = Vector2i(-1, -1));
 
@@ -50,19 +50,8 @@ public:
     virtual void save(Stream *stream) const;
 
     /// Accumulate another work result into this one
-    void put(const ONEEEHGSPTracerMISWorkResult *workResult);
+    void put(const OneMoreVertexPTracerMISWorkResult *workResult);
 
-#if ONEEHGSPTRACERMIS_DEBUG == 1
-    /* In debug mode, this function allows to dump the contributions of
-       the individual sampling strategies to a series of images */
-    void dump(const ONEEEHGSPTracerMISConfiguration &conf,
-            const fs::path &prefix, const fs::path &stem) const;
-
-    inline void putDebugSample(int s, int t, const Point2 &sample,
-            const Spectrum &spec) {
-        m_debugBlocks[strategyIndex(s, t)]->put(sample, (const Float *) &spec);
-    }
-#endif
 
     inline void putSample(const Point2 &sample, const Spectrum &spec) {
         m_block->put(sample, spec, 1.0f);
@@ -94,16 +83,9 @@ public:
     MTS_DECLARE_CLASS()
 protected:
     /// Virtual destructor
-    virtual ~ONEEEHGSPTracerMISWorkResult();
+    virtual ~OneMoreVertexPTracerMISWorkResult();
 
-    inline int strategyIndex(int s, int t) const {
-        int above = s+t-2;
-        return s + above*(5+above)/2;
-    }
 protected:
-#if ONEEHGSPTRACERMIS_DEBUG == 1
-    ref_vector<ImageBlock> m_debugBlocks;
-#endif
     ref<ImageBlock> m_block, m_lightImage;
 };
 

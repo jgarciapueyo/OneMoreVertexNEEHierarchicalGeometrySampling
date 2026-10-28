@@ -1466,18 +1466,26 @@ bool SamplingBVH::sampleGeometryCamera(
         } else {
             success = sampleLeafPrimitive(scene, node, nodeIndex,
                                           sampler->next1D(), sampler->next2D(),
-                                          x_o, its_xn, pdf_leaf, false);
+                                          x_o, its_xn, pdf_leaf, true);
         }
     } else if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB_anyNode) {
         success = sampleLeafSphericalAABB(scene, node, nodeIndex,
                                           sampler->next2D(), x_o, its_xn, pdf_leaf);
     } else {
         // Lightcuts stopped at an interior node: descend by area to a leaf
-        success = sampleNodePrimitive(scene, nodeIndex, sampler, x_o, its_xn, pdf_leaf, false);
+        success = sampleNodePrimitive(scene, nodeIndex, sampler, x_o, its_xn, pdf_leaf, true);
     }
 
     if (!success) return false;
-    pdf = pdf_traversal * pdf_leaf;
+
+    // pdf_leaf is per unit solid angle at x_o; return a density per unit area at x_n
+    Vector d = its_xn.p - x_o;
+    Float dist2 = d.lengthSquared();
+    if (dist2 <= 0.0f) return false;
+    Float cosTheta = absDot(its_xn.geoFrame.n, d) / std::sqrt(dist2);
+    if (cosTheta <= 0.0f) return false;
+
+    pdf = pdf_traversal * pdf_leaf * cosTheta / dist2;
     return true;
 }
 

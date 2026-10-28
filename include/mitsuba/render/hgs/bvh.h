@@ -640,7 +640,8 @@ public:
     /// \param sensor Sensor for FoV checks and W_e evaluation inside importance function
     /// \param pRec_xe Emitter sample record (position, pdf, object)
     /// \param its_xn Output: intersection record of the sampled intermediate vertex
-    /// \param pdf Output: solid-angle PDF of the sample
+    /// \param pdf Output: density of x_n per unit area (unlike sampleGeometry(),
+    ///        which returns a density per unit solid angle at x_s)
     /// \return true if sampling succeeded
     bool sampleGeometryCamera(
         const Scene *scene,
@@ -691,7 +692,8 @@ public:
     /// \param sensor  Perspective sensor — used inside computeNodeImportanceGlint
     /// \param pRec_xe Emitter sample record
     /// \param its_xn  Intersection being queried
-    /// \return The solid-angle probability density
+    /// \return The density per unit solid angle at x_o (convert with
+    ///         cos(theta_n) / |x_n - x_o|^2 to compare with sampleGeometryCamera())
     Float pdfGeometryCamera(
         const Scene *scene,
         const Point &x_o,

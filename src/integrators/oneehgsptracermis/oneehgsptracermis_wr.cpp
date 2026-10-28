@@ -26,8 +26,8 @@ MTS_NAMESPACE_BEGIN
 /*                             Work result                              */
 /* ==================================================================== */
 
-ONEEEHGSPTracerMISWorkResult::ONEEEHGSPTracerMISWorkResult(
-        const ONEEEHGSPTracerMISConfiguration &conf,
+OneMoreVertexPTracerMISWorkResult::OneMoreVertexPTracerMISWorkResult(
+        const OneMoreVertexPTracerMISConfiguration &conf,
         const ReconstructionFilter *rfilter, Vector2i blockSize) {
     /* Stores the 'camera image' -- this can be blocked when
        spreading out work to multiple workers */
@@ -40,7 +40,7 @@ ONEEEHGSPTracerMISWorkResult::ONEEEHGSPTracerMISWorkResult(
 
     if (conf.lightImage) {
         /* Stores the 'light image' -- every worker requires a
-           full-resolution version, since glint contributions
+           full-resolution version, since camera-technique contributions
            can affect any pixel of this bitmap */
         m_lightImage = new ImageBlock(Bitmap::ESpectrum,
                 conf.cropSize, rfilter);
@@ -48,83 +48,38 @@ ONEEEHGSPTracerMISWorkResult::ONEEEHGSPTracerMISWorkResult(
         m_lightImage->setOffset(Point2i(0, 0));
     }
 
-#if ONEEHGSPTRACERMIS_DEBUG == 1
-    m_debugBlocks.resize(
-        conf.maxDepth*(5+conf.maxDepth)/2);
-
-    for (size_t i=0; i<m_debugBlocks.size(); ++i) {
-        m_debugBlocks[i] = new ImageBlock(
-                Bitmap::ESpectrum, conf.cropSize, rfilter);
-        m_debugBlocks[i]->setOffset(Point2i(0,0));
-        m_debugBlocks[i]->setSize(conf.cropSize);
-    }
-#endif
 }
 
-ONEEEHGSPTracerMISWorkResult::~ONEEEHGSPTracerMISWorkResult() { }
+OneMoreVertexPTracerMISWorkResult::~OneMoreVertexPTracerMISWorkResult() { }
 
-void ONEEEHGSPTracerMISWorkResult::put(const ONEEEHGSPTracerMISWorkResult *workResult) {
-#if ONEEHGSPTRACERMIS_DEBUG == 1
-    for (size_t i=0; i<m_debugBlocks.size(); ++i)
-        m_debugBlocks[i]->put(workResult->m_debugBlocks[i].get());
-#endif
+void OneMoreVertexPTracerMISWorkResult::put(const OneMoreVertexPTracerMISWorkResult *workResult) {
     m_block->put(workResult->m_block.get());
     if (m_lightImage)
         m_lightImage->put(workResult->m_lightImage.get());
 }
 
-void ONEEEHGSPTracerMISWorkResult::clear() {
-#if ONEEHGSPTRACERMIS_DEBUG == 1
-    for (size_t i=0; i<m_debugBlocks.size(); ++i)
-        m_debugBlocks[i]->clear();
-#endif
+void OneMoreVertexPTracerMISWorkResult::clear() {
     if (m_lightImage)
         m_lightImage->clear();
     m_block->clear();
 }
 
-#if ONEEHGSPTRACERMIS_DEBUG == 1
-void ONEEEHGSPTracerMISWorkResult::dump(const ONEEEHGSPTracerMISConfiguration &conf,
-        const fs::path &prefix, const fs::path &stem) const {
-    Float weight = (Float) 1.0f / (Float) conf.sampleCount;
-    for (int k = 1; k<=conf.maxDepth; ++k) {
-        for (int t=0; t<=k+1; ++t) {
-            size_t s = k+1-t;
-            Bitmap *bitmap = const_cast<Bitmap *>(m_debugBlocks[strategyIndex(s, t)]->getBitmap());
-            ref<Bitmap> ldrBitmap = bitmap->convert(Bitmap::ERGB, Bitmap::EUInt8, -1, weight);
-            fs::path filename =
-                prefix / fs::path(formatString("%s_k%02i_s%02i_t%02i.png", stem.filename().string().c_str(), k, s, t));
-            ref<FileStream> targetFile = new FileStream(filename,
-                FileStream::ETruncReadWrite);
-            ldrBitmap->write(Bitmap::EPNG, targetFile, 1);
-        }
-    }
-}
-#endif
 
-void ONEEEHGSPTracerMISWorkResult::load(Stream *stream) {
-#if ONEEHGSPTRACERMIS_DEBUG == 1
-    for (size_t i=0; i<m_debugBlocks.size(); ++i)
-        m_debugBlocks[i]->load(stream);
-#endif
+void OneMoreVertexPTracerMISWorkResult::load(Stream *stream) {
     if (m_lightImage)
         m_lightImage->load(stream);
     m_block->load(stream);
 }
 
-void ONEEEHGSPTracerMISWorkResult::save(Stream *stream) const {
-#if ONEEHGSPTRACERMIS_DEBUG == 1
-    for (size_t i=0; i<m_debugBlocks.size(); ++i)
-        m_debugBlocks[i]->save(stream);
-#endif
+void OneMoreVertexPTracerMISWorkResult::save(Stream *stream) const {
     if (m_lightImage.get())
         m_lightImage->save(stream);
     m_block->save(stream);
 }
 
-std::string ONEEEHGSPTracerMISWorkResult::toString() const {
+std::string OneMoreVertexPTracerMISWorkResult::toString() const {
     return m_block->toString();
 }
 
-MTS_IMPLEMENT_CLASS(ONEEEHGSPTracerMISWorkResult, false, WorkResult)
+MTS_IMPLEMENT_CLASS(OneMoreVertexPTracerMISWorkResult, false, WorkResult)
 MTS_NAMESPACE_END

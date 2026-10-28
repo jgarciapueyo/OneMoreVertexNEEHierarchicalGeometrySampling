@@ -20,16 +20,7 @@
 #define __ONEEHGSPTRACERMIS_H
 
 #include <mitsuba/mitsuba.h>
-
-#define ENABLE_ONEEHGSPTRACERMIS_DOUBLESTEP 1
-
-/**
- * When the following is set to "1", the ONEEEHGSPTracerMIS integrator
- * will generate a series of debugging images that split up the final
- * rendering into the weighted contributions of the individual sampling
- * strategies.
- */
-//#define ONEEHGSPTRACERMIS_DEBUG 1
+#include "../oneehgspath/onemorevertex_li.h"
 
 MTS_NAMESPACE_BEGIN
 
@@ -37,83 +28,48 @@ MTS_NAMESPACE_BEGIN
 /*                         Configuration storage                        */
 /* ==================================================================== */
 
-/**
- * \brief Stores all configuration parameters of the
- * ONEEEHGSPTracerMIS integrator
- */
-struct ONEEEHGSPTracerMISConfiguration {
-    int maxDepth, blockSize, borderSize;
+/// Configuration of the OneMoreVertexPTracerMIS integrator
+struct OneMoreVertexPTracerMISConfiguration {
+    int blockSize;
+    /// Enable the camera-side BVH sampling technique (stored in the light image)
     bool lightImage;
-    bool sampleDirect;
-    bool showWeighted;
     size_t sampleCount;
     Vector2i cropSize;
-    int rrDepth;
-    bool hideEmitters;
-    bool strictNormals;
-    #if ENABLE_ONEEHGSPTRACERMIS_DOUBLESTEP == 1
-        bool m_doAdditionalVertex;
-        bool m_useBVH;
-        bool m_disableNee;
-        bool m_disableFirstBounceNEE;
-        float m_debug1, m_debug2, m_debug3, m_debug4; // debug flags for bias isolation
-    #endif
+    /// Options of the camera-path (one-more-vertex path tracing) technique
+    OneMoreVertexPathOptions path;
 
-    inline ONEEEHGSPTracerMISConfiguration() { }
+    inline OneMoreVertexPTracerMISConfiguration() { }
 
-    inline ONEEEHGSPTracerMISConfiguration(Stream *stream) {
-        maxDepth = stream->readInt();
+    inline OneMoreVertexPTracerMISConfiguration(Stream *stream) {
         blockSize = stream->readInt();
         lightImage = stream->readBool();
-        sampleDirect = stream->readBool();
-        showWeighted = stream->readBool();
         sampleCount = stream->readSize();
         cropSize = Vector2i(stream);
-        rrDepth = stream->readInt();
-        hideEmitters = stream->readBool();
-        strictNormals = stream->readBool();
+        path.unserialize(stream);
     }
 
     inline void serialize(Stream *stream) const {
-        stream->writeInt(maxDepth);
         stream->writeInt(blockSize);
         stream->writeBool(lightImage);
-        stream->writeBool(sampleDirect);
-        stream->writeBool(showWeighted);
         stream->writeSize(sampleCount);
         cropSize.serialize(stream);
-        stream->writeInt(rrDepth);
-        stream->writeBool(hideEmitters);
-        stream->writeBool(strictNormals);
+        path.serialize(stream);
     }
 
     void dump() const {
-        SLog(EDebug, "ONEEEHGSPTracerMIS configuration:");
-        SLog(EDebug, "   Maximum path depth          : %i", maxDepth);
-        SLog(EDebug, "   Image size                  : %ix%i",
-            cropSize.x, cropSize.y);
-        SLog(EDebug, "   Direct sampling strategies  : %s",
-            sampleDirect ? "yes" : "no");
-        SLog(EDebug, "   Generate light image        : %s",
-            lightImage ? "yes" : "no");
-        SLog(EDebug, "   Russian roulette depth      : %i", rrDepth);
+        SLog(EDebug, "OneMoreVertexPTracerMIS configuration:");
+        SLog(EDebug, "   Maximum path depth          : %i", path.maxDepth);
+        SLog(EDebug, "   Image size                  : %ix%i", cropSize.x, cropSize.y);
+        SLog(EDebug, "   Camera BVH technique        : %s", lightImage ? "yes" : "no");
+        SLog(EDebug, "   Russian roulette depth      : %i", path.rrDepth);
         SLog(EDebug, "   Block size                  : %i", blockSize);
         SLog(EDebug, "   Number of samples           : " SIZE_T_FMT, sampleCount);
-        #if ONEEHGSPTRACERMIS_DEBUG == 1
-            SLog(EDebug, "   Show weighted contributions : %s", showWeighted ? "yes" : "no");
-        #endif
-        SLog(EDebug, "   Hide emitters               : %s", hideEmitters ? "yes" : "no");
-        SLog(EDebug, "   Strict normals              : %s", strictNormals ? "yes" : "no");
-        #if ENABLE_ONEEHGSPTRACERMIS_DOUBLESTEP == 1
-            SLog(EDebug, "   Additional vertex           : %s", m_doAdditionalVertex ? "yes" : "no");
-            SLog(EDebug, "   Use BVH for additional vert : %s", m_useBVH ? "yes" : "no");
-            SLog(EDebug, "   Disable NEE for additional vert : %s", m_disableNee ? "yes" : "no");
-            SLog(EDebug, "   Disable first bounce NEE    : %s", m_disableFirstBounceNEE ? "yes" : "no");
-            SLog(EDebug, "   Debug flag 1 (disable L2 block) : %f", m_debug1);
-            SLog(EDebug, "   Debug flag 2 (disable BVH/2NEE) : %f", m_debug2);
-            SLog(EDebug, "   Debug flag 3 (disable BSDF/NEE) : %f", m_debug3);
-            SLog(EDebug, "   Debug flag 4 (force MIS weights=1) : %f", m_debug4);
-        #endif
+        SLog(EDebug, "   Hide emitters               : %s", path.hideEmitters ? "yes" : "no");
+        SLog(EDebug, "   Strict normals              : %s", path.strictNormals ? "yes" : "no");
+        SLog(EDebug, "   One-more-vertex NEE         : %s", path.doAdditionalVertex ? "yes" : "no");
+        SLog(EDebug, "   BVH strategy for it         : %s", path.useBVH ? "yes" : "no");
+        SLog(EDebug, "   Disable NEE                 : %s", path.disableNee ? "yes" : "no");
+        SLog(EDebug, "   Disable first bounce NEE    : %s", path.disableFirstBounceNEE ? "yes" : "no");
     }
 };
 

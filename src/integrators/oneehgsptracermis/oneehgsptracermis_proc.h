@@ -32,14 +32,14 @@ MTS_NAMESPACE_BEGIN
 
 /**
  * \brief Renders work units (rectangular image regions) using
- * the ONEEEHGSPTracerMIS integrator
+ * the OneMoreVertexPTracerMIS integrator
  */
-class ONEEEHGSPTracerMISProcess : public BlockedRenderProcess {
+class OneMoreVertexPTracerMISProcess : public BlockedRenderProcess {
 public:
-    ONEEEHGSPTracerMISProcess(const RenderJob *parent, RenderQueue *queue,
-        const ONEEEHGSPTracerMISConfiguration &config);
+    OneMoreVertexPTracerMISProcess(const RenderJob *parent, RenderQueue *queue,
+        const OneMoreVertexPTracerMISConfiguration &config);
 
-    inline const ONEEEHGSPTracerMISWorkResult *getResult() const { return m_result.get(); }
+    inline const OneMoreVertexPTracerMISWorkResult *getResult() const { return m_result.get(); }
 
     /// Develop the image
     void develop();
@@ -52,11 +52,11 @@ public:
     MTS_DECLARE_CLASS()
 protected:
     /// Virtual destructor
-    virtual ~ONEEEHGSPTracerMISProcess() { }
+    virtual ~OneMoreVertexPTracerMISProcess() { }
 private:
-    ref<ONEEEHGSPTracerMISWorkResult> m_result;
+    ref<OneMoreVertexPTracerMISWorkResult> m_result;
     ref<Timer> m_refreshTimer;
-    ONEEEHGSPTracerMISConfiguration m_config;
+    OneMoreVertexPTracerMISConfiguration m_config;
 };
 
 MTS_NAMESPACE_END
