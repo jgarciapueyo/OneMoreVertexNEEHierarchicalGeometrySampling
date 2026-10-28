@@ -80,100 +80,55 @@ Comparison against path tracing (PT), bidirectional path tracing (BDPT), and pra
 
 ### Quickstart
 
-*Requirements*: [Docker](https://docs.docker.com/get-docker/) with Docker Compose to build and run the renderer. Running the experiment pipeline (step 2) additionally needs Python 3 on the host with the packages in [`scripts/experiments/requirements.txt`](scripts/experiments/requirements.txt).
+*Requirements*: [Docker](https://docs.docker.com/get-docker/) with Docker Compose. Everything else (Mitsuba 0.6 dependencies, the Python packages of the scripts and the PPG baseline) is installed in the image.
 
-#### 1. Docker build and compilation
-
-Clone the repository and build the image and start the container:
+#### 1. Build the image and compile
 
 ```bash
 git clone https://github.com/jgarciapueyo/OneMoreVertexNEEHierarchicalGeometrySampling.git
 cd OneMoreVertexNEEHierarchicalGeometrySampling
-docker compose build
-docker compose up -d
+HOST_UID=$(id -u) HOST_GID=$(id -g) docker compose build
+docker compose run --rm mitsuba bash scripts/build_mitsuba.sh
 ```
 
-Enter the container:
+The repository is mounted at `/home/mitsuba` inside the container, and the container runs with your user and group ids, so the build output (`build/`, `dist/`) and all results belong to you on the host. The image also contains the [Practical Path Guiding](https://github.com/Tom94/practical-path-guiding) baseline, built from a pinned commit with [`patches/ppg.patch`](patches/ppg.patch) (installed as `mitsuba-ppg`).
+
+Quick sanity check: render the *AsteroidsCloseLight* scene with our method at 16 spp:
 
 ```bash
-docker exec -it onemorevertexneehierarchicalgeometrysampling-mitsuba-1 bash
+docker compose run --rm mitsuba bash -lc \
+    "mitsuba scenes/22_wildcard_asteroids_smallerspotlight/wildcard_spotlight.xml -Dspp=16 -DleafSamplingMode=Primitive -o asteroids_ours.exr"
 ```
 
-> Docker Compose derives the container name from the folder name. If you cloned into a folder with a different name, adjust the container name here and in the `docker.container` field of the experiment YAMLs (or set the `CONTAINER` environment variable when calling `comparison.sh`).
+For interactive work, open a shell with `docker compose run --rm mitsuba` (`mitsuba` is on the `PATH`).
 
-Inside the container, compile Mitsuba:
+#### 2. Reproduce the results of the paper
 
 ```bash
-cp build/config-linux-gcc.py config.py
-python2.7 $(which scons)
-source setpath.sh
+docker compose run --rm mitsuba bash scripts/reproduce.sh fig9           # full experiment
+docker compose run --rm mitsuba bash scripts/reproduce.sh fig9 --quick   # a few minutes, same trends
 ```
 
-<details>
-<summary>Building the PPG baseline (optional, needed for paper comparisons)</summary>
+[`scripts/reproduce.sh`](scripts/reproduce.sh) first generates the geometry that is not stored in the repository ([`scripts/prepare_scenes.sh`](scripts/prepare_scenes.sh)), then renders every technique of the figure, computes the metrics (relative MSE, FLIP, ...) and writes the plots and LaTeX assets to the `output_root` of each experiment config (under `scenes/*/results/`) or to `results/`. The full configs render a 16k-spp reference and sweep up to 2048 spp with 3 repetitions per technique, so a full figure takes several hours; `--quick` uses a short spp schedule, one repetition and a 256-spp reference. The pipeline itself is documented in [`scripts/experiments/README.md`](scripts/experiments/README.md).
 
-The practical path guiding (PPG) baseline requires a separate Mitsuba build inside the container:
+| Paper figure | Command | What it runs |
+|---|---|---|
+| Fig. 1 (*Lighthouse*, thin lens) | `reproduce.sh fig1` | `scenes/7_glints_lighthouse/lighthouse_thinlens_{oneehgsptracermis,path}.xml` |
+| Fig. 4 (importance visualization) | `reproduce.sh fig4` | `scenes/0_importance_quads/` + [`scripts/figures/fig4_importance_tvd.py`](scripts/figures/fig4_importance_tvd.py); 3D view with [`scripts/polyscope/view_bvh.py`](scripts/polyscope/view_bvh.py) |
+| Fig. 5 (ablation, three rows) | `reproduce.sh fig5` | `ablationv2_asteroids.yaml`, `ablation_asteroids6_smallerspotlight_trueablation.yaml`, `ablation2_veach.yaml` |
+| Fig. 6 (specular component) | `reproduce.sh fig6` | `ablation_disney_spec.yaml` |
+| Fig. 7 (BVH depth, solid-angle threshold) | `reproduce.sh fig7` | `ablation_asteroids3.yaml`, `ablation_asteroids3_gaussianSA.yaml` |
+| Fig. 8 (sparsity analysis) | `reproduce.sh fig8` | `scenes/9_rebuttal_sphere/` (`run_hemispheres.py`, `analyze_hemisphere_runs.py`) |
+| Fig. 9 (*AsteroidsFarLight*: PT, BDPT, PPG, ours) | `reproduce.sh fig9` | `ablation_asteroids3_ppg.yaml` |
+| Fig. 10 (*AsteroidsCloseLight*: PT, BDPT, PPG, ours) | `reproduce.sh fig10` | `ablation_asteroids4_smallerspotlight_ppg.yaml` |
+| Fig. 11 (*Lighthouse*, equal time) | `reproduce.sh fig11` | `scenes/7_glints_lighthouse/lighthouse_{oneehgsptracermis,path}.xml` |
+| Fig. 12 (Cornell box) | `reproduce.sh fig12` | `config-v11-cbox-n100.yaml` |
 
-```bash
-ln -s /home/mitsuba/data /home/mitsuba/ppg/mitsuba/data
-cd ppg/mitsuba
-cp build/config-linux-gcc.py config.py
-python2.7 $(which scons)
-```
+The `.yaml` configs are in [`scripts/experiments/`](scripts/experiments/); [`supplementary/`](scripts/experiments/supplementary/) contains experiments that are not in the paper. See the [notes](#notes-on-reproducibility) below for the differences with the published figures.
 
-</details>
+#### 3. Use the method in your own scene
 
-Quick sanity check (inside the container): render the *AsteroidsCloseLight* scene with our method at 16 spp:
-
-```bash
-mitsuba scenes/22_wildcard_asteroids_smallerspotlight/wildcard_spotlight.xml -Dspp=16 -o asteroids_ours.exr
-```
-
-#### 2. Reproduce paper results
-
-Keep the container running (`docker compose up -d`) and, from **outside** the container (repository root, on the host), install the Python dependencies and run the comparison pipeline for an experiment config:
-
-```bash
-pip install -r scripts/experiments/requirements.txt
-bash scripts/experiments/comparison.sh scripts/experiments/ablation_asteroids4_smallerspotlight_ppg.yaml
-```
-
-This renders all technique variants inside the container, computes metrics (relative MSE, FLIP, …) and produces comparison figures and LaTeX assets under the `output_root` specified in the YAML. Configs that include the `ppg` baseline require building it first (see above). See [`scripts/experiments/README.md`](scripts/experiments/README.md) for the pipeline documentation and config format.
-
-The paper configs render a high-sample-count reference (16k spp) and sweep up to 2048 spp with 3 repetitions per technique, so a full run takes several hours. For a quick test, reduce `reference.spp`, `reference_spp` and `spp_schedule` in a copy of the YAML.
-
-<details>
-<summary>Which config reproduces which figure</summary>
-
-| Paper figure | Config / scripts |
-|---|---|
-| Fig. 5 (ablation), *AsteroidsFarLight* row | `scripts/experiments/ablationv2_asteroids.yaml` |
-| Fig. 5 (ablation), *AsteroidsCloseLight* row | `scripts/experiments/ablation_asteroids6_smallerspotlight_trueablation.yaml` |
-| Fig. 5 (ablation), *Veach* row | `scripts/experiments/ablation2_veach.yaml` (needs `quads-k5.xml`, see note below) |
-| Fig. 6 (specular component) | `scripts/experiments/ablation_disney_spec.yaml` |
-| Fig. 7 top (BVH depth) | `scripts/experiments/ablation_asteroids3.yaml` |
-| Fig. 7 bottom (solid-angle threshold) | `scripts/experiments/ablation_asteroids3_gaussianSA.yaml` |
-| Fig. 8 (sparsity analysis) | `scenes/9_rebuttal_sphere/` (`create_icospheres_densities.py`, `run_hemispheres.py`, `analyze_hemisphere_runs.py`) |
-| Fig. 9 (*AsteroidsFarLight*: PT, BDPT, PPG, ours) | `scripts/experiments/ablation_asteroids3_ppg.yaml` |
-| Fig. 10 (*AsteroidsCloseLight*: PT, BDPT, PPG, ours) | `scripts/experiments/ablation_asteroids4_smallerspotlight_ppg.yaml` |
-| Fig. 12 (Cornell box) | `scripts/experiments/config-v11-cbox-n100.yaml` |
-| Figs. 1 and 11 (*Lighthouse*) | `scenes/7_glints_lighthouse/` (integrator `oneehgsptracermis`). **Not reproducible from this repository**: the snowflake particle system (`50ksnowflakes.0001.xml`) and two meshes (`scene_geometries/Plane.003.obj`, `scenes/scene_geometries/quad_2tri2.obj`) are not included. |
-
-Notes:
-- `scenes/scene_geometries/quads-k5.xml` (Veach scene default geometry) is not committed. It can be regenerated with `python scenes/scene_geometries/create_geometry.py -n=30000 -f=scenes/scene_geometries/quad_2tri.obj -d -1 0 0 -k 5 -a 0 -10 1 -b 10 10 3 -o scenes/scene_geometries/quads-k5.xml` (same command as `quads-k40.xml` with `-k 5`; random placement, so it will not be bit-identical to the paper's).
-- The hemisphere meshes for Fig. 8 are generated by `python scenes/9_rebuttal_sphere/create_icospheres_densities.py -o scenes/9_rebuttal_sphere/hemispheres_log`, which writes the `.obj` files next to the `.xml` files already in that folder.
-
-</details>
-
-#### 3. Create your own scene and run it
-
-Inside the container (after compiling and sourcing `setpath.sh`), render any scene XML directly:
-
-```bash
-mitsuba path/to/scene.xml
-```
-
-To use our method in your own Mitsuba scene, add the integrator and the sampling BVH to your scene XML:
+Add the integrator and the sampling BVH to a Mitsuba 0.6 scene:
 
 ```xml
 <integrator type="oneehgspath_2step">
@@ -181,49 +136,85 @@ To use our method in your own Mitsuba scene, add the integrator and the sampling
 </integrator>
 
 <geometrybvh type="samplingbvh">
-    <integer name="maxDepth" value="16"/>          <!-- maximum BVH depth (Sec. 6.4) -->
-    <string name="samplingMode" value="Primitive"/>
+    <integer name="maxDepth" value="16"/>              <!-- maximum BVH depth (Sec. 6.4) -->
+    <string name="samplingMode" value="Primitive"/>    <!-- leaf sampling (Sec. 5) -->
+    <float name="gaussianSAThreshold" value="0.0314"/> <!-- Sec. 6.4 -->
 </geometrybvh>
 ```
 
-The scenes in `scenes/` (e.g. `scenes/22_wildcard_asteroids_smallerspotlight/wildcard_spotlight.xml`) show all available parameters, exposed as `$name:default` wildcards that can be overridden with `-Dname=value` on the command line.
+and render it with `mitsuba path/to/scene.xml` inside the container. All `<geometrybvh>` options are optional; the table in [`scripts/experiments/README.md`](scripts/experiments/README.md#parameters-of-the-scenes) lists them. The scenes in `scenes/` write their parameters as `$name:default`, which can be overridden on the command line with `-Dname=value`.
 
 ---
 
 ### Code structure
 
-This repository is based on [Mitsuba 0.6](https://github.com/mitsuba-renderer/mitsuba). All source code outside the paths listed below is unmodified Mitsuba 0.6.
+This repository is [Mitsuba 0.6](https://github.com/mitsuba-renderer/mitsuba) (commit `10af06f`) plus the following additions and changes.
 
-#### HGS core
+#### Hierarchical geometry sampling (HGS)
 
-| Group | Description | Path |
-|-------|-------------|------|
-| Headers | `SamplingBVH` class declaration; `VMFLUT` (VMF intensity via degree-4 unrolled polynomial); spherical AABB | `include/mitsuba/render/hgs/` |
-| Implementation | BVH construction, per-node statistics fitting, importance weight computation, stochastic traversal sampling | `src/librender/hgs/` |
-| Plugin | Mitsuba plugin registration wrapper for `SamplingBVH` | `src/hgs/` |
+| Path | Contents |
+|---|---|
+| [`include/mitsuba/render/hgs/bvh.h`](include/mitsuba/render/hgs/bvh.h) | `SamplingBVH` class, node statistics (Table 1), sigma points of the unscented transform |
+| [`include/mitsuba/render/hgs/vmf_lut.h`](include/mitsuba/render/hgs/vmf_lut.h), `vmf_poly_unrolled_deg4.h` | VMF cosine integral of the diffuse term (Eq. 14), a degree-4 polynomial fitted by [`scripts/LUT/`](scripts/LUT/) |
+| [`include/mitsuba/render/hgs/spherical_aabb.h`](include/mitsuba/render/hgs/spherical_aabb.h) | Solid-angle sampling of AABBs (spherical rectangles) |
+| [`src/librender/hgs/bvh_build.cpp`](src/librender/hgs/bvh_build.cpp) | Binned-SAH construction, per-leaf alias tables, bottom-up statistics |
+| [`src/librender/hgs/bvh_importance.cpp`](src/librender/hgs/bvh_importance.cpp) | Node importance weights (Eqs. 12-21) and Monte Carlo references (Sec. 6.1) |
+| [`src/librender/hgs/bvh_sample.cpp`](src/librender/hgs/bvh_sample.cpp) | Stochastic traversal (Eqs. 8-9), leaf sampling, densities, three-vertex contributions |
+| [`src/librender/hgs/bvh_debug.cpp`](src/librender/hgs/bvh_debug.cpp) | Per-node CSV dump of Fig. 4 |
+| [`src/hgs/samplingbvh.cpp`](src/hgs/samplingbvh.cpp) | Plugin registration (`<geometrybvh type="samplingbvh">`) |
 
-#### Integrators
+#### Plugins
 
-| Plugin name | Description | Path |
-|-------------|-------------|------|
-| `oneehgspath_2step` | One-more-vertex path tracer with MIS between our BVH-sampled vertex and BSDF sampling (Sec. 5). **This is the integrator used for "ours" in the paper's path-tracing results.** | `src/integrators/oneehgspath/oneehgspath_2step.cpp` |
-| `oneehgspath_2step_fast` | Experimental faster variant of the above (probabilistic second-vertex sampling) | `src/integrators/oneehgspath/oneehgspath_2step_fast.cpp` |
-| `oneehgspath` | Earlier one-more-vertex path tracer without the BSDF-sampling MIS strategy | `src/integrators/oneehgspath/oneehgspath.cpp` |
-| `oneehgsptracer` | One-more-vertex particle tracer (sensor vertex $\mathbf{x}_s = \mathbf{x}_0$) | `src/integrators/oneehgsptracer/` |
-| `oneehgsptracermis` | One-more-vertex particle tracer with MIS (used for the *Lighthouse* scene) | `src/integrators/oneehgsptracermis/` |
+| Plugin | Description | Path |
+|---|---|---|
+| `oneehgspath_2step` | Path tracer with one-more-vertex NEE: at every vertex, MIS between the BVH-sampled intermediate vertex and BSDF sampling + NEE (Sec. 5). **"Ours" in all path-tracing results.** | [`src/integrators/oneehgspath/`](src/integrators/oneehgspath/) |
+| `oneehgsptracermis` | One-more-vertex NEE with x_s on the sensor, combined with camera paths through MIS (*Lighthouse*, Figs. 1 and 11) | [`src/integrators/oneehgsptracermis/`](src/integrators/oneehgsptracermis/) |
+| `oneehgsptracer` | Only the camera-side technique of the above (direct illumination of the visible geometry); used by `scenes/7_glints/` | [`src/integrators/oneehgsptracer/`](src/integrators/oneehgsptracer/) |
+| `pathindirect` | Path tracer without direct illumination at the first vertex (baseline of Fig. 12) | [`src/integrators/path/pathindirect.cpp`](src/integrators/path/pathindirect.cpp) |
+| `basicprincipled` | Simplified principled BSDF (diffuse + GGX specular, metallic) of the Disney scenes | [`src/bsdfs/basicprincipled.cpp`](src/bsdfs/basicprincipled.cpp) |
 
-The sampling BVH is only built when one of these integrators is used.
+The integrators report `Integrator::needsSamplingBVH()`, and the scene only builds the SamplingBVH for them.
 
-#### Scenes, scripts, and infrastructure
+#### Changes to Mitsuba 0.6 files
 
-| Component | Description | Path |
-|-----------|-------------|------|
-| Scenes | Mitsuba XML scene files for all paper experiments (Asteroids, Disney, Veach, Cornell box, Glints, …) | `scenes/` |
-| Experiment pipeline | Shell and Python scripts to render all technique variants, compute MSE/FLIP metrics, and produce comparison figures and LaTeX assets | `scripts/experiments/` |
-| LUT tools | Python scripts to generate the VMF intensity LUT and fit the degree-4 polynomial approximation | `scripts/LUT/` |
-| PPG baseline | Practical path guiding as a self-contained Mitsuba build used for paper comparisons | `ppg/` |
-| Docker | Containerized build and run environment | `Dockerfile`, `docker-compose.yml` |
-| Legacy | Earlier scenes and experiment configs kept for reference only; they still use the old plugin names (`doublestep`, `glinttracer`, `geometrybvh`, …) and paths (`scenes/experiments/…`) and are not maintained | `old_scenes/`, `old_scripts/` |
+| File | Change |
+|---|---|
+| `include/mitsuba/render/integrator.h` | `needsSamplingBVH()` |
+| `include/mitsuba/render/scene.h`, `src/librender/scene.cpp` | The scene owns a `SamplingBVH` (configured by a `<geometrybvh>` child) and builds it when the integrator needs it |
+| `include/mitsuba/render/scenehandler.h`, `src/librender/scenehandler.cpp` | `<geometrybvh>` tag; scene parameters with defaults (`$name:default`) |
+| `data/schema/scene.xsd` | `<geometrybvh>` element |
+| `include/mitsuba/render/bsdf.h`, `src/librender/bsdf.cpp` | `getMetallic()`, `getSpecularF0()`, `getRawReflectance()` for the node statistics |
+| `include/mitsuba/core/matrix.h`, `include/mitsuba/core/fwd.h` | `Matrix3x3d` (double-precision accumulation of the node Gaussians) |
+| `src/libcore/vmf.cpp` | VMF sampling in double precision (Monte Carlo references) |
+| `src/shapes/obj.cpp` | Process-wide cache of parsed OBJ files (scenes instancing one OBJ thousands of times) |
+| `src/shapes/ply.cpp` | Loading messages at debug level |
+| `src/librender/renderjob.cpp` | "Render time" is the wall-clock time of `render()` (used by the equal-time comparisons; it excludes scene loading and the BVH construction) |
+| `src/films/hdrfilm.cpp` | No Mitsuba banner by default |
+| `SConstruct`, `src/*/SConscript` | Build of the new plugins and sources |
+
+#### Scripts and data
+
+| Path | Contents |
+|---|---|
+| `scenes/` | Scenes of all experiments; generated geometry is created by `scripts/prepare_scenes.sh` |
+| `scripts/experiments/` | Experiment runner and analysis (metrics, plots, LaTeX) |
+| `scripts/reproduce.sh`, `scripts/prepare_scenes.sh`, `scripts/build_mitsuba.sh` | Entry points (run inside the container) |
+| `scripts/figures/` | Figure-specific scripts (Fig. 4 TVD, *Lighthouse* slicing) |
+| `scripts/LUT/` | Tabulation and polynomial fit of the VMF cosine integral |
+| `scripts/polyscope/` | Visualization of the BVH debug CSV |
+| `Dockerfile`, `docker-compose.yml`, `patches/ppg.patch` | Build and run environment |
+
+---
+
+### Notes on reproducibility
+
+- **Random geometry.** The quads of the *Veach* scene (`quads-k5.xml`) are generated by `scripts/prepare_scenes.sh` with a fixed seed; the placement used for the paper was not recorded, so the scene is statistically equivalent but not identical.
+- **Lighthouse assets.** The paper renders of Figs. 1 and 11 used a snowflake particle system and a mesh (`Plane.003`) exported from Blender that are not distributed. The scenes use 50k snowflakes generated with `create_scene.py` instead (`-Dsnowflakes=...` selects another file), so the images differ from the paper.
+- **Corrections after publication.** The code in this repository fixes issues found while preparing the release (see the commit history for details):
+  - `oneehgsptracermis` (Figs. 1 and 11): the camera paths stopped at the first vertex, so the rendered images lacked all indirect illumination, and the MIS weights of the camera technique did not sum to one (about -1.6% in a test scene). Both are fixed.
+  - `samplingMode=SphericalAABB_anyNode` (two variants of Fig. 6) sampled leaves inconsistently with the density used for MIS (about +0.5% in the Disney scene); fixed.
+  - `oneehgspath_2step` counted the BSDF-sampled hits of area lights twice after the one-more-vertex estimate (relative change of ~4e-5 in the Cornell box of Fig. 12); fixed. Scenes with spot lights are not affected.
+- **Values that differ from the text of the paper.** All configs use `gaussianSAThreshold = 0.0314` (pi/100), and the test is trace(Sigma) < threshold * distance^2; the sigma points are built from the Cholesky factor of the covariance; the specular albedo of the implementation does not include the factor 1/4 of Eq. (17). The scenes of Fig. 8 render 4 spp unless `-Dspp` is given.
 
 ---
 
