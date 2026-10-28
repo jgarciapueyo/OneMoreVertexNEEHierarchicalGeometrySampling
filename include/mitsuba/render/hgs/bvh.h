@@ -1,10 +1,23 @@
 /*
-BVH with Geometric Aggregates for Importance Sampling
+    SamplingBVH: bounding volume hierarchy over the scene triangles with
+    per-node aggregated statistics, used for hierarchical geometry sampling
+    of intermediate path vertices.
+
+    Paper: "One-more-vertex Next-Event Estimation with Hierarchical Geometry
+    Sampling" (EGSR 2026). Node statistics: Table 1; node importance weight:
+    Eqs. (12)-(21); traversal: Eqs. (8)-(9); leaf sampling: Sec. 5.
+
+    Implementation:
+      src/librender/hgs/bvh_build.cpp       construction and node statistics
+      src/librender/hgs/bvh_importance.cpp  node importance weights
+      src/librender/hgs/bvh_sample.cpp      traversal, leaf sampling, densities
+      src/librender/hgs/bvh_debug.cpp       per-node CSV dump (Fig. 4)
+      src/hgs/samplingbvh.cpp               plugin registration
 */
 
 #pragma once
-#ifndef __MITSUBA_RENDER_BVH_BVH_H_
-#define __MITSUBA_RENDER_BVH_BVH_H_
+#ifndef __MITSUBA_RENDER_HGS_BVH_H_
+#define __MITSUBA_RENDER_HGS_BVH_H_
 
 #include <mitsuba/mitsuba.h>
 #include <mitsuba/core/aabb.h>
@@ -19,109 +32,6 @@ BVH with Geometric Aggregates for Importance Sampling
 
 #include <array>
 #include <map>
-
-// #define DO_TIMING_IMPORTANCE dock
-// ^ Enable the timer for importance computation
-// #define DO_TIMING_SAMPLING 
-// ^ Enable the timer for BVH sampling
-
-#if defined(DO_TIMING_IMPORTANCE) || defined(DO_TIMING_SAMPLING)
-#include <mitsuba/core/timer.h>
-#include <mitsuba/core/logger.h>
-
-struct MultiTimer {
-    // NON-Thread safe timer for keeping track of multiple named timers
-    // usage:
-    //  MultiTimer timer;
-    //  uint64_t t0 = timer.getNanoSeconds();
-    //  ... code to time ...
-    //  timer.addElapsed("MyCode", t0);
-    // timer.report(); // print report at the end
-    std::map<std::string, uint64_t> timings_ns;
-    mitsuba::ref<mitsuba::Timer> timer;
-    uint64_t counter = 0; // counts the number of times we've added time, useful for averaging
-
-    std::map<std::string, uint32_t> counters; // optional additional counters for specific events, e.g. number of times we sampled a node, number of times we did a visibility check, etc.  
-
-    MultiTimer(bool start_now=true) : timer(new mitsuba::Timer(start_now)) { }
-    
-    void addTime(const std::string& name, uint64_t time) {
-        if (timings_ns.find(name) == timings_ns.end()) {
-            timings_ns[name] = 0;
-        }
-        timings_ns[name] += time;
-    }
-
-    void addCounter(uint64_t count=1) {
-        counter += count;
-    }
-
-    void addNamedCounter(const std::string& name, uint32_t count=1) {
-        if (counters.find(name) == counters.end()) {
-            counters[name] = 0;
-        }
-        counters[name] += count;
-    }
-
-    uint64_t getNanoSeconds() const {
-        return timer->getNanoseconds();
-    } 
-    
-    void addElapsed(const std::string& name, uint64_t start_time_ns) {
-        uint64_t current_time_ns = timer->getNanoseconds();
-        uint64_t elapsed_time = (uint64_t)(current_time_ns - start_time_ns);
-        addTime(name, elapsed_time);
-    }
-
-    void reset() {
-        timer->reset();
-        timings_ns.clear();
-    }
-    void report() const {
-        SLog(mitsuba::EInfo, "Importance Computation Timing Report (calls=%llu)",
-            (unsigned long long) counter);
-
-        uint64_t totalTimeNs = 0;
-        for (const auto& entry : timings_ns)
-            totalTimeNs += entry.second;
-
-        const double calls = (counter > 0) ? static_cast<double>(counter) : 1.0;
-
-        SLog(mitsuba::EInfo, "  %-24s | %14s | %14s | %12s | %12s | %9s",
-            "Name", "Raw (ns)", "Avg Raw(ns)", "Time (ms)", "Avg ms", "Percent");
-        SLog(mitsuba::EInfo, "  %s",
-            "-------------------------+----------------+----------------+--------------+--------------+----------");
-
-        for (const auto& entry : timings_ns) {
-            const double rawNs    = static_cast<double>(entry.second);
-            const double avgRawNs = rawNs / calls;
-            const double ms       = rawNs * 1e-6;
-            const double avgMs    = avgRawNs * 1e-6;
-            const double pct      = (totalTimeNs > 0)
-                ? (rawNs / static_cast<double>(totalTimeNs)) * 100.0
-                : 0.0;
-
-            SLog(mitsuba::EInfo, "  %-24s | %14.0f | %14.2f | %12.3f | %12.3f | %8.2f%%",
-                entry.first.c_str(), rawNs, avgRawNs, ms, avgMs, pct);
-        }
-
-        const double totalNsD = static_cast<double>(totalTimeNs);
-        SLog(mitsuba::EInfo, "  %s",
-            "-------------------------+----------------+----------------+--------------+--------------+----------");
-        SLog(mitsuba::EInfo, "  %-24s | %14.0f | %14.2f | %12.3f | %12.3f | %8.2f%%",
-            "Total", totalNsD, totalNsD / calls, totalNsD * 1e-6, (totalNsD / calls) * 1e-6, 100.0);
-
-        if (!counters.empty()) {
-            SLog(mitsuba::EInfo, "Additional Counters:");
-            for (const auto& entry : counters) {
-                SLog(mitsuba::EInfo, "  %-24s | %10u", entry.first.c_str(), entry.second);
-            }
-        }
-
-    }
-};
-
-#endif
 
 MTS_NAMESPACE_BEGIN
 
@@ -178,6 +88,56 @@ struct Gaussian3D {
     Point3f sample(const Point3f &sample3) const;
 };
 
+/// A point of the unscented transform and its weight
+struct WeightedPoint {
+    Point p;
+    Float w;
+};
+
+/**
+ * \brief Sigma points of the unscented transform of a 3D Gaussian (Sec. 5):
+ * the mean and two points along each column of the Cholesky factor of the
+ * covariance, mean +- sqrt(3 + lambda) * L_i, with lambda = sqrt(3). The
+ * weights are lambda / (3 + lambda) for the mean and 1 / (2 (3 + lambda))
+ * for the others. A small epsilon regularizes degenerate covariances.
+ */
+inline std::array<WeightedPoint, 7> computeUnscentedSigmaPoints(const Gaussian3D &gaussian) {
+    const Matrix3x3 &covariance = gaussian.m_covariance;
+    Matrix3x3 L(0.0f);
+    const Float eps = 1e-6f;
+
+    L(0,0) = std::sqrt(std::max(covariance(0,0) + eps, (Float) 0.0f));
+    if (L(0,0) <= eps)
+        L(0,0) = eps;
+
+    L(1,0) = covariance(1,0) / L(0,0);
+    L(1,1) = std::sqrt(std::max(covariance(1,1) + eps - L(1,0) * L(1,0), (Float) 0.0f));
+    if (L(1,1) <= eps)
+        L(1,1) = eps;
+
+    L(2,0) = covariance(2,0) / L(0,0);
+    L(2,1) = (covariance(2,1) - L(2,0) * L(1,0)) / L(1,1);
+    L(2,2) = std::sqrt(std::max(covariance(2,2) + eps - L(2,0) * L(2,0) - L(2,1) * L(2,1), (Float) 0.0f));
+    if (L(2,2) <= eps)
+        L(2,2) = eps;
+
+    const Float Ldim = 3.0f;
+    const Float lambda = std::sqrt((Float) 3.0f);
+    const Float sqrtScale = std::sqrt(Ldim + lambda);
+    const Float w0 = lambda / (Ldim + lambda);
+    const Float wi = 1.0f / (2.0f * (Ldim + lambda));
+    const Point mean = Point(gaussian.m_mean);
+
+    std::array<WeightedPoint, 7> points;
+    points[0] = { mean, w0 };
+    for (int i = 0; i < 3; ++i) {
+        Vector axisOffset = L.col(i) * sqrtScale;
+        points[1 + 2*i]     = { mean + axisOffset, wi };
+        points[1 + 2*i + 1] = { mean - axisOffset, wi };
+    }
+    return points;
+}
+
 struct GaussianAggregate {
     Vector3d sumWeightedCentroids; // Stores the running sum of (Area * Centroid)
     Matrix3x3d sumSecondMoment;   // Stores the running sum of the M_i matrices
@@ -220,7 +180,7 @@ struct GaussianAggregate {
         sumSecondMoment += other.sumSecondMoment;
     }
     
-    // Extract the final 3D Gaussian parameters (Removed Float surfaceArea parameter)
+    // Extract the final 3D Gaussian parameters (mean and covariance, Table 1)
     inline void getGaussian(double surfaceArea, Point& outMean, Matrix3x3& outCovariance) const {
         if (surfaceArea <= 0.0) {
             outMean = Point(0.0f);
@@ -262,9 +222,7 @@ struct NormalDistributionVMF {
         Float len = s_normals.length();
         if (len > 1e-20f)
             return s_normals / len;
-
-        // std::cout << "WARNING: VMF with zero mean direction ?? s_normals=" << s_normals.toString() << std::endl;
-        return Vector(0.0f, 0.0f, 1.0f); // in case they are isotropic
+        return Vector(0.0f, 0.0f, 1.0f); // isotropic distribution
     }
 
     // surfaceArea must be > 0
@@ -286,9 +244,9 @@ struct BVHNode {
         uint32_t secondChildOffset; // For interior: offset to second child
     };
     uint32_t nSubtreePrimitives; // Total primitives in this subtree
-    uint32_t nLeafPrimitives;    // >0 = leaf with N primitives, 0 = interior node (upgraded to uint32_t to support shallow depth)
+    uint32_t nLeafPrimitives;    // >0 = leaf with N primitives, 0 = interior node
     uint8_t splitAxis;           // Axis used for split (0=x, 1=y, 2=z)
-    uint16_t depth;              // depth of this node in the tree (root=0), (note: up to 65535 should be mooooore than enough)
+    uint16_t depth;              // Depth of this node in the tree (root=0)
     uint8_t pad;                 // Padding for alignment
     
     BVHNode() : nSubtreePrimitives(0), nLeafPrimitives(0), splitAxis(0) {
@@ -315,11 +273,6 @@ struct BVHNode {
 /// Aggregate information for a BVH node (or a single triangle)
 /// Used both for leaf-level triangle data and accumulated interior node data
 struct BVHNodeInfo {
-    struct WeightedPoint {
-        Point p;
-        Float w;
-    };
-
     // ---- Spatial information for the node ----
     double surfaceArea;                    // Σ Area_i
     GaussianAggregate gaussianAggregate;  // Stores the raw sums needed to compute the Gaussian parameters (mean and covariance) in a single pass over the triangles
@@ -368,44 +321,7 @@ struct BVHNodeInfo {
         Float d  = kappa_n + kappa_m;
         kappa_conv = (d > 0.f) ? (kappa_n * kappa_m) / d : 0.0f;
 
-        auto computeCholeskyLower = [](const Matrix3x3 &covariance) {
-            Matrix3x3 L(0.0f);
-            const Float eps = 1e-6f;
-
-            L(0,0) = std::sqrt(std::max(covariance(0,0) + eps, (Float) 0.0f));
-            if (L(0,0) <= eps)
-                L(0,0) = eps;
-
-            L(1,0) = covariance(1,0) / L(0,0);
-            L(1,1) = std::sqrt(std::max(covariance(1,1) + eps - L(1,0) * L(1,0), (Float) 0.0f));
-            if (L(1,1) <= eps)
-                L(1,1) = eps;
-
-            L(2,0) = covariance(2,0) / L(0,0);
-            L(2,1) = (covariance(2,1) - L(2,0) * L(1,0)) / L(1,1);
-            L(2,2) = std::sqrt(std::max(covariance(2,2) + eps - L(2,0) * L(2,0) - L(2,1) * L(2,1), (Float) 0.0f));
-            if (L(2,2) <= eps)
-                L(2,2) = eps;
-
-            return L;
-        };
-
-        Gaussian3D nodeGaussian = getGaussian3D();
-        const Float Ldim = 3.0f;
-        const Float lambda = std::sqrt((Float) 3.0f);
-        const Float sqrtScale = std::sqrt(Ldim + lambda);
-        const Float w0 = lambda / (Ldim + lambda);
-        const Float wi = 1.0f / (2.0f * (Ldim + lambda));
-
-        Matrix3x3 S = computeCholeskyLower(nodeGaussian.m_covariance);
-        Point mean = Point(nodeGaussian.m_mean);
-
-        unscentedPoints[0] = { mean, w0 };
-        for (int i = 0; i < 3; ++i) {
-            Vector axisOffset = S.col(i) * sqrtScale;
-            unscentedPoints[1 + 2*i]     = { mean + axisOffset, wi };
-            unscentedPoints[1 + 2*i + 1] = { mean - axisOffset, wi };
-        }
+        unscentedPoints = computeUnscentedSigmaPoints(getGaussian3D());
     }
 
     inline void accumulate(const BVHNodeInfo &other);
@@ -460,10 +376,6 @@ struct BVHNodeInfo {
         oss << "  getMeanF0 = " << getMeanF0().toString()
             << ", getMicrofacetKappa = " << getMicrofacetKappa()
             << ", getConvolvedKappa = " << getConvolvedKappa() << "," << std::endl;
-        #ifdef USE_SGGX_AGGREGATES
-        oss << "  normalDistribution.m1 = " << normalDistribution.m1.toString() << "," << std::endl;
-        oss << "  normalDistribution.m2 = " << normalDistribution.m2.toString() << "," << std::endl;
-        #else 
         oss << "  normalDistribution.s_normals = " << normalDistribution.s_normals.toString() << "," << std::endl;
         oss << "  normalDistribution.kappa = " << getVMFKappa() << "," << std::endl;
         Point mean;
@@ -471,7 +383,6 @@ struct BVHNodeInfo {
         gaussianAggregate.getGaussian(surfaceArea, mean, cov);
         oss << "  gaussianAggregate.mean = " << mean.toString() << "," << std::endl;
         oss << "  gaussianAggregate.covariance = " << cov.toString()  << "," << std::endl;
-        #endif
         oss << "  valid = " << (valid ? "true" : "false") << std::endl;
         oss << "]";
         return oss.str();
@@ -666,23 +577,6 @@ public:
         const Intersection &its_xp
     ) const;
 
-    /// Compute the PDF for sampling a specific triangle
-    /// \param scene Scene for accessing mesh data
-    /// \param its_xs Current shading point
-    /// \param pRec_xe Emitter sample
-    /// \param meshIndex Index of the mesh being queried
-    /// \param triangleIndex Index of the triangle within the mesh
-    /// \param position Position on the triangle (used for area/solid angle PDF)
-    /// \return The probability density
-    Float pdfGeometry(
-        const Scene *scene,
-        const Intersection &its_xs,
-        const PositionSamplingRecord &pRec_xe,
-        const Intersection &its_xp,
-        uint32_t meshIndex,
-        uint32_t triangleIndex,
-        const Point &position
-    ) const;
 
     /// Compute the PDF for sampling x_n via sampleGeometryCamera (glint technique).
     /// Mirrors pdfGeometry but uses computeNodeImportanceGlint and the camera origin
@@ -702,26 +596,6 @@ public:
         const Intersection &its_xn
     ) const;
 
-    /// Full version of pdfGeometryCamera with pre-resolved mesh/triangle indices.
-    /// \param scene          Scene for accessing mesh data
-    /// \param x_o            Camera pinhole position (world space)
-    /// \param sensor         Perspective sensor
-    /// \param pRec_xe        Emitter sample record
-    /// \param its_xn         Intersection being queried
-    /// \param meshIndex      Index of the mesh in scene->getMeshes()
-    /// \param triangleIndex  Index of the triangle within the mesh
-    /// \param position       World-space position on the triangle
-    /// \return The solid-angle probability density
-    Float pdfGeometryCamera(
-        const Scene *scene,
-        const Point &x_o,
-        const Sensor *sensor,
-        const PositionSamplingRecord &pRec_xe,
-        const Intersection &its_xn,
-        uint32_t meshIndex,
-        uint32_t triangleIndex,
-        const Point &position
-    ) const;
 
     /// Check whether an intersection belongs to a given leaf node
     /// \param scene Scene for resolving mesh indices
@@ -812,6 +686,31 @@ protected:
     /// Index of a mesh in scene->getMeshes(), or 0xFFFFFFFF if unknown
     uint32_t getMeshIndex(const Shape *shape) const;
 
+    /// Leaf-ordered primitive index of an intersection (0xFFFFFFFF if none);
+    /// also returns the mesh index
+    uint32_t lookupPrimitive(const Intersection &its, uint32_t &meshIndex) const;
+
+    /// Stochastic top-down traversal (Eq. 8); returns the node where it stopped
+    template <typename ImportanceFn>
+    size_t sampleTraversal(Sampler *sampler, const ImportanceFn &importance,
+        Float &pdf_traversal) const;
+
+    /// Probability of the traversal towards primitive primIdx (Eq. 9); returns
+    /// the node where it stops, or (size_t) -1 if the probability is zero
+    template <typename ImportanceFn>
+    size_t pdfTraversal(uint32_t primIdx, const ImportanceFn &importance,
+        Float &pdf_traversal, uint32_t &nodeStart) const;
+
+    /// Sample a point in the node where the traversal stopped (density per
+    /// unit solid angle at 'from')
+    bool sampleFromNode(const Scene *scene, Sampler *sampler, size_t nodeIndex,
+        const Point &from, Intersection &its, Float &pdf_sa) const;
+
+    /// Density of sampleFromNode() for a point on a given primitive
+    Float pdfFromNode(const Scene *scene, size_t nodeIndex, uint32_t nodeStart,
+        uint32_t primIdx, uint32_t meshIndex, uint32_t triangleIndex,
+        const Point &position, const Point &from) const;
+
     Scene *m_scene = NULL; ///< Scene the BVH was built for (non-owning)
 
     VMFLUT m_vmfLUT; ///< Fitted VMF cosine integral (diffuse term, Eq. 14)
@@ -863,13 +762,6 @@ protected:
     Point m_debugQueryPoint = Point(2.43008f, -0.0490401f, 0.0f); ///< x_s used for the CSV
     int m_debugQueryShape = 2;              ///< Shape whose BSDF is used at x_s for the CSV
 
-#if defined(DO_TIMING_IMPORTANCE) || defined(DO_TIMING_SAMPLING)
-public:
-    mutable MultiTimer importanceTimer;
-    MultiTimer& getImportanceTimer() const { return importanceTimer; }
-protected:
-#endif
-
     /// Recursive build function using a binned Surface Area Heuristic (SAH)
     /// \param buildPrims Working array of primitives (will be partially sorted)
     /// \param start Start index in buildPrims
@@ -900,14 +792,14 @@ protected:
 /// \param shape The shape (must be a TriMesh)
 /// \param triangleIndex Index of the triangle within the mesh
 /// \param scene Optional scene for context (can be NULL)
-/// \return BVHNodeInfo with area, albedo, normal, centerOfMass; valid=true if successful
+/// \return Raw statistics of the triangle (Table 1); valid=true if successful
 MTS_EXPORT_RENDER BVHNodeInfo computeTriangleInfo(
     const Shape *shape,
     size_t triangleIndex,
     const Scene *scene
 );
 
-// Evaluate the lenght-2 contribution of subpath xs -> xp -> xe,
+// Evaluate the length-2 contribution of subpath xs -> xp -> xe,
 // where xp is a point sampled on the geometry, xs is a point on the path and xe is the emitter sample.
 // Prerequisites:
 // - its_xs.shape must be a valid shape with a BSDF
@@ -921,20 +813,6 @@ MTS_EXPORT_RENDER Spectrum evalLength2Contribution(
     bool checkVisibility = true
 );
 
-// Evaluate the lenght-2 contribution of subpath xs -> xp -> xe,
-// where xp is a point sampled on the geometry, xs is a point on the path and xe is the emitter sample.
-// Prerequisites:
-// - its_xs.shape must be a valid shape with a BSDF
-// - same for its_xp.shape
-// - pRec_xe.object must point to a valid emitter
-MTS_EXPORT_RENDER Spectrum evalLength2Contribution(
-    const Scene *scene,
-    const Intersection &its_xs,
-    const Point &xp,
-    const Normal &np, 
-    const PositionSamplingRecord &pRec_xe,
-    bool checkVisibility = true
-);
 
 // Evaluate the glint contribution of subpath x_o -> x_n -> x_e,
 // where x_n is a point on geometry sampled from the camera origin x_o and x_e is the emitter.
@@ -1050,4 +928,4 @@ MTS_EXPORT_RENDER Float computeNodeImportanceGroundTruth(
 
 MTS_NAMESPACE_END
 
-#endif /* __MITSUBA_RENDER_BVH_BVH_H_ */
+#endif /* __MITSUBA_RENDER_HGS_BVH_H_ */

@@ -1,7 +1,7 @@
 /*
-    This file is part of Mitsuba, a physically based rendering system.
-
-    BVH Geometry Sampling - Importance-driven geometry sampling via BVH traversal
+    Hierarchical geometry sampling: stochastic top-down traversal of the
+    SamplingBVH (Sec. 4.1 of the paper), leaf sampling (Sec. 5) and the
+    evaluation of the corresponding densities.
 */
 
 #include <mitsuba/render/hgs/bvh.h>
@@ -9,70 +9,216 @@
 #include <mitsuba/render/scene.h>
 #include <mitsuba/render/trimesh.h>
 #include <cmath>
-#include <iostream>
 
-// #define DEBUG_BVH_NAN
+/* Define HGS_DEBUG_NAN to reject (and log) samples whose traversal weights or
+   densities are not finite, instead of letting them propagate silently */
+// #define HGS_DEBUG_NAN
+
+#if defined(HGS_DEBUG_NAN)
+#define HGS_REJECT_IF_INVALID(value, what) do { \
+        if (!std::isfinite(value) || (value) < 0) { \
+            SLog(EWarn, "SamplingBVH: invalid %s (%f)", what, (double) (value)); \
+            return 0; \
+        } \
+    } while (0)
+#else
+#define HGS_REJECT_IF_INVALID(value, what) do { } while (0)
+#endif
 
 MTS_NAMESPACE_BEGIN
 
+// ---------------------------------------------------------------------------
+// Traversal (Eqs. 8 and 9)
+// ---------------------------------------------------------------------------
 
-#ifdef DEBUG_BVH_NAN
-static inline bool bvhInvalidFloat(Float v) {
-    return !std::isfinite(v) || std::isnan(v);
-}
+/* Descends from the root, choosing each child with probability proportional
+   to its importance weight w(N, x_s, x_e) (plus the defensive term). Returns
+   the node where the traversal stopped (a leaf, or an interior node when
+   lightcuts are enabled) and accumulates the discrete traversal probability. */
+template <typename ImportanceFn>
+size_t SamplingBVH::sampleTraversal(Sampler *sampler, const ImportanceFn &importance,
+        Float &pdf_traversal) const {
+    size_t nodeIndex = 0;
+    pdf_traversal = 1.0f;
 
-#define BVH_NAN_LOG(msg) do { std::cerr << "[DEBUG_BVH_NAN] " << msg << std::endl; } while (0)
-#endif
+    while (!m_nodes[nodeIndex].isLeaf()) {
+        const size_t leftIdx = nodeIndex + 1;
+        const size_t rightIdx = m_nodes[nodeIndex].secondChildOffset;
 
-// const Float DEFENSIVE_PDF = 1e-2f; // Minimum PDF to avoid 0 prob
-// ^Nes: if we do MIS, we have to account for this defensive pdf when computing the pdf of a node
-//       this will be hard according to Adrian, he recommends to skip MIS for now
-// TO DO: also, we should compare the magnitude of this value to the typical node importance values 
-//        we get from computeNodeImportance, to make sure it is not dominating the sampling
+        const Float left_importance = importance(leftIdx) * m_probmult + m_defensive_pdf;
+        const Float right_importance = importance(rightIdx) * m_probmult + m_defensive_pdf;
+        const Float total_importance = left_importance + right_importance;
 
+        /* Lightcuts: stop when both children have negligible weight */
+        if (m_enableLightcuts && total_importance < m_lightcutThreshold * 2.f * m_defensive_pdf)
+            break;
 
-// LIGHTCUTS: now these are runtime parameters that can be set from the xml, see m_enableLightcuts and m_lightcutThreshold in bvh.h and bvh_build.cpp
-// When enabled, directly samples nodes as if they were leafs when their importance is very low
-
-// #define DEBUG_BVH_SAMPLING 
-
-#ifdef DEBUG_BVH_SAMPLING
-
-
-#include <mutex>
-#include <map>
-
-struct Stats {
-    std::map<int, Float> nodeImportanceLeft, nodeImportanceRight; // Sum of importance values for each level
-    std::map<int, uint32_t> nodeImportanceCounts; // Count of samples for each level
-
-    std::mutex mutex; // Mutex for thread safety
-
-    void logImportance(int level, Float importanceL, Float importanceR) {
-        std::lock_guard<std::mutex> lock(mutex);
-        nodeImportanceLeft[level] += importanceL;
-        nodeImportanceRight[level] += importanceR;
-        nodeImportanceCounts[level] += 1;
-    }
-
-    void printAverages() {
-        std::lock_guard<std::mutex> lock(mutex);
-        std::cout << "Average node importance by level:\n";
-        for (const auto &entry : nodeImportanceCounts) {
-            int level = entry.first;
-            float count = float(entry.second);
-            Float avgL = nodeImportanceLeft[level] / count;
-            Float avgR = nodeImportanceRight[level] / count;
-            std::cout << "Level " << level << ": Left Avg Importance = " << avgL 
-                      << ", Right Avg Importance = " << avgR 
-                      << ", Sample Count = " << entry.second << "\n";
+        const Float left_prob = left_importance / total_importance;
+        if (sampler->next1D() < left_prob) {
+            nodeIndex = leftIdx;
+            pdf_traversal *= left_prob;
+        } else {
+            nodeIndex = rightIdx;
+            pdf_traversal *= (1.0f - left_prob);
         }
     }
-};
+    return nodeIndex;
+}
 
-static Stats g_stats;
+/* Probability with which sampleTraversal() reaches the node containing the
+   leaf-ordered primitive primIdx. Returns the node where the traversal stops
+   and, in nodeStart, the index of its first primitive. Returns -1 when the
+   probability is zero. */
+template <typename ImportanceFn>
+size_t SamplingBVH::pdfTraversal(uint32_t primIdx, const ImportanceFn &importance,
+        Float &pdf_traversal, uint32_t &nodeStart) const {
+    size_t nodeIndex = 0;
+    nodeStart = 0;
+    pdf_traversal = 1.0f;
 
-#endif
+    while (!m_nodes[nodeIndex].isLeaf()) {
+        const size_t leftIdx = nodeIndex + 1;
+        const size_t rightIdx = m_nodes[nodeIndex].secondChildOffset;
+
+        const Float left_imp = importance(leftIdx) * m_probmult + m_defensive_pdf;
+        const Float right_imp = importance(rightIdx) * m_probmult + m_defensive_pdf;
+        const Float total = left_imp + right_imp;
+
+        if (total <= 0.0f)
+            return (size_t) -1;
+
+        if (m_enableLightcuts && total < m_lightcutThreshold * 2.f * m_defensive_pdf)
+            break;
+
+        const uint32_t leftCount = m_nodes[leftIdx].nSubtreePrimitives;
+        if (primIdx < nodeStart + leftCount) {
+            pdf_traversal *= (left_imp / total);
+            nodeIndex = leftIdx;
+        } else {
+            pdf_traversal *= (right_imp / total);
+            nodeIndex = rightIdx;
+            nodeStart += leftCount;
+        }
+    }
+    return nodeIndex;
+}
+
+bool SamplingBVH::sampleFromNode(const Scene *scene, Sampler *sampler, size_t nodeIndex,
+        const Point &from, Intersection &its, Float &pdf_sa) const {
+    const BVHNode &node = m_nodes[nodeIndex];
+    if (node.isLeaf()) {
+        if (node.nLeafPrimitives == 0)
+            return false;
+        if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB)
+            return sampleLeafSphericalAABB(scene, node, nodeIndex, sampler->next2D(), from, its, pdf_sa);
+        return sampleLeafPrimitive(scene, node, nodeIndex, sampler->next1D(), sampler->next2D(), from, its, pdf_sa);
+    } else if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB_anyNode) {
+        /* The traversal stopped at an interior node (lightcuts) */
+        return sampleLeafSphericalAABB(scene, node, nodeIndex, sampler->next2D(), from, its, pdf_sa);
+    } else {
+        /* The traversal stopped at an interior node (lightcuts): descend by area */
+        return sampleNodePrimitive(scene, nodeIndex, sampler, from, its, pdf_sa, true);
+    }
+}
+
+Float SamplingBVH::pdfFromNode(const Scene *scene, size_t nodeIndex, uint32_t nodeStart,
+        uint32_t primIdx, uint32_t meshIndex, uint32_t triangleIndex,
+        const Point &position, const Point &from) const {
+    const BVHNode &node = m_nodes[nodeIndex];
+    const BVHNodeInfo &nodeInfo = m_nodeInfos[nodeIndex];
+
+    if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB) {
+        /* Mimic the area-proportional descent of sampleNodePrimitive() down to
+           the leaf that contains the primitive (only taken with lightcuts) */
+        Float descent_prob = 1.0f;
+        size_t currentIdx = nodeIndex;
+        uint32_t currentStart = nodeStart;
+
+        while (!m_nodes[currentIdx].isLeaf()) {
+            const size_t leftIdx = currentIdx + 1;
+            const size_t rightIdx = m_nodes[currentIdx].secondChildOffset;
+
+            const float left_area = m_nodeInfos[leftIdx].surfaceArea;
+            const float right_area = m_nodeInfos[rightIdx].surfaceArea;
+            if ((left_area + right_area) <= 0.0f)
+                return 0.0f;
+
+            const float left_prob = left_area / (left_area + right_area);
+            const uint32_t leftCount = m_nodes[leftIdx].nSubtreePrimitives;
+
+            if (primIdx < currentStart + leftCount) {
+                descent_prob *= left_prob;
+                currentIdx = leftIdx;
+            } else {
+                descent_prob *= (1.0f - left_prob);
+                currentIdx = rightIdx;
+                currentStart += leftCount;
+            }
+        }
+
+        Vector wo = position - from;
+        const Float dist = std::sqrt(wo.lengthSquared());
+        if (dist <= Epsilon)
+            return 0.0f;
+        wo /= dist;
+
+        Float pdf_solid_angle = 0.0f;
+        AABBSphPdf(m_nodes[currentIdx].bounds, from, wo, pdf_solid_angle);
+        return descent_prob * pdf_solid_angle;
+    } else if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB_anyNode) {
+        const Vector d = position - from;
+        if (d.lengthSquared() <= Epsilon * Epsilon)
+            return 0.0f;
+        Float pdf_solid_angle = 0.0f;
+        AABBSphPdf(node.bounds, from, normalize(d), pdf_solid_angle);
+        return pdf_solid_angle;
+    } else {
+        /* Primitive: Prob(leaf | node) * Prob(prim | leaf) * pdf(p | prim) =
+           (leaf_area / node_area) * (prim_area / leaf_area) * (1 / prim_area) = 1 / node_area */
+        if (nodeInfo.surfaceArea <= 0.0f)
+            return 0.0f;
+        const Float pdf_area = 1.0f / nodeInfo.surfaceArea;
+
+        const TriMesh *mesh = scene->getMeshes()[meshIndex];
+        const Triangle &tri = mesh->getTriangles()[triangleIndex];
+        const Point *verts = mesh->getVertexPositions();
+        const Vector e1 = verts[tri.idx[1]] - verts[tri.idx[0]];
+        const Vector e2 = verts[tri.idx[2]] - verts[tri.idx[0]];
+        const Normal n = normalize(cross(e1, e2));
+
+        /* Convert the area density into solid angle at 'from' */
+        const Vector d = position - from;
+        const Float dist_sq = d.lengthSquared();
+        const Float dist = std::sqrt(dist_sq);
+        if (dist <= Epsilon)
+            return 0.0f;
+        const Vector wo = d / dist;
+        const Float cos_theta = std::abs(dot(n, -wo));
+        if (cos_theta <= Epsilon)
+            return 0.0f;
+
+        return pdf_area * (dist_sq / cos_theta);
+    }
+}
+
+uint32_t SamplingBVH::lookupPrimitive(const Intersection &its, uint32_t &meshIndex) const {
+    meshIndex = 0xFFFFFFFFu;
+    const TriMesh *hitMesh = dynamic_cast<const TriMesh *>(its.shape);
+    if (hitMesh == NULL)
+        return 0xFFFFFFFFu;
+    meshIndex = getMeshIndex(hitMesh);
+    if (meshIndex == 0xFFFFFFFFu || its.primIndex >= hitMesh->getTriangleCount()
+        || meshIndex >= m_meshOffsets.size())
+        return 0xFFFFFFFFu;
+    const uint32_t lookupIdx = m_meshOffsets[meshIndex] + its.primIndex;
+    if (lookupIdx >= m_triangleToPrim.size())
+        return 0xFFFFFFFFu;
+    return m_triangleToPrim[lookupIdx];
+}
+
+// ---------------------------------------------------------------------------
+// Sampling and PDF evaluation from a surface vertex x_s
+// ---------------------------------------------------------------------------
 
 bool SamplingBVH::sampleGeometry(
     const Scene *scene,
@@ -82,177 +228,134 @@ bool SamplingBVH::sampleGeometry(
     Intersection &its_xp,
     Float &pdf) const
 {
-    if (m_nodes.empty() || m_primitives.empty()) {
-#ifdef DEBUG_BVH_NAN
-        BVH_NAN_LOG("sampleGeometry: empty nodes/primitives. nodes=" << m_nodes.size()
-            << " primitives=" << m_primitives.size());
-#endif
+    if (m_nodes.empty() || m_primitives.empty())
         return false;
-    }
 
-    // 1. Importance-driven tree traversal
-    size_t nodeIndex = 0;
-    Float pdf_traversal = 1.0f;
+    const SamplingBVH *bvh = this;
+    auto importance = [&](size_t nodeIdx) {
+        return computeNodeImportance(m_scene, bvh, (int) nodeIdx, its_xs, pRec_xe);
+    };
 
-    #ifdef DO_TIMING_SAMPLING
-    auto &importanceTimer = getImportanceTimer();
-    uint64_t startTime = importanceTimer.getNanoSeconds();
-    importanceTimer.addCounter(); // count the number of times we entered sampleGeometry, useful for averaging timings
-    #endif 
+    Float pdf_traversal;
+    size_t nodeIndex = sampleTraversal(sampler, importance, pdf_traversal);
+    HGS_REJECT_IF_INVALID(pdf_traversal, "traversal probability");
 
-    while (!m_nodes[nodeIndex].isLeaf()) {
-        const size_t leftIdx = nodeIndex + 1;
-        const size_t rightIdx = m_nodes[nodeIndex].secondChildOffset;
-
-        // 2. Compute importance weights for both children
-        const Float left_importance_temp = computeNodeImportance(m_scene, this, leftIdx, its_xs, pRec_xe);
-        const Float left_importance = left_importance_temp * m_probmult + m_defensive_pdf;
-
-        const Float right_importance_temp = computeNodeImportance(m_scene, this, rightIdx, its_xs, pRec_xe);
-        const Float right_importance = right_importance_temp * m_probmult + m_defensive_pdf;
-
-        const Float total_importance = left_importance + right_importance;
-
-#ifdef DEBUG_BVH_NAN
-        if (bvhInvalidFloat(left_importance_temp) || bvhInvalidFloat(right_importance_temp)
-            || bvhInvalidFloat(left_importance) || bvhInvalidFloat(right_importance)
-            || bvhInvalidFloat(total_importance) || total_importance <= 0.0f) {
-            BVH_NAN_LOG("sampleGeometry traversal invalid importance at node=" << nodeIndex
-                << " leftIdx=" << leftIdx
-                << " rightIdx=" << rightIdx
-                << " left_importance_temp=" << left_importance_temp
-                << " right_importance_temp=" << right_importance_temp
-                << " left_importance=" << left_importance
-                << " right_importance=" << right_importance
-                << " total_importance=" << total_importance
-                << " xs=" << its_xs.p.toString()
-                << " xe=" << pRec_xe.p.toString()
-                << " defensive_pdf=" << m_defensive_pdf
-                << " probmult=" << m_probmult);
-            return false;
-        }
-#endif
-
-        // --- LIGHTCUTS ---
-        if (m_enableLightcuts && total_importance < m_lightcutThreshold * 2.f * m_defensive_pdf) { 
-            #ifdef DO_TIMING_SAMPLING
-            importanceTimer.addNamedCounter("lightcuts");
-            #endif
-            break; 
-        }   
-
-        // Compute branching probability
-        const Float left_prob = left_importance / total_importance;
-
-#ifdef DEBUG_BVH_NAN
-        if (bvhInvalidFloat(left_prob) || left_prob < 0.0f || left_prob > 1.0f) {
-            BVH_NAN_LOG("sampleGeometry traversal invalid left_prob at node=" << nodeIndex
-                << " left_prob=" << left_prob
-                << " left_importance=" << left_importance
-                << " right_importance=" << right_importance
-                << " total_importance=" << total_importance
-                << " xs=" << its_xs.p.toString()
-                << " xe=" << pRec_xe.p.toString());
-            return false;
-        }
-#endif
-
-        // Probabilistic branch selection
-        Float s1 = sampler->next1D();
-        if (s1 < left_prob) {
-            nodeIndex = leftIdx;
-            pdf_traversal *= left_prob;
-        } else {
-            nodeIndex = rightIdx;
-            pdf_traversal *= (1.0f - left_prob);
-        }
-
-#ifdef DEBUG_BVH_NAN
-        if (bvhInvalidFloat(pdf_traversal) || pdf_traversal <= 0.0f) {
-            BVH_NAN_LOG("sampleGeometry traversal invalid pdf_traversal after branch"
-                << " node=" << nodeIndex
-                << " left_prob=" << left_prob
-                << " s1=" << s1
-                << " pdf_traversal=" << pdf_traversal
-                << " xs=" << its_xs.p.toString()
-                << " xe=" << pRec_xe.p.toString());
-            return false;
-        }
-#endif
-    }
-
-    #ifdef DO_TIMING_SAMPLING
-    importanceTimer.addElapsed("sampleNodeLoop", startTime); 
-    startTime = importanceTimer.getNanoSeconds();
-    #endif
-
-    // 2. Sample leaf or subtree using configured sampling mode
-    const BVHNode &node = m_nodes[nodeIndex];
     Float pdf_leaf = 0.0f;
-    bool success = false;
-
-    if (node.isLeaf()) {
-        if (node.nLeafPrimitives == 0) return false;
-
-        if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB) {
-            success = sampleLeafSphericalAABB(scene, node, nodeIndex, sampler->next2D(), its_xs.p, its_xp, pdf_leaf);
-        } else {
-            success = sampleLeafPrimitive(scene, node, nodeIndex, sampler->next1D(), sampler->next2D(), its_xs.p, its_xp, pdf_leaf);
-        }
-    } // the node is not a leaf (because of pruning/lightcuts)
-    else if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB_anyNode) {
-        // This strategy can be used directly on non-leaf nodes
-        success = sampleLeafSphericalAABB(scene, node, nodeIndex, sampler->next2D(), its_xs.p, its_xp, pdf_leaf);
-    }   
-    else { // this descends to a leaf by area, then samples the leaf either by Primitive or SphericalAABB, depending on the sampling mode
-        // --- LIGHTCUTS FIX: We stopped at a non-leaf node. Sample the subtree. ---
-        // sampleNodePrimitive requires 3 random samples (Float, Float, Point2)
-        success = sampleNodePrimitive(scene, nodeIndex, sampler, its_xs.p, its_xp, pdf_leaf, true);
-    }
-    
-    #ifdef DO_TIMING_SAMPLING
-    if (success) {
-        importanceTimer.addElapsed("sampleLeaf", startTime);
-        importanceTimer.addNamedCounter("successfulSamples");
-    }
-    else {
-        importanceTimer.addElapsed("sampleLeafFail", startTime);
-        importanceTimer.addNamedCounter("failedSamples");
-    }
-
-    if (importanceTimer.timer->getSeconds() > 10.f) {
-        std::cout << "Sampling timings:\n";
-        importanceTimer.report();
-        exit(0); 
-    }
-
-    #endif
-
-    if (!success) return false;
-
-    // Phase 3: Final PDF is in Solid Angle
-    pdf = pdf_traversal * pdf_leaf;
-
-#ifdef DEBUG_BVH_NAN
-    if (bvhInvalidFloat(pdf_leaf) || bvhInvalidFloat(pdf) || pdf <= 0.0f) {
-        BVH_NAN_LOG("sampleGeometry invalid final pdf"
-            << " nodeIndex=" << nodeIndex
-            << " success=" << success
-            << " pdf_traversal=" << pdf_traversal
-            << " pdf_leaf=" << pdf_leaf
-            << " pdf=" << pdf
-            << " samplingMode=" << (int) m_samplingMode
-            << " xs=" << its_xs.p.toString()
-            << " xe=" << pRec_xe.p.toString()
-            << " xp=" << its_xp.p.toString());
+    if (!sampleFromNode(scene, sampler, nodeIndex, its_xs.p, its_xp, pdf_leaf))
         return false;
-    }
-#endif
-    
+
+    /* Density per unit solid angle at x_s */
+    pdf = pdf_traversal * pdf_leaf;
+    HGS_REJECT_IF_INVALID(pdf, "sample density");
     return true;
 }
 
-// Updated: Samples primitives proportionally by area, then converts Area->SolidAngle
+Float SamplingBVH::pdfGeometry(
+    const Scene *scene,
+    const Intersection &its_xs,
+    const PositionSamplingRecord &pRec_xe,
+    const Intersection &its_xp
+) const {
+    if (its_xp.shape == NULL || m_nodes.empty())
+        return 0.0f;
+
+    uint32_t meshIndex;
+    const uint32_t primIdx = lookupPrimitive(its_xp, meshIndex);
+    if (primIdx == 0xFFFFFFFFu)
+        return 0.0f;
+
+    const SamplingBVH *bvh = this;
+    auto importance = [&](size_t nodeIdx) {
+        return computeNodeImportance(m_scene, bvh, (int) nodeIdx, its_xs, pRec_xe);
+    };
+
+    Float pdf_traversal;
+    uint32_t nodeStart;
+    const size_t nodeIndex = pdfTraversal(primIdx, importance, pdf_traversal, nodeStart);
+    if (nodeIndex == (size_t) -1)
+        return 0.0f;
+
+    const Float pdf_leaf = pdfFromNode(scene, nodeIndex, nodeStart, primIdx, meshIndex,
+        its_xp.primIndex, its_xp.p, its_xs.p);
+    return pdf_traversal * pdf_leaf;
+}
+
+// ---------------------------------------------------------------------------
+// Sampling and PDF evaluation from the camera (x_s on the sensor)
+// ---------------------------------------------------------------------------
+
+bool SamplingBVH::sampleGeometryCamera(
+    const Scene *scene,
+    Sampler *sampler,
+    const Point &x_o,
+    const Sensor *sensor,
+    const PositionSamplingRecord &pRec_xe,
+    Intersection &its_xn,
+    Float &pdf) const
+{
+    if (m_nodes.empty() || m_primitives.empty())
+        return false;
+
+    const SamplingBVH *bvh = this;
+    auto importance = [&](size_t nodeIdx) {
+        return computeNodeImportanceGlint(scene, bvh, (int) nodeIdx, x_o, sensor, pRec_xe);
+    };
+
+    Float pdf_traversal;
+    size_t nodeIndex = sampleTraversal(sampler, importance, pdf_traversal);
+
+    Float pdf_leaf = 0.0f;
+    if (!sampleFromNode(scene, sampler, nodeIndex, x_o, its_xn, pdf_leaf))
+        return false;
+
+    // pdf_leaf is per unit solid angle at x_o; return a density per unit area at x_n
+    Vector d = its_xn.p - x_o;
+    Float dist2 = d.lengthSquared();
+    if (dist2 <= 0.0f) return false;
+    Float cosTheta = absDot(its_xn.geoFrame.n, d) / std::sqrt(dist2);
+    if (cosTheta <= 0.0f) return false;
+
+    pdf = pdf_traversal * pdf_leaf * cosTheta / dist2;
+    return true;
+}
+
+Float SamplingBVH::pdfGeometryCamera(
+    const Scene *scene,
+    const Point &x_o,
+    const Sensor *sensor,
+    const PositionSamplingRecord &pRec_xe,
+    const Intersection &its_xn
+) const {
+    if (its_xn.shape == NULL || m_nodes.empty())
+        return 0.0f;
+
+    uint32_t meshIndex;
+    const uint32_t primIdx = lookupPrimitive(its_xn, meshIndex);
+    if (primIdx == 0xFFFFFFFFu)
+        return 0.0f;
+
+    const SamplingBVH *bvh = this;
+    auto importance = [&](size_t nodeIdx) {
+        return computeNodeImportanceGlint(scene, bvh, (int) nodeIdx, x_o, sensor, pRec_xe);
+    };
+
+    Float pdf_traversal;
+    uint32_t nodeStart;
+    const size_t nodeIndex = pdfTraversal(primIdx, importance, pdf_traversal, nodeStart);
+    if (nodeIndex == (size_t) -1)
+        return 0.0f;
+
+    const Float pdf_leaf = pdfFromNode(scene, nodeIndex, nodeStart, primIdx, meshIndex,
+        its_xn.primIndex, its_xn.p, x_o);
+    return pdf_traversal * pdf_leaf;
+}
+
+// ---------------------------------------------------------------------------
+// Leaf sampling (Sec. 5)
+// ---------------------------------------------------------------------------
+
+// Samples a primitive of the leaf proportionally to its area (alias table),
+// then a uniform point on it
 bool SamplingBVH::sampleLeafPrimitive(
     const Scene *scene,
     const BVHNode &leafNode,
@@ -312,8 +415,8 @@ bool SamplingBVH::sampleLeafPrimitive(
             }
         }
     }
-    
-    // 3. Fetch the specifically chosen primitive
+
+    // 2. Fetch the chosen primitive and sample a point on it
     const BVHPrimitive &prim = getPrimitive(leafNode.primitivesOffset + localPrimIdx);
     const std::vector<TriMesh*> &meshes = scene->getMeshes();
     const TriMesh *mesh = meshes[prim.meshIndex];
@@ -323,92 +426,48 @@ bool SamplingBVH::sampleLeafPrimitive(
     pRec.p = tri.sample(mesh->getVertexPositions(), mesh->getVertexNormals(),
         mesh->getVertexTexcoords(), pRec.n, pRec.uv, sample2);
 
-    // 4. The local Area PDF inside this leaf is 1 / area(leaf)
+    // 3. Prob(prim | leaf) * pdf(p | prim) = (prim_area / leaf_area) * (1 / prim_area) = 1 / leaf_area
     const Float total_leaf_area = (Float) m_nodeInfos[leafNodeIndex].surfaceArea;
     if (total_leaf_area <= 0.0f) return false;
     Float pdf_area = 1.0f / total_leaf_area;
-    
-    // Fill intersection
+
+    // 4. Fill the intersection record
     its_xp.p = pRec.p;
     its_xp.uv = pRec.uv;
     its_xp.shape = mesh;
-    its_xp.instance = mesh;
+    its_xp.instance = NULL;
     its_xp.primIndex = prim.triangleIndex;
     its_xp.t = 1.f;
-    
+
     const Point *verts = mesh->getVertexPositions();
     Vector e1 = verts[tri.idx[1]] - verts[tri.idx[0]];
     Vector e2 = verts[tri.idx[2]] - verts[tri.idx[0]];
     its_xp.geoFrame = Frame(normalize(cross(e1, e2)));
     its_xp.shFrame = Frame(pRec.n);
-    its_xp.wi = its_xp.p - xs;
+    its_xp.wi = its_xp.toLocal(normalize(xs - its_xp.p));
 
     if (return_solidangle_pdf) {
         // 5. Convert Area PDF -> Solid Angle PDF
         // P_sa = P_area * (dist^2 / cos_theta)
         Vector d = its_xp.p - xs;
         Float dist_sq = d.lengthSquared();
-
-#ifdef DEBUG_BVH_NAN
-        if (bvhInvalidFloat(dist_sq) || dist_sq <= Epsilon * Epsilon) {
-            BVH_NAN_LOG("sampleLeafPrimitive invalid distance for area->solid-angle conversion"
-                << " dist_sq=" << dist_sq
-                << " pdf_area=" << pdf_area
-                << " xs=" << xs.toString()
-                << " xp=" << its_xp.p.toString()
-                << " leafNodeIndex=" << leafNodeIndex
-                << " localPrimIdx=" << localPrimIdx);
-            return false;
-        }
-#endif
-
         Float dist = std::sqrt(dist_sq);
         Vector wo = d / dist;
-        
         Float cos_theta = std::abs(dot(its_xp.geoFrame.n, -wo));
-
-#ifdef DEBUG_BVH_NAN
-        if (bvhInvalidFloat(cos_theta)) {
-            BVH_NAN_LOG("sampleLeafPrimitive invalid cos_theta"
-                << " cos_theta=" << cos_theta
-                << " dist=" << dist
-                << " dist_sq=" << dist_sq
-                << " pdf_area=" << pdf_area
-                << " xs=" << xs.toString()
-                << " xp=" << its_xp.p.toString()
-                << " n=" << its_xp.geoFrame.n.toString());
+        if (cos_theta <= Epsilon)
             return false;
-        }
-#endif
-
-        if (cos_theta <= Epsilon) {
-            return false; 
-        }
 
         pdf_xp = pdf_area * (dist_sq / cos_theta);
-
-#ifdef DEBUG_BVH_NAN
-        if (bvhInvalidFloat(pdf_xp) || pdf_xp <= 0.0f) {
-            BVH_NAN_LOG("sampleLeafPrimitive invalid solid-angle pdf"
-                << " pdf_xp=" << pdf_xp
-                << " pdf_area=" << pdf_area
-                << " dist_sq=" << dist_sq
-                << " cos_theta=" << cos_theta
-                << " xs=" << xs.toString()
-                << " xp=" << its_xp.p.toString());
-            return false;
-        }
-#endif
     } else {
         pdf_xp = pdf_area;
     }
-    
+
     return true;
 }
 
-// Samples uniformly in the primitives inside of the node and returns the pdf in Solid Angle
+// Descends from an interior node to a leaf by area, then samples the leaf
 bool SamplingBVH::sampleNodePrimitive(
-    const Scene *scene, 
+    const Scene *scene,
     size_t nodeIdx,
     Sampler* sampler,
     const Point &xs,
@@ -423,50 +482,17 @@ bool SamplingBVH::sampleNodePrimitive(
         float left_area = m_nodeInfos[leftIdx].surfaceArea;
         float right_area = m_nodeInfos[rightIdx].surfaceArea;
 
-#ifdef DEBUG_BVH_NAN
-        if (!std::isfinite(left_area) || !std::isfinite(right_area) || (left_area + right_area) <= 0.0f) {
-            BVH_NAN_LOG("sampleNodePrimitive invalid child areas"
-                << " nodeIdx=" << nodeIdx
-                << " left_area=" << left_area
-                << " right_area=" << right_area
-                << " xs=" << xs.toString());
-            return false;
-        }
-#endif
-
         float left_prob = left_area / (left_area + right_area);
 
-#ifdef DEBUG_BVH_NAN
-        if (!std::isfinite(left_prob) || left_prob < 0.0f || left_prob > 1.0f) {
-            BVH_NAN_LOG("sampleNodePrimitive invalid left_prob"
-                << " nodeIdx=" << nodeIdx
-                << " left_prob=" << left_prob
-                << " left_area=" << left_area
-                << " right_area=" << right_area
-                << " xs=" << xs.toString());
-            return false;
-        }
-#endif
-
-        // Uniformly sample one of the two children
+        // Pick a child proportionally to its surface area
         if (sampler->next1D() < left_prob) {
             nodeIdx = leftIdx;
-            pdf_leaf *= left_prob; // Update pdf_leaf to account for the probability of choosing this child
+            pdf_leaf *= left_prob;
         } else {
             nodeIdx = rightIdx;
-            pdf_leaf *= (1.0f - left_prob); // Update pdf_leaf to account for the probability of choosing this child
+            pdf_leaf *= (1.0f - left_prob);
         }
 
-#ifdef DEBUG_BVH_NAN
-        if (!std::isfinite(pdf_leaf) || pdf_leaf <= 0.0f) {
-            BVH_NAN_LOG("sampleNodePrimitive invalid subtree pdf"
-                << " nodeIdx=" << nodeIdx
-                << " pdf_leaf=" << pdf_leaf
-                << " left_prob=" << left_prob
-                << " xs=" << xs.toString());
-            return false;
-        }
-#endif
     }
     bool success;
     if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB) {
@@ -476,100 +502,11 @@ bool SamplingBVH::sampleNodePrimitive(
     }
     pdf_xp *= pdf_leaf;
 
-#ifdef DEBUG_BVH_NAN
-    if (!success || bvhInvalidFloat(pdf_xp) || pdf_xp <= 0.0f) {
-        BVH_NAN_LOG("sampleNodePrimitive invalid output"
-            << " success=" << success
-            << " nodeIdx=" << nodeIdx
-            << " pdf_leaf=" << pdf_leaf
-            << " pdf_xp=" << pdf_xp
-            << " xs=" << xs.toString()
-            << " xp=" << its_xp.p.toString());
-        return false;
-    }
-#endif
-
-    return success; 
+    return success;
 }
 
-bool SamplingBVH::intersectionInNode(
-    const Scene *scene,
-    const Intersection &its,
-    size_t targetNodeIndex) const
-{
-    if (!scene || targetNodeIndex >= m_nodes.size()) {
-        return false;
-    }
-
-    if (its.shape == NULL) {
-        return false;
-    }
-
-    const TriMesh *hitMesh = dynamic_cast<const TriMesh*>(its.shape);
-    if (hitMesh == NULL) {
-        return false;
-    }
-
-    uint32_t meshIndex = getMeshIndex(hitMesh);
-
-    if (meshIndex == 0xFFFFFFFF) {
-        return false;
-    }
-
-    if (its.primIndex >= hitMesh->getTriangleCount()) {
-        return false;
-    }
-    
-    if (meshIndex >= m_meshOffsets.size()) {
-        return false;
-    }
-
-    uint32_t lookupIdx = m_meshOffsets[meshIndex] + its.primIndex;
-    if (lookupIdx >= m_triangleToPrim.size()) {
-        return false;
-    }
-
-    uint32_t primIdx = m_triangleToPrim[lookupIdx];
-    if (primIdx == 0xFFFFFFFF) {
-        return false;
-    }
-
-    // 2. Fast top-down traversal to check if targetNodeIndex is an ancestor
-    size_t currNodeIndex = 0;
-    uint32_t nodeStart = 0;
-
-    while (true) {
-        // If we hit the target node along the path to the primitive, it belongs to this subtree!
-        if (currNodeIndex == targetNodeIndex) {
-            return true;
-        }
-
-        const BVHNode &currNode = m_nodes[currNodeIndex];
-        
-        // If we reach a leaf and haven't matched the target, the primitive is somewhere else
-        if (currNode.isLeaf()) {
-            return false; 
-        }
-
-        // Fetch children
-        size_t leftIdx = currNodeIndex + 1;
-        size_t rightIdx = currNode.secondChildOffset;
-        
-        // Use the same partition logic from pdfGeometry
-        uint32_t leftCount = m_nodes[leftIdx].nSubtreePrimitives;
-
-        // Route the traversal toward the primitive's actual location
-        if (primIdx < nodeStart + leftCount) {
-            currNodeIndex = leftIdx;
-        } else {
-            currNodeIndex = rightIdx;
-            nodeStart += leftCount;
-        }
-    }
-    
-    return false;
-}
-
+// Samples a direction in the solid angle of the node's AABB and ray-casts it;
+// the hit must belong to the node
 bool SamplingBVH::sampleLeafSphericalAABB(
     const Scene *scene,
     const BVHNode &leafNode,
@@ -587,8 +524,7 @@ bool SamplingBVH::sampleLeafSphericalAABB(
     // Naturally samples in Solid Angle
     AABBSphSample(leafNode.bounds, xs, sample2.x, sample2.y, wo, pdf_aabb_solid_angle);
 
-    // std::cout << "Sampled direction: (" << wo.x << ", " << wo.y << ", " << wo.z << ") with PDF (solid angle): " << pdf_aabb_solid_angle << "\n";
-    
+
     if (pdf_aabb_solid_angle <= 0.0f || !std::isfinite(pdf_aabb_solid_angle)) return false;
 
     Ray ray(xs, wo, Epsilon, std::numeric_limits<Float>::infinity(), 0.f);
@@ -598,616 +534,89 @@ bool SamplingBVH::sampleLeafSphericalAABB(
         // In this mode, the "leafNode" may not necessarily be a leaf!
         if (!intersectionInNode(scene, its_xp, leafNodeIndex)) return false;
     }
-    else{    
+    else {
         if (!intersectionInLeafNode(scene, its_xp, leafNodeIndex)) return false;
     }
-    // FIX: Do NOT convert to Area. Keep it in Solid Angle.
-    // This avoids the (cos / dist^2) multiplication which vanishes at grazing angles.
-    pdf_xp = pdf_aabb_solid_angle; 
-    
+    // The density stays in solid angle at xs (an area density would need the
+    // cos / dist^2 factor, which vanishes at grazing angles)
+    pdf_xp = pdf_aabb_solid_angle;
+
     return true;
 }
 
+bool SamplingBVH::intersectionInNode(
+    const Scene *scene,
+    const Intersection &its,
+    size_t targetNodeIndex) const
+{
+    if (!scene || targetNodeIndex >= m_nodes.size() || its.shape == NULL)
+        return false;
+
+    uint32_t meshIndex;
+    const uint32_t primIdx = lookupPrimitive(its, meshIndex);
+    if (primIdx == 0xFFFFFFFFu)
+        return false;
+
+    // Top-down traversal towards the primitive, checking whether targetNodeIndex is on the way
+    size_t currNodeIndex = 0;
+    uint32_t nodeStart = 0;
+
+    while (true) {
+        // If we hit the target node along the path to the primitive, it belongs to this subtree!
+        if (currNodeIndex == targetNodeIndex) {
+            return true;
+        }
+
+        const BVHNode &currNode = m_nodes[currNodeIndex];
+
+        // If we reach a leaf and haven't matched the target, the primitive is somewhere else
+        if (currNode.isLeaf()) {
+            return false;
+        }
+
+        // Fetch children
+        size_t leftIdx = currNodeIndex + 1;
+        size_t rightIdx = currNode.secondChildOffset;
+
+        uint32_t leftCount = m_nodes[leftIdx].nSubtreePrimitives;
+
+        // Route the traversal toward the primitive's actual location
+        if (primIdx < nodeStart + leftCount) {
+            currNodeIndex = leftIdx;
+        } else {
+            currNodeIndex = rightIdx;
+            nodeStart += leftCount;
+        }
+    }
+
+    return false;
+}
 
 bool SamplingBVH::intersectionInLeafNode(
     const Scene *scene,
     const Intersection &its,
     size_t leafNodeIndex) const
-{   
-    // Check that the leafNodeIndex is valid
-    if (!scene || leafNodeIndex >= m_nodes.size()) {
+{
+    if (!scene || leafNodeIndex >= m_nodes.size() || its.shape == NULL)
         return false;
-    }
 
-    // Check that the node is actually a leaf
     const BVHNode &leafNode = m_nodes[leafNodeIndex];
-    if (!leafNode.isLeaf()) {
+    if (!leafNode.isLeaf())
         return false;
-    }
 
-    // Check that the intersection is on a valid shape and that the shape is a TriMesh
-    if (its.shape == NULL) {
+    uint32_t meshIndex;
+    const uint32_t primIdx = lookupPrimitive(its, meshIndex);
+    if (primIdx == 0xFFFFFFFFu)
         return false;
-    }
-
-    const TriMesh *hitMesh = dynamic_cast<const TriMesh*>(its.shape);
-    if (hitMesh == NULL) {
-        return false;
-    }
-
-    // Find the mesh index in the scene's mesh list
-    uint32_t meshIndex = getMeshIndex(hitMesh);
-
-    if (meshIndex == 0xFFFFFFFF) {
-        return false;
-    }
-
-    // Check that the triangle index is valid (must be less than the number of triangles in the mesh)
-    if (its.primIndex >= hitMesh->getTriangleCount()) {
-        return false;
-    }
-    
-    // Check that the triangle index corresponds to a primitive in this leaf node
-    if (meshIndex >= m_meshOffsets.size()) {
-        return false;
-    }
-    uint32_t lookupIdx = m_meshOffsets[meshIndex] + its.primIndex;
-    if (lookupIdx >= m_triangleToPrim.size()) {
-        return false;
-    }
-    uint32_t primIdx = m_triangleToPrim[lookupIdx];
-    if (primIdx == 0xFFFFFFFF) {
-        return false;
-    }
 
     const uint32_t leafStart = leafNode.primitivesOffset;
     const uint32_t leafEnd = leafStart + leafNode.nLeafPrimitives;
     return primIdx >= leafStart && primIdx < leafEnd;
 }
 
-
-// Just like pdfGeometry, but finds the indices from the intersection directly
-Float SamplingBVH::pdfGeometry(
-    const Scene *scene,
-    const Intersection &its_xs,
-    const PositionSamplingRecord &pRec_xe,
-    const Intersection &its_xp
-) const {
-    if (its_xp.shape == NULL) {
-        Log(EWarn, "pdfGeometry: Intersection has no shape, cannot compute PDF.\n");
-        return 0.0f;
-    }
-
-    const TriMesh *hitMesh = dynamic_cast<const TriMesh*>(its_xp.shape);
-    if (hitMesh == NULL) {
-        Log(EWarn, "pdfGeometry: Intersection shape is not a TriMesh, cannot compute PDF.\n");
-        return 0.0f;
-    }
-
-    uint32_t meshIndex = getMeshIndex(hitMesh);
-
-    if (meshIndex == 0xFFFFFFFF) {
-        return 0.0f;
-    }
-
-    if (its_xp.primIndex >= hitMesh->getTriangleCount()) {
-        return 0.0f;
-    }
-    
-    // Now we have the mesh index and triangle index, we can call the original pdfGeometry
-     return this->pdfGeometry(
-        scene, 
-        its_xs, 
-        pRec_xe,
-        its_xp,
-        meshIndex, 
-        its_xp.primIndex, 
-        its_xp.p
-    );  
-}
-
-Float SamplingBVH::pdfGeometry(
-    const Scene *scene,
-    const Intersection &its_xs,
-    const PositionSamplingRecord &pRec_xe,
-    const Intersection &its_xp,
-    uint32_t meshIndex,
-    uint32_t triangleIndex,
-    const Point &position
-) const 
-{
-    if (m_nodes.empty() || m_primitives.empty()) return 0.0f;
-
-    // 1. Find Primitive
-    if (meshIndex >= m_meshOffsets.size()) return 0.0f;
-    uint32_t lookupIdx = m_meshOffsets[meshIndex] + triangleIndex;
-    if (lookupIdx >= m_triangleToPrim.size()) return 0.0f;
-    uint32_t primIdx = m_triangleToPrim[lookupIdx];
-    if (primIdx == 0xFFFFFFFF) return 0.0f;
-
-    // 2. Traversal
-    size_t nodeIndex = 0;
-    uint32_t nodeStart = 0;
-    Float pdf_traversal = 1.0f;
-
-    while (!m_nodes[nodeIndex].isLeaf()) {
-        size_t leftIdx = nodeIndex + 1;
-        size_t rightIdx = m_nodes[nodeIndex].secondChildOffset;
-        const BVHNode &leftNode = m_nodes[leftIdx];
-        const BVHNode &rightNode = m_nodes[rightIdx];
-
-        const Float left_imp = computeNodeImportance(m_scene, this, leftIdx, its_xs, pRec_xe) * m_probmult + m_defensive_pdf;
-        const Float right_imp = computeNodeImportance(m_scene, this, rightIdx, its_xs, pRec_xe) * m_probmult + m_defensive_pdf;
-
-        const Float total = left_imp + right_imp;
-
-#ifdef DEBUG_BVH_NAN
-        if (bvhInvalidFloat(left_imp) || bvhInvalidFloat(right_imp) || bvhInvalidFloat(total) || total <= 0.0f) {
-            BVH_NAN_LOG("pdfGeometry invalid traversal importances"
-                << " nodeIndex=" << nodeIndex
-                << " leftIdx=" << leftIdx
-                << " rightIdx=" << rightIdx
-                << " left_imp=" << left_imp
-                << " right_imp=" << right_imp
-                << " total=" << total
-                << " xs=" << its_xs.p.toString()
-                << " xe=" << pRec_xe.p.toString()
-                << " xp=" << position.toString()
-                << " meshIndex=" << meshIndex
-                << " triangleIndex=" << triangleIndex);
-            return 0.0f;
-        }
-#endif
-
-        if (total <= 0.0f) return 0.0f;
-
-        // --- LIGHTCUTS FIX: Break early during PDF evaluation ---
-        if (m_enableLightcuts && total < m_lightcutThreshold * 2.f * m_defensive_pdf) { 
-            break;
-        }  
-
-        uint32_t leftCount = leftNode.nSubtreePrimitives;
-        bool inLeft = (primIdx < nodeStart + leftCount);
-
-        if (inLeft) {
-            pdf_traversal *= (left_imp / total);
-            nodeIndex = leftIdx;
-        } else {
-            pdf_traversal *= (right_imp / total);
-            nodeIndex = rightIdx;
-            nodeStart += leftCount;
-        }
-
-#ifdef DEBUG_BVH_NAN
-        if (bvhInvalidFloat(pdf_traversal) || pdf_traversal <= 0.0f) {
-            BVH_NAN_LOG("pdfGeometry invalid traversal pdf"
-                << " nodeIndex=" << nodeIndex
-                << " pdf_traversal=" << pdf_traversal
-                << " xs=" << its_xs.p.toString()
-                << " xe=" << pRec_xe.p.toString()
-                << " xp=" << position.toString()
-                << " meshIndex=" << meshIndex
-                << " triangleIndex=" << triangleIndex);
-            return 0.0f;
-        }
-#endif
-    }
-    // 3. Compute leaf/subtree PDF in SOLID ANGLE
-    const BVHNode &node = m_nodes[nodeIndex];
-    const BVHNodeInfo &nodeInfo = m_nodeInfos[nodeIndex];
-
-    Float pdf_leaf_sa = 0.0f;
-
-    if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB) {
-        // --- LIGHTCUTS FIX: Mimic the area-based descent of sampleNodePrimitive ---
-        Float descent_prob = 1.0f;
-        size_t currentIdx = nodeIndex;
-        uint32_t currentStart = nodeStart;
-
-        // Traverse down to the actual leaf that contains our primitive
-        while (!m_nodes[currentIdx].isLeaf()) {
-            size_t leftIdx = currentIdx + 1;
-            size_t rightIdx = m_nodes[currentIdx].secondChildOffset;
-            
-            float left_area = m_nodeInfos[leftIdx].surfaceArea;
-            float right_area = m_nodeInfos[rightIdx].surfaceArea;
-
-#ifdef DEBUG_BVH_NAN
-            if (!std::isfinite(left_area) || !std::isfinite(right_area) || (left_area + right_area) <= 0.0f) {
-                BVH_NAN_LOG("pdfGeometry invalid area descent in SphericalAABB"
-                    << " currentIdx=" << currentIdx
-                    << " left_area=" << left_area
-                    << " right_area=" << right_area
-                    << " xs=" << its_xs.p.toString()
-                    << " xp=" << position.toString());
-                return 0.0f;
-            }
-#endif
-
-            float left_prob = left_area / (left_area + right_area);
-
-            uint32_t leftCount = m_nodes[leftIdx].nSubtreePrimitives;
-            bool inLeft = (primIdx < currentStart + leftCount);
-
-            if (inLeft) {
-                descent_prob *= left_prob;
-                currentIdx = leftIdx;
-            } else {
-                descent_prob *= (1.0f - left_prob);
-                currentIdx = rightIdx;
-                currentStart += leftCount;
-            }
-
-#ifdef DEBUG_BVH_NAN
-            if (!std::isfinite(descent_prob) || descent_prob <= 0.0f) {
-                BVH_NAN_LOG("pdfGeometry invalid descent_prob in SphericalAABB"
-                    << " currentIdx=" << currentIdx
-                    << " descent_prob=" << descent_prob
-                    << " left_prob=" << left_prob
-                    << " xs=" << its_xs.p.toString()
-                    << " xp=" << position.toString());
-                return 0.0f;
-            }
-#endif
-        }
-
-        // Now we have the actual leaf that was evaluated in sampleLeafSphericalAABB
-        const BVHNode &actualLeaf = m_nodes[currentIdx];
-
-        Vector wo = position - its_xs.p;
-        Float dist_sq = wo.lengthSquared();
-        Float dist = std::sqrt(dist_sq);
-
-#ifdef DEBUG_BVH_NAN
-        if (bvhInvalidFloat(dist_sq) || bvhInvalidFloat(dist) || dist <= Epsilon) {
-            BVH_NAN_LOG("pdfGeometry invalid SphericalAABB direction"
-                << " dist_sq=" << dist_sq
-                << " dist=" << dist
-                << " xs=" << its_xs.p.toString()
-                << " xp=" << position.toString()
-                << " currentIdx=" << currentIdx);
-            return 0.0f;
-        }
-#endif
-        
-        if (dist > Epsilon) {
-            wo /= dist;
-            Float pdf_solid_angle = 0.0f;
-            AABBSphPdf(actualLeaf.bounds, its_xs.p, wo, pdf_solid_angle);
-
-#ifdef DEBUG_BVH_NAN
-            if (bvhInvalidFloat(pdf_solid_angle) || pdf_solid_angle < 0.0f) {
-                BVH_NAN_LOG("pdfGeometry invalid AABBSphPdf result"
-                    << " pdf_solid_angle=" << pdf_solid_angle
-                    << " descent_prob=" << descent_prob
-                    << " xs=" << its_xs.p.toString()
-                    << " xp=" << position.toString()
-                    << " leafIdx=" << currentIdx);
-                return 0.0f;
-            }
-#endif
-            
-            // Final PDF is the probability of picking this leaf * the AABB solid angle PDF
-            pdf_leaf_sa = descent_prob * pdf_solid_angle;
-        }
-
-    } 
-    else if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB_anyNode) {
-        Float pdf_solid_angle = 0.0f;
-        Vector d = position - its_xs.p;
-        Float dist_sq = d.lengthSquared();
-
-#ifdef DEBUG_BVH_NAN
-        if (bvhInvalidFloat(dist_sq) || dist_sq <= Epsilon * Epsilon) {
-            BVH_NAN_LOG("pdfGeometry invalid SphericalAABB_anyNode direction"
-                << " dist_sq=" << dist_sq
-                << " xs=" << its_xs.p.toString()
-                << " xp=" << position.toString()
-                << " nodeIndex=" << nodeIndex);
-            return 0.0f;
-        }
-#endif
-
-        AABBSphPdf(node.bounds, its_xs.p, normalize(d), pdf_solid_angle);
-
-#ifdef DEBUG_BVH_NAN
-        if (bvhInvalidFloat(pdf_solid_angle) || pdf_solid_angle < 0.0f) {
-            BVH_NAN_LOG("pdfGeometry invalid AABBSphPdf result in SphericalAABB_anyNode"
-                << " pdf_solid_angle=" << pdf_solid_angle
-                << " xs=" << its_xs.p.toString()
-                << " xp=" << position.toString()
-                << " nodeIndex=" << nodeIndex);
-            return 0.0f;
-        }
-#endif
-
-        pdf_leaf_sa = pdf_solid_angle; // No need to multiply by descent_prob because we are already sampling uniformly in the entire node.
-    }
-    else {
-        // Primitive (Area) -> Convert to Solid Angle
-        const std::vector<TriMesh*> &meshes = scene->getMeshes();
-        const TriMesh *mesh = meshes[meshIndex];
-        const Triangle &tri = mesh->getTriangles()[triangleIndex];
-        
-        if (nodeInfo.surfaceArea <= 0.0f) return 0.0f;
-
-#ifdef DEBUG_BVH_NAN
-        if (bvhInvalidFloat((Float) nodeInfo.surfaceArea)) {
-            BVH_NAN_LOG("pdfGeometry invalid node surfaceArea"
-                << " nodeIndex=" << nodeIndex
-                << " nodeSurfaceArea=" << nodeInfo.surfaceArea
-                << " xs=" << its_xs.p.toString()
-                << " xp=" << position.toString()
-                << " meshIndex=" << meshIndex
-                << " triangleIndex=" << triangleIndex);
-            return 0.0f;
-        }
-#endif
-        
-        // This is mathematically correct for primitive sampling because:
-        // Prob(leaf|node) * Prob(prim|leaf) * Pdf(p|prim) = 
-        // (leaf_area/node_area) * (prim_area/leaf_area) * (1/prim_area) = 1/node_area
-        Float pdf_area = 1.0f / nodeInfo.surfaceArea; 
-
-        // Convert Area -> Solid Angle
-        const Point *verts = mesh->getVertexPositions();
-        Vector e1 = verts[tri.idx[1]] - verts[tri.idx[0]];
-        Vector e2 = verts[tri.idx[2]] - verts[tri.idx[0]];
-        Normal n = normalize(cross(e1, e2));
-        
-        Vector d = position - its_xs.p;
-        Float dist_sq = d.lengthSquared();
-        Float dist = std::sqrt(dist_sq);
-
-    #ifdef DEBUG_BVH_NAN
-        if (bvhInvalidFloat(dist_sq) || bvhInvalidFloat(dist) || dist <= Epsilon) {
-            BVH_NAN_LOG("pdfGeometry invalid primitive direction"
-            << " dist_sq=" << dist_sq
-            << " dist=" << dist
-            << " nodeIndex=" << nodeIndex
-            << " xs=" << its_xs.p.toString()
-            << " xp=" << position.toString()
-            << " meshIndex=" << meshIndex
-            << " triangleIndex=" << triangleIndex);
-            return 0.0f;
-        }
-    #endif
-
-        Vector wo = d / dist;
-        Float cos_theta = std::abs(dot(n, -wo));
-
-    #ifdef DEBUG_BVH_NAN
-        if (bvhInvalidFloat(cos_theta)) {
-            BVH_NAN_LOG("pdfGeometry invalid primitive cos_theta"
-            << " cos_theta=" << cos_theta
-            << " n=" << n.toString()
-            << " wo=" << wo.toString()
-            << " xs=" << its_xs.p.toString()
-            << " xp=" << position.toString()
-            << " meshIndex=" << meshIndex
-            << " triangleIndex=" << triangleIndex);
-            return 0.0f;
-        }
-    #endif
-
-        if (cos_theta <= Epsilon) return 0.0f; // Singularity
-        
-        pdf_leaf_sa = pdf_area * (dist_sq / cos_theta);
-
-#ifdef DEBUG_BVH_NAN
-        if (bvhInvalidFloat(pdf_leaf_sa) || pdf_leaf_sa <= 0.0f) {
-            BVH_NAN_LOG("pdfGeometry invalid primitive pdf_leaf_sa"
-                << " pdf_leaf_sa=" << pdf_leaf_sa
-                << " pdf_area=" << pdf_area
-                << " dist_sq=" << dist_sq
-                << " cos_theta=" << cos_theta
-                << " xs=" << its_xs.p.toString()
-                << " xp=" << position.toString()
-                << " meshIndex=" << meshIndex
-                << " triangleIndex=" << triangleIndex);
-            return 0.0f;
-        }
-#endif
-    }
-
-    Float final_pdf = pdf_traversal * pdf_leaf_sa;
-
-#ifdef DEBUG_BVH_NAN
-    if (bvhInvalidFloat(final_pdf) || final_pdf < 0.0f) {
-        BVH_NAN_LOG("pdfGeometry invalid final pdf"
-            << " final_pdf=" << final_pdf
-            << " pdf_traversal=" << pdf_traversal
-            << " pdf_leaf_sa=" << pdf_leaf_sa
-            << " nodeIndex=" << nodeIndex
-            << " samplingMode=" << (int) m_samplingMode
-            << " xs=" << its_xs.p.toString()
-            << " xe=" << pRec_xe.p.toString()
-            << " xp=" << position.toString()
-            << " meshIndex=" << meshIndex
-            << " triangleIndex=" << triangleIndex);
-        return 0.0f;
-    }
-#endif
-
-    return final_pdf;
-}
-
 // ---------------------------------------------------------------------------
-// pdfGeometryCamera (shortcut overload)
-// Resolves mesh/triangle indices from the intersection, then delegates to the
-// full overload below.  Mirrors the shortcut pdfGeometry overload exactly,
-// but passes (x_o, sensor) instead of its_xs.
+// Contribution of the three-vertex subpaths
 // ---------------------------------------------------------------------------
-Float SamplingBVH::pdfGeometryCamera(
-    const Scene *scene,
-    const Point &x_o,
-    const Sensor *sensor,
-    const PositionSamplingRecord &pRec_xe,
-    const Intersection &its_xn
-) const {
-    if (its_xn.shape == NULL) {
-        Log(EWarn, "pdfGeometryCamera: Intersection has no shape, cannot compute PDF.");
-        return 0.0f;
-    }
-
-    const TriMesh *hitMesh = dynamic_cast<const TriMesh *>(its_xn.shape);
-    if (hitMesh == NULL) {
-        Log(EWarn, "pdfGeometryCamera: Intersection shape is not a TriMesh, cannot compute PDF.");
-        return 0.0f;
-    }
-
-    uint32_t meshIndex = getMeshIndex(hitMesh);
-
-    if (meshIndex == 0xFFFFFFFF)
-        return 0.0f;
-
-    if (its_xn.primIndex >= hitMesh->getTriangleCount())
-        return 0.0f;
-
-    return this->pdfGeometryCamera(
-        scene, x_o, sensor, pRec_xe,
-        its_xn, meshIndex, its_xn.primIndex, its_xn.p);
-}
-
-// ---------------------------------------------------------------------------
-// pdfGeometryCamera (full overload)
-// Mirrors pdfGeometry exactly, with two substitutions:
-//   • computeNodeImportance  →  computeNodeImportanceGlint
-//   • its_xs.p               →  x_o
-// Everything else (primitive lookup, nodeStart tracking, lightcuts, the three
-// sampling-mode branches) is identical.
-// ---------------------------------------------------------------------------
-Float SamplingBVH::pdfGeometryCamera(
-    const Scene *scene,
-    const Point &x_o,
-    const Sensor *sensor,
-    const PositionSamplingRecord &pRec_xe,
-    const Intersection &its_xn,
-    uint32_t meshIndex,
-    uint32_t triangleIndex,
-    const Point &position
-) const {
-    if (m_nodes.empty() || m_primitives.empty()) return 0.0f;
-
-    // 1. Find primitive index in flattened BVH array
-    if (meshIndex >= m_meshOffsets.size()) return 0.0f;
-    uint32_t lookupIdx = m_meshOffsets[meshIndex] + triangleIndex;
-    if (lookupIdx >= m_triangleToPrim.size()) return 0.0f;
-    uint32_t primIdx = m_triangleToPrim[lookupIdx];
-    if (primIdx == 0xFFFFFFFF) return 0.0f;
-
-    // 2. Traverse the BVH, accumulating the probability of the path taken.
-    //    Uses computeNodeImportanceGlint so the weights match sampleGeometryCamera.
-    size_t nodeIndex = 0;
-    uint32_t nodeStart = 0;
-    Float pdf_traversal = 1.0f;
-
-    while (!m_nodes[nodeIndex].isLeaf()) {
-        const size_t leftIdx  = nodeIndex + 1;
-        const size_t rightIdx = m_nodes[nodeIndex].secondChildOffset;
-        const BVHNode &leftNode = m_nodes[leftIdx];
-
-        const Float left_imp  = computeNodeImportanceGlint(scene, this, (int) leftIdx,  x_o, sensor, pRec_xe) * m_probmult + m_defensive_pdf;
-        const Float right_imp = computeNodeImportanceGlint(scene, this, (int) rightIdx, x_o, sensor, pRec_xe) * m_probmult + m_defensive_pdf;
-        const Float total     = left_imp + right_imp;
-
-        if (total <= 0.0f) return 0.0f;
-
-        if (m_enableLightcuts && total < m_lightcutThreshold * 2.f * m_defensive_pdf)
-            break;
-
-        const uint32_t leftCount = leftNode.nSubtreePrimitives;
-        const bool inLeft = (primIdx < nodeStart + leftCount);
-
-        if (inLeft) {
-            pdf_traversal *= (left_imp / total);
-            nodeIndex = leftIdx;
-        } else {
-            pdf_traversal *= (right_imp / total);
-            nodeIndex = rightIdx;
-            nodeStart += leftCount;
-        }
-    }
-
-    // 3. Compute leaf/subtree PDF in solid angle.
-    //    Uses x_o (camera origin) as the "from" point instead of its_xs.p.
-    const BVHNode     &node     = m_nodes[nodeIndex];
-    const BVHNodeInfo &nodeInfo = m_nodeInfos[nodeIndex];
-    Float pdf_leaf_sa = 0.0f;
-
-    if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB) {
-        // Descend by area to find the actual leaf that held our primitive,
-        // accumulating the area-proportional descent probability.
-        Float descent_prob = 1.0f;
-        size_t currentIdx  = nodeIndex;
-        uint32_t currentStart = nodeStart;
-
-        while (!m_nodes[currentIdx].isLeaf()) {
-            const size_t leftIdx2  = currentIdx + 1;
-            const size_t rightIdx2 = m_nodes[currentIdx].secondChildOffset;
-
-            const float left_area  = m_nodeInfos[leftIdx2].surfaceArea;
-            const float right_area = m_nodeInfos[rightIdx2].surfaceArea;
-            if ((left_area + right_area) <= 0.0f) return 0.0f;
-
-            const float left_prob = left_area / (left_area + right_area);
-            const uint32_t leftCount2 = m_nodes[leftIdx2].nSubtreePrimitives;
-            const bool inLeft2 = (primIdx < currentStart + leftCount2);
-
-            if (inLeft2) {
-                descent_prob *= left_prob;
-                currentIdx = leftIdx2;
-            } else {
-                descent_prob *= (1.0f - left_prob);
-                currentIdx = rightIdx2;
-                currentStart += leftCount2;
-            }
-        }
-
-        const BVHNode &actualLeaf = m_nodes[currentIdx];
-        Vector wo = position - x_o;
-        const Float dist_sq = wo.lengthSquared();
-        const Float dist    = std::sqrt(dist_sq);
-        if (dist <= Epsilon) return 0.0f;
-        wo /= dist;
-
-        Float pdf_solid_angle = 0.0f;
-        AABBSphPdf(actualLeaf.bounds, x_o, wo, pdf_solid_angle);
-        pdf_leaf_sa = descent_prob * pdf_solid_angle;
-
-    } else if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB_anyNode) {
-        const Vector d = position - x_o;
-        if (d.lengthSquared() <= Epsilon * Epsilon) return 0.0f;
-        Float pdf_solid_angle = 0.0f;
-        AABBSphPdf(node.bounds, x_o, normalize(d), pdf_solid_angle);
-        pdf_leaf_sa = pdf_solid_angle;
-
-    } else {
-        // Primitive (area) mode — convert area PDF to solid angle.
-        if (nodeInfo.surfaceArea <= 0.0f) return 0.0f;
-        const Float pdf_area = 1.0f / nodeInfo.surfaceArea;
-
-        const std::vector<TriMesh *> &meshes = scene->getMeshes();
-        const TriMesh *mesh = meshes[meshIndex];
-        const Triangle &tri = mesh->getTriangles()[triangleIndex];
-        const Point *verts  = mesh->getVertexPositions();
-        const Vector e1 = verts[tri.idx[1]] - verts[tri.idx[0]];
-        const Vector e2 = verts[tri.idx[2]] - verts[tri.idx[0]];
-        const Normal n  = normalize(cross(e1, e2));
-
-        Vector d = position - x_o;
-        const Float dist_sq = d.lengthSquared();
-        const Float dist    = std::sqrt(dist_sq);
-        if (dist <= Epsilon) return 0.0f;
-        const Vector wo       = d / dist;
-        const Float cos_theta = std::abs(dot(n, -wo));
-        if (cos_theta <= Epsilon) return 0.0f;
-
-        pdf_leaf_sa = pdf_area * (dist_sq / cos_theta);
-    }
-
-    return pdf_traversal * pdf_leaf_sa;
-}
 
 Spectrum evalLength2Contribution(
     const Scene *scene,
@@ -1216,18 +625,13 @@ Spectrum evalLength2Contribution(
     const PositionSamplingRecord &pRec_xe,
     bool checkVisibility
 ) {
-    if (!pRec_xe.object) {
-        std::cerr << "!!!! No emitter at xe intersection, zero contribution.\n";
-        std::cerr << "pRec_xe.object must be set to an emitter\n";
+    if (!pRec_xe.object)
         return Spectrum(0.0f);
-    }
     // 1. Evaluate visibility if needed
     // 1.1. Visibility between xs and xp
     Vector d_sp = its_xp.p - its_xs.p;
     Float dist_sp = d_sp.length();
     d_sp /= dist_sp;
-
-    // std::cout << "1. Evaluating visibility...\n";
 
     Ray shadowRay_sp(its_xs.p, d_sp, Epsilon, dist_sp * (1.0f - ShadowEpsilon), 0.f);
     if (checkVisibility && scene->rayIntersect(shadowRay_sp)) {
@@ -1243,7 +647,6 @@ Spectrum evalLength2Contribution(
     if (checkVisibility && scene->rayIntersect(shadowRay_pe)) {
         return Spectrum(0.0f);
     }
-    // std::cout << "Visibility check passed.\n";
     // 2. Evaluate contribution of this subpath: xs -> xp -> xe
     // 2.1. Evaluate bsdf
     // 2.1.1. Evaluate BSDF at xs for the direction towards xp
@@ -1252,27 +655,18 @@ Spectrum evalLength2Contribution(
     Vector l_xp_in  = its_xp.toLocal(-d_sp);
     Vector l_xp_out = its_xp.toLocal(d_pe);
 
-    // std::cout << "2. Evaluating BSDF...\n";
     BSDFSamplingRecord bRec_xs(its_xs, l_xs_to_xp);
     const BSDF *bsdf_xs = its_xs.getBSDF();
-    if (!bsdf_xs) {
-        std::cerr << "!!!! No BSDF at xs intersection, zero contribution.\n";
+    if (!bsdf_xs)
         return Spectrum(0.0f);
-    }
     Spectrum f_xs = bsdf_xs->eval(bRec_xs);
     BSDFSamplingRecord bRec_xp(its_xp, l_xp_in, l_xp_out);
 
-    // std::cout << "Local direction xs->xp: (" << l_xs_to_xp.x << ", " << l_xs_to_xp.y << ", " << l_xs_to_xp.z << ")\n";  
-    
+
     const BSDF *bsdf_xp = its_xp.getBSDF();
-    if (!bsdf_xp) {
-        std::cerr << "!!!! No BSDF at xp intersection, zero contribution.\n";   
+    if (!bsdf_xp)
         return Spectrum(0.0f);
-    }
     Spectrum f_xp = bsdf_xp->eval(bRec_xp);
-
-
-    // std::cout << "Local direction xp in: (" << l_xp_in.x << ", " << l_xp_in.y << ", " << l_xp_in.z << ")\n";
 
     if (f_xs.isZero() || f_xp.isZero()) {
         return Spectrum(0.0f);
@@ -1283,69 +677,22 @@ Spectrum evalLength2Contribution(
     DirectionSamplingRecord dRec_xe(-d_pe);
     dRec_xe.measure = emitter->needsDirectionSample() ? ESolidAngle : EDiscrete;
     Spectrum Le = emitter->evalPosition(pRec_xe) * emitter->evalDirection(dRec_xe, pRec_xe);
-    
-    if (Le.isZero()) {
-        // std::cout << "Zero contribution due to emitter evaluation.\n";
+
+    if (Le.isZero())
         return Spectrum(0.0f);
-    }
 
-    // std::cout << "Emitter radiance at xe: " << Le.toString() << "\n";
-
-    // 2.3. Geometry term
-    Float cos_theta_xs_out = std::abs(dot(its_xs.geoFrame.n, d_sp));
+    // 2.3. Geometry terms. BSDF::eval includes the cosine of its outgoing
+    // direction: f_xs carries cos(theta_s -> p) and f_xp carries
+    // cos(theta_p -> e); evalDirection carries the cosine at x_e. The
+    // remaining factors are the cosine at x_p towards x_s and the inverse
+    // squared distances.
     Float cos_theta_xp_in = std::abs(dot(its_xp.geoFrame.n, -d_sp));
-    Float cos_theta_xp_out = std::abs(dot(its_xp.geoFrame.n, d_pe));
-    // Float cos_theta_xe_in = std::abs(dot(pRec_xe.n, -d_pe));
+    Float G_sp = cos_theta_xp_in / (dist_sp * dist_sp);
+    Float G_pe = 1.f / (dist_pe * dist_pe);
 
-    Float G_sp = (cos_theta_xp_in) / (dist_sp * dist_sp);
-    Float G_pe = (1.f) / (dist_pe * dist_pe);
-    // TODO(jorge): revise where geometry terms have to be added
-
-    Spectrum contribution = f_xs * G_sp * f_xp * G_pe * Le;
-    if (!contribution.isValid()) {
-        std::stringstream ss;
-        ss << "Contribution breakdown:\n"
-           << "f_xs: " << f_xs.toString() << "\n"
-           << "G_sp: " << G_sp << "\n"
-           << "f_xp: " << f_xp.toString() << "\n"
-           << "G_pe: " << G_pe << "\n"
-           << "Le: " << Le.toString() << "\n"
-           << "Contrib: " << (f_xs * G_sp * f_xp * G_pe * Le).toString() << "\n";
-
-        // std::cout << "Zero contribution due to BSDF evaluation.\n";
-        ss << " bsdf: " << its_xs.getBSDF()->toString() << "\n";
-        ss << " bsdf: " << its_xp.getBSDF()->toString() << "\n";
-
-        // Debug: print points, normals and local directions to help diagnose zero BSDF
-        ss << "DEBUG its_xs.p: (" << its_xs.p.x << ", " << its_xs.p.y << ", " << its_xs.p.z << ")\n";
-        ss << "DEBUG its_xs.geo.n: (" << its_xs.geoFrame.n.x << ", " << its_xs.geoFrame.n.y << ", " << its_xs.geoFrame.n.z << ")\n";
-        ss << "DEBUG its_xp.p: (" << its_xp.p.x << ", " << its_xp.p.y << ", " << its_xp.p.z << ")\n";
-        ss << "DEBUG its_xp.geo.n: (" << its_xp.geoFrame.n.x << ", " << its_xp.geoFrame.n.y << ", " << its_xp.geoFrame.n.z << ")\n";
-        ss << "DEBUG local xs->xp (its_xs.toLocal(d_sp)): (" << l_xs_to_xp.x << ", " << l_xs_to_xp.y << ", " << l_xs_to_xp.z << ")\n";
-        ss << "DEBUG local xp in (its_xp.toLocal(-d_sp)): (" << l_xp_in.x << ", " << l_xp_in.y << ", " << l_xp_in.z << ")\n";
-        ss << "DEBUG local xp out (its_xp.toLocal(d_pe)): (" << l_xp_out.x << ", " << l_xp_out.y << ", " << l_xp_out.z << ")\n";
-
-        // Print BSDFSamplingRecord-like info (most relevant: directions)
-        ss << "DEBUG bRec_xs.localDir: (" << l_xs_to_xp.x << ", " << l_xs_to_xp.y << ", " << l_xs_to_xp.z << ")\n";
-        ss << "DEBUG bRec_xp.localIn: (" << l_xp_in.x << ", " << l_xp_in.y << ", " << l_xp_in.z<< ")"<< "\n";
-        ss << "DEBUG bRec_xp.localOut: (" << l_xp_out.x << ", " << l_xp_out.y << ", " << l_xp_out.z << ")\n";
-        ss << "\n";
-        std::cout << ss.str();
-    }
-    
-    return contribution;
+    return f_xs * G_sp * f_xp * G_pe * Le;
 }
 
-// ---------------------------------------------------------------------------
-// evalGlintContribution
-// Evaluates the x_n → x_e segment of a glint path: x_o → x_n → x_e.
-// The camera-side factor W_e (sensor importance for the x_o → x_n direction)
-// and the x_o → x_n visibility are handled by sampleSensorDirect in
-// the integrator before calling this function.
-// Returns f_xn * cos(theta_xn->xo) * G_ne * Le, i.e. the full x_n contribution
-// excluding W_e (which lacks only cos(theta_xn->xo)/dist_no^2, provided by W_e times
-// this function's cos factor).  Does NOT divide by pRec_xe.pdf (caller's job).
-// ---------------------------------------------------------------------------
 Spectrum evalGlintContribution(
     const Scene *scene,
     const Intersection &its_xn,
@@ -1401,92 +748,6 @@ Spectrum evalGlintContribution(
     Float G_ne = 1.f / (dist_ne * dist_ne);
 
     return cosCamera * f_xn * G_ne * Le;
-}
-
-// ---------------------------------------------------------------------------
-// sampleGeometryCamera
-// BVH geometry sampling from the camera origin x_o (glints use case).
-// Uses computeNodeImportanceGlint for traversal weights, which incorporates:
-//   • Camera FoV (nodes outside view get zero importance)
-//   • Emitter visibility direction
-//   • Diffuse BSDF at x_n via VMF LUT (both camera-side and emitter-side cosines)
-//   • Geometry terms G(x_n,x_o) and G(x_n,x_e)
-// Leaf sampling uses x_o as the "from" point (not the surface intersection).
-// ---------------------------------------------------------------------------
-bool SamplingBVH::sampleGeometryCamera(
-    const Scene *scene,
-    Sampler *sampler,
-    const Point &x_o,
-    const Sensor *sensor,
-    const PositionSamplingRecord &pRec_xe,
-    Intersection &its_xn,
-    Float &pdf) const
-{
-    if (m_nodes.empty() || m_primitives.empty()) return false;
-
-    size_t nodeIndex = 0;
-    Float pdf_traversal = 1.0f;
-
-    while (!m_nodes[nodeIndex].isLeaf()) {
-        const size_t leftIdx  = nodeIndex + 1;
-        const size_t rightIdx = m_nodes[nodeIndex].secondChildOffset;
-
-        const Float left_imp_raw  = computeNodeImportanceGlint(
-            scene, this, (int) leftIdx,  x_o, sensor, pRec_xe);
-        const Float right_imp_raw = computeNodeImportanceGlint(
-            scene, this, (int) rightIdx, x_o, sensor, pRec_xe);
-        const Float left_imp  = left_imp_raw  * m_probmult + m_defensive_pdf;
-        const Float right_imp = right_imp_raw * m_probmult + m_defensive_pdf;
-        const Float total_imp = left_imp + right_imp;
-
-        // Lightcuts: prune subtrees whose total importance is negligible
-        if (m_enableLightcuts && total_imp < m_lightcutThreshold * 2.f * m_defensive_pdf)
-            break;
-
-        const Float left_prob = left_imp / total_imp;
-        if (sampler->next1D() < left_prob) {
-            nodeIndex = leftIdx;
-            pdf_traversal *= left_prob;
-        } else {
-            nodeIndex = rightIdx;
-            pdf_traversal *= (1.f - left_prob);
-        }
-    }
-
-    // Leaf (or early-stopped interior) sampling using x_o as the "from" point
-    const BVHNode &node = m_nodes[nodeIndex];
-    Float pdf_leaf = 0.f;
-    bool success   = false;
-
-    if (node.isLeaf()) {
-        if (node.nLeafPrimitives == 0) return false;
-        if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB) {
-            success = sampleLeafSphericalAABB(scene, node, nodeIndex,
-                                              sampler->next2D(), x_o, its_xn, pdf_leaf);
-        } else {
-            success = sampleLeafPrimitive(scene, node, nodeIndex,
-                                          sampler->next1D(), sampler->next2D(),
-                                          x_o, its_xn, pdf_leaf, true);
-        }
-    } else if (m_samplingMode == SamplingBVHSamplingMode::SphericalAABB_anyNode) {
-        success = sampleLeafSphericalAABB(scene, node, nodeIndex,
-                                          sampler->next2D(), x_o, its_xn, pdf_leaf);
-    } else {
-        // Lightcuts stopped at an interior node: descend by area to a leaf
-        success = sampleNodePrimitive(scene, nodeIndex, sampler, x_o, its_xn, pdf_leaf, true);
-    }
-
-    if (!success) return false;
-
-    // pdf_leaf is per unit solid angle at x_o; return a density per unit area at x_n
-    Vector d = its_xn.p - x_o;
-    Float dist2 = d.lengthSquared();
-    if (dist2 <= 0.0f) return false;
-    Float cosTheta = absDot(its_xn.geoFrame.n, d) / std::sqrt(dist2);
-    if (cosTheta <= 0.0f) return false;
-
-    pdf = pdf_traversal * pdf_leaf * cosTheta / dist2;
-    return true;
 }
 
 MTS_NAMESPACE_END

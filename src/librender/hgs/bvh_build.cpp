@@ -1,3 +1,9 @@
+/*
+    SamplingBVH construction: binned-SAH BVH over all scene triangles, per-leaf
+    alias tables and bottom-up aggregation of the node statistics (Sec. 5,
+    Table 1).
+*/
+
 #include <mitsuba/render/hgs/bvh.h>
 #include <mitsuba/render/trimesh.h>
 #include <mitsuba/render/bsdf.h>
@@ -688,13 +694,11 @@ void SamplingBVH::buildAggregatesRecursive(size_t nodeIndex, const Scene *scene)
         info.accumulate(m_nodeInfos[rightChild]);
     }
 
-    // Precompute derived values (kappa_n, mu_n, kappa_m, kappa_conv) from the finalized sums
-    #ifndef USE_SGGX_AGGREGATES
+    // Evaluation-time statistics (kappa_n, mu_n, kappa_m, kappa_conv, sigma points)
     info.finalize();
-    #endif
 }
 
- void BVHNodeInfo::setFromTriangle(const Point& v1, const Point& v2, const Point& v3, const Shape* shape) {
+void BVHNodeInfo::setFromTriangle(const Point& v1, const Point& v2, const Point& v3, const Shape* shape) {
     Vector e1 = v2 - v1;
     Vector e2 = v3 - v1;
     Vector crossProd = cross(e1, e2);
@@ -715,13 +719,9 @@ void SamplingBVH::buildAggregatesRecursive(size_t nodeIndex, const Scene *scene)
     // Compute (unit) geometric normal
     Vector gn = normalize(crossProd);
 
-    #ifdef USE_SGGX_AGGREGATES
-    // Initialize SGGX moments from this single-triangle normal
-    normalDistribution.setFromNormal(gn);
-    #else 
-    gaussianAggregate.setFromTriangle(v1, v2, v3, surfaceArea); // For a single triangle, the Gaussian aggregate is just the triangle's contribution
-    normalDistribution.s_normals = gn * surfaceArea; // For a single triangle, the sum of weighted normals is just the normal times the area
-    #endif
+    // Raw statistics of a single triangle (Table 1)
+    gaussianAggregate.setFromTriangle(v1, v2, v3, surfaceArea);
+    normalDistribution.s_normals = gn * surfaceArea;
 
     const BSDF *bsdf = shape->getBSDF();
 
@@ -786,10 +786,7 @@ BVHNodeInfo computeTriangleInfo(
     Point p1 = vertexPositions[tri.idx[1]];
     Point p2 = vertexPositions[tri.idx[2]];
 
-    
-    // ---------------------------------------------------------
-    
-    // Now the Gaussian aggregates and normals will be built in World Space
+    // Statistics in world space
     info.setFromTriangle(p0, p1, p2, shape);
 
     return info;
@@ -811,16 +808,9 @@ void BVHNodeInfo::accumulate(const BVHNodeInfo &other) {
     
     surfaceArea = totalAreaNew;
 
-    #ifdef USE_SGGX_AGGREGATES
-    // Moment-preserving aggregation of normal distribution
-    Float w1 = surfaceArea / totalAreaNew;
-    Float w2 = other.surfaceArea / totalAreaNew;
-    normalDistribution.m1 = normalDistribution.m1 * w1 + other.normalDistribution.m1 * w2;
-    normalDistribution.m2 = normalDistribution.m2 * w1 + other.normalDistribution.m2 * w2;
-    #else
+    // Raw statistics are additive (Table 1)
     normalDistribution.s_normals = normalDistribution.s_normals + other.normalDistribution.s_normals;
     gaussianAggregate.combine(other.gaussianAggregate);
-    #endif
 
     // All material statistics are raw area-weighted sums — just add them directly
     s_diffuse_albedo    += other.s_diffuse_albedo;
@@ -834,6 +824,6 @@ void BVHNodeInfo::accumulate(const BVHNodeInfo &other) {
 
 MTS_IMPLEMENT_CLASS_S(SamplingBVH, false, ConfigurableObject)
 
-// Note: plugin export lives in src/geometrybvh/geometrybvh.cpp
+// Note: the plugin export lives in src/hgs/samplingbvh.cpp
 
 MTS_NAMESPACE_END

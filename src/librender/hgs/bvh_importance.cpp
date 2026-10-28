@@ -1,3 +1,13 @@
+/*
+    Node importance weights w(N, x_s, x_e) of the SamplingBVH (Sec. 4.2-4.3).
+
+    computeNodeImportance() is the weight used by the traversal; it dispatches
+    to one of the unscented-transform variants below (Eq. 21). The *_MC,
+    *_MC_LUT, *_Unscented_MC and *GroundTruth functions are Monte Carlo
+    references used to validate the approximation (Sec. 6.1, Fig. 4) and are
+    only called from the debug CSV output (bvh_debug.cpp).
+*/
+
 #include <mitsuba/render/hgs/bvh.h>
 #include <mitsuba/render/bsdf.h>
 #include <mitsuba/render/scene.h>
@@ -5,40 +15,14 @@
 #include <mitsuba/core/pmf.h>
 
 #include <mitsuba/core/properties.h>
-#include <mitsuba/core/plugin.h>   // <-- needed for PluginManager definition
+#include <mitsuba/core/plugin.h>
 #include <algorithm>
 #include <array>
 #include <cmath>
-#include <random>
-
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
 
 MTS_NAMESPACE_BEGIN
 
-struct WeightedReservoir {
-    Float m_Wy; // weight of sample Y
-    PositionSamplingRecord m_Y; // the sample Y itself
-
-    Float m_w_sum, // sum of weights of all samples 
-          m_C; // Confidence weight
-
-    WeightedReservoir() : m_Wy(0.f), m_Y(), m_w_sum(0.f), m_C(0.f) { }
-    
-    void update(Sampler* sampler, PositionSamplingRecord &x_i, const Float &weight_i, const Float &confidence_i) {
-        m_w_sum += weight_i;
-        m_C += confidence_i; // accumulate confidence
-        Float acceptanceProb = weight_i / m_w_sum;
-        if (sampler->next1D() < acceptanceProb) {
-            // m_Wy = weight_i;
-            m_Y = x_i;
-        }
-    }
-
-};
-
-// forward declaration of the faster but less accurate version of the lut importance function
+// Variants of the diffuse node weight, selected through the "sigmaPoints" property
 Float computeNodeImportance_Unscented_LUT_fast(
     const Scene *scene,
     const SamplingBVH *bvh,
@@ -48,7 +32,6 @@ Float computeNodeImportance_Unscented_LUT_fast(
     bool checkVisibility=false
 );
 
-// forward declaration of the original (slowest) LUT importance function
 Float computeNodeImportance_Unscented_LUT_original(
     const Scene *scene,
     const SamplingBVH *bvh,
@@ -87,7 +70,6 @@ Float computeNodeImportance(
     }
 }
 
-
 Float computeNodeImportance_MC(
     Scene *scene,
     const SamplingBVH *bvh,
@@ -103,15 +85,15 @@ Float computeNodeImportance_MC(
 
     // 1. Get the spatial distribution: 
     Gaussian3D nodeGaussian = nodeInfo.getGaussian3D();
-    Sampler *sampler = scene->getSampler(); // make a local copy of the sampler to avoid modifying the global one
+    Sampler *sampler = scene->getSampler(); // scene sampler: these reference functions are single-threaded
     // 2. Get the NDF:
     Vector vmf_mu = nodeInfo.getVMFMeanDirection();
     Float kappa   = nodeInfo.getVMFKappa();
     VonMisesFisherDistr ndf(kappa);   
 
     // 3. BSDF 
-    // All of this dummyshape and diffuse BSDF nonesense is to be able to pass the diffuse albedo of the node to the length2 node
-    // When we have proxy functions here we won't need this 
+    // Diffuse BSDF with the mean albedo of the node, attached to a tiny dummy
+    // shape, so that evalLength2Contribution() can evaluate the node as a surface
     Properties shapeProps("sphere");
     shapeProps.setFloat("radius", 1e-6f);
     ref<Shape> dummyshape = static_cast<Shape *>(
@@ -127,10 +109,10 @@ Float computeNodeImportance_MC(
     bsdf->configure();
     dummyshape->setBSDF(bsdf);
 
-    Intersection its_xp; // we will fill this with the sampled point on the node
+    Intersection its_xp; // sampled point of the node
     its_xp.shape = dummyshape.get(); // set the shape to something non-null to avoid issues in evalLength2Contribution
     its_xp.instance = nullptr;
-    its_xp.t = 1.f; // nonesense so that it is considered valid..
+    its_xp.t = 1.f; // any finite value marks the record as valid
     
     Float luminance = 0.f;
 
@@ -140,10 +122,9 @@ Float computeNodeImportance_MC(
         Point3f sample3 = Point3f(sampler->next1D(), sampler->next1D(), sampler->next1D());
         // Sample spatial and normal components:
         Point3f xp = nodeGaussian.sample(sample3); // no pdf since we want to have the product of the gaussian distr baked in 
-        if (std::isnan(xp.x) || std::isnan(xp.y) || std::isnan(xp.z) || std::isinf(xp.x) || std::isinf(xp.y) || std::isinf(xp.z)) {
-            std::cerr << "Warning: Sampled NaN or Inf position for node importance:\n" << xp.toString() <<" Input sample: " << sample3.toString() <<  "!!!!!\n";
-            std::cerr << "Node Gaussian mean: " << nodeGaussian.m_mean.toString() << ", cov: " << nodeGaussian.m_covariance.toString() << std::endl;
-            std::cerr << " Node: " << nodeInfo.toString() << std::endl;
+        if (!std::isfinite(xp.x) || !std::isfinite(xp.y) || !std::isfinite(xp.z)) {
+            SLog(EWarn, "computeNodeImportance_MC: non-finite Gaussian sample %s of node %i",
+                xp.toString().c_str(), nodeIndex);
             continue;
         }
         Normal n_vmf_local = normalize(ndf.sample(sampler->next2D()));
@@ -151,13 +132,8 @@ Float computeNodeImportance_MC(
 
         // Fill intersection
         its_xp.p = xp; // Point from gaussian
-        if (std::isnan(its_xp.p.x) || std::isnan(its_xp.p.y) || std::isnan(its_xp.p.z)) {
-            std::cerr << "Warning: Sampled NaN position for node importance. Skipping this sample.\n";
-        }
-        if (std::isnan(n_vmf.x) || std::isnan(n_vmf.y) || std::isnan(n_vmf.z)) {
-            std::cerr << "Warning: Sampled NaN normal for node importance. Skipping this sample.\n";
-            std::cerr << ndf.toString() << std::endl;
-        }
+        if (std::isnan(n_vmf.x) || std::isnan(n_vmf.y) || std::isnan(n_vmf.z))
+            SLog(EWarn, "computeNodeImportance_MC: NaN normal sampled from %s", ndf.toString().c_str());
         its_xp.geoFrame = Frame(n_vmf); // Normal from vMF
         its_xp.shFrame = its_xp.geoFrame;
         its_xp.wi = normalize(its_xs.p - xp); // from xp to xs 
@@ -169,14 +145,12 @@ Float computeNodeImportance_MC(
         luminance += contribution.getLuminance();
     }
 
-    if (luminance < 0.f || std::isnan(luminance)) {
-        std::cerr << "Warning: Negative or NaN luminance in node importance. Setting to 0.\n";
-    }
+    if (luminance < 0.f || std::isnan(luminance))
+        SLog(EWarn, "computeNodeImportance_MC: negative or NaN luminance for node %i", nodeIndex);
 
     // Multiply by area of the node:
     return nodeInfo.surfaceArea * luminance / static_cast<Float>(numSamples);
 }
-
 
 Float computeNodeImportance_MC_LUT(
     Scene *scene,
@@ -194,15 +168,14 @@ Float computeNodeImportance_MC_LUT(
 
     // 1. Get the spatial distribution: 
     Gaussian3D nodeGaussian = nodeInfo.getGaussian3D();
-    Sampler *sampler = scene->getSampler(); // make a local copy of the sampler to avoid modifying the global one
+    Sampler *sampler = scene->getSampler(); // scene sampler: these reference functions are single-threaded
     // 2. Get the NDF:
     Vector vmf_mu = nodeInfo.getVMFMeanDirection();
     Float kappa   = nodeInfo.getVMFKappa();
     VonMisesFisherDistr ndf(kappa);   
 
-    // 3. No BSDF thx to VMF lut !
+    // 3. The BSDF at x_n is replaced by the fitted VMF cosine integral
 
-    // Intersection its_xp; // - no longer needed !
     Float luminance = 0.f;
 
     Frame vmfFrame = Frame(normalize(vmf_mu)); // construct a frame from the VMF mean direction to rotate sampled normals
@@ -211,9 +184,6 @@ Float computeNodeImportance_MC_LUT(
         Point3f sample3 = Point3f(sampler->next1D(), sampler->next1D(), sampler->next1D());
         // Sample spatial and normal components:
         Point xp = nodeGaussian.sample(sample3); // no pdf since we want to have the product of the gaussian distr baked in 
-
-        // Normal n_vmf_local = normalize(ndf.sample(sampler->next2D()));
-        // Normal n_vmf = vmfFrame.toWorld(n_vmf_local);
 
         // Fill intersection - No intersection needed with VMF Lut
 
@@ -248,11 +218,8 @@ Float computeNodeImportance_MC_LUT(
             Vector l_xs_to_xp = its_xs.toLocal(d_sp);
             BSDFSamplingRecord bRec_xs(its_xs, l_xs_to_xp);
             const BSDF *bsdf_xs = its_xs.getBSDF();
-            if (!bsdf_xs) {
-                std::cerr << "!!!! No BSDF at xs intersection, zero contribution.\n";
-                contribution = Spectrum(0.0f);
+            if (!bsdf_xs)
                 continue;
-            }
             Spectrum f_xs = bsdf_xs->eval(bRec_xs);
             
             // 2. BSDF at xp (node with gaussian+vmf)
@@ -275,17 +242,11 @@ Float computeNodeImportance_MC_LUT(
             Spectrum Le = emitter->evalPosition(pRec_xe) * emitter->evalDirection(dRec_xe, pRec_xe);
             
             if (Le.isZero()) {
-                // std::cout << "Zero contribution due to emitter evaluation.\n";
                 contribution = Spectrum(0.0f);
                 continue;
             }
             
             // 4. Geometry term
-            // Float cos_theta_xs_out = std::abs(dot(its_xs.geoFrame.n, d_sp));
-            // Float cos_theta_xp_in = std::abs(dot(its_xp.geoFrame.n, -d_sp));
-            // Float cos_theta_xp_out = std::abs(dot(its_xp.geoFrame.n, d_pe));
-            // Float cos_theta_xe_in = std::abs(dot(pRec_xe.n, -d_pe));
-
 
             Float G_sp = (1.f) / (dist_sp * dist_sp); // Cosines are in the LUT in this case (vmf_convolution), so geometry term is just the inverse squared distance
             Float G_pe = (1.f) / (dist_pe * dist_pe);
@@ -325,7 +286,6 @@ Float computeNodeImportanceGroundTruth(
     int count_ok = 0;
     for (int sampleIdx = 0; sampleIdx < numSamples; ++sampleIdx)
     {
-        // std::cout << "Sampling node " << nodeIndex << ", sample " << sampleIdx + 1 << " / " << numSamples << std::endl;
         bool ok = bvh->sampleNodePrimitive(
             scene,
             nodeIndex,
@@ -337,7 +297,6 @@ Float computeNodeImportanceGroundTruth(
         );
 
         if (!ok || pdf_xp_temp <= 0.f) {
-            // std::cout << "Invalid sample for node " << bvh->getNode(nodeIndex).toString() << std::endl; 
             continue; // Sample failed, skip contribution
         }
         
@@ -347,7 +306,7 @@ Float computeNodeImportanceGroundTruth(
         contributionSum += contribution.getLuminance() / pdf_xp_temp;
     }
     if (count_ok == 0) {
-        std::cout << "[computeNodeImportanceGroundTruth] Node " << nodeIndex << ": No valid samples found out of " << numSamples << ". Returning zero importance." << std::endl;
+        SLog(EDebug, "computeNodeImportanceGroundTruth: no valid sample in node %i", nodeIndex);
         return 0.f;
     }
     
@@ -376,56 +335,8 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_MC(
     if (!nodeInfo.valid || nodeInfo.surfaceArea <= Epsilon)
         return 0.0f;
 
-    auto computeCholeskyLower = [](const Matrix3x3 &covariance) {
-        Matrix3x3 L(0.0f);
-        const Float eps = 1e-6f;
-
-        L(0,0) = std::sqrt(std::max(covariance(0,0) + eps, (Float) 0.0f));
-        if (L(0,0) <= eps)
-            L(0,0) = eps;
-
-        L(1,0) = covariance(1,0) / L(0,0);
-        L(1,1) = std::sqrt(std::max(covariance(1,1) + eps - L(1,0)*L(1,0), (Float) 0.0f));
-        if (L(1,1) <= eps)
-            L(1,1) = eps;
-
-        L(2,0) = covariance(2,0) / L(0,0);
-        L(2,1) = (covariance(2,1) - L(2,0)*L(1,0)) / L(1,1);
-        L(2,2) = std::sqrt(std::max(covariance(2,2) + eps - L(2,0)*L(2,0) - L(2,1)*L(2,1), (Float) 0.0f));
-        if (L(2,2) <= eps)
-            L(2,2) = eps;
-
-        return L;
-    };
-
-    auto generateUnscentedPoints = [&](const Gaussian3D &gaussian) {
-        struct WeightedPoint {
-            Point p;
-            Float w;
-        };
-        std::array<WeightedPoint, 7> points;
-
-        const Float Ldim = 3.0f;
-        const Float lambda = std::sqrt((Float) 3.0f);
-        const Float sqrtScale = std::sqrt(Ldim + lambda);
-        const Float w0 = lambda / (Ldim + lambda);
-        const Float wi = 1.0f / (2.0f * (Ldim + lambda));
-
-        Matrix3x3 S = computeCholeskyLower(gaussian.m_covariance);
-        Point mean = Point(gaussian.m_mean);
-
-        points[0] = { mean, w0 };
-        for (int i = 0; i < 3; ++i) {
-            Vector axisOffset = S.col(i) * sqrtScale;
-            points[1 + 2*i]     = { mean + axisOffset, wi };
-            points[1 + 2*i + 1] = { mean - axisOffset, wi };
-        }
-
-        return points;
-    };
-
     Gaussian3D nodeGaussian = nodeInfo.getGaussian3D();
-    const auto sigmaPoints = generateUnscentedPoints(nodeGaussian);
+    const std::array<WeightedPoint, 7> sigmaPoints = computeUnscentedSigmaPoints(nodeGaussian);
 
     Vector vmf_mu = nodeInfo.getVMFMeanDirection();
     if (vmf_mu.lengthSquared() <= Epsilon)
@@ -496,7 +407,9 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_MC(
     return nodeInfo.surfaceArea * weightedLuminance;
 }
 
-// TLDR: this "fast" version, taking some stuff out of the loop, is basically just as fast as the other one
+// sigmaPoints=directionAtMean: the BSDF, VMF and emitter terms are evaluated
+// once at the Gaussian mean; only the distance falloff uses the sigma points.
+// In our tests it is not faster than the precomputed variant and has more variance.
 Float computeNodeImportance_Unscented_LUT_fast(
     const Scene *scene,
     const SamplingBVH *bvh,
@@ -505,19 +418,7 @@ Float computeNodeImportance_Unscented_LUT_fast(
     const PositionSamplingRecord &pRec_xe,
     bool checkVisibility
 ) {
-    // if (nodeIndex < 0 || (size_t) nodeIndex >= bvh->getNodeCount()) return 0.0f;
-    // const BVHNodeInfo &nodeInfotest = bvh->getNodeInfo(nodeIndex);
-    // return nodeInfotest.surfaceArea; 
 
-
-    #ifdef DO_TIMING_IMPORTANCE
-    auto &importanceTimer = bvh->getImportanceTimer();  
-    float t = importanceTimer.timer->getSeconds();
-    if (t > 2.f && t < 2.2f) {
-        std::cout << "doing timings, this will likely be slow! Also, remember launching with -p 1 for a single thread (I will shut up after 5s)...\n";
-    }
-    uint64_t startTime = importanceTimer.getNanoSeconds();
-    #endif 
     
     // --- 1. Early Exits & Hoisted Checks ---
     if (!scene || !bvh || !bvh->isBuilt()) return 0.0f;
@@ -551,8 +452,8 @@ Float computeNodeImportance_Unscented_LUT_fast(
 
     bool isSpatiallyClustered = covTrace < (bvh->getGaussianSAThreshold() * min_dist_sq);
 
-    const std::array<BVHNodeInfo::WeightedPoint, 7> &precomputedSigmaPoints = nodeInfo.getUnscentedPoints();
-    std::array<BVHNodeInfo::WeightedPoint, 7> sigmaPoints;
+    const std::array<WeightedPoint, 7> &precomputedSigmaPoints = nodeInfo.getUnscentedPoints();
+    std::array<WeightedPoint, 7> sigmaPoints;
     size_t numPointsToEval = 1;
 
     if (isSpatiallyClustered) {
@@ -562,17 +463,7 @@ Float computeNodeImportance_Unscented_LUT_fast(
         numPointsToEval = 7;
     }
 
-    #ifdef DO_TIMING_IMPORTANCE
-    if (importanceTimer.timer->getSeconds() > 2.f) {
-        importanceTimer.addElapsed("init", startTime); 
-        importanceTimer.addCounter();
-    }
-    #endif 
-
     // --- 4. Directional Decoupling (Evaluate Complex Math ONCE at the Mean) ---
-    #ifdef DO_TIMING_IMPORTANCE
-    startTime = importanceTimer.getNanoSeconds();
-    #endif
 
     Vector d_sp_mean = mean - its_xs.p;
     Float dist_sp_mean = d_sp_mean.length();
@@ -607,10 +498,6 @@ Float computeNodeImportance_Unscented_LUT_fast(
     Spectrum base_contribution = f_xs * f_xp * Le;
     Float base_lum = base_contribution.getLuminance();
 
-    #ifdef DO_TIMING_IMPORTANCE
-    importanceTimer.addElapsed("directional_decoupled_eval", startTime);
-    #endif
-
     // If the directional components amount to nothing, skip the UT entirely
     if (base_lum <= Epsilon || std::isnan(base_lum)) {
         return 0.0f;
@@ -620,10 +507,6 @@ Float computeNodeImportance_Unscented_LUT_fast(
     Float weightedLuminance = 0.0f;
 
     for (size_t pointIdx = 0; pointIdx < numPointsToEval; ++pointIdx) {
-
-        #ifdef DO_TIMING_IMPORTANCE
-        startTime = importanceTimer.getNanoSeconds();
-        #endif 
 
         const Point &xp = sigmaPoints[pointIdx].p;
         const Float pointWeight = sigmaPoints[pointIdx].w;
@@ -651,10 +534,6 @@ Float computeNodeImportance_Unscented_LUT_fast(
             if (scene->rayIntersect(shadowRay_pe)) continue;
         }
 
-        #ifdef DO_TIMING_IMPORTANCE
-        importanceTimer.addElapsed("visibility", startTime);
-        #endif 
-
         // Apply only the geometric falloff to the decoupled base luminance
         Float G_total = 1.0f / (dist_sp_sq * dist_pe_sq);
         Float lum = base_lum * G_total;
@@ -667,14 +546,6 @@ Float computeNodeImportance_Unscented_LUT_fast(
 
     if (std::isnan(weightedLuminance) || weightedLuminance < 0.0f)
         return 0.0f;
-
-    #ifdef DO_TIMING_IMPORTANCE
-    if (importanceTimer.timer->getSeconds() > 10.f) {
-        std::cout << "Importance computation timings:\n";
-        importanceTimer.report();
-        exit(0); 
-    }
-    #endif 
 
     return nodeInfo.surfaceArea * weightedLuminance;
 }
@@ -689,16 +560,6 @@ Float computeNodeImportance_Unscented_LUT_original(
     bool checkVisibility
 ) {
 
-    #ifdef DO_TIMING_IMPORTANCE
-    auto &importanceTimer = bvh->getImportanceTimer();
-    float t = importanceTimer.timer->getSeconds();
-    if (t > 2.f && t < 2.2f) {
-        std::cout << "doing timings, this will likely be slow! Also, remember launching with -p 1 for a single thread (I will shut up after 5s)...\n";
-    }
-
-    uint64_t startTime = importanceTimer.getNanoSeconds();
-    #endif
-
     if (!scene || !bvh || !bvh->isBuilt())
         return 0.0f;
 
@@ -708,55 +569,6 @@ Float computeNodeImportance_Unscented_LUT_original(
     const BVHNodeInfo &nodeInfo = bvh->getNodeInfo(nodeIndex);
     if (!nodeInfo.valid || nodeInfo.surfaceArea <= Epsilon)
         return 0.0f;
-
-    auto computeCholeskyLower = [](const Matrix3x3 &covariance) {
-        Matrix3x3 L(0.0f);
-        const Float eps = 1e-6f;
-
-        L(0,0) = std::sqrt(std::max(covariance(0,0) + eps, (Float) 0.0f));
-        if (L(0,0) <= eps)
-            L(0,0) = eps;
-
-        L(1,0) = covariance(1,0) / L(0,0);
-        L(1,1) = std::sqrt(std::max(covariance(1,1) + eps - L(1,0)*L(1,0), (Float) 0.0f));
-        if (L(1,1) <= eps)
-            L(1,1) = eps;
-
-        L(2,0) = covariance(2,0) / L(0,0);
-        L(2,1) = (covariance(2,1) - L(2,0)*L(1,0)) / L(1,1);
-        L(2,2) = std::sqrt(std::max(covariance(2,2) + eps - L(2,0)*L(2,0) - L(2,1)*L(2,1), (Float) 0.0f));
-        if (L(2,2) <= eps)
-            L(2,2) = eps;
-
-        return L;
-    };
-
-    struct WeightedPoint {
-        Point p;
-        Float w;
-    };
-
-    auto generateUnscentedPoints = [&](const Gaussian3D &gaussian) {
-        std::array<WeightedPoint, 7> points;
-
-        const Float Ldim = 3.0f;
-        const Float lambda = std::sqrt((Float) 3.0f);
-        const Float sqrtScale = std::sqrt(Ldim + lambda);
-        const Float w0 = lambda / (Ldim + lambda);
-        const Float wi = 1.0f / (2.0f * (Ldim + lambda));
-
-        Matrix3x3 S = computeCholeskyLower(gaussian.m_covariance);
-        Point mean = Point(gaussian.m_mean);
-
-        points[0] = { mean, w0 };
-        for (int i = 0; i < 3; ++i) {
-            Vector axisOffset = S.col(i) * sqrtScale;
-            points[1 + 2*i]     = { mean + axisOffset, wi };
-            points[1 + 2*i + 1] = { mean - axisOffset, wi };
-        }
-
-        return points;
-    };
 
     const VMFLUT &vmfLUT = bvh->getVMFLUT();
 
@@ -782,7 +594,7 @@ Float computeNodeImportance_Unscented_LUT_original(
     if (isSpatiallyClustered) {
         sigmaPoints[0] = { mean, 1.0f };
     } else {
-        sigmaPoints = generateUnscentedPoints(nodeGaussian);
+        sigmaPoints = computeUnscentedSigmaPoints(nodeGaussian);
         numPointsToEval = 7;
     }
 
@@ -792,19 +604,8 @@ Float computeNodeImportance_Unscented_LUT_original(
     vmf_mu = normalize(vmf_mu);
     Frame vmfFrame(vmf_mu);
 
-    #ifdef DO_TIMING_IMPORTANCE
-    if (importanceTimer.timer->getSeconds() > 2.f) {
-        importanceTimer.addElapsed("init", startTime);
-        importanceTimer.addCounter();
-    }
-    #endif
-
     Float weightedLuminance = 0.0f;
     for (size_t pointIdx = 0; pointIdx < numPointsToEval; ++pointIdx) {
-
-    #ifdef DO_TIMING_IMPORTANCE
-        startTime = importanceTimer.getNanoSeconds();
-    #endif
 
         const Point &xp = sigmaPoints[pointIdx].p;
         const Float pointWeight = sigmaPoints[pointIdx].w;
@@ -834,11 +635,6 @@ Float computeNodeImportance_Unscented_LUT_original(
         if (checkVisibility && scene->rayIntersect(shadowRay_pe))
             continue;
 
-    #ifdef DO_TIMING_IMPORTANCE
-        importanceTimer.addElapsed("visibility", startTime);
-        startTime = importanceTimer.getNanoSeconds();
-    #endif
-
         Vector l_xs_to_xp = its_xs.toLocal(d_sp);
         BSDFSamplingRecord bRec_xs(its_xs, l_xs_to_xp);
         const BSDF *bsdf_xs = its_xs.getBSDF();
@@ -847,18 +643,9 @@ Float computeNodeImportance_Unscented_LUT_original(
 
         Spectrum f_xs = bsdf_xs->eval(bRec_xs);
 
-    #ifdef DO_TIMING_IMPORTANCE
-        importanceTimer.addElapsed("bsdf", startTime);
-        startTime = importanceTimer.getNanoSeconds();
-    #endif
         Vector3 w1_local = vmfFrame.toLocal(-d_sp);
         Vector3 w2_local = vmfFrame.toLocal(d_pe);
         float vmf_convolution = vmfLUT.evalFast(w1_local, w2_local, kappaQuery);
-
-    #ifdef DO_TIMING_IMPORTANCE
-        importanceTimer.addElapsed("vmfeval", startTime);
-        startTime = importanceTimer.getNanoSeconds();
-    #endif
 
         Spectrum f_xp = nodeInfo.getMeanDiffuseAlbedo() * (1.0f / M_PI) * vmf_convolution;
 
@@ -883,23 +670,11 @@ Float computeNodeImportance_Unscented_LUT_original(
         if (std::isnan(lum) || lum < 0.0f)
             continue;
 
-    #ifdef DO_TIMING_IMPORTANCE
-        importanceTimer.addElapsed("emitter", startTime);
-        startTime = importanceTimer.getNanoSeconds();
-    #endif
         weightedLuminance += pointWeight * lum;
     }
 
     if (std::isnan(weightedLuminance) || weightedLuminance < 0.0f)
         return 0.0f;
-
-    #ifdef DO_TIMING_IMPORTANCE
-    if (importanceTimer.timer->getSeconds() > 10.f) {
-        std::cout << "Importance computation timings:\n";
-        importanceTimer.report();
-        exit(0);
-    }
-    #endif
 
     return nodeInfo.surfaceArea * weightedLuminance;
 }
@@ -913,23 +688,6 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT(
     bool checkVisibility
 ) {
     
-    #ifdef DO_TIMING_IMPORTANCE
-    auto &importanceTimer = bvh->getImportanceTimer();  
-    float t = importanceTimer.timer->getSeconds();
-    if (t>2.f && t < 2.2f) {
-        std::cout << "doing timings, this will likely be slow! Also, remember launching with -p 1 for a single thread (I will shut up after 5s)...\n";
-
-        // Example usage:
-        // importanceTimer.addTime("thing1", 10.f);
-        // importanceTimer.addTime("another one", 20.f);
-        // importanceTimer.report();
-
-    }
-
-    // define timers:
-    uint64_t startTime = importanceTimer.getNanoSeconds();
-
-    #endif 
     
     if (!scene || !bvh || !bvh->isBuilt())
         return 0.0f;
@@ -952,7 +710,6 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT(
 
     const VMFLUT &vmfLUT = bvh->getVMFLUT();
 
-    // precompute kappa here, compare w/ the unoptimized version both output and time
     Float kappa = std::max((Float) 0.0f, nodeInfo.getVMFKappa());
     KappaQuery kappaQuery = vmfLUT.prepareKappa(kappa);
 
@@ -982,8 +739,8 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT(
 
     bool isSpatiallyClustered = ablateGaussian || (covTrace < (bvh->getGaussianSAThreshold() * min_dist_sq));
 
-    const std::array<BVHNodeInfo::WeightedPoint, 7> &precomputedSigmaPoints = nodeInfo.getUnscentedPoints();
-    std::array<BVHNodeInfo::WeightedPoint, 7> sigmaPoints;
+    const std::array<WeightedPoint, 7> &precomputedSigmaPoints = nodeInfo.getUnscentedPoints();
+    std::array<WeightedPoint, 7> sigmaPoints;
     size_t numPointsToEval = 1;
 
     if (isSpatiallyClustered) {
@@ -1001,31 +758,8 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT(
 
     
 
-    // --- Optimization 2: Isotropic vMF Check ---
-    // const Float kappaThreshold = 10.f; // TODO: VALUE ? 
-    // bool isIsotropic = kappa < kappaThreshold;
-    // float cached_vmf_convolution = -1.0f;
-    // if (isIsotropic) { // TODO - im focusing on the gaussian optimization first
-    //     // For isotropic distributions, the convolution is constant and can be computed once
-    //     Vector3 w1_local = vmfFrame.toLocal(-normalize(mean - its_xs.p));
-    //     Vector3 w2_local = vmfFrame.toLocal(normalize(pRec_xe.p - mean));
-    //     cached_vmf_convolution = vmfLUT.eval(w1_local, w2_local, kappa);
-    // }
-
-    #ifdef DO_TIMING_IMPORTANCE
-    if (importanceTimer.timer->getSeconds() > 2.f) {
-        // importanceTimer.addTime("init", importanceTimer.getNanoSeconds() - startTime);
-        importanceTimer.addElapsed("init", startTime); // ^ same
-        importanceTimer.addCounter();
-    }
-    #endif 
-
     Float weightedLuminance = 0.0f;
     for (size_t pointIdx = 0; pointIdx < numPointsToEval; ++pointIdx) {
-
-    #ifdef DO_TIMING_IMPORTANCE
-        startTime = importanceTimer.getNanoSeconds();
-    #endif 
 
         const Point &xp = sigmaPoints[pointIdx].p;
         const Float pointWeight = sigmaPoints[pointIdx].w;
@@ -1056,10 +790,6 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT(
             continue;
 
         
-#ifdef DO_TIMING_IMPORTANCE
-        importanceTimer.addElapsed("visibility", startTime);
-        startTime = importanceTimer.getNanoSeconds();
-#endif 
 
         Spectrum f_xs(1.0f);
         if (!ablateCosineXs) {
@@ -1071,20 +801,10 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT(
             f_xs = bsdf_xs->eval(bRec_xs);
         }
 
-#ifdef DO_TIMING_IMPORTANCE
-        importanceTimer.addElapsed("bsdf", startTime); 
-        startTime = importanceTimer.getNanoSeconds();
-#endif 
         Vector3 w1_local = vmfFrame.toLocal(-d_sp);
         Vector3 w2_local = vmfFrame.toLocal(d_pe);
         float vmf_convolution = ablateVMF ? 1.0f : vmfLUT.evalFast(w1_local, w2_local, kappaQuery);
-        // Old, slower version: vmfLUT.eval(w1_local, w2_local, kappa);
 
-#ifdef DO_TIMING_IMPORTANCE
-        importanceTimer.addElapsed("vmfeval", startTime); 
-        startTime = importanceTimer.getNanoSeconds();
-#endif 
-        // std::cout << "VMF convolution: " << vmf_convolution << ", fast version: " << vmf_convolution_fast << std::endl;
         // Uncomment to check correctness. Fast returns identical values to original
 
         Spectrum nodeAlbedo = ablateAlbedo ? Spectrum(1.0f) : nodeInfo.getMeanDiffuseAlbedo();
@@ -1116,25 +836,13 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT(
             continue;
 
         
-#ifdef DO_TIMING_IMPORTANCE
-        importanceTimer.addElapsed("emitter", startTime); 
-        startTime = importanceTimer.getNanoSeconds();
-#endif 
         weightedLuminance += pointWeight * lum;
     }
 
     if (std::isnan(weightedLuminance) || weightedLuminance < 0.0f)
         return 0.0f;
 
-
     
-#ifdef DO_TIMING_IMPORTANCE
-    if (importanceTimer.timer->getSeconds() > 10.f) {
-        std::cout << "Importance computation timings:\n";
-        importanceTimer.report();
-        exit(0); 
-    }
-#endif 
 
     return nodeInfo.surfaceArea * weightedLuminance;
 }
@@ -1157,57 +865,10 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT_Specular(
     if (!nodeInfo.valid || nodeInfo.surfaceArea <= Epsilon)
         return 0.0f;
 
-    auto computeCholeskyLower = [](const Matrix3x3 &covariance) {
-        Matrix3x3 L(0.0f);
-        const Float eps = 1e-6f;
-
-        L(0,0) = std::sqrt(std::max(covariance(0,0) + eps, (Float) 0.0f));
-        if (L(0,0) <= eps) L(0,0) = eps;
-
-        L(1,0) = covariance(1,0) / L(0,0);
-        L(1,1) = std::sqrt(std::max(covariance(1,1) + eps - L(1,0)*L(1,0), (Float) 0.0f));
-        if (L(1,1) <= eps) L(1,1) = eps;
-
-        L(2,0) = covariance(2,0) / L(0,0);
-        L(2,1) = (covariance(2,1) - L(2,0)*L(1,0)) / L(1,1);
-        L(2,2) = std::sqrt(std::max(covariance(2,2) + eps - L(2,0)*L(2,0) - L(2,1)*L(2,1), (Float) 0.0f));
-        if (L(2,2) <= eps) L(2,2) = eps;
-
-        return L;
-    };
-
-    struct WeightedPoint {
-        Point p;
-        Float w;
-    };
-
-    auto generateUnscentedPoints = [&](const Gaussian3D &gaussian) {
-        std::array<WeightedPoint, 7> points;
-
-        const Float Ldim = 3.0f;
-        const Float lambda = std::sqrt((Float) 3.0f);
-        const Float sqrtScale = std::sqrt(Ldim + lambda);
-        const Float w0 = lambda / (Ldim + lambda);
-        const Float wi = 1.0f / (2.0f * (Ldim + lambda));
-
-        Matrix3x3 S = computeCholeskyLower(gaussian.m_covariance);
-        Point mean = Point(gaussian.m_mean);
-
-        points[0] = { mean, w0 };
-        for (int i = 0; i < 3; ++i) {
-            Vector axisOffset = S.col(i) * sqrtScale;
-            points[1 + 2*i]     = { mean + axisOffset, wi };
-            points[1 + 2*i + 1] = { mean - axisOffset, wi };
-        }
-
-        return points;
-    };
-
     const VMFLUT &vmfLUT = bvh->getVMFLUT();
 
     // Use precomputed kappas (set by finalize() during BVH build)
     KappaQuery kappaQuery_n    = vmfLUT.prepareKappa(nodeInfo.kappa_n);
-    KappaQuery kappaQuery_conv = vmfLUT.prepareKappa(nodeInfo.kappa_conv);
 
     // Effective F0 as Spectrum: E[β^m*β^c + β^s - β^m*β^s]
     Spectrum f0_eff = nodeInfo.getMeanF0();
@@ -1231,7 +892,7 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT_Specular(
     if (isSpatiallyClustered) {
         sigmaPoints[0] = { mean, 1.0f };
     } else {
-        sigmaPoints = generateUnscentedPoints(nodeGaussian);
+        sigmaPoints = nodeInfo.getUnscentedPoints();
         numPointsToEval = 7;
     }
 
@@ -1281,12 +942,8 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT_Specular(
 
         // Evaluate LUT for diffuse (kappa_n) and specular (kappa_conv) lobes
         float vmf_diffuse  = vmfLUT.evalFast(w1_local, w2_local, kappaQuery_n);
-    #if 0
-        // oldspec
-        float vmf_specular = vmfLUT.evalFast(w1_local, w2_local, kappaQuery_conv);
-    #else
-        // newspec
-        // Instead of using the LUT, which stores the convolution of the cosines with the VMF, evaluate this VMF directly:
+        // Specular lobe (Eqs. 19-20): the convolution of the normal distribution
+        // and the microfacet lobe is a VMF with kappa_conv, evaluated at the half vector
         VonMisesFisherDistr vmfSpec(nodeInfo.kappa_conv);
         Vector3 whalf = w1_local + w2_local;
         float lengthHalf = whalf.length();
@@ -1299,7 +956,6 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT_Specular(
             vmf_specular = vmfSpec.eval(whalf.z);
         }
 
-    #endif
         // Schlick F_c from the path directions at xp (independent of the surface normal).
         // At xp, -d_sp points toward xs and d_pe points toward xe.
         Float Fc = schlickFc(-d_sp, d_pe);
@@ -1317,15 +973,11 @@ MTS_EXPORT_RENDER Float computeNodeImportance_Unscented_LUT_Specular(
         };
         Float G_xp = ggxG1(w1_local.z) * ggxG1(w2_local.z);
 
-        // f_xp = diffuse term + specular term
-        // The convolved kappa accounts for both geometric normal spread and microfacet NDF spread.
-        // The specular term now uses the full Schlick Fresnel F = F0 + Fc*(1-F0) instead of just F0,
-        // and is modulated by the GGX Smith masking-shadowing term G_xp.
-
+        // f_xp = diffuse term (Eq. 14) + specular term (Eq. 20), with the full
+        // Schlick Fresnel F = F0 + Fc*(1-F0) and the Smith term G_xp. Note that
+        // the aggregate specular albedo of Eq. (17) has a factor 1/4 that is not
+        // applied here; this code produced the results of Fig. 6.
         Spectrum albedo = nodeInfo.getMeanDiffuseAlbedo();
-
-        //TEMP, bypass albedo:
-        // albedo = Spectrum(1.0f);
 
         Spectrum f_xp = albedo * (1.0f / M_PI) * vmf_diffuse
                       + fresnel_xp                       * G_xp           * vmf_specular;
@@ -1462,48 +1114,13 @@ MTS_EXPORT_RENDER Float computeNodeImportanceGlint(
 
     // ---- 7. Sigma point generation (Unscented Transform) --------------------
     // Cholesky decomposition helper (same as existing importance functions).
-    auto computeCholeskyLower = [](const Matrix3x3 &cov) {
-        Matrix3x3 L(0.0f);
-        const Float eps = 1e-6f;
-        L(0,0) = std::sqrt(std::max(cov(0,0) + eps, (Float) 0.0f));
-        if (L(0,0) <= eps) L(0,0) = eps;
-        L(1,0) = cov(1,0) / L(0,0);
-        L(1,1) = std::sqrt(std::max(cov(1,1) + eps - L(1,0)*L(1,0), (Float) 0.0f));
-        if (L(1,1) <= eps) L(1,1) = eps;
-        L(2,0) = cov(2,0) / L(0,0);
-        L(2,1) = (cov(2,1) - L(2,0)*L(1,0)) / L(1,1);
-        L(2,2) = std::sqrt(std::max(cov(2,2) + eps
-                                    - L(2,0)*L(2,0) - L(2,1)*L(2,1), (Float) 0.0f));
-        if (L(2,2) <= eps) L(2,2) = eps;
-        return L;
-    };
-
-    struct WeightedPoint { Point p; Float w; };
-
-    auto generateUnscentedPoints = [&](const Gaussian3D &g) {
-        std::array<WeightedPoint, 7> pts;
-        const Float Ldim      = 3.0f;
-        const Float lambda    = std::sqrt((Float) 3.0f);
-        const Float sqrtScale = std::sqrt(Ldim + lambda);
-        const Float w0 = lambda / (Ldim + lambda);
-        const Float wi = 1.0f / (2.0f * (Ldim + lambda));
-        Matrix3x3 S  = computeCholeskyLower(g.m_covariance);
-        Point     mu = Point(g.m_mean);
-        pts[0] = { mu, w0 };
-        for (int i = 0; i < 3; ++i) {
-            Vector ax = S.col(i) * sqrtScale;
-            pts[1 + 2*i]     = { mu + ax, wi };
-            pts[1 + 2*i + 1] = { mu - ax, wi };
-        }
-        return pts;
-    };
 
     std::array<WeightedPoint, 7> sigmaPoints;
     size_t numPoints = 1;
     if (isSpatiallyClustered) {
         sigmaPoints[0] = { mean, 1.0f };
     } else {
-        sigmaPoints = generateUnscentedPoints(nodeGaussian);
+        sigmaPoints = nodeInfo.getUnscentedPoints();
         numPoints = 7;
     }
 
