@@ -42,13 +42,6 @@ Mitsuba.app
 /textures
 mitsuba.*.log
 *.exr
-scenes_old/**/*.exr
-# scenes/**/*.xml  # keep scene files maybe ? 
-scenes_old/**/*.obj
-scenes_old/**/*.ply
-scenes_old/**/*.stl
-scenes_old/**/*.hdr
-scenes_old/**/*.png
 
 # Eclipse CDT project files
 .externalToolBuilders
@@ -65,4 +58,12 @@ scenes/**/*.log
 scenes/**/*.exr
 scenes/**/*.png
 scenes/**/*.json
-!scenes/experiments/7_glints_lighthouse/env.exr
+# Experiment outputs written by scripts/experiments/ (renders, metrics, plots, LaTeX)
+scenes/**/results/
+__pycache__/
+
+# Local, non-distributed material (planning notes, tool settings, large assets)
+.plans/
+.claude/
+notes.md
+extra_not_track/
